@@ -1,3 +1,5 @@
 {
-  "devon-aide.resourcePath": "/Users/kimyoungjun/.vscode/extensions/lgcns-devon-aide.devon-aide-0.0.1/resource"
+  "devon-aide.resourcePath": "/Users/kimyoungjun/.vscode/extensions/lgcns-devon-aide.devon-aide-0.0.1/resource",
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.configuration.updateBuildConfiguration": "interactive"
 }
