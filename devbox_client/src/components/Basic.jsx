@@ -3,9 +3,10 @@ import frontend from '../assets/img/frontend.png';
 import devops from '../assets/img/devops.png';
 import cloud from '../assets/img/cloud.png';
 import data from '../assets/img/data.webp';
-import mobile from '../assets/img/mobile2.png';
+import mobile from '../assets/img/mobile.png';
 
 const Basic = () => {
+    
     return (
         <div>
             <h2 style={{ textAlign: 'center', marginTop: '2em' }}>개발 직군 정보</h2>
@@ -75,7 +76,9 @@ const Basic = () => {
                     </a>
                 </div>
             </section>
+            
         </div>
+        
     );
 };
 
