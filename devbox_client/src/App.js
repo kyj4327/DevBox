@@ -9,7 +9,7 @@ import './assets/css/custom.css';
 
 import Header from './components/Header';
 import JobInfoList from './components/JobInfoList';
-import JobInfoDetail from './components/JobInfoDetail';
+import JobInfoBack from './components/JobInfoBack';
 import Footer from './components/Footer';
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
     <div className="App">
       <Header />
       {/* <JobInfoList /> */}
-      <JobInfoDetail />
+      <JobInfoBack />
       <Footer />
     </div>
   );

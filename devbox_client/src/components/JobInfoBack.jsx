@@ -1,6 +1,6 @@
 import Banner from "./Banner";
 
-const JobInfoDetail = () => {
+const JobInfoBack = () => {
     return (
         <div>
             <Banner />
@@ -100,4 +100,4 @@ const JobInfoDetail = () => {
     );
 };
 
-export default JobInfoDetail;
+export default JobInfoBack;
