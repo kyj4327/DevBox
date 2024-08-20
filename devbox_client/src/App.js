@@ -9,13 +9,15 @@ import './assets/css/custom.css';
 
 import Header from './components/Header';
 import JobInfoList from './components/JobInfoList';
+import JobInfoDetail from './components/JobInfoDetail';
 import Footer from './components/Footer';
 
 function App() {
   return (
     <div className="App">
       <Header />
-      <JobInfoList />
+      {/* <JobInfoList /> */}
+      <JobInfoDetail />
       <Footer />
     </div>
   );
