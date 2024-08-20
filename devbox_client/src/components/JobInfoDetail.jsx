@@ -89,6 +89,12 @@ const JobInfoDetail = () => {
                         </p>
                     </div>
                 </div>
+
+                <div class="form-row pt-2">
+                    <div class="col-md-12 col-10 text-end">
+                        <button type="submit" class="btn btn-secondary text-white px-md-4 px-2 py-md-3 py-1 radius-0 light-300">목록으로</button>
+                    </div>
+                </div>
             </section>
         </div>
     );
