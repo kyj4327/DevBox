@@ -23,7 +23,7 @@ function App() {
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
-          <Route path='/' element={<JobInfoList />} />
+          <Route path='/jobInfo' element={<JobInfoList />} />
           <Route path='/jobinfo/backend' element={<JobInfoBack />} />
           <Route path='/jobinfo/frontend' element={<JobInfoFront />} />
           <Route path='/jobinfo/devops' element={<JobInfoDevOps />} />
