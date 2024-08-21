@@ -30,6 +30,7 @@ const DetailBasic = () => {
                 <div className="buttom">
                     <button>수강 신청</button>
                     <button>목록</button>
+                    <button>수정</button>
                 </div>
                
             

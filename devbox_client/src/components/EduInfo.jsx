@@ -1,5 +1,7 @@
+import { useNavigate } from "react-router-dom";
 
 const EduInfo = () => {
+    const navigate = useNavigate();
 
     return (
         <div>
@@ -81,6 +83,8 @@ const EduInfo = () => {
                
                 </div>
             </section>
+            <a href="/dm" className="dm">글쓰기</a>
+            <button>삭제</button>
 
         </div>
 

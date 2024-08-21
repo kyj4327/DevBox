@@ -8,6 +8,7 @@ import '../assets/css/custom.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import DetailBasic from './DetailBasic';
+import DetailManager from './DetailManager';
 
 const EduDetail = () => {
 
