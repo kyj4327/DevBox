@@ -5,9 +5,13 @@ import cloud from '../assets/img/cloud.png';
 import data from '../assets/img/data.webp';
 import mobile from '../assets/img/mobile.png';
 
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+
 const JobInfoList = () => {
     return (
         <div>
+            <Header />
             <h2 style={{ textAlign: 'center', marginTop: '2em' }}>개발 직군 정보</h2>
             <section className="container py-5">
                 <div className="row projects gx-lg-5">
@@ -68,6 +72,7 @@ const JobInfoList = () => {
                     </a>
                 </div>
             </section>
+            <Footer />
         </div>
     );
 };
