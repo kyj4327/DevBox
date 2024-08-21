@@ -16,6 +16,7 @@ const DetailManager = () => {
     const [end2, setEnd2] = useState('');
     const [uploadImgUrl, setUploadImgUrl] = useState('');
     const [uploadImg, setUploadImg] = useState('');
+    const [logo, setLogo] = useState('');
 
 
     const onchangeImageUpload = (e) => {
@@ -41,6 +42,7 @@ const DetailManager = () => {
         formData.append("people", people);
         formData.append("link", link);
         formData.append("img", img);
+        formData.append("logo", logo);
 
         const url = 'http://127.0.0.1:8080/edu';
         const res = await fetch(url, {
@@ -86,8 +88,11 @@ const DetailManager = () => {
                 </div>
             </div>
             <section class="container py-5">
+                
+                    
                 <div class="row justify-content-center pb-4">
                     <div class="col-lg-8">
+                    <p>교육 포스터</p>
                         <div id="templatemo-slide-link-target" class="card mb-3">
                             {uploadImgUrl && <img src={uploadImgUrl} alt="Uploaded" />}
                             <input
@@ -142,13 +147,23 @@ const DetailManager = () => {
                                     type="text"
                                 />
                             </div>
-                            <li>링크: </li>
+                            <li>신청 링크: </li>
 
                             <div className="link">
                                 <input
                                     name="link"
                                     value={link}
                                     onChange={(e) => setLink(e.target.value)}
+                                    type="text"
+                                />
+                            </div>
+                            <li>회사 로고 이미지 링크: </li>
+
+                            <div className="logo">
+                                <input
+                                    name="logo"
+                                    value={logo}
+                                    onChange={(e) => setLogo(e.target.value)}
                                     type="text"
                                 />
                             </div>
