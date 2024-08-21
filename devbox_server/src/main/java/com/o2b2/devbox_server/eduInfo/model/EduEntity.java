@@ -15,6 +15,9 @@ public class EduEntity {
 
     String title;
 
+    // 진행 회사 로고 이미지
+    String logo;
+
     String subtitle;
 
     String img;

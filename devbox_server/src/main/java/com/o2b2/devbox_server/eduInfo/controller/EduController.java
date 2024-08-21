@@ -1,5 +1,7 @@
 package com.o2b2.devbox_server.eduInfo.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,9 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.o2b2.devbox_server.eduInfo.dto.EduData;
 import com.o2b2.devbox_server.eduInfo.model.EduEntity;
@@ -21,32 +27,36 @@ import com.o2b2.devbox_server.eduInfo.repository.EduRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 
-
-
 @RestController
 @CrossOrigin
 @Transactional
 public class EduController {
-        @Autowired
-        EduRepository eduRepository;
+
+    @Autowired
+    EduRepository eduRepository;
 
     @PostMapping("/edu")
-    public Map<String, Object> edu(@RequestBody EduEntity edu) {
+    public Map<String, Object> edu(
+            @ModelAttribute EduEntity edu,
+            @RequestParam("file") MultipartFile file) {
         System.out.println(edu);
-        
+        System.out.println(file.getOriginalFilename());
+
         Map<String, Object> map = new HashMap<>();
-        
+
+        edu.setImg(file.getOriginalFilename());
         EduEntity result = eduRepository.save(edu);
+
+        try {
+            file.transferTo(new File("c:/images/" + file.getOriginalFilename()));
+        } catch (IllegalStateException | IOException e) {
+            e.printStackTrace();
+        }
         map.put("code", 200);
         map.put("msg", "가입완료");
-        
+
         return map;
     }
-    
-       
-
-
-
 
     @GetMapping("/edu/list")
     @ResponseBody
@@ -65,6 +75,7 @@ public class EduController {
 
         return list;
     }
+
     @GetMapping("/edu/detail")
     @ResponseBody
     public Map<String, Object> eduDetail() {
@@ -76,5 +87,5 @@ public class EduController {
 
         return map;
     }
-    
+
 }

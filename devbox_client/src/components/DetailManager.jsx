@@ -10,19 +10,42 @@ const DetailManager = () => {
     const [eduterm, setEduterm] = useState('');
     const [people, setPeople] = useState('');
     const [link, setLink] = useState('');
-    const [start, setStart] =  useState('');
-    const [start2, setStart2] =  useState('');
-    const [end, setEnd] =  useState('');
-    const [end2, setEnd2] =  useState('');
+    const [start, setStart] = useState('');
+    const [start2, setStart2] = useState('');
+    const [end, setEnd] = useState('');
+    const [end2, setEnd2] = useState('');
+    const [uploadImgUrl, setUploadImgUrl] = useState('');
+    const [uploadImg, setUploadImg] = useState('');
+
+
+    const onchangeImageUpload = (e) => {
+     
+
+        const { files } = e.target;
+        const uploadFile = files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(uploadFile);
+        reader.onloadend = () => {
+            setUploadImgUrl(reader.result);
+            setUploadImg(uploadFile);
+        }
+    }
 
     const handleDetail = async () => {
+        const formData = new FormData();
+        formData.append("file", uploadImg);
+        formData.append("title", title);
+        formData.append("subtitle", subtitle);
+        formData.append("recruit", start + " ~ " + end);
+        formData.append("eduterm", start2 + " ~ " + end2);
+        formData.append("people", people);
+        formData.append("link", link);
+        formData.append("img", img);
+
         const url = 'http://127.0.0.1:8080/edu';
         const res = await fetch(url, {
             method: 'post',
-            headers: {
-            'content-type': 'application/json'
-            },
-            body: JSON.stringify({ title: title, subtitle: subtitle, recruit:  start + " ~ " + end, eduterm:  start2 + " ~ " + end2, people:people, link:link })
+            body: formData
         });
         const data = await res.json();
         if (data.code == 200) {
@@ -66,7 +89,12 @@ const DetailManager = () => {
                 <div class="row justify-content-center pb-4">
                     <div class="col-lg-8">
                         <div id="templatemo-slide-link-target" class="card mb-3">
-                            <img class="img-fluid border rounded" src="http://edu.busanit.or.kr/image/5f2b1ec7-c058-44fe-b720-68ad0a636129.png" alt="Card image cap" />
+                            {uploadImgUrl && <img src={uploadImgUrl} alt="Uploaded" />}
+                            <input
+                            name="img"
+                            value={img}
+                            type="file" accept="image/*" onChange={onchangeImageUpload} />
+                           
                         </div>
                     </div>
                 </div>
@@ -91,7 +119,7 @@ const DetailManager = () => {
                             </div>
                             <li>교육기간: </li>
                             <div className="eduterm">
-                            <input
+                                <input
                                     name="start2"
                                     value={start2}
                                     onChange={(e) => setStart2(e.target.value)}
@@ -130,7 +158,7 @@ const DetailManager = () => {
                 <div className="buttom">
                     <button>삭제</button>
                     <button onClick={handleDetail}
-                    className="btn" >올리기</button>
+                        className="btn" >올리기</button>
                 </div>
 
 
