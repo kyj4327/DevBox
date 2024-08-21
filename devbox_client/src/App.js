@@ -10,13 +10,21 @@ import './assets/css/custom.css';
 import JobInfoList from './pages/JobInfoList';
 import JobInfoBack from './pages/JobInfoBack';
 import JobInfoFront from './pages/JobInfoFront';
+import JobInfoDevOps from './pages/JobInfoDevOps';
+import JobInfoCloud from './pages/JobInfoCloud';
+import JobInfoData from './pages/JobInfoData';
+import JobInfoMobile from './pages/JobInfoMobile';
 
 function App() {
   return (
     <div className="App">
       {/* <JobInfoList /> */}
       {/* <JobInfoBack /> */}
-      <JobInfoFront />
+      {/* <JobInfoFront /> */}
+      {/* <JobInfoDevOps /> */}
+      {/* <JobInfoCloud /> */}
+      {/* <JobInfoData /> */}
+      <JobInfoMobile />
     </div>
   );
 }
