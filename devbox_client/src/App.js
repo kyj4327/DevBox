@@ -9,12 +9,14 @@ import './assets/css/custom.css';
 
 import JobInfoList from './pages/JobInfoList';
 import JobInfoBack from './pages/JobInfoBack';
+import JobInfoFront from './pages/JobInfoFront';
 
 function App() {
   return (
     <div className="App">
       {/* <JobInfoList /> */}
-      <JobInfoBack />
+      {/* <JobInfoBack /> */}
+      <JobInfoFront />
     </div>
   );
 }
