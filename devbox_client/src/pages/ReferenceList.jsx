@@ -10,6 +10,17 @@ const ReferenceList = () => {
                 <div class="container py-5">
                     <h1 class="h2 semi-bold-600 text-center mt-2">추천해요</h1>
                     <p class="text-center pb-5 light-300">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut facilisis.</p>
+                    <div className="row justify-content-center my-5">
+                        <div className="filter-btns shadow-md rounded-pill text-center col-auto">
+                            <a className="filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4 active" data-filter=".project" href="#">All</a>
+                            <a className="filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4" data-filter=".business" href="#">Web</a>
+                            <a className="filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4" data-filter=".marketing" href="#">DevOps</a>
+                            <a className="filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4" data-filter=".marketing" href="#">Cloud</a>
+                            <a className="filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4" data-filter=".marketing" href="#">Data</a>
+                            <a className="filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4" data-filter=".marketing" href="#">Mobile</a>
+                            <a className="filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4" data-filter=".marketing" href="#">Others</a>
+                        </div>
+                    </div>
                     <div class="pricing-list shadow-sm rounded-top rounded-3 py-sm-0 py-5">
                         <div class="row p-2">
                             <div class="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
