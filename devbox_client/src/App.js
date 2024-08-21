@@ -7,6 +7,7 @@ import './assets/css/boxicon.min.css';
 import './assets/css/templatemo.css';
 import './assets/css/custom.css';
 
+import ScrollToTop from './components/ScrollToTop';
 import JobInfoList from './pages/JobInfoList';
 import JobInfoBack from './pages/JobInfoBack';
 import JobInfoFront from './pages/JobInfoFront';
@@ -20,6 +21,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path='/' element={<JobInfoList />} />
           <Route path='/jobinfo/backend' element={<JobInfoBack />} />
