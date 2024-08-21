@@ -1,7 +1,13 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import ListButton from '../components/ListButton';
+import { useNavigate } from 'react-router-dom';
 
 const JobInfoCloud = () => {
+    const navigate = useNavigate();
+    const toList = () => {
+        navigate('/jobinfo');
+    };
     return (
         <div>
             <Header />
@@ -123,7 +129,6 @@ const JobInfoCloud = () => {
                         </p>
                     </div>
                 </div>
-
                 <div class="row justify-content-center">
                     <div class="col-lg-8 ml-auto mr-auto pt-3 pb-4">
                         <p class="text-muted light-300">
@@ -135,7 +140,7 @@ const JobInfoCloud = () => {
 
                 <div class="form-row pt-2">
                     <div class="col-md-12 col-10 text-end">
-                        <button type="submit" class="btn btn-secondary text-white px-md-4 px-2 py-md-3 py-1 radius-0 light-300">목록으로</button>
+                        <ListButton text={'목록으로'} onClick={toList} />
                     </div>
                 </div>
             </section>
