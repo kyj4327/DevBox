@@ -14,17 +14,22 @@ import JobInfoDevOps from './pages/JobInfoDevOps';
 import JobInfoCloud from './pages/JobInfoCloud';
 import JobInfoData from './pages/JobInfoData';
 import JobInfoMobile from './pages/JobInfoMobile';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
-      {/* <JobInfoList /> */}
-      {/* <JobInfoBack /> */}
-      {/* <JobInfoFront /> */}
-      {/* <JobInfoDevOps /> */}
-      {/* <JobInfoCloud /> */}
-      {/* <JobInfoData /> */}
-      <JobInfoMobile />
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<JobInfoList />} />
+          <Route path='/jobinfo/backend' element={<JobInfoBack />} />
+          <Route path='/jobinfo/frontend' element={<JobInfoFront />} />
+          <Route path='/jobinfo/devops' element={<JobInfoDevOps />} />
+          <Route path='/jobinfo/cloud' element={<JobInfoCloud />} />
+          <Route path='/jobinfo/data' element={<JobInfoData />} />
+          <Route path='/jobinfo/mobile' element={<JobInfoMobile />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
