@@ -1,8 +1,14 @@
 import Header from '../components/Header';
 import Pagination from '../components/Pagination';
 import Footer from '../components/Footer';
+import ListButton from '../components/ListButton';
+import { useNavigate } from 'react-router-dom';
 
 const ReferenceList = () => {
+    const navigate = useNavigate();
+    const toList = () => {
+        navigate('/reference/list');
+    };
     return (
         <div>
             <Header />
@@ -81,6 +87,11 @@ const ReferenceList = () => {
                                 <a href="https://www.data.go.kr/" class="btn rounded-pill px-4 btn-primary light-300" target='_blank'>Link</a>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="form-row pt-2">
+                    <div class="col-md-12 col-10 text-end">
+                        <ListButton text={'작성하기'} onClick={toList} />
                     </div>
                 </div>
             </section>
