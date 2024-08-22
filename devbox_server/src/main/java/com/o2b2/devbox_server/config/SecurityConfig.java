@@ -32,6 +32,13 @@ public class SecurityConfig {
                                 .requestMatchers("/api/**").authenticated() // api/** 경로는 인증 후 접근 가능
                                 .anyRequest().permitAll() // 나머지 모든 경로는 인증없이 접근 허용.
                 )
+                // [구글로그인] : http://localhost:8081 [/oauth2/authorization/google]--->구글로 로그인을 시도하는 URL
+                // http://localhost:8081/member  허용해준 Url 말고 다른 요청->로그인 해야한다 -> 로그인 2가지(url 로그인 + 구글 로그인) -> 로그인 페이지로 보내기
+                .oauth2Login(oauth2->oauth2 // 요청이 오면 시큐리티가 해당 요청 가로채서 구글 로그인으로 넘긴다.
+                        .loginPage("/")
+                        .defaultSuccessUrl("/") // 성공했을때 경로
+                        .permitAll()
+                )
                 .formLogin(form->form
                         .loginPage("/") // login page URL -> /login -> MainController -> View(index.html)
                         .loginProcessingUrl("/loginProcess") // 스프링시큐리티(url 가로채기: username, password)에게 제어권을 넘긴다.
