@@ -1,6 +1,6 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import ListButton from '../components/ListButton';
+import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
 
 const JobInfoDevOps = () => {
@@ -132,7 +132,7 @@ const JobInfoDevOps = () => {
 
                 <div class="form-row pt-2">
                     <div class="col-md-12 col-10 text-end">
-                        <ListButton text={'목록으로'} onClick={toList} />
+                        <Button text={'목록으로'} onClick={toList} />
                     </div>
                 </div>
             </section>

@@ -1,4 +1,4 @@
-const ListButton = ({ text, onClick }) => {
+const Button = ({ text, onClick }) => {
     return (
         <button type="submit" class="btn btn-secondary text-white px-md-4 px-2 py-md-3 py-1 radius-0 light-300"
             onClick={onClick}>
@@ -7,4 +7,4 @@ const ListButton = ({ text, onClick }) => {
     );
 };
 
-export default ListButton;
+export default Button;
