@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.o2b2.devbox_server.reference.model.Reference;
@@ -34,6 +35,12 @@ public class ReferenceController {
     public List<Reference> referenceList() {
         List<Reference> list = referenceRepository.findAll();
         return list;
+    }
+
+    @GetMapping("/reference/delete")
+    public String referenceDelete(@RequestParam Long referenceId) {
+        referenceRepository.deleteById(referenceId);
+        return "삭제 완료";
     }
 
 }
