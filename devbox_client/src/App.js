@@ -16,6 +16,7 @@ import JobInfoCloud from './pages/JobInfoCloud';
 import JobInfoData from './pages/JobInfoData';
 import JobInfoMobile from './pages/JobInfoMobile';
 import ReferenceList from './pages/ReferenceList';
+import ReferenceWrite from './pages/ReferenceWrite';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
         <ScrollToTop />
         <Routes>
           {/* 개발 직군 게시판 */}
-          <Route path='/jobInfo' element={<JobInfoList />} />
+          <Route path='/jobInfo/list' element={<JobInfoList />} />
           <Route path='/jobinfo/backend' element={<JobInfoBack />} />
           <Route path='/jobinfo/frontend' element={<JobInfoFront />} />
           <Route path='/jobinfo/devops' element={<JobInfoDevOps />} />
@@ -35,7 +36,7 @@ function App() {
 
           {/* 추천해요 게시판 */}
           <Route path='/reference/list' element={<ReferenceList />} />
-          <Route path='/reference/write' element={<ReferenceList />} />
+          <Route path='/reference/write' element={<ReferenceWrite />} />
         </Routes>
       </BrowserRouter>
     </div>
