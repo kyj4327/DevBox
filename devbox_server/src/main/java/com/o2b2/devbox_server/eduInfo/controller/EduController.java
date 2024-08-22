@@ -44,7 +44,6 @@ public class EduController {
 
     private final Path fileStorageLocation = Paths.get("c:/images"); // 파일 저장 경로
 
-
     @Autowired
     EduRepository eduRepository;
 
@@ -65,22 +64,90 @@ public class EduController {
         } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
         }
+
         map.put("code", 200);
-        map.put("msg", "가입완료");
+        map.put("msg", "수정완료");
 
         return map;
     }
-    
-    @GetMapping("/edu/delete")
+
+    @PostMapping("/update")
+    public Map<String, Object> update(
+            @ModelAttribute EduEntity edu,
+            @RequestParam(value = "file", required = false) MultipartFile file) {
+
+        System.out.println(edu);
+
+        Map<String, Object> map = new HashMap<>();
+
+        // 데이터베이스에서 기존의 EduEntity를 가져옵니다.
+        EduEntity existingEdu = eduRepository.findById(edu.getId()).orElse(null);
+
+        if (existingEdu != null) {
+            // 파일이 새로 업로드되지 않은 경우 기존의 파일 이름을 유지합니다.
+            if (file != null && !file.isEmpty()) {
+                // 파일이 새로 업로드된 경우 새로운 파일 이름을 설정합니다.
+                edu.setImg(file.getOriginalFilename());
+
+                try {
+                    // 새 파일을 지정된 경로에 저장합니다.
+                    file.transferTo(new File("c:/images/" + file.getOriginalFilename()));
+                } catch (IllegalStateException | IOException e) {
+                    e.printStackTrace(); // 파일 저장 중 오류가 발생하면 스택 트레이스를 출력합니다.
+                }
+            } else {
+                // 파일이 없으면 기존의 파일 이름을 유지합니다.
+                edu.setImg(existingEdu.getImg());
+            }
+
+            // EduEntity 객체를 데이터베이스에 저장합니다.
+            eduRepository.save(edu);
+        } else {
+            // 기존 EduEntity가 없는 경우의 처리 (일반적으로 여기까지 도달하지 않아야 합니다).
+            map.put("code", 404);
+            map.put("msg", "존재하지 않는 데이터입니다.");
+            return map;
+        }
+
+        // 응답 맵에 성공 코드와 메시지를 추가합니다.
+        map.put("code", 200);
+        map.put("msg", "수정완료");
+
+        return map; // 수정 완료 응답을 반환합니다.
+    }
+
+    @DeleteMapping("/edu/delete")
     public String edudelete(@RequestParam Long Id) {
         eduRepository.deleteById(Id);
         return "삭제 완료";
     }
 
-
     @GetMapping("/edu/detail")
     @ResponseBody
     public Map<String, Object> eduDetail(@RequestParam Long id) {
+        Map<String, Object> map = new HashMap<>();
+
+        // id로 데이터베이스에서 교육 정보를 조회합니다.
+        Optional<EduEntity> eduOpt = eduRepository.findById(id);
+
+        EduEntity edu = eduOpt.get();
+        map.put("id", edu.getId());
+        map.put("title", edu.getTitle());
+        map.put("subtitle", edu.getSubtitle());
+        map.put("img", edu.getImg());
+        map.put("recruit", edu.getRecruit());
+        map.put("eduterm", edu.getEduterm());
+        map.put("people", edu.getPeople());
+        map.put("link", edu.getLink());
+        map.put("logo", edu.getLogo());
+
+        return map;
+
+    }
+
+    @GetMapping("/edu/update")
+    @ResponseBody
+    public Map<String, Object> eduUpdate(@RequestParam Long id) {
         Map<String, Object> map = new HashMap<>();
 
         // id로 데이터베이스에서 교육 정보를 조회합니다.

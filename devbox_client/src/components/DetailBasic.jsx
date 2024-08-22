@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import Banner from "./Banner";
 import { useEffect, useState } from "react";
 
 const DetailBasic = () => {
@@ -23,7 +22,16 @@ const DetailBasic = () => {
 
     return (
         <div>
-            <Banner />
+            <div id="work_single_banner" class="bg-light w-100">
+                <div class="container-fluid text-light d-flex justify-content-center align-items-center border-0 rounded-0 p-0 py-5">
+                    <div class="banner-content col-lg-8 m-lg-auto text-center py-5 px-3">
+                        <h1 class="banner-heading h2 pb-5 typo-space-line-center">{eduData.title}</h1>
+                        <p class="banner-footer light-300">
+                            {eduData.subtitle}
+                        </p>
+                    </div>
+                </div>
+            </div>
             <section class="container py-5">
                 <div class="row justify-content-center pb-4">
                     <div class="col-lg-8">
@@ -45,13 +53,18 @@ const DetailBasic = () => {
                 </div>
                 <div className="buttom">
                     <a href={eduData.link} target="_blank"><button>수강 신청</button></a>
-                    <button>목록</button>
-                    <button>수정</button>
+                    <button onClick={() => {
+                        navigate('/')
+                    }}>목록</button>
+                    <a href="" onClick={(e) => {
+                        e.preventDefault();
+                        navigate(`/up?id=${eduData.id}`)
+                    }}>수정</a>
                     <a className="nav-link" href="" id="delete"
                         onClick={async (e) => {
                             e.preventDefault();
-                            const url = `http://127.0.0.1:8080/edu/delete?Id=${eduData.Id}`;
-                            await fetch(url);
+                            const url = `http://localhost:8080/edu/delete?Id=${eduData.id}`;
+                            await fetch(url, { method: 'DELETE' });
                             alert('삭제가 완료되었습니다.');
                             navigate('/');
                         }}>삭제</a>

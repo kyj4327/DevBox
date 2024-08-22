@@ -1,8 +1,12 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const DetailManager = () => {
+const EduUpdate = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const id = searchParams.get('id');
+
     const [title, setTitle] = useState('');
     const [subtitle, setSubtitle] = useState('');
     const [img, setImg] = useState('');
@@ -17,6 +21,8 @@ const DetailManager = () => {
     const [uploadImgUrl, setUploadImgUrl] = useState('');
     const [uploadImg, setUploadImg] = useState('');
     const [logo, setLogo] = useState('');
+
+    const [eduData, setEduData] = useState({});
 
 
     const onchangeImageUpload = (e) => {
@@ -34,7 +40,10 @@ const DetailManager = () => {
 
     const handleDetail = async () => {
         const formData = new FormData();
-        formData.append("file", uploadImg);
+        formData.append("id", id);
+        if (uploadImg) {
+            formData.append("file", uploadImg); // 새로운 파일이 있을 때만 추가
+        }
         formData.append("title", title);
         formData.append("subtitle", subtitle);
         formData.append("recruit", start + " ~ " + end);
@@ -44,7 +53,7 @@ const DetailManager = () => {
         formData.append("img", img);
         formData.append("logo", logo);
 
-        const url = 'http://127.0.0.1:8080/edu';
+        const url = 'http://localhost:8080/update';
         const res = await fetch(url, {
             method: 'post',
             body: formData
@@ -57,6 +66,36 @@ const DetailManager = () => {
         }
         
     };
+    
+    async function get() {
+        const res = await fetch(`http://localhost:8080/edu/update?id=${id}`);
+        const data = await res.json();
+        setEduData(data);
+        
+        if(data.recruit){
+        const [start, end] = data.recruit.split(" ~ ");
+        setStart(start);
+        setEnd(end);
+        }
+
+        if(data.eduterm){
+        const [start2, end2] = data.eduterm.split(" ~ ");
+        setStart2(start2);
+        setEnd2(end2);
+        }
+       
+        setTitle(data.title);
+        setSubtitle(data.subtitle);
+        setPeople(data.people);
+        setLink(data.link);
+        setLogo(data.logo);
+    }
+
+
+
+    useEffect(() => {
+        get();
+    }, []);
 
     return (
         <div>
@@ -94,6 +133,7 @@ const DetailManager = () => {
                     <p>교육 포스터</p>
                         <div id="templatemo-slide-link-target" class="card mb-3">
                             {uploadImgUrl && <img src={uploadImgUrl} alt="Uploaded" />}
+                            <img src={`http://localhost:8080/download?id=${id}`} />
                             <input
                             name="img"
                             value={img}
@@ -171,7 +211,7 @@ const DetailManager = () => {
                 </div >
                 <div className="buttom">
                     <button onClick={handleDetail}
-                        className="btn" >올리기</button>
+                        className="btn" >수정 완료</button>
                 </div>
 
 
@@ -180,4 +220,4 @@ const DetailManager = () => {
     );
 };
 
-export default DetailManager;
+export default EduUpdate;
