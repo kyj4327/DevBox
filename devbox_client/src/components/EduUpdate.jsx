@@ -21,6 +21,8 @@ const EduUpdate = () => {
     const [uploadImgUrl, setUploadImgUrl] = useState('');
     const [uploadImg, setUploadImg] = useState('');
     const [logo, setLogo] = useState('');
+    const [isImageUploaded, setIsImageUploaded] = useState(false); // 이미지 업로드 상태를 관리하는 변수
+
 
     const [eduData, setEduData] = useState({});
 
@@ -35,6 +37,7 @@ const EduUpdate = () => {
         reader.onloadend = () => {
             setUploadImgUrl(reader.result);
             setUploadImg(uploadFile);
+            setIsImageUploaded(true);
         }
     }
 
@@ -95,7 +98,7 @@ const EduUpdate = () => {
 
     useEffect(() => {
         get();
-    }, []);
+    }, [isImageUploaded]);
 
     return (
         <div>
@@ -132,8 +135,12 @@ const EduUpdate = () => {
                     <div class="col-lg-8">
                     <p>교육 포스터</p>
                         <div id="templatemo-slide-link-target" class="card mb-3">
-                            {uploadImgUrl && <img src={uploadImgUrl} alt="Uploaded" />}
-                            <img src={`http://localhost:8080/download?id=${id}`} />
+                            {isImageUploaded && uploadImgUrl && (
+                                <img src={uploadImgUrl} alt="Uploaded" />
+                            )}
+                            {!isImageUploaded && (
+                                <img src={`http://localhost:8080/download?id=${id}`} alt="Original" />
+                            )}
                             <input
                             name="img"
                             value={img}
