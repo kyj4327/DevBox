@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const JobInfoData = () => {
     const navigate = useNavigate();
     const toList = () => {
-        navigate('/jobinfo');
+        navigate('/jobinfo/list');
     };
     return (
         <div>
