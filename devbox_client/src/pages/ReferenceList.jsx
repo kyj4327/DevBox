@@ -1,13 +1,13 @@
 import Header from '../components/Header';
 import Pagination from '../components/Pagination';
 import Footer from '../components/Footer';
-import ListButton from '../components/ListButton';
+import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
 
 const ReferenceList = () => {
     const navigate = useNavigate();
-    const toList = () => {
-        navigate('/reference/list');
+    const toWrite = () => {
+        navigate('/reference/write');
     };
     return (
         <div>
@@ -91,7 +91,7 @@ const ReferenceList = () => {
                 </div>
                 <div class="form-row pt-2">
                     <div class="col-md-12 col-10 text-end">
-                        <ListButton text={'작성하기'} onClick={toList} />
+                        <Button text={'작성하기'} onClick={toWrite} />
                     </div>
                 </div>
             </section>
