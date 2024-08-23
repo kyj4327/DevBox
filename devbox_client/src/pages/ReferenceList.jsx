@@ -47,7 +47,11 @@ const ReferenceList = () => {
                                     <div class="row p-2">
                                         <div class="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
                                             <h3>{v.title}</h3>
-                                            <a href=''>수정</a>
+                                            <a href=''
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    navigate(`/reference/update?referenceId=${v.id}`);
+                                                }}>수정</a>
                                             <a href=''
                                                 onClick={(e) => {
                                                     e.preventDefault();

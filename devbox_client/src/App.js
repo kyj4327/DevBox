@@ -17,6 +17,7 @@ import JobInfoData from './pages/JobInfoData';
 import JobInfoMobile from './pages/JobInfoMobile';
 import ReferenceList from './pages/ReferenceList';
 import ReferenceWrite from './pages/ReferenceWrite';
+import ReferenceUpdate from './pages/ReferenceUpdate';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           {/* 추천해요 게시판 */}
           <Route path='/reference/list' element={<ReferenceList />} />
           <Route path='/reference/write' element={<ReferenceWrite />} />
+          <Route path='/reference/update' element={<ReferenceUpdate />} />
         </Routes>
       </BrowserRouter>
     </div>
