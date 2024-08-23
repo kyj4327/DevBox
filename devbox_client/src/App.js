@@ -8,6 +8,7 @@ import './assets/css/boxicon.min.css';
 import './assets/css/templatemo.css';
 import './assets/css/custom.css';
 
+
 import Header from './components/Header';
 import JobInfoList from './components/JobInfoList';
 import Footer from './components/Footer';
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<JobInfoList />} />
           <Route path="/bdia" element={<BDIAIntroduction />} />
+
         </Routes>
         <Footer />
       </div>
