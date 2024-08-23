@@ -19,7 +19,7 @@ const Header = () => {
                                 <a className="nav-link btn-outline-primary rounded-pill px-3" href="about.html">Notice</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link btn-outline-primary rounded-pill px-3" href="work.html">Information</a>
+                                <a className="nav-link btn-outline-primary rounded-pill px-3" href="/">Information</a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link btn-outline-primary rounded-pill px-3" href="pricing.html">Community</a>

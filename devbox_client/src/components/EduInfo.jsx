@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const EduInfo = () => {
+const EduInfo = (props) => {
     const navigate = useNavigate();
-    const [eduList, setEduList] = useState([]);
+    // const [eduList, setEduList] = useState([]);
 
-    async function get() {
-        const res = await fetch(`http://localhost:8080/edu/list`);
-        const data = await res.json();
-        setEduList(data);
-    }
+    // async function get() {
+    //     const res = await fetch(`http://localhost:8080/edu/list`);
+    //     const data = await res.json();
+    //     setEduList(data);
+    // }
 
-    useEffect(() => {
-        get();
-    }, []);
+    // useEffect(() => {
+    //     get();
+    // }, []);
 
     return (
         <div>
@@ -27,7 +27,7 @@ const EduInfo = () => {
                     </div>
                 </div>
                 <div className="row projects gx-lg-5">
-                    {eduList.map((edu) => (
+                    {props.list && props.list.map((edu) => (
                         <a key={edu.id} href={`/detail?id=${edu.id}`} className="col-sm-6 col-lg-4 text-decoration-none project">
                             <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
                                 <img className="card-img-top" src={`${edu.logo}`} alt={edu.title} />

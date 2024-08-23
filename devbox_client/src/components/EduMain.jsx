@@ -9,13 +9,42 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Pagination from '../components/Pagination';
 import EduInfo from '../components/EduInfo';
+import { useEffect, useState } from 'react';
 
 const EduMain = () => {
+    const [pageData, setPageData] = useState({});
+    const [currentPage, setCurrentPage] = useState(1);
+
+    async function get(page = 1) {
+        const res = await fetch(`http://localhost:8080/edu/list?page=${page}`);
+        const data = await res.json();
+        setPageData(data);
+        setCurrentPage(page);  // 페이지 데이터 불러온 후, 현재 페이지 업데이트
+    }
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    useEffect(() => {
+        get(currentPage);
+    }, [currentPage]);
+
     return (
         <div className="EduMain">
             <Header />
-            <EduInfo />
-            <Pagination />
+            <EduInfo list={pageData.list} />
+            <Pagination 
+                handlePageChange={handlePageChange} 
+                pageData={
+                    {
+                        'startPage': pageData.startPage,
+                        'endPage': pageData.endPage,
+                        'currentPage': pageData.currentPage,
+                        'totalPage': pageData.totalPage
+                    }
+                }
+            />
             <Footer />
         </div>
     );

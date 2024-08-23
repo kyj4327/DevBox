@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,24 +12,23 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Sort;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.o2b2.devbox_server.eduInfo.dto.EduData;
 import com.o2b2.devbox_server.eduInfo.model.EduEntity;
 import com.o2b2.devbox_server.eduInfo.repository.EduRepository;
 
@@ -46,6 +44,55 @@ public class EduController {
 
     @Autowired
     EduRepository eduRepository;
+
+    @GetMapping("/edu/list")
+    public Map<String, Object> eduList(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "2") int size,
+            @RequestParam(value = "search", required = false) String search) {
+
+        // 정렬 방식 (id 기준 내림차순)
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        Pageable pageable = PageRequest.of(page - 1, size, sort); // 페이지 요청 생성
+
+        // 검색어가 있는 경우와 없는 경우에 따라 데이터 조회
+        Page<EduEntity> p;
+        if (search == null || search.isEmpty()) {
+            p = eduRepository.findAll(pageable);
+        } else {
+            p = eduRepository.findByTitleContaining(search, pageable);
+        }
+
+        List<EduEntity> list = p.getContent();
+
+        // 페이지네이션 관련 정보 계산
+        int totalPage = p.getTotalPages();
+        int startPage = (page - 1) / 10 * 10 + 1;
+        int endPage = Math.min(startPage + 9, totalPage);
+
+        // 반환할 데이터 구성
+        Map<String, Object> response = new HashMap<>();
+        response.put("list", list.stream().map(edu -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", edu.getId());
+            map.put("title", edu.getTitle());
+            map.put("subtitle", edu.getSubtitle());
+            map.put("img", edu.getImg());
+            map.put("recruit", edu.getRecruit());
+            map.put("eduterm", edu.getEduterm());
+            map.put("people", edu.getPeople());
+            map.put("link", edu.getLink());
+            map.put("logo", edu.getLogo());
+            return map;
+        }).collect(Collectors.toList())); // EduEntity를 Map으로 변환
+        response.put("currentPage", page); // 현재 페이지
+        response.put("startPage", startPage); // 시작 페이지
+        response.put("endPage", endPage); // 끝 페이지
+        response.put("totalPage", totalPage); // 전체 페이지 수
+
+        return response; // JSON 형태로 반환
+    }
+
 
     @PostMapping("/edu")
     public Map<String, Object> edu(
@@ -166,29 +213,6 @@ public class EduController {
 
         return map;
 
-    }
-
-    @GetMapping("/edu/list")
-    public List<Map<String, Object>> eduList() {
-        // 데이터베이스에서 모든 EduEntity 객체를 조회합니다.
-        List<EduEntity> eduList = eduRepository.findAll();
-
-        // EduEntity 목록을 Map 목록으로 변환합니다.
-        return eduList.stream()
-                .map(edu -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("id", edu.getId());
-                    map.put("title", edu.getTitle());
-                    map.put("subtitle", edu.getSubtitle());
-                    map.put("img", edu.getImg());
-                    map.put("recruit", edu.getRecruit());
-                    map.put("eduterm", edu.getEduterm());
-                    map.put("people", edu.getPeople());
-                    map.put("link", edu.getLink());
-                    map.put("logo", edu.getLogo());
-                    return map;
-                })
-                .collect(Collectors.toList());
     }
 
     @GetMapping("/download")
