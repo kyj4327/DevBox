@@ -9,7 +9,6 @@ const ReferenceWrite = () => {
 
     const [title, setTitle] = useState('');
     const [selectJob, setSelectJob] = useState('');
-    // const [change, setChange] = useState('');
     const [content1, setContent1] = useState('');
     const [content2, setContent2] = useState('');
     const [link, setLink] = useState('');
