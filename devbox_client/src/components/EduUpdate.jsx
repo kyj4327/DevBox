@@ -21,6 +21,7 @@ const EduUpdate = () => {
     const [uploadImgUrl, setUploadImgUrl] = useState('');
     const [uploadImg, setUploadImg] = useState('');
     const [logo, setLogo] = useState('');
+    const [state, setState] = useState('');
     const [isImageUploaded, setIsImageUploaded] = useState(false); // 이미지 업로드 상태를 관리하는 변수
 
 
@@ -55,6 +56,7 @@ const EduUpdate = () => {
         formData.append("link", link);
         formData.append("img", img);
         formData.append("logo", logo);
+        formData.append("state", state);
 
         const url = 'http://localhost:8080/update';
         const res = await fetch(url, {
@@ -92,6 +94,7 @@ const EduUpdate = () => {
         setPeople(data.people);
         setLink(data.link);
         setLogo(data.logo);
+        setState(data.state);
     }
 
 
@@ -190,6 +193,16 @@ const EduUpdate = () => {
                                     name="people"
                                     value={people}
                                     onChange={(e) => setPeople(e.target.value)}
+                                    type="text"
+                                />
+                            </div>
+                            <li>모집상태: </li>
+
+                            <div className="state">
+                                <input
+                                    name="state"
+                                    value={state}
+                                    onChange={(e) => setState(e.target.value)}
                                     type="text"
                                 />
                             </div>

@@ -30,5 +30,7 @@ public class EduEntity {
 
     String link;
 
+    String state;
+
 
 }

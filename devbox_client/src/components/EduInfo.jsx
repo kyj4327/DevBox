@@ -2,18 +2,13 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const EduInfo = (props) => {
-    const navigate = useNavigate();
-    // const [eduList, setEduList] = useState([]);
-
-    // async function get() {
-    //     const res = await fetch(`http://localhost:8080/edu/list`);
-    //     const data = await res.json();
-    //     setEduList(data);
-    // }
-
-    // useEffect(() => {
-    //     get();
-    // }, []);
+    console.log(props.list);
+    
+    const clickState = (e) => {
+        e.preventDefault();
+        props.clickState(e.target.textContent);
+        
+    };
 
     return (
         <div>
@@ -21,9 +16,11 @@ const EduInfo = (props) => {
             <section className="container py-5">
                 <div className="row justify-content-center my-5">
                     <div className="filter-btns shadow-md rounded-pill text-center col-auto">
-                        <a className="filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4 active" data-filter=".project" href="#">전체</a>
-                        <a className="filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4" data-filter=".business" href="#">모집중</a>
-                        <a className="filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4" data-filter=".marketing" href="#">진행중</a>
+                    
+                        <a className={`filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4 ${props.state === '모집중' ? 'active' : ''}`}
+                        data-filter=".project" href="" onClick={clickState}>모집중</a>
+                        <a className={`filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4 ${props.state === '모집완료' ? 'active' : ''}`}
+                        data-filter=".business" href=""onClick={clickState}>모집완료</a>
                     </div>
                 </div>
                 <div className="row projects gx-lg-5">

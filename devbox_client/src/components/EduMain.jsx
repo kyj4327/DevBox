@@ -14,9 +14,10 @@ import { useEffect, useState } from 'react';
 const EduMain = () => {
     const [pageData, setPageData] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
+    const [state, setState] = useState('모집중');
 
     async function get(page = 1) {
-        const res = await fetch(`http://localhost:8080/edu/list?page=${page}`);
+        const res = await fetch(`http://localhost:8080/edu/list/${state}?page=${page}`);
         const data = await res.json();
         setPageData(data);
         setCurrentPage(page);  // 페이지 데이터 불러온 후, 현재 페이지 업데이트
@@ -28,12 +29,15 @@ const EduMain = () => {
 
     useEffect(() => {
         get(currentPage);
-    }, [currentPage]);
+    }, [currentPage, state]);
 
+    const clickState = (s) => {
+        setState(s);
+    };
     return (
         <div className="EduMain">
             <Header />
-            <EduInfo list={pageData.list} />
+            <EduInfo list={pageData.list} state={state} clickState={clickState} />
             <Pagination 
                 handlePageChange={handlePageChange} 
                 pageData={

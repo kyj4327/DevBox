@@ -47,6 +47,7 @@ const DetailBasic = () => {
                             <li>모집기간: {eduData.recruit}</li>
                             <li>교육기간: {eduData.eduterm}</li>
                             <li>모집인원: {eduData.people}</li>
+                            <li>모집상태: {eduData.state}</li>
                             <li>신청 ▶ <a href={eduData.link} target="_blank">{eduData.link}</a></li>
                         </p>
                     </div>

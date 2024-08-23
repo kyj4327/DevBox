@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,24 +46,21 @@ public class EduController {
     @Autowired
     EduRepository eduRepository;
 
-    @GetMapping("/edu/list")
+
+
+    @GetMapping("/edu/list/{state}")
     public Map<String, Object> eduList(
+            @PathVariable("state") String state,
             @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "2") int size,
+            @RequestParam(value = "size", defaultValue = "9") int size,
             @RequestParam(value = "search", required = false) String search) {
 
-        // 정렬 방식 (id 기준 내림차순)
+        System.out.println(state);
+
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         Pageable pageable = PageRequest.of(page - 1, size, sort); // 페이지 요청 생성
 
-        // 검색어가 있는 경우와 없는 경우에 따라 데이터 조회
-        Page<EduEntity> p;
-        if (search == null || search.isEmpty()) {
-            p = eduRepository.findAll(pageable);
-        } else {
-            p = eduRepository.findByTitleContaining(search, pageable);
-        }
-
+        Page<EduEntity> p = eduRepository.findByState(state, pageable);
         List<EduEntity> list = p.getContent();
 
         // 페이지네이션 관련 정보 계산
@@ -187,6 +185,7 @@ public class EduController {
         map.put("people", edu.getPeople());
         map.put("link", edu.getLink());
         map.put("logo", edu.getLogo());
+        map.put("state", edu.getState());
 
         return map;
 
@@ -210,6 +209,7 @@ public class EduController {
         map.put("people", edu.getPeople());
         map.put("link", edu.getLink());
         map.put("logo", edu.getLogo());
+        map.put("state", edu.getState());
 
         return map;
 
