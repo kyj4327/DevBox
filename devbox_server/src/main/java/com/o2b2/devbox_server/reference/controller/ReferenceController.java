@@ -3,6 +3,7 @@ package com.o2b2.devbox_server.reference.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -41,6 +42,30 @@ public class ReferenceController {
     public String referenceDelete(@RequestParam Long referenceId) {
         referenceRepository.deleteById(referenceId);
         return "삭제 완료";
+    }
+
+    @GetMapping("/reference/update")
+    public Map<String, Object> referenceUpdate(@RequestParam Long referenceId) {
+        Optional<Reference> opt = referenceRepository.findById(referenceId);
+        Reference reference = opt.get();
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", reference.getId());
+        map.put("title", reference.getTitle());
+        map.put("selectJob", reference.getSelectJob());
+        map.put("content1", reference.getContent1());
+        map.put("content2", reference.getContent2());
+        map.put("link", reference.getLink());
+        return map;
+    }
+
+    @PostMapping("/reference/update")
+    public Map<String, Object> referenceUpdate(@RequestBody Reference reference) {
+        Reference result = referenceRepository.save(reference);
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 200);
+        map.put("msg", "입력 완료");
+        map.put("result", result);
+        return map;
     }
 
 }
