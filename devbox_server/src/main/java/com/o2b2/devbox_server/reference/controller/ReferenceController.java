@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,10 +33,15 @@ public class ReferenceController {
         return map;
     }
 
-    @GetMapping("/reference/list")
-    public List<Reference> referenceList() {
-        List<Reference> list = referenceRepository.findAll();
-        return list;
+    @GetMapping("/reference/list/{selectJob}")
+    public List<Reference> referenceList(@PathVariable("selectJob") String selectJob) {
+        if (selectJob.equals("All")) {
+            List<Reference> list = referenceRepository.findAll();
+            return list;
+        } else {
+            List<Reference> list = referenceRepository.findBySelectJob(selectJob);
+            return list;
+        }
     }
 
     @GetMapping("/reference/delete")
