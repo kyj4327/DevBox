@@ -1,4 +1,5 @@
 import Header from '../components/Header';
+import Category from '../components/Category';
 import Pagination from '../components/Pagination';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
@@ -37,34 +38,13 @@ const ReferenceList = () => {
                     <p class="text-center pb-5 light-300">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut facilisis.</p>
                     <div className="row justify-content-center my-5">
                         <div className="filter-btns shadow-md rounded-pill text-center col-auto">
-                            <a className={`filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4 ${selectJob === 'All' ? 'active' : ''}`}
-                                data-filter=".project" href=""
-                                onClick={clickSelectJob}
-                            >All</a>
-                            <a className={`filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4 ${selectJob === 'Web' ? 'active' : ''}`}
-                                data-filter=".project" href=""
-                                onClick={clickSelectJob}
-                            >Web</a>
-                            <a className={`filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4 ${selectJob === 'DevOps' ? 'active' : ''}`}
-                                data-filter=".project" href=""
-                                onClick={clickSelectJob}
-                            >DevOps</a>
-                            <a className={`filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4 ${selectJob === 'Cloud' ? 'active' : ''}`}
-                                data-filter=".project" href=""
-                                onClick={clickSelectJob}
-                            >Cloud</a>
-                            <a className={`filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4 ${selectJob === 'Data' ? 'active' : ''}`}
-                                data-filter=".project" href=""
-                                onClick={clickSelectJob}
-                            >Data</a>
-                            <a className={`filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4 ${selectJob === 'Mobile' ? 'active' : ''}`}
-                                data-filter=".project" href=""
-                                onClick={clickSelectJob}
-                            >Mobile</a>
-                            <a className={`filter-btn btn rounded-pill btn-outline-primary border-0 m-md-2 px-md-4 ${selectJob === 'Others' ? 'active' : ''}`}
-                                data-filter=".project" href=""
-                                onClick={clickSelectJob}
-                            >Others</a>
+                            <Category text={'All'} isActive={selectJob} onClick={clickSelectJob} />
+                            <Category text={'Web'} isActive={selectJob} onClick={clickSelectJob} />
+                            <Category text={'DevOps'} isActive={selectJob} onClick={clickSelectJob} />
+                            <Category text={'Cloud'} isActive={selectJob} onClick={clickSelectJob} />
+                            <Category text={'Data'} isActive={selectJob} onClick={clickSelectJob} />
+                            <Category text={'Mobile'} isActive={selectJob} onClick={clickSelectJob} />
+                            <Category text={'Others'} isActive={selectJob} onClick={clickSelectJob} />
                         </div>
                     </div>
                     {
