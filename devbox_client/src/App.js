@@ -7,6 +7,8 @@ import DetailManager from './components/DetailManager';
 import EduUpdate from './components/EduUpdate';
 import Main from './components/Main';
 import Project from './components/Project';
+import ProjectWrite from './components/ProjectWrite';
+import ProjectDetail from './components/ProjectDetail';
 
 function App() {
   return (
@@ -19,7 +21,10 @@ function App() {
         <Route path='detail' element={<EduDetail />} />
         <Route path='dm' element={<DetailManager />} />
         <Route path='up' element={<EduUpdate />} />
+
         <Route path='pr' element={<Project />} />
+        <Route path='pw' element={<ProjectWrite />} />
+        <Route path='pd' element={<ProjectDetail />} />
        </Route>
 
       </Routes>
