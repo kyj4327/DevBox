@@ -10,6 +10,7 @@ import Project from './components/Project';
 import ProjectWrite from './components/ProjectWrite';
 import ProjectDetail from './components/ProjectDetail';
 import ProDetail from './components/ProDetail';
+import ProUpdate from './components/ProUpdate';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path='pr' element={<Project />} />
         <Route path='pw' element={<ProjectWrite />} />
         <Route path='pd' element={<ProDetail />} />
+        <Route path='pu' element={<ProUpdate />} />
        </Route>
 
       </Routes>
