@@ -13,20 +13,33 @@ const ReferenceList = () => {
     };
 
     const [selectJob, setSelectJob] = useState('All');
+    const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
+    const [pageData, setPageData] = useState([]);
     useEffect(() => {
-        async function get() {
-            const url = `http://127.0.0.1:8080/reference/list/${selectJob}`;
+        async function get(page = 1) {
+            const url = `http://127.0.0.1:8080/reference/list/${selectJob}?page=${page}`;
             const res = await fetch(url);
             const data = await res.json();
-            setData(data);
+
+            // 페이지 데이터와 실제 데이터 분리
+            const listData = data.slice(0, -1);  // 마지막 페이지 정보 객체를 제외한 부분
+            const pageInfo = data[data.length - 1];  // 마지막 객체가 페이지 정보라고 가정
+            setData(listData);  // 실제 데이터 설정
+            setPageData(pageInfo);  // 페이지 정보 설정
+            setCurrentPage(page);
+
         }
-        get();
-    }, [selectJob]);
+        get(currentPage);
+    }, [selectJob, currentPage]);
 
     const clickSelectJob = (e) => {
         e.preventDefault();
         setSelectJob(e.target.textContent);
+    };
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
     };
 
     return (
@@ -91,7 +104,7 @@ const ReferenceList = () => {
                     </div>
                 </div>
             </section>
-            <Pagination />
+            <Pagination handlePageChange={handlePageChange} pageData={pageData} />
             <Footer />
         </div>
     );
