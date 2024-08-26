@@ -9,10 +9,14 @@ import './assets/css/templatemo.css';
 import './assets/css/custom.css';
 
 
+
+
 import Header from './components/Header';
 import JobInfoList from './components/JobInfoList';
 import Footer from './components/Footer';
 import BDIAIntroduction from './components/BDIAIntroduction';
+import FreeBoard from './components/FreeBoard';
+import BDIASchedule from './components/BDIASchedule';
 
 function App() {
   return (
@@ -21,7 +25,9 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<JobInfoList />} />
-          <Route path="/bdia" element={<BDIAIntroduction />} />
+          <Route path="BDIA/introduce" element={<BDIAIntroduction />} />
+          <Route path="BDIA/schedule" element={<BDIASchedule />} />
+          <Route path="/community/forums" element={<FreeBoard />} />
 
         </Routes>
         <Footer />

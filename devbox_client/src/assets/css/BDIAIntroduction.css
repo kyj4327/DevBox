@@ -7,7 +7,7 @@
 }
 
 @font-face {
-  font-family: 'PTBandocheB';
+  font-family: PTBandocheB;
   src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
@@ -18,6 +18,12 @@
   src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
+}
+
+.schedule {
+  margin: 50px;
+  font-family: 'PTBandocheB';
+
 }
 
 /* 전체 컨테이너 */
@@ -94,3 +100,6 @@
   height: auto; /* 비율을 유지하면서 높이 조절 */
   margin: 20px auto; /* 중앙 정렬 및 상하 여백 추가 */
 }
+
+
+

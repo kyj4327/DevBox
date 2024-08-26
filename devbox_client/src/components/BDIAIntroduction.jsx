@@ -55,15 +55,6 @@ function BDIAIntroduction() {
         <ImageList />
       </div>
 
-      <div className="section-container">
-        <h2 className="section-title">연간 교육 일정</h2>
-        <hr className="divider" />
-        <img
-          src={require("../assets/img/2024_edu_schedule_page-0001.jpg")}
-          alt="연간 교육 일정"
-          className="additional-image"
-        />
-      </div>
     </div>
   );
 }
