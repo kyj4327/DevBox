@@ -1,5 +1,6 @@
 import Header from '../components/Header';
 import Category from '../components/Category';
+import Pagination from '../components/Pagination';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
@@ -12,20 +13,32 @@ const HiringList = () => {
     };
 
     const [category, setCategory] = useState('All');
+    const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
+    const [pageData, setPageData] = useState([]);
     useEffect(() => {
-        async function get() {
-            const url = `http://127.0.0.1:8080/hiring/list/${category}`;
+        async function get(page = 1) {
+            const url = `http://127.0.0.1:8080/hiring/list/${category}?page=${page}`;
             const res = await fetch(url);
             const data = await res.json();
-            setData(data);
+            const listData = data.slice(0, -1);
+            const pageInfo = data[data.length - 1];
+            setData(listData);
+            setPageData(pageInfo);
+            setCurrentPage(page);
+            window.scrollTo(0, 0);
         }
-        get();
-    }, [category]);
+        get(currentPage);
+    }, [category, currentPage]);
 
     const clickCategory = (e) => {
         e.preventDefault();
         setCategory(e.target.textContent);
+        setCurrentPage(1);
+    };
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
     };
 
     return (
@@ -93,6 +106,7 @@ const HiringList = () => {
                     </div>
                 </div>
             </section>
+            <Pagination handlePageChange={handlePageChange} pageData={pageData} />
             <Footer />
         </div>
     );
