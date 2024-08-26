@@ -11,16 +11,22 @@ const HiringList = () => {
         navigate('/hiring/write');
     };
 
+    const [category, setCategory] = useState('All');
     const [data, setData] = useState([]);
     useEffect(() => {
         async function get() {
-            const url = 'http://127.0.0.1:8080/hiring/list';
+            const url = `http://127.0.0.1:8080/hiring/list/${category}`;
             const res = await fetch(url);
             const data = await res.json();
             setData(data);
         }
         get();
-    }, []);
+    }, [category]);
+
+    const clickCategory = (e) => {
+        e.preventDefault();
+        setCategory(e.target.textContent);
+    };
 
     return (
         <div>
@@ -31,9 +37,9 @@ const HiringList = () => {
                     <p class="text-center pb-5 light-300">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut facilisis.</p>
                     <div className="row justify-content-center my-5">
                         <div className="filter-btns shadow-md rounded-pill text-center col-auto">
-                            {/* <Category text={'All'} isActive={selectJob} onClick={clickSelectJob} />
-                            <Category text={'부산'} isActive={selectJob} onClick={clickSelectJob} />
-                            <Category text={'부산외'} isActive={selectJob} onClick={clickSelectJob} /> */}
+                            <Category text={'All'} isActive={category} onClick={clickCategory} />
+                            <Category text={'Busan'} isActive={category} onClick={clickCategory} />
+                            <Category text={'Others'} isActive={category} onClick={clickCategory} />
                         </div>
                     </div>
                     <div className="row projects gx-lg-5">
