@@ -3,12 +3,24 @@ import Category from '../components/Category';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 const HiringList = () => {
     const navigate = useNavigate();
     const toWrite = () => {
         navigate('/hiring/write');
     };
+
+    const [data, setData] = useState([]);
+    useEffect(() => {
+        async function get() {
+            const url = 'http://127.0.0.1:8080/hiring/list';
+            const res = await fetch(url);
+            const data = await res.json();
+            setData(data);
+        }
+        get();
+    }, []);
 
     return (
         <div>
@@ -25,103 +37,48 @@ const HiringList = () => {
                         </div>
                     </div>
                     <div className="row projects gx-lg-5">
-                        <a href="https://www.wanted.co.kr/wd/225573" className="col-sm-6 col-lg-4 text-decoration-none project marketing social business" target='_blank'>
-                            <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
-                                <img className="card-img-top" src="https://image.wanted.co.kr/optimize?src=https%3A%2F%2Fstatic.wanted.co.kr%2Fimages%2Fcompany%2F47097%2Fvkmzgfpx5znwy3df__1080_790.jpg&w=700&q=100" alt="https://www.wanted.co.kr/" />
-                                <div className="card-body">
-                                    <h5 className="card-title light-300 text-dark">실시간 데이터 통신 및 데이터 처리 개발자</h5>
-                                    <h5 className="card-title light-300 text-dark">아이오티플렉스</h5>
-                                    <p className="card-text light-300 text-dark">
-                                        부산 / 신입-경력 10년
-                                    </p>
-                                    <div style={{display:'flex', justifyContent:'space-between'}}>
-                                        <span className="text-decoration-none text-primary light-300">
-                                            Read more <i className='bx bxs-hand-right ms-1'></i>
-                                        </span>
-                                        <span className="text-decoration-none text-primary light-300">
-                                            <a href='#'>수정</a>
-                                            <a href='#'>삭제</a>
-                                        </span>
-                                    </div>
+                        {
+                            data.map((v) => {
+                                return (
+                                    <a href={v.wantedUrl} className="col-sm-6 col-lg-4 text-decoration-none project marketing social business" target='_blank'>
+                                        <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
+                                            <img className="card-img-top" src={v.imgUrl} alt="https://www.wanted.co.kr/" />
+                                            <div className="card-body">
+                                                <h5 className="card-title light-300 text-dark">{v.job}</h5>
+                                                <h5 className="card-title light-300 text-dark">{v.company}</h5>
+                                                <p className="card-text light-300 text-dark">
+                                                    {v.area} / {v.career}
+                                                </p>
+                                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                    <span className="text-decoration-none text-primary light-300">
+                                                        Read more <i className='bx bxs-hand-right ms-1'></i>
+                                                    </span>
+                                                    <span className="text-decoration-none text-primary light-300">
+                                                        <a href=''
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                navigate(`/hiring/update?hiringId=${v.id}`);
+                                                            }}>수정</a>
+                                                        <a href=''
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                async function send() {
+                                                                    const url = `http://127.0.0.1:8080/hiring/delete?hiringId=${v.id}`;
+                                                                    await fetch(url);
+                                                                    alert("삭제가 완료되었습니다.");
+                                                                    window.location.reload();
+                                                                }
+                                                                send();
+                                                            }}>삭제</a>
+                                                    </span>
+                                                </div>
 
-                                </div>
-                            </div>
-                        </a>
-                        <a href="https://www.wanted.co.kr/wd/237648" className="col-sm-6 col-lg-4 text-decoration-none project marketing social business" target='_blank'>
-                            <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
-                                <img className="card-img-top" src="https://image.wanted.co.kr/optimize?src=https%3A%2F%2Fstatic.wanted.co.kr%2Fimages%2Fcompany%2F1776%2Fgjxbzmgfmxcpeo91__1080_790.png&w=700&q=100" alt="https://www.wanted.co.kr/" />
-                                <div className="card-body">
-                                    <h5 className="card-title light-300 text-dark">신입 백엔드 엔지니어</h5>
-                                    <h5 className="card-title light-300 text-dark">모두싸인</h5>
-                                    <p className="card-text light-300 text-dark">
-                                        부산 해운대구 / 신입
-                                    </p>
-                                    <span className="text-decoration-none text-primary light-300">
-                                        Read more <i className='bx bxs-hand-right ms-1'></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="https://www.wanted.co.kr/wd/207573" className="col-sm-6 col-lg-4 text-decoration-none project marketing social business" target='_blank'>
-                            <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
-                                <img className="card-img-top" src="https://image.wanted.co.kr/optimize?src=https%3A%2F%2Fstatic.wanted.co.kr%2Fimages%2Fcompany%2F47417%2Fkzalrowgz0wizwwi__1080_790.png&w=700&q=100" alt="https://www.wanted.co.kr/" />
-                                <div className="card-body">
-                                    <h5 className="card-title light-300 text-dark">Frontend Developer</h5>
-                                    <h5 className="card-title light-300 text-dark">토스플레이스</h5>
-                                    <p className="card-text light-300 text-dark">
-                                        서울 강남구 / 경력 1-15년
-                                    </p>
-                                    <span className="text-decoration-none text-primary light-300">
-                                        Read more <i className='bx bxs-hand-right ms-1'></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="https://www.wanted.co.kr/wd/233465" className="col-sm-6 col-lg-4 text-decoration-none project marketing social business" target='_blank'>
-                            <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
-                                <img className="card-img-top" src="https://image.wanted.co.kr/optimize?src=https%3A%2F%2Fstatic.wanted.co.kr%2Fimages%2Fcompany%2F153%2Fjokadyokaftvfdeb__1080_790.jpg&w=700&q=100" alt="https://www.wanted.co.kr/" />
-                                <div className="card-body">
-                                    <h5 className="card-title light-300 text-dark">[Tech Solutions]웹 어플리케이션 개발자</h5>
-                                    <h5 className="card-title light-300 text-dark">샌드박스네트워크(Sandbox)</h5>
-                                    <p className="card-text light-300 text-dark">
-                                        서울 용산구 / 경력 1년 이상
-                                    </p>
-                                    <span className="text-decoration-none text-primary light-300">
-                                        Read more <i className='bx bxs-hand-right ms-1'></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="https://www.wanted.co.kr/wd/225832" className="col-sm-6 col-lg-4 text-decoration-none project marketing social business" target='_blank'>
-                            <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
-                                <img className="card-img-top" src="https://image.wanted.co.kr/optimize?src=https%3A%2F%2Fstatic.wanted.co.kr%2Fimages%2Fcompany%2F15095%2Fdg7hu3ytbsorm3zl__1080_790.jpg&w=700&q=100" alt="https://www.wanted.co.kr/" />
-                                <div className="card-body">
-                                    <h5 className="card-title light-300 text-dark">개발팀 웹 파트 부문</h5>
-                                    <h5 className="card-title light-300 text-dark">비바이노베이션</h5>
-                                    <p className="card-text light-300 text-dark">
-                                        서울 강남구 / 경력 1-5년
-                                    </p>
-                                    <span className="text-decoration-none text-primary light-300">
-                                        Read more <i className='bx bxs-hand-right ms-1'></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="https://www.wanted.co.kr/wd/229817" className="col-sm-6 col-lg-4 text-decoration-none project marketing social business" target='_blank'>
-                            <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
-                                <img className="card-img-top" src="https://image.wanted.co.kr/optimize?src=https%3A%2F%2Fstatic.wanted.co.kr%2Fimages%2Fcompany%2F1014%2Fqfzxagxlqjbc2qsb__1080_790.jpg&w=700&q=100" alt="https://www.wanted.co.kr/" />
-                                <div className="card-body">
-                                    <h5 className="card-title light-300 text-dark">프론트엔드 엔지니어</h5>
-                                    <h5 className="card-title light-300 text-dark">엘리스</h5>
-                                    <p className="card-text light-300 text-dark">
-                                        서울 강남구 / 신입-경력 4년
-                                    </p>
-                                    <span className="text-decoration-none text-primary light-300">
-                                        Read more <i className='bx bxs-hand-right ms-1'></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </a>
+                                            </div>
+                                        </div>
+                                    </a>
+                                )
+                            })
+                        }
                     </div>
                 </div>
                 <div class="form-row pt-2">
