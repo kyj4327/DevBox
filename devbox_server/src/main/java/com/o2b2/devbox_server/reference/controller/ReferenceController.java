@@ -1,11 +1,17 @@
 package com.o2b2.devbox_server.reference.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,14 +40,43 @@ public class ReferenceController {
     }
 
     @GetMapping("/reference/list/{selectJob}")
-    public List<Reference> referenceList(@PathVariable("selectJob") String selectJob) {
+    public List<Map<String, Object>> referenceList(
+            @PathVariable("selectJob") String selectJob,
+            @RequestParam(value = "page", defaultValue = "1") int page) {
+        Sort sort = Sort.by(Order.desc("id"));
+        Pageable pageable = PageRequest.of(page - 1, 10, sort);
+        Page<Reference> p = null;
         if (selectJob.equals("All")) {
-            List<Reference> list = referenceRepository.findAll();
-            return list;
+            p = referenceRepository.findAll(pageable);
         } else {
-            List<Reference> list = referenceRepository.findBySelectJob(selectJob);
-            return list;
+            p = referenceRepository.findBySelectJob(selectJob, pageable);
         }
+        List<Reference> list = p.getContent();
+        List<Map<String, Object>> response = new ArrayList<>();
+        for (Reference r : list) {
+            Map<String, Object> rMap = new HashMap<>();
+            rMap.put("id", r.getId());
+            rMap.put("title", r.getTitle());
+            rMap.put("selectJob", r.getSelectJob());
+            rMap.put("content1", r.getContent1());
+            rMap.put("content2", r.getContent2());
+            rMap.put("link", r.getLink());
+            response.add(rMap);
+        }
+        int totalPage = p.getTotalPages();
+        int startPage = (page - 1) / 10 * 10 + 1;
+        int endPage = startPage + 9;
+        if (endPage > totalPage) {
+            endPage = totalPage;
+        }
+        Map<String, Object> pMap = new HashMap<>();
+        pMap.put("totalPage", totalPage);
+        pMap.put("startPage", startPage);
+        pMap.put("endPage", endPage);
+        pMap.put("currentPage", page);
+        response.add(pMap);
+
+        return response;
     }
 
     @GetMapping("/reference/delete")
