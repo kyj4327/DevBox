@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class Reference {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     String title;
