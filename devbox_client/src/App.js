@@ -18,6 +18,9 @@ import JobInfoMobile from './pages/JobInfoMobile';
 import ReferenceList from './pages/ReferenceList';
 import ReferenceWrite from './pages/ReferenceWrite';
 import ReferenceUpdate from './pages/ReferenceUpdate';
+import HiringList from './pages/HiringList';
+import HiringWrite from './pages/HiringWrite';
+import HiringUpdate from './pages/HiringUpdate';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -39,6 +42,11 @@ function App() {
           <Route path='/reference/list' element={<ReferenceList />} />
           <Route path='/reference/write' element={<ReferenceWrite />} />
           <Route path='/reference/update' element={<ReferenceUpdate />} />
+
+          {/* 채용 공고 게시판 */}
+          <Route path='/hiring/list' element={<HiringList />} />
+          <Route path='/hiring/write' element={<HiringWrite />} />
+          <Route path='/hiring/update' element={<HiringUpdate />} />
         </Routes>
       </BrowserRouter>
     </div>
