@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.o2b2.devbox_server.project.model.MultiImgEntity;
 import com.o2b2.devbox_server.project.model.ProEntity;
+import com.o2b2.devbox_server.project.repository.MultiImgRepository;
 import com.o2b2.devbox_server.project.repository.ProRepository;
 
 import jakarta.transaction.Transactional;
@@ -46,21 +49,21 @@ public class ProController {
     @Autowired
     ProRepository proRepository;
 
+    @Autowired
+    MultiImgRepository multiImgRepository;
 
 
-    @GetMapping("/pro/list/{state}")
+
+    @GetMapping("/pro/list")
     public Map<String, Object> proList(
-            @PathVariable("state") String state,
             @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "9") int size,
-            @RequestParam(value = "search", required = false) String search) {
+            @RequestParam(value = "size", defaultValue = "6") int size) {
 
-        System.out.println(state);
 
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         Pageable pageable = PageRequest.of(page - 1, size, sort); // 페이지 요청 생성
 
-        Page<ProEntity> p = proRepository.findByState(state, pageable);
+        Page<ProEntity> p = proRepository.findAll(pageable);
         List<ProEntity> list = p.getContent();
 
         // 페이지네이션 관련 정보 계산
@@ -74,7 +77,6 @@ public class ProController {
             Map<String, Object> map = new HashMap<>();
             map.put("id", pro.getId());
             map.put("title", pro.getTitle());
-            map.put("img", pro.getImg());
             map.put("link", pro.getLink());
             map.put("coment", pro.getComent());
             map.put("name", pro.getName());
@@ -88,30 +90,49 @@ public class ProController {
         return response; // JSON 형태로 반환
     }
 
+    
 
     @PostMapping("/pro")
+    @ResponseBody
     public Map<String, Object> pro(
             @ModelAttribute ProEntity pro,
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile[] files) {
         System.out.println(pro);
-        System.out.println(file.getOriginalFilename());
-
+    
+        // 결과를 담을 맵 생성
         Map<String, Object> map = new HashMap<>();
-
-        pro.setImg(file.getOriginalFilename());
         ProEntity result = proRepository.save(pro);
-
-        try {
-            file.transferTo(new File("c:/images/" + file.getOriginalFilename()));
-        } catch (IllegalStateException | IOException e) {
-            e.printStackTrace();
+    
+        // 각 파일을 처리하는 반복문
+        for (MultipartFile mFile : files) {
+            // ProEntity 객체에 이미지 파일 이름 설정
+            MultiImgEntity img = new MultiImgEntity();
+            img.setImg(mFile.getOriginalFilename());
+            img.setProEntity(result);
+    
+            // ProEntity 저장
+            MultiImgEntity mResult = multiImgRepository.save(img);
+    
+            try {
+                // 파일을 지정된 경로에 저장
+                mFile.transferTo(new File("c:/images/" + mFile.getOriginalFilename()));
+            } catch (IllegalStateException | IOException e) {
+                e.printStackTrace();
+    
+                // 에러 발생 시 에러 메시지를 맵에 추가
+                map.put("code", 500);
+                map.put("msg", "업로드 중 오류 발생: " + e.getMessage());
+                return map; // 에러 발생 시 바로 반환
+            }
         }
-
+    
+        // 성공 시 응답 메시지 설정
         map.put("code", 200);
-        map.put("msg", "수정완료");
-
-        return map;
+        map.put("msg", "모든 파일 업로드 완료");
+    
+        return map; // 결과 반환
     }
+    
 
     @PostMapping("/pro/update")
     public Map<String, Object> update(
@@ -129,7 +150,6 @@ public class ProController {
             // 파일이 새로 업로드되지 않은 경우 기존의 파일 이름을 유지합니다.
             if (file != null && !file.isEmpty()) {
                 // 파일이 새로 업로드된 경우 새로운 파일 이름을 설정합니다.
-                pro.setImg(file.getOriginalFilename());
 
                 try {
                     // 새 파일을 지정된 경로에 저장합니다.
@@ -139,7 +159,6 @@ public class ProController {
                 }
             } else {
                 // 파일이 없으면 기존의 파일 이름을 유지합니다.
-                pro.setImg(existingpro.getImg());
             }
 
             // proEntity 객체를 데이터베이스에 저장합니다.
@@ -175,10 +194,10 @@ public class ProController {
         ProEntity pro = proOpt.get();
         map.put("id", pro.getId());
         map.put("title", pro.getTitle());
-        map.put("img", pro.getImg());
         map.put("link", pro.getLink());
         map.put("coment", pro.getComent());
         map.put("name", pro.getName());
+        map.put("imgs", pro.getMultiImgEntitys());
 
         return map;
 
@@ -195,7 +214,6 @@ public class ProController {
         ProEntity pro = proOpt.get();
         map.put("id", pro.getId());
         map.put("title", pro.getTitle());
-        map.put("img", pro.getImg());
         map.put("link", pro.getLink());
         map.put("coment", pro.getComent());
         map.put("name", pro.getName());
@@ -207,8 +225,8 @@ public class ProController {
     @GetMapping("/pro/download")
     public ResponseEntity<Resource> downloadFile(@RequestParam Long id) {
         try {
-            Optional<ProEntity> opt = proRepository.findById(id);
-            String filename = opt.get().getImg();
+            Optional<MultiImgEntity> img = multiImgRepository.findById(id);
+            String filename = img.get().getImg();
             // 파일 경로 생성
             Path filePath = fileStorageLocation.resolve(filename).normalize();
             Resource resource = new UrlResource(filePath.toUri());

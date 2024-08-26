@@ -12,11 +12,30 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
 
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <!-- Load jQuery require for Page Script -->
+    <script src="assets/js/jquery.min.js"></script>
+    <!-- Page Script -->
+    <script>
+        $(window).load(function() {
+            // Slide
+            $('.templatemo-slide-link').click(function() {
+                var this_href = $(this).attr('href');
+                $('#templatemo-slide-link-target img').attr('src', this_href);
+                return false;
+            });
+            // End Slide
+        });
+    </script>
+    <!-- Templatemo -->
+    <script src="assets/js/templatemo.js"></script>
+    <!-- Custom -->
+    <script src="assets/js/custom.js"></script>
     <title>React App</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+   
   </body>
 </html>

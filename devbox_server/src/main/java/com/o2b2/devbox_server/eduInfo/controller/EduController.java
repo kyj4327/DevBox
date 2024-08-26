@@ -111,7 +111,7 @@ public class EduController {
         }
 
         map.put("code", 200);
-        map.put("msg", "수정완료");
+        map.put("msg", "업로드완료");
 
         return map;
     }

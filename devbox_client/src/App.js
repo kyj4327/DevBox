@@ -9,6 +9,7 @@ import Main from './components/Main';
 import Project from './components/Project';
 import ProjectWrite from './components/ProjectWrite';
 import ProjectDetail from './components/ProjectDetail';
+import ProDetail from './components/ProDetail';
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
 
         <Route path='pr' element={<Project />} />
         <Route path='pw' element={<ProjectWrite />} />
-        <Route path='pd' element={<ProjectDetail />} />
+        <Route path='pd' element={<ProDetail />} />
        </Route>
 
       </Routes>

@@ -10,8 +10,7 @@ import com.o2b2.devbox_server.project.model.ProEntity;
 
 
 public interface ProRepository extends JpaRepository <ProEntity, Long>{
-    Page<ProEntity> findByTitleContaining(String search, Pageable pageable);
+    Page<ProEntity> findAll(Pageable pageable);
 
-    Page<ProEntity> findByState(String state, Pageable pageable);
 }
 
