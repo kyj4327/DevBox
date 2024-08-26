@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,10 +33,19 @@ public class HiringController {
         return map;
     }
 
-    @GetMapping("/hiring/list")
-    public List<Hiring> hiringList() {
-        List<Hiring> list = hiringRepository.findAll();
-        return list;
+    @GetMapping("/hiring/list/{category}")
+    public List<Hiring> hiringList(@PathVariable("category") String category) {
+        if (category.equals("All")) {
+            List<Hiring> list = hiringRepository.findAll();
+            return list;
+        } else if (category.equals("Busan")) {
+            List<Hiring> list = hiringRepository.findByAreaContaining("부산");
+            return list;
+        } else {
+            List<Hiring> list = hiringRepository.findByAreaNotContaining("부산");
+            return list;
+        }
+
     }
 
     @GetMapping("/hiring/delete")
