@@ -1,13 +1,16 @@
 package com.o2b2.devbox_server.hiring.repository;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.o2b2.devbox_server.hiring.model.Hiring;
 
 public interface HiringRepository extends JpaRepository<Hiring, Long> {
-    List<Hiring> findByAreaContaining(String area);
+    Page<Hiring> findAll(Pageable pageable);
 
-    List<Hiring> findByAreaNotContaining(String area);
+    Page<Hiring> findByAreaContaining(String area, Pageable pageable);
+
+    Page<Hiring> findByAreaNotContaining(String area, Pageable pageable);
 
 }
