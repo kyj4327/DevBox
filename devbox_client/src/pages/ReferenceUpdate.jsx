@@ -4,7 +4,7 @@ import Button from '../components/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-const ReferenceWrite = () => {
+const ReferenceUpdate = () => {
     const navigate = useNavigate();
 
     const [title, setTitle] = useState('');
@@ -119,4 +119,4 @@ const ReferenceWrite = () => {
     );
 };
 
-export default ReferenceWrite;
+export default ReferenceUpdate;
