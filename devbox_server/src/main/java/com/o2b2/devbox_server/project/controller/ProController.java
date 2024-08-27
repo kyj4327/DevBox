@@ -52,15 +52,12 @@ public class ProController {
     @Autowired
     MultiImgRepository multiImgRepository;
 
-
-
     @GetMapping("/pro/list")
     public Map<String, Object> proList(
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "6") int size) {
 
-
-        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
         Pageable pageable = PageRequest.of(page - 1, size, sort); // 페이지 요청 생성
 
         Page<ProEntity> p = proRepository.findAll(pageable);
@@ -90,89 +87,116 @@ public class ProController {
         return response; // JSON 형태로 반환
     }
 
-    
-
     @PostMapping("/pro")
     @ResponseBody
     public Map<String, Object> pro(
             @ModelAttribute ProEntity pro,
             @RequestParam("file") MultipartFile[] files) {
         System.out.println(pro);
-    
+
         // 결과를 담을 맵 생성
         Map<String, Object> map = new HashMap<>();
         ProEntity result = proRepository.save(pro);
-    
+
         // 각 파일을 처리하는 반복문
         for (MultipartFile mFile : files) {
             // ProEntity 객체에 이미지 파일 이름 설정
             MultiImgEntity img = new MultiImgEntity();
             img.setImg(mFile.getOriginalFilename());
             img.setProEntity(result);
-    
+
             // ProEntity 저장
             MultiImgEntity mResult = multiImgRepository.save(img);
-    
+
             try {
                 // 파일을 지정된 경로에 저장
                 mFile.transferTo(new File("c:/images/" + mFile.getOriginalFilename()));
             } catch (IllegalStateException | IOException e) {
                 e.printStackTrace();
-    
+
                 // 에러 발생 시 에러 메시지를 맵에 추가
                 map.put("code", 500);
                 map.put("msg", "업로드 중 오류 발생: " + e.getMessage());
                 return map; // 에러 발생 시 바로 반환
             }
         }
-    
+
         // 성공 시 응답 메시지 설정
         map.put("code", 200);
         map.put("msg", "모든 파일 업로드 완료");
-    
+
         return map; // 결과 반환
     }
-    
 
     @PostMapping("/pro/update")
     public Map<String, Object> update(
             @ModelAttribute ProEntity pro,
-            @RequestParam(value = "file", required = false) MultipartFile file) {
-
-        System.out.println(pro);
+            @RequestParam(value = "delImgId", required = false) Long[] imgIds,
+            @RequestParam(value = "file", required = false) MultipartFile[] files) {
 
         Map<String, Object> map = new HashMap<>();
 
-        // 데이터베이스에서 기존의 proEntity를 가져옵니다.
+        // 데이터베이스에서 기존의 ProEntity를 가져옵니다.
         ProEntity existingpro = proRepository.findById(pro.getId()).orElse(null);
 
         if (existingpro != null) {
-            // 파일이 새로 업로드되지 않은 경우 기존의 파일 이름을 유지합니다.
-            if (file != null && !file.isEmpty()) {
-                // 파일이 새로 업로드된 경우 새로운 파일 이름을 설정합니다.
+            // 삭제할 이미지 ID 배열이 제공된 경우
+            if (imgIds != null && imgIds.length > 0) {
+                for (Long imgId : imgIds) {
+                    // 데이터베이스에서 해당 이미지를 삭제합니다.
+                    MultiImgEntity imgEntity = multiImgRepository.findById(imgId).orElse(null);
+                    if (imgEntity != null) {
+                        // 파일 시스템에서 이미지 파일 삭제
+                        File file = new File("c:/images/" + imgEntity.getImg());
+                        if (file.exists()) {
+                            file.delete(); // 파일 삭제
+                        }
 
-                try {
-                    // 새 파일을 지정된 경로에 저장합니다.
-                    file.transferTo(new File("c:/images/" + file.getOriginalFilename()));
-                } catch (IllegalStateException | IOException e) {
-                    e.printStackTrace(); // 파일 저장 중 오류가 발생하면 스택 트레이스를 출력합니다.
+                        // 데이터베이스에서 이미지 엔티티 삭제
+                        multiImgRepository.deleteById(imgId);
+                    }
                 }
-            } else {
-                // 파일이 없으면 기존의 파일 이름을 유지합니다.
             }
 
-            // proEntity 객체를 데이터베이스에 저장합니다.
+            // 파일이 업로드된 경우에 대한 처리
+            if (files != null && files.length > 0) {
+                for (MultipartFile mFile : files) {
+                    // 새로운 MultiImgEntity 객체를 생성하여 파일 정보를 저장합니다.
+                    MultiImgEntity img = new MultiImgEntity();
+                    img.setImg(mFile.getOriginalFilename());
+                    img.setProEntity(existingpro);
+
+                    // MultiImgEntity를 데이터베이스에 저장합니다.
+                    MultiImgEntity mResult = multiImgRepository.save(img);
+
+                    try {
+                        // 파일을 지정된 경로에 저장합니다.
+                        mFile.transferTo(new File("c:/images/" + mFile.getOriginalFilename()));
+                    } catch (IllegalStateException | IOException e) {
+                        e.printStackTrace();
+                        // 파일 저장 중 오류 발생 시 에러 메시지를 맵에 추가합니다.
+                        map.put("code", 500);
+                        map.put("msg", "파일 업로드 중 오류 발생: " + e.getMessage());
+                        return map; // 에러 발생 시 바로 반환합니다.
+                    }
+                }
+            } else {
+                // 업로드된 파일이 없는 경우 기존의 이미지 목록을 유지합니다.
+                pro.setMultiImgEntitys(existingpro.getMultiImgEntitys());
+            }
+
+            // 수정된 ProEntity 객체를 데이터베이스에 저장합니다.
             proRepository.save(pro);
+
+            // 성공 응답을 맵에 추가합니다.
+            map.put("code", 200);
+            map.put("msg", "수정 완료");
+
         } else {
-            // 기존 proEntity가 없는 경우의 처리 (일반적으로 여기까지 도달하지 않아야 합니다).
+            // 기존 ProEntity가 없는 경우의 처리
             map.put("code", 404);
             map.put("msg", "존재하지 않는 데이터입니다.");
-            return map;
         }
-
-        // 응답 맵에 성공 코드와 메시지를 추가합니다.
-        map.put("code", 200);
-        map.put("msg", "수정완료");
 
         return map; // 수정 완료 응답을 반환합니다.
     }
@@ -188,7 +212,6 @@ public class ProController {
     public Map<String, Object> proDetail(@RequestParam Long id) {
         Map<String, Object> map = new HashMap<>();
 
-        // id로 데이터베이스에서 교육 정보를 조회합니다.
         Optional<ProEntity> proOpt = proRepository.findById(id);
 
         ProEntity pro = proOpt.get();
@@ -217,6 +240,7 @@ public class ProController {
         map.put("link", pro.getLink());
         map.put("coment", pro.getComent());
         map.put("name", pro.getName());
+        map.put("imgs", pro.getMultiImgEntitys());
 
         return map;
 

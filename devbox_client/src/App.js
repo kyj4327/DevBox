@@ -11,6 +11,7 @@ import ProjectWrite from './components/ProjectWrite';
 import ProjectDetail from './components/ProjectDetail';
 import ProDetail from './components/ProDetail';
 import ProUpdate from './components/ProUpdate';
+import DragDrop from './components/DragDrop';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path='pw' element={<ProjectWrite />} />
         <Route path='pd' element={<ProDetail />} />
         <Route path='pu' element={<ProUpdate />} />
+        <Route path='' element={<DragDrop />} />
        </Route>
 
       </Routes>

@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import DragDrop from "./DragDrop";
 
 const ProUpdate = () => {
     const navigate = useNavigate();
@@ -14,16 +15,24 @@ const ProUpdate = () => {
     const [img, setImg] = useState('');
     const [link, setLink] = useState('');
     const [coment, setComent] = useState('');
-    const [uploadImgUrl, setUploadImgUrl] = useState('');
     const [uploadImgs, setUploadImgs] = useState([]);// 이미지 업로드 상태를 관리하는 변수
+    const [savedImgs, setSavedImgs] = useState([]);
+    
+    const [delImgId, setDelImgId] = useState([]);
+
 
 
     const [ProData, setProData] = useState({});
 
+    const handleDeleteImage = (id) => {
+        setDelImgId([...delImgId, id]); 
+        setSavedImgs(savedImgs.filter((img) => img.id !== id));
+    };
 
     const onchangeImageUpload = (e) => {
 
         const { files } = e.target;
+        
         setUploadImgs(Array.from(files));
     }
 
@@ -38,9 +47,13 @@ const ProUpdate = () => {
         formData.append("title", title);
         formData.append("name", name);
         formData.append("link", link);
-        // formData.append("img", img);
         formData.append("coment", coment);
-
+        
+        delImgId.forEach((v) => {
+            formData.append("delImgId", v);
+        });
+        console.log(delImgId);
+        
         const url = 'http://localhost:8080/pro/update';
         const res = await fetch(url, {
             method: 'post',
@@ -66,10 +79,24 @@ const ProUpdate = () => {
         setComent(data.coment);
         setName(data.name);
         setLink(data.link);
-        // setImg(data.img);
+
+        const imageFiles = data.imgs.map((img) => ({
+            id: img.id, // img 객체에 id가 있어야 함
+            object: img.img // img 객체를 파일 객체로 사용
+        }));
+        setSavedImgs(imageFiles);
+    
     }
 
 
+    const addFiles = (files) => {
+        console.log(files);
+        
+        const fs = files.map(v => {
+            return v.object;
+        })
+        setUploadImgs(fs);
+    }
 
     useEffect(() => {
         get();
@@ -119,15 +146,17 @@ const ProUpdate = () => {
 
                     <div class="row justify-content-center pb-4">
                         <div class="col-lg-8">
-
                             <p>프젝 이미지</p>
-                            <div id="templatemo-slide-link-target" class="card mb-3">
+                            <DragDrop addFiles={addFiles} initialFiles={savedImgs}  
+                            onDeleteImage={handleDeleteImage}
+                            />
+                            {/* <div id="templatemo-slide-link-target" class="card mb-3">
                                 {uploadImgUrl && <img src={uploadImgUrl} alt="Uploaded" />}
                                 <input
                                     name="img"
                                     type="file" accept="image/*" onChange={onchangeImageUpload} multiple />
 
-                            </div>
+                            </div> */}
                         </div>
                     </div>
 
