@@ -41,7 +41,7 @@ public class ContestController {
     @GetMapping("/contest/list")
     public List<Map<String, Object>> contestList(
             @RequestParam(value = "page", defaultValue = "1") int page) {
-        Sort sort = Sort.by(Order.desc("id"));
+        Sort sort = Sort.by(Order.asc("regEnd"));
         Pageable pageable = PageRequest.of(page - 1, 6, sort);
         Page<Contest> p = contestRepository.findAll(pageable);
         List<Contest> list = p.getContent();
