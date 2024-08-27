@@ -24,10 +24,13 @@ const ContestList = () => {
             setData(listData);
             setPageData(pageInfo);
             setCurrentPage(page);
-            window.scrollTo(0, 0);
         }
         get(currentPage);
     }, [currentPage]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [data]);
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -37,18 +40,18 @@ const ContestList = () => {
         <div>
             <Header />
             <section className="container py-5">
-                <div class="container py-5">
-                    <h1 class="h2 semi-bold-600 text-center mt-2">공모전</h1>
-                    <p class="text-center pb-5 light-300">대회/공모전의 세부요강은 주최사의 기획에 의해 내용이 변경될 수 있으니, 주최사의 공고를 반드시 확인해 보시기 바랍니다.</p>
+                <div className="container py-5">
+                    <h1 className="h2 semi-bold-600 text-center mt-2">공모전</h1>
+                    <p className="text-center pb-5 light-300">대회/공모전의 세부요강은 주최사의 기획에 의해 내용이 변경될 수 있으니, 주최사의 공고를 반드시 확인해 보시기 바랍니다.</p>
                     <div className="row projects gx-lg-5">
                         {
                             data.map((v) => {
                                 return (
-                                    <a href={v.officialUrl} className="col-sm-6 col-lg-4 text-decoration-none project marketing social business" target='_blank'>
+                                    <a href={v.officialUrl} className="col-sm-6 col-lg-4 text-decoration-none" key={v.id} target='_blank'>
                                         <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
                                             <img className="card-img-top" src={v.imgUrl} alt="" />
                                             <div className="card-body">
-                                                <h5 className="card-title light-300 text-dark">{v.title}<label style={{ color: 'red' }}>(D-3)</label></h5>
+                                                <h5 className="card-title light-300 text-dark">{v.title}<label htmlFor="dday" style={{ color: 'red' }}>(D-3)</label></h5>
                                                 <li>주최</li>
                                                 <p className="card-text light-300 text-dark">{v.host}</p>
                                                 <li>대상</li>
@@ -89,8 +92,8 @@ const ContestList = () => {
                         }
                     </div>
                 </div>
-                <div class="form-row pt-2">
-                    <div class="col-md-12 col-10 text-end">
+                <div className="form-row pt-2">
+                    <div className="col-md-12 col-10 text-end">
                         <Button text={'작성하기'} onClick={toWrite} />
                     </div>
                 </div>
