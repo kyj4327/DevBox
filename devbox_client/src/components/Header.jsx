@@ -94,7 +94,7 @@ const Header = () => {
                   aria-labelledby="communityDropdown"
                 >
                   <li>
-                    <Link className="dropdown-item" to="/community/forums">
+                    <Link className="dropdown-item" to="/community/freeboard">
                       FreeBoard
                     </Link>
                   </li>

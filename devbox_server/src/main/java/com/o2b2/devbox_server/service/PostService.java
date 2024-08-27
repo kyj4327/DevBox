@@ -1,11 +1,12 @@
 package com.o2b2.devbox_server.service;
 
-import com.o2b2.devbox_server.entity.Post;
-import com.o2b2.devbox_server.repository.PostRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.o2b2.devbox_server.entity.Post;
+import com.o2b2.devbox_server.repository.PostRepository;
 
 @Service
 public class PostService {
