@@ -62,7 +62,7 @@ const HiringUpdate = () => {
             <section className="container py-5">
                 <div class="container py-5">
                     <h1 class="h2 semi-bold-600 text-center mt-2">채용 공고 Update</h1>
-                    <p class="text-center pb-5 light-300">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut facilisis.</p>
+                    <p class="text-center pb-5 light-300">더 다양한 채용 정보를 알고 싶다면 5층 취업 상담실을 방문해주세요.</p>
                     <div class="pricing-list rounded-top rounded-3 py-sm-0 py-5">
                         <div class="contact-form row" method="post" action="#" role="form">
                             <WriteShort type={'text'} titleTag={'회사명'} name={'company'} value={company} onChange={(e) => { setCompany(e.target.value) }} />
