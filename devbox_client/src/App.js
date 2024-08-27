@@ -21,6 +21,9 @@ import ReferenceUpdate from './pages/ReferenceUpdate';
 import HiringList from './pages/HiringList';
 import HiringWrite from './pages/HiringWrite';
 import HiringUpdate from './pages/HiringUpdate';
+import ContestList from './pages/ContestList';
+import ContestWrite from './pages/ContestWrite';
+import ContestUpdate from './pages/ContestUpdate';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -47,6 +50,11 @@ function App() {
           <Route path='/hiring/list' element={<HiringList />} />
           <Route path='/hiring/write' element={<HiringWrite />} />
           <Route path='/hiring/update' element={<HiringUpdate />} />
+
+          {/* 공모전 게시판 */}
+          <Route path='/contest/list' element={<ContestList />} />
+          <Route path='/contest/write' element={<ContestWrite />} />
+          <Route path='/contest/update' element={<ContestUpdate />} />
         </Routes>
       </BrowserRouter>
     </div>
