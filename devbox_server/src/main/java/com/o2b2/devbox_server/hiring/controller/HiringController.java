@@ -56,15 +56,15 @@ public class HiringController {
         List<Hiring> list = p.getContent();
         List<Map<String, Object>> response = new ArrayList<>();
         for (Hiring h : list) {
-            Map<String, Object> rMap = new HashMap<>();
-            rMap.put("id", h.getId());
-            rMap.put("company", h.getCompany());
-            rMap.put("area", h.getArea());
-            rMap.put("job", h.getJob());
-            rMap.put("career", h.getCareer());
-            rMap.put("imgUrl", h.getImgUrl());
-            rMap.put("wantedUrl", h.getWantedUrl());
-            response.add(rMap);
+            Map<String, Object> hMap = new HashMap<>();
+            hMap.put("id", h.getId());
+            hMap.put("company", h.getCompany());
+            hMap.put("area", h.getArea());
+            hMap.put("job", h.getJob());
+            hMap.put("career", h.getCareer());
+            hMap.put("imgUrl", h.getImgUrl());
+            hMap.put("wantedUrl", h.getWantedUrl());
+            response.add(hMap);
         }
         int totalPage = p.getTotalPages();
         int startPage = (page - 1) / 10 * 10 + 1;
