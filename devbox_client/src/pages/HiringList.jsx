@@ -26,10 +26,13 @@ const HiringList = () => {
             setData(listData);
             setPageData(pageInfo);
             setCurrentPage(page);
-            window.scrollTo(0, 0);
         }
         get(currentPage);
     }, [category, currentPage]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [data]);
 
     const clickCategory = (e) => {
         e.preventDefault();
@@ -45,9 +48,9 @@ const HiringList = () => {
         <div>
             <Header />
             <section className="container py-5">
-                <div class="container py-5">
-                    <h1 class="h2 semi-bold-600 text-center mt-2">채용 공고</h1>
-                    <p class="text-center pb-5 light-300">더 다양한 채용 정보를 알고 싶다면 5층 취업 상담실을 방문해주세요.</p>
+                <div className="container py-5">
+                    <h1 className="h2 semi-bold-600 text-center mt-2">채용 공고</h1>
+                    <p className="text-center pb-5 light-300">더 다양한 채용 정보를 알고 싶다면 5층 취업 상담실을 방문해주세요.</p>
                     <div className="row justify-content-center my-5">
                         <div className="filter-btns shadow-md rounded-pill text-center col-auto">
                             <Category text={'All'} isActive={category} onClick={clickCategory} />
@@ -59,7 +62,7 @@ const HiringList = () => {
                         {
                             data.map((v) => {
                                 return (
-                                    <a href={v.wantedUrl} className="col-sm-6 col-lg-4 text-decoration-none project marketing social business" target='_blank'>
+                                    <a href={v.wantedUrl} className="col-sm-6 col-lg-4 text-decoration-none" key={v.id} target='_blank'>
                                         <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
                                             <img className="card-img-top" src={v.imgUrl} alt="https://www.wanted.co.kr/" />
                                             <div className="card-body">
@@ -100,8 +103,8 @@ const HiringList = () => {
                         }
                     </div>
                 </div>
-                <div class="form-row pt-2">
-                    <div class="col-md-12 col-10 text-end">
+                <div className="form-row pt-2">
+                    <div className="col-md-12 col-10 text-end">
                         <Button text={'작성하기'} onClick={toWrite} />
                     </div>
                 </div>
