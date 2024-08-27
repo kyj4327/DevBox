@@ -56,38 +56,38 @@ const ReferenceUpdate = () => {
         <div>
             <Header />
             <section className="container py-5">
-                <div class="container py-5">
-                    <h1 class="h2 semi-bold-600 text-center mt-2">추천해요 Update</h1>
-                    <p class="text-center pb-5 light-300">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut facilisis.</p>
-                    <div class="pricing-list shadow-sm rounded-top rounded-3 py-sm-0 py-5">
-                        <div class="row p-2">
-                            <div class="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
+                <div className="container py-5">
+                    <h1 className="h2 semi-bold-600 text-center mt-2">추천해요 Update</h1>
+                    <p className="text-center pb-5 light-300">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut facilisis.</p>
+                    <div className="pricing-list shadow-sm rounded-top rounded-3 py-sm-0 py-5">
+                        <div className="row p-2">
+                            <div className="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
                                 <input type='text' id='title' name='title'
                                     value={title} onChange={(e) => { setTitle(e.target.value) }} />
                             </div>
-                            <div class="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
+                            <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                                 <li style={{ listStyle: 'none' }}>
-                                    <label>
+                                    <label htmlFor="radioButton">
                                         <input type="radio" name='selectJob' checked={selectJob == 'Web' ? true : false}
                                             value='Web' onChange={(e) => { setSelectJob(e.target.value) }} /> Web
                                     </label>
-                                    <label>
+                                    <label htmlFor="radioButton">
                                         <input type="radio" name='selectJob' style={{ marginLeft: '1rem' }} checked={selectJob == 'DevOps' ? true : false}
                                             value='DevOps' onChange={(e) => { setSelectJob(e.target.value) }} /> DevOps
                                     </label>
-                                    <label>
+                                    <label htmlFor="radioButton">
                                         <input type="radio" name='selectJob' style={{ marginLeft: '1rem' }} checked={selectJob == 'Cloud' ? true : false}
                                             value='Cloud' onChange={(e) => { setSelectJob(e.target.value) }} /> Cloud
                                     </label>
-                                    <label>
+                                    <label htmlFor="radioButton">
                                         <input type="radio" name='selectJob' style={{ marginLeft: '1rem' }} checked={selectJob == 'Data' ? true : false}
                                             value='Data' onChange={(e) => { setSelectJob(e.target.value) }} /> Data
                                     </label>
-                                    <label>
+                                    <label htmlFor="radioButton">
                                         <input type="radio" name='selectJob' style={{ marginLeft: '1rem' }} checked={selectJob == 'Mobile' ? true : false}
                                             value='Mobile' onChange={(e) => { setSelectJob(e.target.value) }} /> Mobile
                                     </label>
-                                    <label>
+                                    <label htmlFor="radioButton">
                                         <input type="radio" name='selectJob' style={{ marginLeft: '1rem' }} checked={selectJob == 'Others' ? true : false}
                                             value='Others' onChange={(e) => { setSelectJob(e.target.value) }} /> Others
                                     </label>
@@ -101,15 +101,15 @@ const ReferenceUpdate = () => {
                                         value={content2} onChange={(e) => { setContent2(e.target.value) }} />
                                 </li>
                             </div>
-                            <div class="pricing-list-footer col-4 text-center m-auto align-items-center">
+                            <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
                                 url : <input type='text' id='link' name='link'
                                     value={link} onChange={(e) => { setLink(e.target.value) }} />
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-row pt-2">
-                    <div class="col-md-12 col-10 text-end">
+                <div className="form-row pt-2">
+                    <div className="col-md-12 col-10 text-end">
                         <Button text={'수정하기'} onClick={updateData} />
                     </div>
                 </div>

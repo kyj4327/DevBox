@@ -27,10 +27,13 @@ const ReferenceList = () => {
             setData(listData);  // 실제 데이터 설정
             setPageData(pageInfo);  // 페이지 정보 설정
             setCurrentPage(page);
-            window.scrollTo(0, 0);
         }
         get(currentPage);
     }, [selectJob, currentPage]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [data]);
 
     const clickSelectJob = (e) => {
         e.preventDefault();
@@ -46,9 +49,9 @@ const ReferenceList = () => {
         <div>
             <Header />
             <section className="container py-5">
-                <div class="container py-5">
-                    <h1 class="h2 semi-bold-600 text-center mt-2">추천해요</h1>
-                    <p class="text-center pb-5 light-300">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut facilisis.</p>
+                <div className="container py-5">
+                    <h1 className="h2 semi-bold-600 text-center mt-2">추천해요</h1>
+                    <p className="text-center pb-5 light-300">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut facilisis.</p>
                     <div className="row justify-content-center my-5">
                         <div className="filter-btns shadow-md rounded-pill text-center col-auto">
                             <Category text={'All'} isActive={selectJob} onClick={clickSelectJob} />
@@ -63,9 +66,9 @@ const ReferenceList = () => {
                     {
                         data.map((v) => {
                             return (
-                                <div class="pricing-list shadow-sm rounded-top rounded-3 py-sm-0 py-5">
-                                    <div class="row p-2">
-                                        <div class="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
+                                <div className="pricing-list shadow-sm rounded-top rounded-3 py-sm-0 py-5" key={v.id}>
+                                    <div className="row p-2">
+                                        <div className="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
                                             <h3>{v.title}</h3>
                                             <a href=''
                                                 onClick={(e) => {
@@ -84,13 +87,13 @@ const ReferenceList = () => {
                                                     send();
                                                 }}>삭제</a>
                                         </div>
-                                        <div class="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
+                                        <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                                             <li style={{ listStyle: 'none' }}>{v.selectJob}</li>
                                             <li>{v.content1}</li>
                                             <li>{v.content2}</li>
                                         </div>
-                                        <div class="pricing-list-footer col-4 text-center m-auto align-items-center">
-                                            <a href={v.link} class="btn rounded-pill px-4 btn-primary light-300" target='_blank'>Link</a>
+                                        <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
+                                            <a href={v.link} className="btn rounded-pill px-4 btn-primary light-300" target='_blank'>Link</a>
                                         </div>
                                     </div>
                                 </div>
@@ -98,8 +101,8 @@ const ReferenceList = () => {
                         })
                     }
                 </div>
-                <div class="form-row pt-2">
-                    <div class="col-md-12 col-10 text-end">
+                <div className="form-row pt-2">
+                    <div className="col-md-12 col-10 text-end">
                         <Button text={'작성하기'} onClick={toWrite} />
                     </div>
                 </div>
