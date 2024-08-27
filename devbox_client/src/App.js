@@ -14,6 +14,8 @@ import './assets/css/custom.css';
 // import Footer from './components/Footer';
 
 import AuthContainer from './components/AuthContainer';
+import { Naver } from './components/Naver'; // Naver 컴포넌트를 가져옵니다.
+import HomePage from './pages/HomePage';
 
 
 
@@ -22,7 +24,9 @@ function App() {
     <Router>
     <Routes>
       <Route path="/auth" element={<AuthContainer />} />
-    </Routes>
+      <Route path="/login" element={<Naver />} /> 
+      <Route path="/home" element={<HomePage />} /> 
+      </Routes>
   </Router>
   );
 }
