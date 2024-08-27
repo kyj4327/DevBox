@@ -1,61 +1,136 @@
 package com.o2b2.devbox_server.config;
 
+import com.o2b2.devbox_server.user.jwt.JWTFilter;
+import com.o2b2.devbox_server.user.jwt.JWTUtil;
+import com.o2b2.devbox_server.user.jwt.LoginFilter;
+import com.o2b2.devbox_server.user.oauth2.CustomSuccessHandler;
+import com.o2b2.devbox_server.user.service.CustomOAuth2UserService;
+import com.o2b2.devbox_server.user.service.CustomUserDetailsService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Collections;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
+    private final AuthenticationConfiguration authenticationConfiguration;
+
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomSuccessHandler customSuccessHandler;
+
+    private final CustomUserDetailsService customUserDetailsService; // 추가된 부분
+
+
+    private final JWTUtil jwtUtil;
+
+    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration,
+                          CustomOAuth2UserService customOAuth2UserService,
+                          CustomSuccessHandler customSuccessHandler,
+                          CustomUserDetailsService customUserDetailsService,
+                          JWTUtil jwtUtil) {
+
+        this.authenticationConfiguration = authenticationConfiguration;
+
+        this.customOAuth2UserService = customOAuth2UserService;
+        this.customSuccessHandler = customSuccessHandler;
+        this.customUserDetailsService = customUserDetailsService;
+
+        this.jwtUtil = jwtUtil;
+    }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        // 회원가입시 패스워드 암호화 할때 사용
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+
+        return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+
         return new BCryptPasswordEncoder();
     }
 
-
-    // SecurityFilterChain
-    // HttpSecurity = 클라이언트에서 넘어온 요청 url 정보 담는다.
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        //  권한 부여 규칙 정하기.
-        http.authorizeHttpRequests(authz -> authz
-// 규칙예시
-//                .requestMatchers("/board/**").permitAll() // "/board/**" 경로는 인증 없이 접근 허용
-//                .requestMatchers("/admin/**").hasRole("ADMIN") // admin 권한 있는 사람만 인증, 요청 허용
-//                .requestMatchers("/user/**").hasAnyRole("STUDENT", "ADMIN") // /user으로 시작하는 경로는 USER 또는 ADMIN 역할을 가진 사용자 접근 가능
-//                .anyRequest().authenticated() // 나머지 모든 요청은 인증 요구
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-                                .requestMatchers("/api/**").authenticated() // api/** 경로는 인증 후 접근 가능
-                                .anyRequest().permitAll() // 나머지 모든 경로는 인증없이 접근 허용.
-                )
-                // [구글로그인] : http://localhost:8081 [/oauth2/authorization/google]--->구글로 로그인을 시도하는 URL
-                // http://localhost:8081/member  허용해준 Url 말고 다른 요청->로그인 해야한다 -> 로그인 2가지(url 로그인 + 구글 로그인) -> 로그인 페이지로 보내기
-                .oauth2Login(oauth2->oauth2 // 요청이 오면 시큐리티가 해당 요청 가로채서 구글 로그인으로 넘긴다.
-                        .loginPage("/")
-                        .defaultSuccessUrl("/") // 성공했을때 경로
-                        .permitAll()
-                )
-                .formLogin(form->form
-                        .loginPage("/") // login page URL -> /login -> MainController -> View(index.html)
-                        .loginProcessingUrl("/loginProcess") // 스프링시큐리티(url 가로채기: username, password)에게 제어권을 넘긴다.
-                        .defaultSuccessUrl("/profile",true) // 성공했을때 리다이렉트 주소
-                        .failureUrl("/?error=true") // 로그인 실패시 받는것.
-                        .permitAll() // 로그인 페이지 URL -> /login -> Controller -> View(CustomLogin.html)
-                )
-                .logout(logout -> logout
-                                .logoutUrl("/logout") // 로그아웃 URL -> 스프링 시큐리티가 가로채기 해서 로그아웃 처리 해준다.
+        http
+                .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
 
-                                .logoutSuccessUrl("/?logout=true") // 로그아웃 성공 후 리다이렉션할 URL
-                                .invalidateHttpSession(true) // 세션 무효화
-                                .deleteCookies("JSESSIONID") // 로그아웃 시 삭제할 쿠키 이름
+                    @Override
+                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 
-//                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) // GET 요청으로 로그아웃 허용
-//                        .clearAuthentication(true) // 로그아웃 시 인증정보 클리어(SecurityContext)
+                        CorsConfiguration configuration = new CorsConfiguration();
+
+                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                        configuration.setAllowedMethods(Collections.singletonList("*"));
+                        configuration.setAllowCredentials(true);
+                        configuration.setAllowedHeaders(Collections.singletonList("*"));
+                        configuration.setMaxAge(3600L);
+
+                        configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
+                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+
+                        return configuration;
+                    }
+                }));
+
+        //csrf disable
+        http
+                .csrf((auth) -> auth.disable());
+
+        //From 로그인 방식 disable
+        http
+                .formLogin((auth) -> auth.disable());
+
+        //http basic 인증 방식 disable
+        http
+                .httpBasic((auth) -> auth.disable());
+
+
+        http
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/login", "/", "/join").permitAll()
+                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/user").hasRole("USER")
+                        .requestMatchers("/api/user/me").authenticated() // <- 인증된 사용자만 접근 가능하도록 설정
+
+                        .anyRequest().authenticated());
+
+        http
+                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class)
+                .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+//                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+        http
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+        //oauth2
+        http
+                .oauth2Login((oauth2) -> oauth2
+                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+                                .userService(customOAuth2UserService))
+                        .successHandler(customSuccessHandler)
                 );
+
+        //세션 설정 : STATELESS
+        http
+                .sessionManagement((session) -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
         return http.build();
     }
 }
