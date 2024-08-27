@@ -1,4 +1,6 @@
 import Header from '../components/Header';
+import WriteLong from '../components/WriteLong';
+import WriteShort from '../components/WriteShort';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -63,48 +65,12 @@ const HiringUpdate = () => {
                     <p class="text-center pb-5 light-300">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut facilisis.</p>
                     <div class="pricing-list rounded-top rounded-3 py-sm-0 py-5">
                         <div class="contact-form row" method="post" action="#" role="form">
-                            <div class="col-lg-6 mb-4">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control form-control-lg light-300" id="company" name="company" placeholder="회사명"
-                                        value={company} onChange={(e) => { setCompany(e.target.value) }} />
-                                    <label for="floatingname light-300">회사명</label>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 mb-4">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control form-control-lg light-300" id="area" name="area" placeholder="지역"
-                                        value={area} onChange={(e) => { setArea(e.target.value) }} />
-                                    <label for="floatingemail light-300">지역</label>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 mb-4">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control form-control-lg light-300" id="job" name="job" placeholder="직군/직무"
-                                        value={job} onChange={(e) => { setJob(e.target.value) }} />
-                                    <label for="floatingphone light-300">직군/직무</label>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 mb-4">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control form-control-lg light-300" id="career" name="career" placeholder="경력"
-                                        value={career} onChange={(e) => { setCareer(e.target.value) }} />
-                                    <label for="floatingphone light-300">경력</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating mb-4">
-                                    <input type="text" class="form-control form-control-lg light-300" id="imgUrl" name="imgUrl" placeholder="이미지 주소"
-                                        value={imgUrl} onChange={(e) => { setImgUrl(e.target.value) }} />
-                                    <label for="floatingsubject light-300">이미지 주소</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating mb-4">
-                                    <input type="text" class="form-control form-control-lg light-300" id="wantedUrl" name="wantedUrl" placeholder="원티드 주소"
-                                        value={wantedUrl} onChange={(e) => { setWantedUrl(e.target.value) }} />
-                                    <label for="floatingsubject light-300">원티드 주소</label>
-                                </div>
-                            </div>
+                            <WriteShort type={'text'} titleTag={'회사명'} name={'company'} value={company} onChange={(e) => { setCompany(e.target.value) }} />
+                            <WriteShort type={'text'} titleTag={'지역'} name={'area'} value={area} onChange={(e) => { setArea(e.target.value) }} />
+                            <WriteShort type={'text'} titleTag={'직군/직무'} name={'job'} value={job} onChange={(e) => { setJob(e.target.value) }} />
+                            <WriteShort type={'text'} titleTag={'경력'} name={'career'} value={career} onChange={(e) => { setCareer(e.target.value) }} />
+                            <WriteLong titleTag={'이미지 주소'} name={'imgUrl'} value={imgUrl} onChange={(e) => { setImgUrl(e.target.value) }} />
+                            <WriteLong titleTag={'원티드 주소'} name={'wantedUrl'} value={wantedUrl} onChange={(e) => { setWantedUrl(e.target.value) }} />
                         </div>
                     </div>
                 </div>
