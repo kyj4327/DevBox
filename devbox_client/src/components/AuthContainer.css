@@ -17,7 +17,7 @@ body {
   overflow: hidden;
 }
 
-h1 {
+h2 {
   font-weight: bold;
   margin: 0;
 }
@@ -89,7 +89,7 @@ input {
 
 select {
   margin: 8px 0;
-  margin-top: 16px;
+  /* margin-top: px; */
   width: 300px;
   height: 39px;
 }
