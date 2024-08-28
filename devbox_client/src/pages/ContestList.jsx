@@ -36,6 +36,16 @@ const ContestList = () => {
         setCurrentPage(pageNumber);
     };
 
+    const calculateDDay = (targetDate) => {
+        const today = new Date(); // 오늘 날짜
+        const target = new Date(targetDate); // String 형태의 날짜를 Date 객체로 변환
+        // 두 날짜 간의 차이를 밀리초 단위로 계산
+        const diff = target.getTime() - today.getTime();
+        // 밀리초를 일수로 변환
+        const dDay = Math.ceil(diff / (1000 * 3600 * 24));
+        return dDay;
+    };
+
     return (
         <div>
             <Header />
@@ -51,7 +61,12 @@ const ContestList = () => {
                                         <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
                                             <img className="card-img-top" src={v.imgUrl} alt="" />
                                             <div className="card-body">
-                                                <h5 className="card-title light-300 text-dark">{v.title}<label htmlFor="dday" style={{ color: 'red' }}>(D-3)</label></h5>
+                                                <h5 className="card-title light-300 text-dark">
+                                                    {v.title}
+                                                    <label htmlFor="dday" style={{ color: 'red' }}>
+                                                        (D-{calculateDDay(v.regEnd) == 0 ? "day" : calculateDDay(v.regEnd)})
+                                                    </label>
+                                                </h5>
                                                 <li>주최</li>
                                                 <p className="card-text light-300 text-dark">{v.host}</p>
                                                 <li>대상</li>
@@ -83,7 +98,6 @@ const ContestList = () => {
                                                             }}>삭제</a>
                                                     </span>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </a>
