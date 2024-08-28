@@ -52,7 +52,7 @@ const DetailManager = () => {
         });
         const data = await res.json();
         if (data.code == 200) {
-            navigate('/');
+            navigate('/edu/list');
         } else {
             alert(data.msg);
         }

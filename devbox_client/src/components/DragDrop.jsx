@@ -4,7 +4,7 @@ import React, {
   useState,
   useEffect
 } from "react";
-import "./DragDrop.css";
+import "../assets/css/DragDrop.css";
 
 const DragDrop = (props) => {
   const [initialFiles, setInitialFiles] = useState([]); // initialFiles를 props로 받습니다
@@ -124,27 +124,29 @@ const DragDrop = (props) => {
         onChange={onChangeFiles}
       />
 
-      <label
-        className={isDragging ? "DragDrop-File-Dragging" : "DragDrop-File"}
-        htmlFor="fileUpload"
-        ref={dragRef}
-      >
-        <div>파일 첨부</div>
-      </label>
-
       <div style={
         {
           'display': 'flex',
           'width': '400px',
-          'justify-content': 'space-evenly'
+          'justify-content': 'space-evenly',
+          'margin-bottom': '1rem'
         }
       }>
         {
           initialFiles.map((v) => {
             return (
-              <div style={{ 'display': 'flex' }}>
-                <img width='50px' src={`http://localhost:8080/pro/download?id=${v.id}`}></img>
-                <div style={{ 'display': 'flex', 'alignItems': 'center' }}
+              <div style={{ 'display': 'flow' }}>
+                <img width='120px' height='120px' 
+                 src={`http://localhost:8080/pro/download?id=${v.id}`}></img>
+                <div style={{ 
+                  'display': 'flex', 
+                  'alignItems': 'center',
+                  'margin-right': '20px',
+                  'width': '120px',
+                  'height': '30px',
+                  'border': '1px solid black', 
+                  'justifyContent': 'center'
+                }}
                   className="DragDrop-Files-Filter"
                   onClick={() => {
                     delhandle(v.id);
@@ -158,6 +160,14 @@ const DragDrop = (props) => {
           })
         }
       </div>
+      <label
+        className={isDragging ? "DragDrop-File-Dragging" : "DragDrop-File"}
+        htmlFor="fileUpload"
+        ref={dragRef}
+      >
+        <div>파일 첨부</div>
+      </label>
+
 
       <div className="DragDrop-Files">
         {files.length > 0 &&

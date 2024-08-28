@@ -16,7 +16,7 @@
   /* DragDrop 스타일 */
   .DragDrop {
     width: 100%;
-    height: 100vh;
+    /* height: 100vh; */
     display: flex;
     -webkit-display: flex;
     flex-direction: column;
@@ -26,8 +26,8 @@
   }
   
   .DragDrop-File {
-    width: 400px;
-    height: 200px;
+    width: 300px;
+    height: 100px;
     border: 2px solid black;
     border-radius: 10px;
     display: flex;

@@ -19,10 +19,10 @@ const Header = () => {
                                 <a className="nav-link btn-outline-primary rounded-pill px-3" href="about.html">Notice</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link btn-outline-primary rounded-pill px-3" href="/">Information</a>
+                                <a className="nav-link btn-outline-primary rounded-pill px-3" href="/edu/list">Information</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link btn-outline-primary rounded-pill px-3" href="pr">Community</a>
+                                <a className="nav-link btn-outline-primary rounded-pill px-3" href="/project/list">Community</a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link btn-outline-primary rounded-pill px-3" href="contact.html">FAQ</a>

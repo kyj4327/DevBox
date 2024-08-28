@@ -25,7 +25,7 @@ const EduInfo = (props) => {
                 </div>
                 <div className="row projects gx-lg-5">
                     {props.list && props.list.map((edu) => (
-                        <a key={edu.id} href={`/detail?id=${edu.id}`} className="col-sm-6 col-lg-4 text-decoration-none project">
+                        <a key={edu.id} href={`/edu/detail?id=${edu.id}`} className="col-sm-6 col-lg-4 text-decoration-none project">
                             <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
                                 <img className="card-img-top" src={`${edu.logo}`} alt={edu.title} />
                                 <div className="card-body">
@@ -42,7 +42,7 @@ const EduInfo = (props) => {
                     ))}
                 </div>
             </section>
-            <a href="/dm" className="dm">글쓰기</a>
+            <a href="/edu/maneger" className="dm">글쓰기</a>
 
         </div>
 

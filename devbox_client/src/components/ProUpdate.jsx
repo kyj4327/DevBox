@@ -61,7 +61,7 @@ const ProUpdate = () => {
         });
         const data = await res.json();
         if (data.code == 200) {
-            navigate('/pr');
+            navigate('/project/list');
         } else {
             alert(data.msg);
         }
@@ -150,13 +150,7 @@ const ProUpdate = () => {
                             <DragDrop addFiles={addFiles} initialFiles={savedImgs}  
                             onDeleteImage={handleDeleteImage}
                             />
-                            {/* <div id="templatemo-slide-link-target" class="card mb-3">
-                                {uploadImgUrl && <img src={uploadImgUrl} alt="Uploaded" />}
-                                <input
-                                    name="img"
-                                    type="file" accept="image/*" onChange={onchangeImageUpload} multiple />
-
-                            </div> */}
+                        
                         </div>
                     </div>
 

@@ -20,15 +20,15 @@ function App() {
       <Routes>
 
        <Route path='/' element={<Main />}>
-        <Route path='' element={<EduMain />} />
-        <Route path='detail' element={<EduDetail />} />
-        <Route path='dm' element={<DetailManager />} />
-        <Route path='up' element={<EduUpdate />} />
+        <Route path='/edu/list' element={<EduMain />} />
+        <Route path='/edu/detail' element={<EduDetail />} />
+        <Route path='/edu/maneger' element={<DetailManager />} />
+        <Route path='/edu/update' element={<EduUpdate />} />
 
-        <Route path='pr' element={<Project />} />
-        <Route path='pw' element={<ProjectWrite />} />
-        <Route path='pd' element={<ProDetail />} />
-        <Route path='pu' element={<ProUpdate />} />
+        <Route path='/project/list' element={<Project />} />
+        <Route path='/project/write' element={<ProjectWrite />} />
+        <Route path='/project/detail' element={<ProDetail />} />
+        <Route path='/project/update' element={<ProUpdate />} />
         <Route path='' element={<DragDrop />} />
        </Route>
 

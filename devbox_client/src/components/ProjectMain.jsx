@@ -17,7 +17,7 @@ const ProjectMain =  (props) => {
                 <div className="row projects gx-lg-5">
                     {props.list && props.list.map((pro) =>(
 
-                        <a key={pro.id} href={`/pd?id=${pro.id}`} className="col-sm-6 col-lg-4 text-decoration-none project marketing social business">
+                        <a key={pro.id} href={`/project/detail?id=${pro.id}`} className="col-sm-6 col-lg-4 text-decoration-none project marketing social business">
                         <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
                             <div className="card-body">
                                 <h3 className="card-title light-300 text-dark">{pro.title}</h3>
@@ -28,7 +28,7 @@ const ProjectMain =  (props) => {
                     </a>
                     ))}
                    
-                <a className='prowrite' href='/pw'>글작성</a>
+                <a className='prowrite' href='/project/write'>글작성</a>
                 </div>
             </section>
             

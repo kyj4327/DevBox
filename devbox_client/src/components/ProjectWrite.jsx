@@ -39,7 +39,7 @@ const ProjectWrite = () => {
         });
         const data = await res.json();
         if (data.code == 200) {
-            navigate('/pr');
+            navigate('/project/list');
         } else {
             alert(data.msg);
         }

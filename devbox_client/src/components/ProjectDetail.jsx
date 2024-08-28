@@ -97,10 +97,10 @@ const
                         </p>
                     </div>
                 </div>
-                <a href="pr">목록</a>
+                <a href="/project/list">목록</a>
                 <a href="" onClick={(e) => {
                     e.preventDefault();
-                    navigate(`/pu?id=${proData.id}`)
+                    navigate(`/project/update?id=${proData.id}`)
                 }}>수정</a>
                 <a href=""
                     onClick={async (e) => {
@@ -108,7 +108,7 @@ const
                         const url = `http://localhost:8080/pro/delete?Id=${proData.id}`;
                         await fetch(url, { method: 'DELETE' });
                         alert('삭제가 완료되었습니다.');
-                        navigate('/pr');
+                        navigate('/prpject/list');
                     }}>삭제</a>
             </div>
 

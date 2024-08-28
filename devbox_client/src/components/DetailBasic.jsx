@@ -55,11 +55,11 @@ const DetailBasic = () => {
                 <div className="buttom">
                     <a href={eduData.link} target="_blank"><button>수강 신청</button></a>
                     <button onClick={() => {
-                        navigate('/')
+                        navigate('/edu/list')
                     }}>목록</button>
                     <a href="" onClick={(e) => {
                         e.preventDefault();
-                        navigate(`/up?id=${eduData.id}`)
+                        navigate(`/edu/update?id=${eduData.id}`)
                     }}>수정</a>
                     <a className="nav-link" href="" id="delete"
                         onClick={async (e) => {
@@ -67,7 +67,7 @@ const DetailBasic = () => {
                             const url = `http://localhost:8080/edu/delete?Id=${eduData.id}`;
                             await fetch(url, { method: 'DELETE' });
                             alert('삭제가 완료되었습니다.');
-                            navigate('/');
+                            navigate('/edu/list');
                         }}>삭제</a>
                 </div>
 
