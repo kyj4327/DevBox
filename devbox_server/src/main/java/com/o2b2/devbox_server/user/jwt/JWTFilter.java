@@ -5,6 +5,7 @@ import com.o2b2.devbox_server.user.dto.CustomUserDetails;
 import com.o2b2.devbox_server.user.dto.UserDTO;
 import com.o2b2.devbox_server.user.entity.UserEntity;
 
+import com.o2b2.devbox_server.user.repository.RefreshRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -159,11 +160,11 @@ public class JWTFilter extends OncePerRequestFilter {
 
         String token = null;
 
-        // Step 1: 쿠키에서 토큰 추출
+        // Step 1: 쿠키에서 AccessToken 추출
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("Authorization")) {
+                if (cookie.getName().equals("AccessToken")) {
                     token = cookie.getValue();
                     break;
                 }
@@ -179,19 +180,31 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         // Step 3: 토큰 검증 및 유효성 확인
-        if (token == null || jwtUtil.isExpired(token)) {
+//        if (token == null || jwtUtil.isExpired(token)) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+
+        if (token == null || token.trim().isEmpty() || !token.contains(".")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Step 4: 토큰에서 사용자 정보 추출
+        // Step 4: 토큰이 access인지 확인
+        String category = jwtUtil.getCategory(token);
+        if (!"access".equals(category)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // Step 5: 토큰에서 사용자 정보 추출
         String username = jwtUtil.getUsername(token);
         String role = jwtUtil.getRole(token);
 
-        // Step 5: 사용자 정보를 기반으로 Authentication 객체 생성
+        // Step 6: 사용자 정보를 기반으로 Authentication 객체 생성
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(username);
-        userEntity.setPassword("temppassword"); // 비밀번호는 임시로 설정, 이후 필요에 따라 변경
+        userEntity.setPassword("temppassword");
         userEntity.setRole(role);
 
         CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
@@ -199,7 +212,10 @@ public class JWTFilter extends OncePerRequestFilter {
         Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
-        // Step 6: 다음 필터로 요청 전달
+        // Step 7: AccessToken을 Authorization 헤더로 설정
+        response.setHeader("Authorization", "Bearer " + token);
+
+        // Step 8: 다음 필터로 요청 전달
         filterChain.doFilter(request, response);
     }
 }
