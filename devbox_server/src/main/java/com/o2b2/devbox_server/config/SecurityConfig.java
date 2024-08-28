@@ -1,9 +1,11 @@
 package com.o2b2.devbox_server.config;
 
+import com.o2b2.devbox_server.user.jwt.CustomLogoutFilter;
 import com.o2b2.devbox_server.user.jwt.JWTFilter;
 import com.o2b2.devbox_server.user.jwt.JWTUtil;
 import com.o2b2.devbox_server.user.jwt.LoginFilter;
 import com.o2b2.devbox_server.user.oauth2.CustomSuccessHandler;
+import com.o2b2.devbox_server.user.repository.RefreshRepository;
 import com.o2b2.devbox_server.user.service.CustomOAuth2UserService;
 import com.o2b2.devbox_server.user.service.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -32,7 +35,8 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomSuccessHandler customSuccessHandler;
 
-    private final CustomUserDetailsService customUserDetailsService; // 추가된 부분
+    private final CustomUserDetailsService customUserDetailsService;
+    private final RefreshRepository refreshRepository;
 
 
     private final JWTUtil jwtUtil;
@@ -41,6 +45,7 @@ public class SecurityConfig {
                           CustomOAuth2UserService customOAuth2UserService,
                           CustomSuccessHandler customSuccessHandler,
                           CustomUserDetailsService customUserDetailsService,
+                          RefreshRepository refreshRepository,
                           JWTUtil jwtUtil) {
 
         this.authenticationConfiguration = authenticationConfiguration;
@@ -48,7 +53,7 @@ public class SecurityConfig {
         this.customOAuth2UserService = customOAuth2UserService;
         this.customSuccessHandler = customSuccessHandler;
         this.customUserDetailsService = customUserDetailsService;
-
+        this.refreshRepository = refreshRepository;
         this.jwtUtil = jwtUtil;
     }
 
@@ -106,6 +111,7 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/", "/join").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/user").hasRole("USER")
+                        .requestMatchers("/reissue").permitAll()
                         .requestMatchers("/api/user/me").authenticated() // <- 인증된 사용자만 접근 가능하도록 설정
 
                         .anyRequest().authenticated());
@@ -116,8 +122,11 @@ public class SecurityConfig {
 //                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class);
 
+        // 로그아웃
+        http
+                .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
         //oauth2
         http
                 .oauth2Login((oauth2) -> oauth2
