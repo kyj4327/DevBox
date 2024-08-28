@@ -13,6 +13,7 @@ import java.util.Date;
 
 @Component
 public class JWTUtil {
+// JWT를 발급하거나 검색할때 이용
 
     private SecretKey secretKey;
 
@@ -36,10 +37,17 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
+    // // Refresh/access
+    // 검증을 위한 category
+    public String getCategory(String token) {
 
-    public String createJwt(String username, String role, Long expiredMs) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("category", String.class);
+    }
+
+    public String createJwt(String category, String username, String role, Long expiredMs) {
 
         return Jwts.builder()
+                .claim("category", category)
                 .claim("username", username)
                 .claim("role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
