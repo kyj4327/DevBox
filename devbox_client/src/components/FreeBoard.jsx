@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+import { getAllPosts } from '../services/api-service';
 
 const FreeBoard = () => {
     const [posts, setPosts] = useState([]);
@@ -16,8 +14,8 @@ const FreeBoard = () => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await axios.get(`${API_BASE_URL}/api/posts`);
-            setPosts(response.data);
+            const data = await getAllPosts();
+            setPosts(data);
         } catch (error) {
             console.error('Error fetching posts:', error);
             setError('Failed to fetch posts. Please try again.');
@@ -29,6 +27,12 @@ const FreeBoard = () => {
     useEffect(() => {
         fetchPosts();
     }, [fetchPosts]);
+
+    const formatDate = (dateString) => {
+        if (!dateString) return 'Date not available';
+        const date = new Date(dateString);
+        return isNaN(date.getTime()) ? 'Invalid date' : date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+    };
 
     const sortedPosts = posts.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
     const indexOfLastPost = currentPage * postsPerPage;
@@ -47,7 +51,7 @@ const FreeBoard = () => {
     };
 
     const handleViewPost = (postId) => {
-        navigate(`/community/freeboard/${postId}`);
+        navigate(`/community/freeboard/post/${postId}`);
     };
 
     if (isLoading) {
@@ -68,10 +72,10 @@ const FreeBoard = () => {
             <ul className="list-group mb-4">
                 {currentPosts.length > 0 ? (
                     currentPosts.map(post => (
-                        <li key={post.id} className="list-group-item" onClick={() => handleViewPost(post.id)}>
+                        <li key={post.id} className="list-group-item" onClick={() => handleViewPost(post.id)} style={{cursor: 'pointer'}}>
                             <h5>{post.title}</h5>
                             <p>{post.content.substring(0, 100)}...</p>
-                            <small>{new Date(post.date).toLocaleString()}</small>
+                            <small>{formatDate(post.date)}</small>
                         </li>
                     ))
                 ) : (

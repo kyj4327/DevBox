@@ -12,10 +12,12 @@ import Header from "./components/Header";
 import JobInfoList from "./components/JobInfoList";
 import Footer from "./components/Footer";
 import BDIAIntroduction from "./components/BDIAIntroduction";
-import FreeBoard from "./components/FreeBoard";
 import BDIASchedule from "./components/BDIASchedule";
+import FreeBoard from "./components/FreeBoard";
 import FreeBoardDetail from "./components/FreeBoardDetail";
 import PostDetail from "./components/PostDetail";
+
+
 
 function App() {
   return (

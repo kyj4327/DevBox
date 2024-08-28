@@ -1,50 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+import { getPost, createPost, updatePost } from '../services/api-service';
 
 const FreeBoardDetail = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { id } = useParams(); // URL에서 id 추출
+  const { id } = useParams();
   const navigate = useNavigate();
-  const isEditing = Boolean(id); // id가 있으면 수정 모드
+  const isEditing = Boolean(id);
 
   useEffect(() => {
-    let isMounted = true;
-
     const fetchPost = async () => {
-      setIsLoading(true);
-      try {
-        if (isEditing) {
-          const response = await axios.get(`${API_BASE_URL}/api/posts/${id}`);
-          if (isMounted) {
-            setTitle(response.data.title);
-            setContent(response.data.content);
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching post:', error);
-        if (isMounted) {
-          setError('게시글을 가져오는 데 실패했습니다. 다시 시도해 주세요.');
-        }
-      } finally {
-        if (isMounted) {
+      if (isEditing) {
+        setIsLoading(true);
+        try {
+          const data = await getPost(id);
+          setTitle(data.title);
+          setContent(data.content);
+        } catch (error) {
+          console.error('Error fetching post:', error);
+          setError('Failed to fetch post. Please try again.');
+        } finally {
           setIsLoading(false);
         }
       }
     };
 
-    if (isEditing) {
-      fetchPost();
-    }
-
-    return () => {
-      isMounted = false;
-    };
+    fetchPost();
   }, [id, isEditing]);
 
   const handleSubmit = async (event) => {
@@ -56,15 +40,15 @@ const FreeBoardDetail = () => {
       const postData = { title, content };
 
       if (isEditing) {
-        await axios.put(`${API_BASE_URL}/api/posts/${id}`, postData);
+        await updatePost(id, postData);
       } else {
-        await axios.post(`${API_BASE_URL}/api/posts`, postData);
+        await createPost(postData);
       }
 
       navigate('/community/freeboard');
     } catch (error) {
       console.error('Error saving post:', error);
-      setError('게시글 저장에 실패했습니다. 다시 시도해 주세요.');
+      setError('Failed to save post. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -76,13 +60,13 @@ const FreeBoardDetail = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-4">{isEditing ? '게시글 수정' : '새 게시글 작성'}</h2>
+      <h2 className="mb-4">{isEditing ? 'Edit Post' : 'Create New Post'}</h2>
 
       {error && <div className="alert alert-danger">{error}</div>}
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>제목</label>
+          <label>Title</label>
           <input
             type="text"
             className="form-control"
@@ -92,7 +76,7 @@ const FreeBoardDetail = () => {
           />
         </div>
         <div className="form-group">
-          <label>내용</label>
+          <label>Content</label>
           <textarea
             className="form-control"
             value={content}
@@ -101,7 +85,7 @@ const FreeBoardDetail = () => {
           />
         </div>
         <button type="submit" className="btn btn-primary" disabled={isLoading}>
-          {isLoading ? '저장 중...' : (isEditing ? '게시글 수정' : '게시글 작성')}
+          {isLoading ? 'Saving...' : (isEditing ? 'Update Post' : 'Create Post')}
         </button>
       </form>
     </div>

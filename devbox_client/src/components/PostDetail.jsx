@@ -1,73 +1,65 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+import { getPost, deletePost } from '../services/api-service';
 
 const PostDetail = () => {
-  const [post, setPost] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const { id } = useParams();
-  const navigate = useNavigate();
+    const [post, setPost] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const { id } = useParams();
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    let isMounted = true;
+    useEffect(() => {
+        const fetchPost = async () => {
+            try {
+                const data = await getPost(id);
+                setPost(data);
+            } catch (err) {
+                console.error('Error fetching post:', err);
+                setError('Failed to load post. Please try again.');
+            } finally {
+                setIsLoading(false);
+            }
+        };
 
-    const fetchPost = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/api/posts/${id}`);
-        if (isMounted) {
-          setPost(response.data);
-        }
-      } catch (err) {
-        console.error('Error fetching post:', err);
-        if (isMounted) {
-          setError('게시글을 불러오는 데 실패했습니다. 다시 시도해 주세요.');
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
+        fetchPost();
+    }, [id]);
+
+    const formatDate = (dateString) => {
+        if (!dateString) return 'Date not available';
+        const date = new Date(dateString);
+        return isNaN(date.getTime()) ? 'Invalid date' : date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
     };
 
-    fetchPost();
-
-    return () => {
-      isMounted = false;
+    const handleEdit = () => {
+        navigate(`/community/freeboard/edit/${id}`);
     };
-  }, [id]);
 
-  const handleEdit = () => {
-    navigate(`/community/freeboard/edit/${id}`);
-  };
+    const handleDelete = async () => {
+        if (window.confirm('Are you sure you want to delete this post?')) {
+            try {
+                await deletePost(id);
+                navigate('/community/freeboard');
+            } catch (err) {
+                console.error('Error deleting post:', err);
+                setError('Failed to delete post. Please try again.');
+            }
+        }
+    };
 
-  const handleDelete = async () => {
-    if (window.confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
-      try {
-        await axios.delete(`${API_BASE_URL}/api/posts/${id}`);
-        navigate('/community/freeboard');
-      } catch (err) {
-        console.error('Error deleting post:', err);
-        setError('게시글 삭제에 실패했습니다. 다시 시도해 주세요.');
-      }
-    }
-  };
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div className="alert alert-danger">{error}</div>;
+    if (!post) return <div>Post not found.</div>;
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div className="alert alert-danger">{error}</div>;
-  if (!post) return <div>게시글을 찾을 수 없습니다.</div>;
-
-  return (
-    <div className="container mt-5">
-      <h1>{post.title}</h1>
-      <p className="text-muted">작성일: {new Date(post.date).toLocaleString()}</p>
-      <div className="mb-4">{post.content}</div>
-      <button className="btn btn-primary mr-2" onClick={handleEdit}>수정</button>
-      <button className="btn btn-danger" onClick={handleDelete}>삭제</button>
-    </div>
-  );
+    return (
+        <div className="container mt-5">
+            <h1>{post.title}</h1>
+            <p className="text-muted">Posted on: {formatDate(post.date)}</p>
+            <div className="mb-4">{post.content}</div>
+            <button className="btn btn-primary mr-2" onClick={handleEdit}>Edit</button>
+            <button className="btn btn-danger" onClick={handleDelete}>Delete</button>
+        </div>
+    );
 };
 
 export default PostDetail;
