@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.o2b2.devbox_server.contest.model.Contest;
 
 public interface ContestRepository extends JpaRepository<Contest, Long> {
-    Page<Contest> findAll(Pageable pageable);
+    Page<Contest> findByRegEndGreaterThanEqual(String today, Pageable pageable);
 
 }

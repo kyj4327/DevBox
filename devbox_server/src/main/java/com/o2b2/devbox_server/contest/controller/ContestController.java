@@ -1,5 +1,7 @@
 package com.o2b2.devbox_server.contest.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,9 +43,14 @@ public class ContestController {
     @GetMapping("/contest/list")
     public List<Map<String, Object>> contestList(
             @RequestParam(value = "page", defaultValue = "1") int page) {
+        // 오늘 날짜를 yyyy-MM-dd 형식의 String으로 변환
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String todayString = today.format(formatter);
+
         Sort sort = Sort.by(Order.asc("regEnd"));
         Pageable pageable = PageRequest.of(page - 1, 6, sort);
-        Page<Contest> p = contestRepository.findAll(pageable);
+        Page<Contest> p = contestRepository.findByRegEndGreaterThanEqual(todayString, pageable);
         List<Contest> list = p.getContent();
         List<Map<String, Object>> response = new ArrayList<>();
         for (Contest c : list) {
