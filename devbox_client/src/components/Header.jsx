@@ -32,7 +32,7 @@ const Header = () => {
                     <div className="navbar align-self-center d-flex">
                         <a className="nav-link" href="#"><i className='bx bx-bell bx-sm bx-tada-hover text-primary'></i></a>
                         <a className="nav-link" href="#"><i className='bx bx-cog bx-sm text-primary'></i></a>
-                        <a className="nav-link" href="#"><i className='bx bx-user-circle bx-sm text-primary'></i></a>
+                        <a className="nav-link" href="/message/write"><i className='bx bx-user-circle bx-sm text-primary'></i></a>
                     </div>
                 </div>
             </div>

@@ -1,17 +1,17 @@
 import './App.css';
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import EduMain from './components/EduMain';
-import EduDetail from './components/EduDetail';
-import DetailManager from './components/DetailManager';
-import EduUpdate from './components/EduUpdate';
-import Main from './components/Main';
-import Project from './components/Project';
-import ProjectWrite from './components/ProjectWrite';
-import ProjectDetail from './components/ProjectDetail';
-import ProDetail from './components/ProDetail';
-import ProUpdate from './components/ProUpdate';
-import DragDrop from './components/DragDrop';
+import EduMain from './pages/EduMain';
+import EduDetail from './pages/EduDetail';
+import DetailManager from './pages/DetailManager';
+import EduUpdate from './pages/EduUpdate';
+import Main from './pages/Main';
+import Project from './pages/Project';
+import ProjectWrite from './pages/ProjectWrite';
+import ProDetail from './pages/ProDetail';
+import ProUpdate from './pages/ProUpdate';
+import DragDrop from './pages/DragDrop';
+import MesWrite from './pages/MesWrite';
 
 function App() {
   return (
@@ -30,6 +30,9 @@ function App() {
         <Route path='/project/detail' element={<ProDetail />} />
         <Route path='/project/update' element={<ProUpdate />} />
         <Route path='' element={<DragDrop />} />
+
+        <Route path='/message/write' element={<MesWrite />} />
+
        </Route>
 
       </Routes>

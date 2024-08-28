@@ -8,7 +8,7 @@ import '../assets/css/custom.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Pagination from '../components/Pagination';
-import EduInfo from '../components/EduInfo';
+import EduInfo from '../pages/EduInfo';
 import { useEffect, useState } from 'react';
 
 const EduMain = () => {
