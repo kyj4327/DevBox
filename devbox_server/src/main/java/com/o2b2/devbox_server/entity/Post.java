@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -25,8 +27,18 @@ public class Post {
     @Column(name = "author_id")
     private Integer authorId;
 
-    @Temporal(TemporalType.TIMESTAMP)
+   @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+
+    @PrePersist
+    protected void onCreate() {
+        this.date = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.date = new Date();
+    }
 
     // 기본 생성자
     public Post() {}
