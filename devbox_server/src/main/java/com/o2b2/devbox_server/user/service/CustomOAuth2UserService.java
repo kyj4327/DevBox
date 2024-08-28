@@ -80,7 +80,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 //                    "ROLE_USER",
 //                    nickname
 //            );
-            userDTO.setProvider(provider);
 
 //            userDTO.setProviderId(providerId);
 
