@@ -21,13 +21,6 @@ import java.util.Iterator;
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-//    private final JWTUtil jwtUtil;
-//
-//    public CustomSuccessHandler(JWTUtil jwtUtil) {
-//
-//        this.jwtUtil = jwtUtil;
-//    }
-
     private final JWTUtil jwtUtil;
     private final RefreshRepository refreshRepository;
 
@@ -36,28 +29,29 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         this.refreshRepository = refreshRepository;
     }
 
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         //OAuth2User
-        CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
         // 사용자 이름 (이메일) 추출
-        String username = customUserDetails.getUsername();
+        String username = customOAuth2User.getUserDTO().getEmail();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-
         // AccessToken과 RefreshToken의 category를 정의
         String accessTokenCategory = "access";
         String refreshTokenCategory = "refresh";
 
         // AccessToken과 RefreshToken 생성
+        System.out.println("Before Access Token Creation: username = " + username);
         String accessToken = jwtUtil.createJwt(accessTokenCategory, username, role, 60 * 60 * 1000L); // 1시간 유효
+
+        System.out.println("Before Refresh Token Creation: username = " + username);
         String refreshToken = jwtUtil.createJwt(refreshTokenCategory, username, role, 60 * 60 * 24 * 30 * 1000L); // 30일 유효
 
         // 생성된 RefreshToken을 DB에 저장
