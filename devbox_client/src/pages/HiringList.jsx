@@ -3,7 +3,7 @@ import Category from '../components/Category';
 import Pagination from '../components/Pagination';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 const HiringList = () => {
@@ -62,27 +62,24 @@ const HiringList = () => {
                         {
                             data.map((v) => {
                                 return (
-                                    <a href={v.wantedUrl} className="col-sm-6 col-lg-4 text-decoration-none" key={v.id} target='_blank'>
-                                        <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
-                                            <img className="card-img-top" src={v.imgUrl} alt="https://www.wanted.co.kr/" />
-                                            <div className="card-body">
-                                                <h5 className="card-title light-300 text-dark">{v.job}</h5>
-                                                <h5 className="card-title light-300 text-dark">{v.company}</h5>
-                                                <p className="card-text light-300 text-dark">
-                                                    {v.area} / {v.career}
-                                                </p>
-                                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                    <span className="text-decoration-none text-primary light-300">
-                                                        Read more <i className='bx bxs-hand-right ms-1'></i>
-                                                    </span>
-                                                    <span className="text-decoration-none text-primary light-300">
-                                                        <a href=''
-                                                            onClick={(e) => {
+                                    <div className="col-sm-6 col-lg-4" style={{ marginBottom: '3rem' }}>
+                                        <Link to={v.wantedUrl} className="text-decoration-none" key={v.id} target='_blank' >
+                                            <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
+                                                <img className="card-img-top" src={v.imgUrl} alt="https://www.wanted.co.kr/" />
+                                                <div className="card-body">
+                                                    <h5 className="card-title light-300 text-dark">{v.job}</h5>
+                                                    <h5 className="card-title light-300 text-dark">{v.company}</h5>
+                                                    <p className="card-text light-300 text-dark">{v.area} / {v.career}</p>
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                        <span className="text-decoration-none text-primary light-300">
+                                                            Read more <i className='bx bxs-hand-right ms-1'></i>
+                                                        </span>
+                                                        <span className="text-decoration-none text-primary light-300">
+                                                            <Link onClick={(e) => {
                                                                 e.preventDefault();
                                                                 navigate(`/hiring/update?hiringId=${v.id}`);
-                                                            }}>수정</a>
-                                                        <a href=''
-                                                            onClick={(e) => {
+                                                            }}>수정</Link>
+                                                            <Link onClick={(e) => {
                                                                 e.preventDefault();
                                                                 async function send() {
                                                                     const url = `http://127.0.0.1:8080/hiring/delete?hiringId=${v.id}`;
@@ -91,13 +88,13 @@ const HiringList = () => {
                                                                     window.location.reload();
                                                                 }
                                                                 send();
-                                                            }}>삭제</a>
-                                                    </span>
+                                                            }}>삭제</Link>
+                                                        </span>
+                                                    </div>
                                                 </div>
-
                                             </div>
-                                        </div>
-                                    </a>
+                                        </Link>
+                                    </div>
                                 )
                             })
                         }
