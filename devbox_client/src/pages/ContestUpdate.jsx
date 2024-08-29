@@ -1,5 +1,6 @@
 import Header from '../components/Header';
 import WriteLong from '../components/WriteLong';
+import WriteShort from '../components/WriteShort';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -69,23 +70,8 @@ const ContestUpdate = () => {
                             <WriteLong titleTag={'공모명'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} />
                             <WriteLong titleTag={'주최/주관'} name={'host'} value={host} onChange={(e) => { setHost(e.target.value) }} />
                             <WriteLong titleTag={'참가대상'} name={'target'} value={target} onChange={(e) => { setTarget(e.target.value) }} />
-                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">접수기간</h2>
-                            <p className="worksingle-footer py-3 text-muted light-300" style={{ display: 'flex' }}>
-                                <div className="col-lg-6 mb-4">
-                                    <div className="form-floating">
-                                        <input type="date" className="form-control form-control-lg light-300" id="regStart" name="regStart" placeholder="시작"
-                                            value={regStart} onChange={(e) => { setRegStart(e.target.value) }} />
-                                        <label htmlFor="floatingsubject light-300">시작</label>
-                                    </div>
-                                </div>
-                                <div className="col-lg-6 mb-4">
-                                    <div className="form-floating">
-                                        <input type="date" className="form-control form-control-lg light-300" id="regEnd" name="regEnd" placeholder="마감"
-                                            value={regEnd} onChange={(e) => { setRegEnd(e.target.value) }} />
-                                        <label htmlFor="floatingsubject light-300">마감</label>
-                                    </div>
-                                </div>
-                            </p>
+                            <WriteShort type={'date'} titleTag={'접수시작'} name={'regStart'} value={regStart} onChange={(e) => { setRegStart(e.target.value) }} />
+                            <WriteShort type={'date'} titleTag={'접수마감'} name={'regEnd'} value={regEnd} onChange={(e) => { setRegEnd(e.target.value) }} />
                             <WriteLong titleTag={'공식 홈페이지 주소'} name={'officialUrl'} value={officialUrl} onChange={(e) => { setOfficialUrl(e.target.value) }} />
                             <WriteLong titleTag={'이미지 주소'} name={'imgUrl'} value={imgUrl} onChange={(e) => { setImgUrl(e.target.value) }} />
                         </div>
