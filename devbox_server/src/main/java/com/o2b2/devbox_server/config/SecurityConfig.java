@@ -6,6 +6,7 @@ import com.o2b2.devbox_server.user.jwt.JWTUtil;
 import com.o2b2.devbox_server.user.jwt.LoginFilter;
 import com.o2b2.devbox_server.user.oauth2.CustomSuccessHandler;
 import com.o2b2.devbox_server.user.repository.RefreshRepository;
+import com.o2b2.devbox_server.user.repository.UserRepository;
 import com.o2b2.devbox_server.user.service.CustomOAuth2UserService;
 import com.o2b2.devbox_server.user.service.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,6 +38,7 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final RefreshRepository refreshRepository;
+    private final UserRepository userRepository;
 
 
     private final JWTUtil jwtUtil;
@@ -46,6 +48,7 @@ public class SecurityConfig {
                           CustomSuccessHandler customSuccessHandler,
                           CustomUserDetailsService customUserDetailsService,
                           RefreshRepository refreshRepository,
+                          UserRepository userRepository,
                           JWTUtil jwtUtil) {
 
         this.authenticationConfiguration = authenticationConfiguration;
@@ -55,6 +58,7 @@ public class SecurityConfig {
         this.customUserDetailsService = customUserDetailsService;
         this.refreshRepository = refreshRepository;
         this.jwtUtil = jwtUtil;
+        this.userRepository = userRepository;
     }
 
     @Bean
@@ -117,8 +121,8 @@ public class SecurityConfig {
                         .anyRequest().authenticated());
 
         http
-                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class)
-                .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+                .addFilterBefore(new JWTFilter(jwtUtil,userRepository), LoginFilter.class)
+                .addFilterAfter(new JWTFilter(jwtUtil,userRepository), OAuth2LoginAuthenticationFilter.class);
 //                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         http
