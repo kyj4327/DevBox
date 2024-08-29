@@ -57,8 +57,8 @@ const ContestList = () => {
                         {
                             data.map((v) => {
                                 return (
-                                    <div className="col-sm-6 col-lg-4" style={{ marginBottom: '3rem' }}>
-                                        <Link to={v.officialUrl} className="text-decoration-none" key={v.id} target='_blank' >
+                                    <div className="col-sm-6 col-lg-4" style={{ marginBottom: '3rem' }} key={v.id}>
+                                        <Link to={v.officialUrl} className="text-decoration-none" target='_blank' >
                                             <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
                                                 <img className="card-img-top" src={v.imgUrl} alt="" />
                                                 <div className="card-body">
