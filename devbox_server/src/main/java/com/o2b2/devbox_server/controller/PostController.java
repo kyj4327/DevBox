@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.o2b2.devbox_server.entity.Comments;
 import com.o2b2.devbox_server.entity.Post;
 import com.o2b2.devbox_server.service.PostService;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/posts")
@@ -46,24 +48,28 @@ public class PostController {
         if (existingPost == null) {
             return ResponseEntity.notFound().build();
         }
-        existingPost.setTitle(updatedPost.getTitle());
-        existingPost.setContent(updatedPost.getContent());
-        // 필요한 경우 다른 필드도 업데이트
+        if (updatedPost.getTitle() != null) {
+            existingPost.setTitle(updatedPost.getTitle());
+        }
+        if (updatedPost.getContent() != null) {
+            existingPost.setContent(updatedPost.getContent());
+        }
+        // 다른 필드 업데이트 로직 추가
         Post savedPost = postService.savePost(existingPost);
         return ResponseEntity.ok(savedPost);
-    } 
+    }
 
     @GetMapping("/{id}")
-public ResponseEntity<Post> getPostById(@PathVariable Long id) {
-    Post post = postService.getPostById(id);
-    if (post != null) {
-        return ResponseEntity.ok(post);
-    } else {
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<Post> getPostById(@PathVariable Long id) {
+        Post post = postService.getPostById(id);
+        if (post != null) {
+            return ResponseEntity.ok(post);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
-}
 
-@DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
         Post existingPost = postService.getPostById(id);
         if (existingPost == null) {
@@ -71,4 +77,6 @@ public ResponseEntity<Post> getPostById(@PathVariable Long id) {
         }
         postService.deletePost(id);
         return ResponseEntity.noContent().build(); // 성공 시 204 No Content 반환
-    }}
+    }
+
+}

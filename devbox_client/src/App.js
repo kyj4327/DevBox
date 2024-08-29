@@ -32,6 +32,7 @@ function App() {
           <Route path="community/freeboard/new" element={<FreeBoardDetail />} />
           <Route path="community/freeboard/edit/:id" element={<FreeBoardDetail />} />
           <Route path="community/freeboard/post/:id" element={<PostDetail />} />
+          
         </Routes>
         <Footer />
       </div>

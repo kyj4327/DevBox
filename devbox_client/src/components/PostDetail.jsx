@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPost, deletePost } from '../services/api-service';
+import Comments from './Comments';
 
 const PostDetail = () => {
     const [post, setPost] = useState(null);
@@ -8,7 +9,7 @@ const PostDetail = () => {
     const [error, setError] = useState(null);
     const { id } = useParams();
     const navigate = useNavigate();
-
+    
     useEffect(() => {
         const fetchPost = async () => {
             try {
@@ -58,6 +59,7 @@ const PostDetail = () => {
             <div className="mb-4">{post.content}</div>
             <button className="btn btn-primary mr-2" onClick={handleEdit}>Edit</button>
             <button className="btn btn-danger" onClick={handleDelete}>Delete</button>
+            <Comments postId={post.id} />
         </div>
     );
 };
