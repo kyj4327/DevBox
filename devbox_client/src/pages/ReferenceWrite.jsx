@@ -35,6 +35,15 @@ const ReferenceWrite = () => {
         send();
     };
 
+    const RadioBtn = ({ value }) => {
+        return (
+            <label htmlFor="radioButton" style={{ marginRight: '1rem' }}>
+                <input type="radio" name='selectJob'
+                    value={value} onChange={(e) => { setSelectJob(e.target.value) }} /> {value}
+            </label>
+        );
+    };
+
     return (
         <div>
             <Header />
@@ -50,30 +59,12 @@ const ReferenceWrite = () => {
                             </div>
                             <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                                 <li style={{ listStyle: 'none' }}>
-                                    <label htmlFor="radioButton">
-                                        <input type="radio" name='selectJob'
-                                            value='Web' onChange={(e) => { setSelectJob(e.target.value) }} /> Web
-                                    </label>
-                                    <label htmlFor="radioButton">
-                                        <input type="radio" name='selectJob' style={{ marginLeft: '1rem' }}
-                                            value='DevOps' onChange={(e) => { setSelectJob(e.target.value) }} /> DevOps
-                                    </label>
-                                    <label htmlFor="radioButton">
-                                        <input type="radio" name='selectJob' style={{ marginLeft: '1rem' }}
-                                            value='Cloud' onChange={(e) => { setSelectJob(e.target.value) }} /> Cloud
-                                    </label>
-                                    <label htmlFor="radioButton">
-                                        <input type="radio" name='selectJob' style={{ marginLeft: '1rem' }}
-                                            value='Data' onChange={(e) => { setSelectJob(e.target.value) }} /> Data
-                                    </label>
-                                    <label htmlFor="radioButton">
-                                        <input type="radio" name='selectJob' style={{ marginLeft: '1rem' }}
-                                            value='Mobile' onChange={(e) => { setSelectJob(e.target.value) }} /> Mobile
-                                    </label>
-                                    <label htmlFor="radioButton">
-                                        <input type="radio" name='selectJob' style={{ marginLeft: '1rem' }}
-                                            value='Others' onChange={(e) => { setSelectJob(e.target.value) }} /> Others
-                                    </label>
+                                    <RadioBtn value={'Web'} />
+                                    <RadioBtn value={'DevOps'} />
+                                    <RadioBtn value={'Cloud'} />
+                                    <RadioBtn value={'Data'} />
+                                    <RadioBtn value={'Mobile'} />
+                                    <RadioBtn value={'Others'} />
                                 </li>
                                 <li>
                                     <input type='text' id='content1' name='content1'

@@ -52,6 +52,15 @@ const ReferenceUpdate = () => {
         send();
     };
 
+    const RadioBtn = ({ value }) => {
+        return (
+            <label htmlFor="radioButton" style={{ marginRight: '1rem' }}>
+                <input type="radio" name='selectJob' checked={selectJob == value ? true : false}
+                    value={value} onChange={(e) => { setSelectJob(e.target.value) }} /> {value}
+            </label>
+        );
+    };
+
     return (
         <div>
             <Header />
@@ -67,30 +76,12 @@ const ReferenceUpdate = () => {
                             </div>
                             <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                                 <li style={{ listStyle: 'none' }}>
-                                    <label htmlFor="radioButton">
-                                        <input type="radio" name='selectJob' checked={selectJob == 'Web' ? true : false}
-                                            value='Web' onChange={(e) => { setSelectJob(e.target.value) }} /> Web
-                                    </label>
-                                    <label htmlFor="radioButton">
-                                        <input type="radio" name='selectJob' style={{ marginLeft: '1rem' }} checked={selectJob == 'DevOps' ? true : false}
-                                            value='DevOps' onChange={(e) => { setSelectJob(e.target.value) }} /> DevOps
-                                    </label>
-                                    <label htmlFor="radioButton">
-                                        <input type="radio" name='selectJob' style={{ marginLeft: '1rem' }} checked={selectJob == 'Cloud' ? true : false}
-                                            value='Cloud' onChange={(e) => { setSelectJob(e.target.value) }} /> Cloud
-                                    </label>
-                                    <label htmlFor="radioButton">
-                                        <input type="radio" name='selectJob' style={{ marginLeft: '1rem' }} checked={selectJob == 'Data' ? true : false}
-                                            value='Data' onChange={(e) => { setSelectJob(e.target.value) }} /> Data
-                                    </label>
-                                    <label htmlFor="radioButton">
-                                        <input type="radio" name='selectJob' style={{ marginLeft: '1rem' }} checked={selectJob == 'Mobile' ? true : false}
-                                            value='Mobile' onChange={(e) => { setSelectJob(e.target.value) }} /> Mobile
-                                    </label>
-                                    <label htmlFor="radioButton">
-                                        <input type="radio" name='selectJob' style={{ marginLeft: '1rem' }} checked={selectJob == 'Others' ? true : false}
-                                            value='Others' onChange={(e) => { setSelectJob(e.target.value) }} /> Others
-                                    </label>
+                                    <RadioBtn value={'Web'} />
+                                    <RadioBtn value={'DevOps'} />
+                                    <RadioBtn value={'Cloud'} />
+                                    <RadioBtn value={'Data'} />
+                                    <RadioBtn value={'Mobile'} />
+                                    <RadioBtn value={'Others'} />
                                 </li>
                                 <li>
                                     <input type='text' id='content1' name='content1'
