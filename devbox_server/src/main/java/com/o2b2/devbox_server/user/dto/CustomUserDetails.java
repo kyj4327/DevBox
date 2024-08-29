@@ -34,6 +34,10 @@ public class CustomUserDetails implements UserDetails {
         return collection;
     }
 
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
     @Override
     public String getPassword() {
 

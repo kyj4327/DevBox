@@ -1,8 +1,11 @@
 package com.o2b2.devbox_server.user.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.o2b2.devbox_server.user.dto.CustomUserDetails;
+import com.o2b2.devbox_server.user.dto.LoginDTO;
 import com.o2b2.devbox_server.user.entity.RefreshEntity;
 import com.o2b2.devbox_server.user.repository.RefreshRepository;
+import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +17,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.StreamUtils;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -36,47 +42,34 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
-        String username = obtainUsername(request);
-        String password = obtainPassword(request);
+        LoginDTO loginDTO = new LoginDTO();
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            ServletInputStream inputStream = request.getInputStream();
+            String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
+            loginDTO = objectMapper.readValue(messageBody, LoginDTO.class);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        String username = loginDTO.getUsername();
+        String password = loginDTO.getPassword();
 
         System.out.println(username);
 
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
 
         return authenticationManager.authenticate(authToken);
     }
-
-//    JWT
-//    @Override
-//    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
-//
-//        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-//
-//        // e 메일로 로그인 한다-> SpringSecurity username 으로 로그인
-//        String username = customUserDetails.getUsername();
-//
-//        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-//        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
-//        GrantedAuthority auth = iterator.next();
-//
-//        String role = auth.getAuthority();
-//
-//
-//        String token = jwtUtil.createJwt(username, role, 60*60*10L);
-//
-//        response.addHeader("Authorization", "Bearer " + token);
-//    }
 
     // Refresh/access 토큰 발급
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
 
         //유저 정보
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-
-        // Username -> email 넘겼다.
-        String username = customUserDetails.getUsername();
-
+        String username = authentication.getName();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
@@ -84,15 +77,17 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String role = auth.getAuthority();
 
         //토큰 생성
-        String access = jwtUtil.createJwt("access", username, role, 600000L); // 10분
-        String refresh = jwtUtil.createJwt("refresh", username, role, 86400000L);// 24시간
+        String accessToken = jwtUtil.createJwt("access", username, role, 600000L); // 10분
+        String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L);// 24시간
 
         //Refresh 토큰 저장
-        addRefreshEntity(username, refresh, 86400000L);
+        saveRefreshToken(username, refreshToken, 60 * 60 * 24 * 30 * 1000L);
 
-        //응답 설정
-        response.setHeader("access", access);
-        response.addCookie(createCookie("refresh", refresh));
+        // AccessToken과 RefreshToken을 쿠키에 추가
+        response.addCookie(createCookie("AccessToken", accessToken));
+        response.addCookie(createCookie("refresh", refreshToken));
+
+        // 성공 후 리다이렉트
         response.setStatus(HttpStatus.OK.value());
     }
 
@@ -102,7 +97,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setStatus(401);
     }
 
-    private void addRefreshEntity(String username, String refresh, Long expiredMs) {
+    private void saveRefreshToken(String username, String refresh, Long expiredMs) {
 
         Date date = new Date(System.currentTimeMillis() + expiredMs);
 
@@ -115,10 +110,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     private Cookie createCookie(String key, String value) {
+
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(60 * 60 * 24 * 7); // 7일
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
+        cookie.setMaxAge(24*60*60); // 쿠키 세션 주기
+        //cookie.setSecure(true); // setSecure = https 통신 진행시 사용
+        //cookie.setPath("/");
+        cookie.setHttpOnly(true); // 어떤 클라이언트에서 자바스크립트로 해당 쿠키 접근 못하게 막기
+
         return cookie;
     }
 }
