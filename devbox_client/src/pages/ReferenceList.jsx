@@ -3,7 +3,7 @@ import Category from '../components/Category';
 import Pagination from '../components/Pagination';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 const ReferenceList = () => {
@@ -70,22 +70,20 @@ const ReferenceList = () => {
                                     <div className="row p-2">
                                         <div className="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
                                             <h3>{v.title}</h3>
-                                            <a href=''
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    navigate(`/reference/update?referenceId=${v.id}`);
-                                                }}>수정</a>
-                                            <a href=''
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    async function send() {
-                                                        const url = `http://127.0.0.1:8080/reference/delete?referenceId=${v.id}`;
-                                                        await fetch(url);
-                                                        alert("삭제가 완료되었습니다.");
-                                                        window.location.reload();
-                                                    }
-                                                    send();
-                                                }}>삭제</a>
+                                            <Link onClick={(e) => {
+                                                e.preventDefault();
+                                                navigate(`/reference/update?referenceId=${v.id}`);
+                                            }}>수정</Link>
+                                            <Link onClick={(e) => {
+                                                e.preventDefault();
+                                                async function send() {
+                                                    const url = `http://127.0.0.1:8080/reference/delete?referenceId=${v.id}`;
+                                                    await fetch(url);
+                                                    alert("삭제가 완료되었습니다.");
+                                                    window.location.reload();
+                                                }
+                                                send();
+                                            }}>삭제</Link>
                                         </div>
                                         <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                                             <li style={{ listStyle: 'none' }}>{v.selectJob}</li>
@@ -93,7 +91,7 @@ const ReferenceList = () => {
                                             <li>{v.content2}</li>
                                         </div>
                                         <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
-                                            <a href={v.link} className="btn rounded-pill px-4 btn-primary light-300" target='_blank'>Link</a>
+                                            <Link to={v.link} className="btn rounded-pill px-4 btn-primary light-300" target='_blank'>Link</Link>
                                         </div>
                                     </div>
                                 </div>
