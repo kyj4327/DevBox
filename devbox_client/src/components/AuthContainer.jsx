@@ -106,19 +106,29 @@ function AuthContainer() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // FormData를 이용해 form-data 방식으로 데이터를 보내기
-    const formData = new URLSearchParams();
-    formData.append("username", e.target.email.value);
-    formData.append("password", e.target.password.value);
+    // // FormData를 이용해 form-data 방식으로 데이터를 보내기
+    // const formData = new URLSearchParams();
+    // formData.append("username", e.target.email.value);
+    // formData.append("password", e.target.password.value);
 
-    console.log("Logging in with data:", formData.toString()); // 로그인 데이터 출력
+    const data = {
+      username: e.target.email.value,
+      password: e.target.password.value,
+  };
+
+    // console.log("Logging in with data:", formData.toString()); // 로그인 데이터 출력
+    console.log("Logging in with data:", data); // 로그인 데이터 출력
 
     fetch("http://localhost:8080/login", {
       method: "POST",
+      // headers: {
+      //   'Content-Type': 'application/x-www-form-urlencoded'
+      // },
+      // body: formData.toString(),
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
-      body: formData.toString(),
+      body: JSON.stringify(data),
       credentials: 'include' // 쿠키를 포함해서 보내기
     })
     .then((res) => {
