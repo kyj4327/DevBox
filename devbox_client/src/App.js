@@ -11,7 +11,10 @@ import ProjectWrite from './pages/ProjectWrite';
 import ProDetail from './pages/ProDetail';
 import ProUpdate from './pages/ProUpdate';
 import DragDrop from './pages/DragDrop';
-import MesWrite from './pages/MesWrite';
+import MsgWrite from './pages/MsgWrite';
+import MsgList from './pages/MsgList';
+import MsgDetail from './pages/MsgDedail';
+import Message from './pages/Message';
 
 function App() {
   return (
@@ -31,7 +34,9 @@ function App() {
         <Route path='/project/update' element={<ProUpdate />} />
         <Route path='' element={<DragDrop />} />
 
-        <Route path='/message/write' element={<MesWrite />} />
+        <Route path='/message/list' element={<Message />} />
+        <Route path='/message/write' element={<MsgWrite />} />
+        <Route path='/message/detail' element={<MsgDetail/>} />
 
        </Route>
 

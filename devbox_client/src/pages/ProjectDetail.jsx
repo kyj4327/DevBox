@@ -108,7 +108,7 @@ const
                         const url = `http://localhost:8080/pro/delete?Id=${proData.id}`;
                         await fetch(url, { method: 'DELETE' });
                         alert('삭제가 완료되었습니다.');
-                        navigate('/prpject/list');
+                        navigate('/project/list');
                     }}>삭제</a>
             </div>
 
