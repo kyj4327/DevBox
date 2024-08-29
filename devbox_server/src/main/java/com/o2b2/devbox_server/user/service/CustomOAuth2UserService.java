@@ -54,7 +54,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
             // 랜덤 닉네임 생성
             String nickname = generateRandomNickname();
-            String provider = userRequest.getClientRegistration().getRegistrationId(); // google, kakao, naver, github 등
+            String provider = userRequest.getClientRegistration().getRegistrationId(); // google, kakao, naver
 //            String providerId = oAuth2User.getAttribute("id").toString();
 
             UserEntity userEntity = new UserEntity();
@@ -74,15 +74,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userDTO.setNickname(nickname);
             userDTO.setProvider(provider);
 
-//            UserDTO userDTO = new UserDTO(
-//                    email,
-//                    oAuth2Response.getName(),
-//                    "ROLE_USER",
-//                    nickname
-//            );
-
-//            userDTO.setProviderId(providerId);
-
             return new CustomOAuth2User(userDTO);
         }
         else {
@@ -90,18 +81,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             existData.setEmail(oAuth2Response.getEmail());
             existData.setName(oAuth2Response.getName());
 
-            //  이미 존재하는 유저라도 로그인시 업데이트가 진행됩니다.
+            //  이미 존재하는 유저라도 로그인시 업데이트가 진행됩니다
             //  (해당 이유는 소셜 로그인 제공자 측에서 닉네임, 프로필 사진의 값이 변경될 수 있기 때문에 로그인마다 업데이트)
             userRepository.save(existData);
 
             UserDTO userDTO = new UserDTO();
+            userDTO.setEmail(existData.getEmail()); // email 설정 추가
             userDTO.setName(oAuth2Response.getName());
             userDTO.setRole(existData.getRole());
+            userDTO.setNickname(existData.getNickname()); // nickname 설정 추가
 
             return new CustomOAuth2User(userDTO);
 
         }
-
     }
 
     // 닉네임 자동 조합
