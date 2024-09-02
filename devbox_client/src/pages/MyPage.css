@@ -1,0 +1,27 @@
+.dashboard_page {
+  background-color: #f8f9fa;
+}
+
+.mypage-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mypage-sidebar {
+  flex: 1;
+  max-width: 300px;
+  margin-right: 20px;
+}
+
+.mypage-content {
+  flex: 3;
+  min-width: 0;
+}
+
+.pt-70 {
+  padding-top: 70px;
+}
+
+.pb-120 {
+  padding-bottom: 120px;
+}
