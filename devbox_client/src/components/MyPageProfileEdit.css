@@ -1,0 +1,125 @@
+/* MyPageContent와 동일한 스타일 적용 */
+.mypage_content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
+  width: 847px; 
+  height: 500px; 
+  align-items: center; 
+  justify-content: center; 
+}
+
+.mypage-profile-edit h2.title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+form {
+  width: 100%; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  height: auto; 
+  padding: 10px 0;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.form-row label {
+  width: 100px; /* 레이블의 고정 너비 */
+  font-weight: 600;
+}
+
+.form-row input {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.form-row input:disabled {
+  background-color: #e9ecef;
+}
+
+.btn-save {
+  background-color: #4232C2;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.btn-save:hover {
+  background-color: #2d24a6;
+}
+
+/* 회원탈퇴 모달 */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 30%;
+  height: auto; /* 모달 창의 높이를 콘텐츠에 맞게 자동으로 설정 */
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translate(-50%, -50%); /* 화면 중앙으로 이동 */
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 100%;
+}
+
+.modal-content h2 {
+  margin-bottom: 15px;
+}
+
+.modal-content p {
+  margin-bottom: 10px;
+}
+
+.modal-content input {
+  padding: 8px;
+  width: 80%;
+  margin-bottom: 20px;
+}
+
+.modal-content .btn-confirm-delete {
+  background-color: red;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.modal-content .btn-cancel {
+  background-color: gray;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.modal-content .btn-confirm-delete:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
