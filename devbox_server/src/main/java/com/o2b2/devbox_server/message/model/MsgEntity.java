@@ -26,8 +26,10 @@ public class MsgEntity {
     String reciver;
 
     LocalDateTime sendTime = LocalDateTime.now();
-    
+
     LocalDateTime readTime;
+
+    Boolean like;
 
 
 }

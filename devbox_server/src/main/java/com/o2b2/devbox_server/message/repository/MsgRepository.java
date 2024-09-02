@@ -12,5 +12,6 @@ public interface MsgRepository extends JpaRepository <MsgEntity, Long> {
 
     Page<MsgEntity> findByReciver(String sender, Pageable pageable);
 
+
     
 }

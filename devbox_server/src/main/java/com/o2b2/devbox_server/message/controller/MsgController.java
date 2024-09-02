@@ -33,6 +33,8 @@ import com.o2b2.devbox_server.project.model.ProEntity;
 import java.time.format.DateTimeFormatter;
 import jakarta.transaction.Transactional;
 
+import java.time.LocalDateTime;
+
 @RestController
 @CrossOrigin
 @Transactional
@@ -58,13 +60,12 @@ public class MsgController {
         Page<MsgEntity> p;
         if (category.equals("받은쪽지")) {
             p = msgRepository.findByReciver(sender, pageable);
-        } else { 
+        } else {
             p = msgRepository.findBySender(sender, pageable);
         }
 
         // 카테고리가 보낸쪽지이면
         // sender(로그인한사람)로 DB의 sender 데이터 조회
-
 
         List<MsgEntity> list = p.getContent();
 
@@ -84,6 +85,7 @@ public class MsgController {
             map.put("sendTime", msg.getSendTime());
             map.put("readTime", msg.getReadTime());
             map.put("reciver", msg.getReciver());
+            map.put("like", msg.getLike());
             return map;
         }).collect(Collectors.toList())); // MsgEntity를 Map으로 변환
         response.put("currentPage", page); // 현재 페이지
@@ -130,19 +132,58 @@ public class MsgController {
     public Map<String, Object> msgDetail(@RequestParam Long id) {
         Map<String, Object> map = new HashMap<>();
 
-        // id로 데이터베이스에서 교육 정보를 조회합니다.
+        // id로 데이터베이스에서 쪽지 정보를 조회합니다.
         Optional<MsgEntity> msgOpt = msgRepository.findById(id);
 
-        MsgEntity msg = msgOpt.get();
-        map.put("id", msg.getId());
-        map.put("title", msg.getTitle());
-        map.put("content", msg.getContent());
-        map.put("sender", msg.getSender());
-        map.put("sendTime", msg.getSendTime());
-        map.put("reciver", msg.getReciver());
+        if (msgOpt.isPresent()) {
+            MsgEntity msg = msgOpt.get();
 
-        return map;
+            // readTime이 null이면 현재 시간을 읽은 시간으로 설정하고 저장합니다.
+            if (msg.getReadTime() == null) {
+                msg.setReadTime(LocalDateTime.now());
+                msgRepository.save(msg); // 데이터베이스에 저장
+            }
 
+            // 쪽지의 세부 정보를 map에 담습니다.
+            map.put("id", msg.getId());
+            map.put("title", msg.getTitle());
+            map.put("content", msg.getContent());
+            map.put("sender", msg.getSender());
+            map.put("sendTime", msg.getSendTime());
+            map.put("reciver", msg.getReciver());
+            map.put("readTime", msg.getReadTime()); // 읽은 시간도 응답에 포함
+        } else {
+            // id에 해당하는 쪽지가 없을 경우 빈 map을 반환하거나 에러 처리를 할 수 있습니다.
+            map.put("error", "Message not found");
+        }
+
+        return map; // 클라이언트에 map 반환
+    }
+
+    @GetMapping("/msg/like")
+    @ResponseBody
+    public Map<String, Object> like(@RequestParam Long id) {
+        Map<String, Object> map = new HashMap<>();
+        Optional<MsgEntity> msgOpt = msgRepository.findById(id);
+
+        if (msgOpt.isPresent()) {
+            MsgEntity msg = msgOpt.get();
+
+            // 좋아요 상태 토글 (좋아요가 없으면 추가하고, 있으면 삭제)
+            if (msg.getLike() == null || !msg.getLike()) {
+                msg.setLike(true); // 좋아요 추가
+            } else {
+                msg.setLike(false); // 좋아요 취소
+            }
+
+            msgRepository.save(msg); // 변경된 상태를 저장
+
+            map.put("like", msg.getLike());
+        } else {
+            map.put("error", "Message not found");
+        }
+
+        return map; // 클라이언트에 map 반환
     }
 
 }
