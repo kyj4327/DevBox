@@ -3,26 +3,28 @@ import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import Category from "../components/Category";
 
-const MesList = (props) => {
+const MsgList = (props) => {
+    console.log(props.list);
+    
     const navigate = useNavigate();
 
-    // const clickState = (e) => {
-    //     e.preventDefault();
-    //     props.clickState(e.target.textContent);
+    const clickState = (e) => {
+        e.preventDefault();
+        props.clickState(e.target.textContent);
 
-    // };
+    };
 
     return (
-        <div className="MesList">
+        <div className="MsgList">
 
             <h2 style={{ textAlign: 'center', marginTop: '2em' }}>쪽지 보관함</h2>
 
-            {/* <div className="row justify-content-center my-5">
+            <div className="row justify-content-center my-5">
                 <div className="filter-btns shadow-md rounded-pill text-center col-auto">
-                    <Category text={'받은 쪽지'} onClick={clickState} />
-                    <Category text={'보낸 쪽지'} onClick={clickState} />
+                    <Category isActive={props.category} text={'받은쪽지'} onClick={clickState} />
+                    <Category isActive={props.category} text={'보낸쪽지'} onClick={clickState} />
                 </div>
-            </div> */}
+            </div>
 
             <div class="pricing-horizontal row col-10 m-auto d-flex shadow-sm rounded overflow-hidden bg-white">
                 {props.list && props.list.map((msg) => (
@@ -37,7 +39,8 @@ const MesList = (props) => {
                                 <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
 
                                     <ui class="list-unstyled text-center light-300">
-                                        <li class="h5 semi-bold-600 mb-0 mt-3">{msg.sender}</li>
+                                        <li class="h5 semi-bold-600 mb-0 mt-3">{msg.title}</li>
+                                        <li>{msg.sender}</li>
                                         <li>{msg.sendTime}</li>
                                     </ui>
                                 </div>
@@ -59,4 +62,4 @@ const MesList = (props) => {
     );
 };
 
-export default MesList;
+export default MsgList;

@@ -40,19 +40,32 @@ public class MsgController {
     @Autowired
     MsgRepository msgRepository;
 
-    @GetMapping("/msg/list")
+    @GetMapping("/msg/list/{sender}")
     public Map<String, Object> msgList(
-            // @PathVariable("state") String state,
+            @PathVariable("sender") String sender,
+            @RequestParam(value = "category") String category,
             @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "9") int size) {
+            @RequestParam(value = "size", defaultValue = "6") int size) {
 
-        // System.out.println(state);
+        System.out.println("Sender: " + sender + ", category: " + category);
         // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
         Pageable pageable = PageRequest.of(page - 1, size, sort); // 페이지 요청 생성
 
-        Page<MsgEntity> p = msgRepository.findAll(pageable);
+        // 카테고리가 받은쪽지이면
+        // sender(로그인한사람)로 DB의 receiver 데이터 조회
+        Page<MsgEntity> p;
+        if (category.equals("받은쪽지")) {
+            p = msgRepository.findByReciver(sender, pageable);
+        } else { 
+            p = msgRepository.findBySender(sender, pageable);
+        }
+
+        // 카테고리가 보낸쪽지이면
+        // sender(로그인한사람)로 DB의 sender 데이터 조회
+
+
         List<MsgEntity> list = p.getContent();
 
         // 페이지네이션 관련 정보 계산
@@ -69,6 +82,7 @@ public class MsgController {
             map.put("content", msg.getContent());
             map.put("sender", msg.getSender());
             map.put("sendTime", msg.getSendTime());
+            map.put("readTime", msg.getReadTime());
             map.put("reciver", msg.getReciver());
             return map;
         }).collect(Collectors.toList())); // MsgEntity를 Map으로 변환

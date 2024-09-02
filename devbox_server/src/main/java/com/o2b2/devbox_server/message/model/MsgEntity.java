@@ -24,8 +24,10 @@ public class MsgEntity {
     String sender;
 
     String reciver;
-    
+
     LocalDateTime sendTime = LocalDateTime.now();
+    
+    LocalDateTime readTime;
 
 
 }

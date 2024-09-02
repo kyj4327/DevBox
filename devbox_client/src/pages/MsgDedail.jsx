@@ -37,8 +37,8 @@ const MesDetail = () => {
                         <div class="comment-body">
                             <div class="comment-header d-flex justify-content-between ms-3">
                                 <div class="header text-start">
-                                    <h5 class="h5">{msgData.sender}</h5>
-                                    <p class="text-muted light-300">{msgData.sendtime}</p>
+                                    <h5 class="h5">보낸사람: {msgData.sender}</h5>
+                                    <h5 class="h5">받는사람: {msgData.reciver}</h5>
                                 </div>
                                 <a href="#" class="text-decoration-none text-secondary"><i class='bx bxs-share me-2'></i>Reply</a>
                             </div>

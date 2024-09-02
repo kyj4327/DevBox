@@ -8,5 +8,9 @@ import com.o2b2.devbox_server.message.model.MsgEntity;
 
 public interface MsgRepository extends JpaRepository <MsgEntity, Long> {
 
+    Page<MsgEntity> findBySender(String sender, Pageable pageable);
+
+    Page<MsgEntity> findByReciver(String sender, Pageable pageable);
+
     
 }

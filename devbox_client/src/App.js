@@ -11,8 +11,8 @@ import ProjectWrite from './pages/ProjectWrite';
 import ProDetail from './pages/ProDetail';
 import ProUpdate from './pages/ProUpdate';
 import DragDrop from './pages/DragDrop';
-import MsgWrite from './pages/MsgWrite';
 import MsgList from './pages/MsgList';
+import MsgWrite from './pages/MsgWrite';
 import MsgDetail from './pages/MsgDedail';
 import Message from './pages/Message';
 
@@ -37,6 +37,7 @@ function App() {
         <Route path='/message/list' element={<Message />} />
         <Route path='/message/write' element={<MsgWrite />} />
         <Route path='/message/detail' element={<MsgDetail/>} />
+
 
        </Route>
 

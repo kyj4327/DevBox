@@ -7,6 +7,7 @@ const MesWrite = () => {
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [sender, setSender] = useState('');
+    const [reciver, setReciver] = useState('');
     const [content, setContent] = useState('');
 
     
@@ -15,6 +16,7 @@ const MesWrite = () => {
 
         formData.append("title", title);
         formData.append("sender", sender);
+        formData.append("reciver", reciver);
         formData.append("content", content);
 
         const url = 'http://127.0.0.1:8080/msg';
@@ -34,7 +36,8 @@ const MesWrite = () => {
 
     return (
         <div className="Message">
-            <WriteShort titleTag={'받는사람'} type={'text'} name={'sender'} value={sender} onChange={(e) => { setSender(e.target.value) }} />
+            <WriteShort titleTag={'보낼분'} type={'text'} name={'sender'} value={sender} onChange={(e) => { setSender(e.target.value) }} />
+            <WriteShort titleTag={'받을분'} type={'text'} name={'reciver'} value={reciver} onChange={(e) => { setReciver(e.target.value) }} />
             <WriteShort titleTag={'제목'} type={'text'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} />
             <div class="col-lg-6 mb-4">
                 <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">작성 내용</h2>
