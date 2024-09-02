@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
@@ -14,10 +14,6 @@ import img6 from '../assets/img/7_l.jpg';
 import img7 from '../assets/img/7_s1.jpg';
 import img8 from '../assets/img/7_s2.jpg';
 
-// 커스텀 버튼 이미지 import
-import prevArrowImg from '../assets/img/left.png'; 
-import nextArrowImg from '../assets/img/right.png'; 
-
 const SliderContainer = styled.div`
   position: relative;
   width: 100%;
@@ -32,31 +28,50 @@ const SlideImage = styled.img`
 `;
 
 const Arrow = styled.div`
-  width: 40px;
-  height: 40px;
-  background-size: contain;
-  background-repeat: no-repeat;
+  width: 50px;  /* 크기 조정 */
+  height: 50px; /* 크기 조정 */
+  background: transparent;
+  border: none;
   cursor: pointer;
   z-index: 1;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const PrevArrow = styled(Arrow)`
-  background-image: url(${prevArrowImg});
-  left: 10px;
+  left: 15px;  /* 위치 조정 */
+  &:before {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 25px solid transparent;  /* 화살표 크기 조정 */
+    border-bottom: 25px solid transparent; /* 화살표 크기 조정 */
+    border-right: 30px solid #D8BFD8; /* 연한 보라색 */
+  }
 `;
 
 const NextArrow = styled(Arrow)`
-  background-image: url(${nextArrowImg});
-  right: 10px;
+  right: 15px;  /* 위치 조정 */
+  &:before {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 25px solid transparent;  /* 화살표 크기 조정 */
+    border-bottom: 25px solid transparent; /* 화살표 크기 조정 */
+    border-left: 30px solid #D8BFD8; /* 연한 보라색 */
+  }
 `;
 
 const DotsContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 20px; /* 슬라이더와 도트 사이의 여백 */
 `;
 
 const DotImage = styled.img`
@@ -74,18 +89,36 @@ const DotImage = styled.img`
   }
 `;
 
-const images = [img1, img2, img3, img4, img5, img6, img7, img8];
+const ImageTitle = styled.div`
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px; /* 슬라이더와 도트 사이의 여백과 분리된 여백 */
+`;
+
+const images = [
+  { src: img1, title: '5층 복도' },
+  { src: img2, title: '5층 복도' },
+  { src: img3, title: '5층 교육장' },
+  { src: img4, title: '6층 로비' },
+  { src: img5, title: '7층 복도' },
+  { src: img6, title: '7층 로비' },
+  { src: img7, title: '7층 교육장' },
+  { src: img8, title: '7층 교육장' }
+];
 
 const ImageSlider = () => {
   const sliderRef = useRef(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const settings = {
-    dots: false,  // 기본 도트 제거
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
+    beforeChange: (oldIndex, newIndex) => setCurrentSlide(newIndex),
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />
   };
@@ -100,18 +133,17 @@ const ImageSlider = () => {
     <SliderContainer>
       <Slider ref={sliderRef} {...settings}>
         {images.map((img, index) => (
-          <div key={index}>
-            <SlideImage src={img} alt={`Slide ${index + 1}`} />
-          </div>
+          <SlideImage key={index} src={img.src} alt={`Slide ${index}`} />
         ))}
       </Slider>
+      <ImageTitle>{images[currentSlide].title}</ImageTitle>
       <DotsContainer>
         {images.map((img, index) => (
-          <DotImage
+          <DotImage 
             key={index}
-            src={img}
-            alt={`Thumbnail ${index + 1}`}
-            active={sliderRef.current && sliderRef.current.innerSlider.state.currentSlide === index}
+            src={img.src}
+            alt={`Dot ${index}`}
+            active={index === currentSlide}
             onClick={() => handleDotClick(index)}
           />
         ))}
