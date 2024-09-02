@@ -16,6 +16,7 @@ import BDIASchedule from "./components/BDIASchedule";
 import FreeBoard from "./components/FreeBoard";
 import FreeBoardDetail from "./components/FreeBoardDetail";
 import PostDetail from "./components/PostDetail";
+import Contact from "./components/Contact";
 
 
 
@@ -32,6 +33,7 @@ function App() {
           <Route path="community/freeboard/new" element={<FreeBoardDetail />} />
           <Route path="community/freeboard/edit/:id" element={<FreeBoardDetail />} />
           <Route path="community/freeboard/post/:id" element={<PostDetail />} />
+          <Route path="faq" element={<Contact />} />
           
         </Routes>
         <Footer />

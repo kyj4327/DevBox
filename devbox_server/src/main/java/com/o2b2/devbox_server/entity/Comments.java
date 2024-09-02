@@ -1,50 +1,45 @@
 package com.o2b2.devbox_server.entity;
 
-import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
+import java.util.Date;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "comments")
 public class Comments {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String author;
+    @Column(nullable = false)
     private String content;
-    private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    @JsonIgnore
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    // Getters and setters
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Date();
+    }
+
+    public Comments() {}
+
+    public Comments(String content, Post post) {
+        this.content = content;
+        this.post = post;
+    }
+
+    // Getters and setters
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public String getContent() {
@@ -55,14 +50,6 @@ public class Comments {
         this.content = content;
     }
 
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
     public Post getPost() {
         return post;
     }
@@ -71,10 +58,7 @@ public class Comments {
         this.post = post;
     }
 
-    @PrePersist
-    public void prePersist() {
-        if (this.date == null) {
-            this.date = LocalDateTime.now();
-        }
+    public Date getCreatedAt() {
+        return createdAt;
     }
 }

@@ -31,7 +31,7 @@ const Header = () => {
         >
           <div className="flex-fill mx-xl-5 mb-2">
             <ul className="nav navbar-nav d-flex justify-content-between mx-xl-5 text-center text-dark">
-            <li className="nav-item dropdown primary-nav-item">
+              <li className="nav-item dropdown primary-nav-item">
                 <Link
                   className="nav-link dropdown-toggle btn-outline-primary rounded-pill px-3"
                   to="#"
@@ -56,7 +56,6 @@ const Header = () => {
                       연간일정
                     </Link>
                   </li>
-  
                 </ul>
               </li>
 
@@ -77,7 +76,6 @@ const Header = () => {
                 </Link>
               </li>
 
-              {/* 드롭다운 메뉴 추가 */}
               <li className="nav-item dropdown primary-nav-item">
                 <Link
                   className="nav-link dropdown-toggle btn-outline-primary rounded-pill px-3"

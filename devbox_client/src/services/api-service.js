@@ -9,10 +9,10 @@ const api = axios.create({
     },
 });
 const handleApiError = (error) => {
-  console.error('API Error:', error.response || error);
-  throw error;
-};
-
+    console.error('API Error:', error.response?.data || error.message || error);
+    throw error;
+  };
+  
 export const getAllPosts = async () => {
     const response = await api.get('/posts');
     return response.data;
