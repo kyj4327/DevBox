@@ -24,6 +24,7 @@ import HiringUpdate from './pages/HiringUpdate';
 import ContestList from './pages/ContestList';
 import ContestWrite from './pages/ContestWrite';
 import ContestUpdate from './pages/ContestUpdate';
+import Reservation from './pages/Reservation';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -55,6 +56,9 @@ function App() {
           <Route path='/contest/list' element={<ContestList />} />
           <Route path='/contest/write' element={<ContestWrite />} />
           <Route path='/contest/update' element={<ContestUpdate />} />
+
+          {/* 6층 회의실 대여 서비스 */}
+          <Route path='/reservation' element={<Reservation />} />
         </Routes>
       </BrowserRouter>
     </div>
