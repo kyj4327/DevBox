@@ -1,10 +1,13 @@
 import React from 'react';
-import ContactForm from './ContactForm';  // ContactForm 컴포넌트 불러오기
+import ContactForm from './ContactForm';
+import '../assets/css/contact.css';
+import bannerImage from '../assets/img/contact.jpg';
 
 const Contact = () => {
   return (
     <>
-      <section className="bg-light">
+      <section className="contact-background">
+        <img src={bannerImage} alt="Contact Banner" />
         <div className="container py-4">
           <div className="row align-items-center justify-content-between">
             <div className="contact-header col-lg-4">
@@ -15,16 +18,13 @@ const Contact = () => {
                 센텀벤처타운 502호 
               </p>
             </div>
-            <div className="contact-img col-lg-5 align-items-end col-md-4">
-              <img src=".\assets\img\banner-bg-01.jpg" alt="Banner" />
-            </div>
           </div>
         </div>
       </section>
 
       <section className="container py-5">
         <h1 className="col-12 col-xl-8 h2 text-left text-primary pt-3">BDIA에게 궁금한점을 물어보세요!</h1>
-        <h2 className="col-12 col-xl-8 h4 text-left regular-400">교육관련, 궁금한점을 직접 문의하세요 </h2>
+        <h2 className="col-12 col-xl-8 h4 text-left regular-400">교육관련, 궁금한점을 직접 문의하세요</h2>
         <p className="col-12 col-xl-8 text-left text-muted pb-5 light-300">
           진행중에 교육과정, 진행예정인 교육과정에 대해 궁금한점을 물어보세요
         </p>
@@ -41,7 +41,6 @@ const Contact = () => {
                 <li className="h5 mb-0">교육문의</li>
                 <li className="text-muted">BDIA</li>
                 <li className="text-muted">051-749-9354</li>
-                
               </ul>
             </div>
           </div>
