@@ -1,4 +1,4 @@
-.mypage_content {
+.mypage-content__wrapper {
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
@@ -6,18 +6,29 @@
   margin-top: 50px;
 }
 
-.post_title h5.title {
+.mypage-content__title-wrapper h5.mypage-content__title {
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 20px;
 }
 
-.user_info {
+.mypage-content__user-info {
   margin-bottom: 20px;
   font-size: 16px;
   line-height: 1.5;
 }
 
-.user_info p {
+.mypage-content__user-info p {
   margin: 5px 0;
+}
+
+.mypage-content__row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mypage-content__col {
+  flex: 1;
+  min-width: 200px;
+  margin-right: 15px;
 }

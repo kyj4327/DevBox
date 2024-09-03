@@ -59,12 +59,12 @@ function MyPageContent() {
 
 
   return (
-    <div className="mypage_content">
-      <div className="post_title">
-        <h5 className="title">나의 정보</h5>
+    <div className="mypage-content__wrapper">
+      <div className="mypage-content__title-wrapper">
+        <h5 className="mypage-content__title">나의 정보</h5>
       </div>
       {user ? (
-        <div className="user_info">
+        <div className="mypage-content__user-info">
           <p><strong>이메일:</strong> {user.email}</p>
           <p><strong>닉네임:</strong> {user.nickname}</p>
           <p><strong>이름:</strong> {user.name}</p>
@@ -76,17 +76,16 @@ function MyPageContent() {
           <p>로그인 정보가 없습니다.</p>
         </div>
       )}
-      <div className="row">
-      <div className="col-sm-4">
+      <div className="mypage-content__row">
+        <div className="mypage-content__col">
           <MyPageBox icon="fal fa-file-alt" title="자유 게시판 : 3" />
         </div>
-        <div className="col-sm-4">
+        <div className="mypage-content__col">
           <MyPageBox icon="fal fa-file-alt" title="프로젝트 자랑 : 3" />
         </div>
-        <div className="col-sm-4">
+        <div className="mypage-content__col">
           <MyPageBox icon="fal fa-file-alt" title="모여라 메이트 : 3" />
         </div>
-
       </div>
     </div>
   );
