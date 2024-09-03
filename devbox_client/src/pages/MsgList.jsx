@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import Category from "../components/Category";
@@ -14,9 +14,9 @@ const MsgList = (props) => {
             method: 'GET'
         });
         const data = await res.json();
-        if (data.code == 200) {
-            navigate('/message/list');
-        }
+        
+        props.setRefresh(); // 부모 컴포넌트 refresh상태 반전
+     
     };
 
     // 상태 필터링 함수
@@ -55,15 +55,20 @@ const MsgList = (props) => {
                                             <li>{msg.sendTime}</li>
                                         </ul>
                                     </div>
+                                    <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
+                                        <div
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                // 클릭 이벤트가 부모 요소로 전파되는 것 상위 컴포넌트에 영향을 주지 않음
+                                                e.preventDefault();
+                                                //<a> 태그나 <form> 안에 있는 요소라면 기본 동작(링크 이동 또는 폼 제출)을 방지
+                                                like(msg.id)
+                                            }}
+                                            className={`bx-md bx ${isLiked ? 'bxs-heart' : 'bx-heart'} me-1`}
+                                        ></div>
+                                    </div>
                                 </div>
                             </a>
-                            <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
-                                <div
-                                    onClick={() => like(msg.id)}
-                                    className={`bx-fw bx ${isLiked ? 'bxs-heart' : 'bx-heart'} me-1`}
-                                    style={{ cursor: 'pointer' }}
-                                ></div>
-                            </div>
                         </div>
                     );
                 })}
