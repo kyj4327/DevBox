@@ -31,5 +31,7 @@ public class MsgEntity {
 
     Boolean like;
 
+    Integer order;
+
 
 }

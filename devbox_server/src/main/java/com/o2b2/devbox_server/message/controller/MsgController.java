@@ -1,9 +1,5 @@
 package com.o2b2.devbox_server.message.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,13 +21,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.o2b2.devbox_server.message.model.MsgEntity;
 import com.o2b2.devbox_server.message.repository.MsgRepository;
-import com.o2b2.devbox_server.project.model.MultiImgEntity;
-import com.o2b2.devbox_server.project.model.ProEntity;
-import java.time.format.DateTimeFormatter;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
@@ -51,9 +44,12 @@ public class MsgController {
 
         System.out.println("Sender: " + sender + ", category: " + category);
         // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        
 
-        Sort sort = Sort.by(Sort.Direction.DESC, "id");
-        Pageable pageable = PageRequest.of(page - 1, size, sort); // 페이지 요청 생성
+
+        // Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        Direction dir = Direction.DESC;
+        Pageable pageable = PageRequest.of(page - 1, size, dir, "order", "id"); // 페이지 요청 생성
 
         // 카테고리가 받은쪽지이면
         // sender(로그인한사람)로 DB의 receiver 데이터 조회
@@ -86,6 +82,7 @@ public class MsgController {
             map.put("readTime", msg.getReadTime());
             map.put("reciver", msg.getReciver());
             map.put("like", msg.getLike());
+            map.put("order", msg.getOrder());
             return map;
         }).collect(Collectors.toList())); // MsgEntity를 Map으로 변환
         response.put("currentPage", page); // 현재 페이지
@@ -95,6 +92,37 @@ public class MsgController {
 
         return response; // JSON 형태로 반환
     }
+
+    @GetMapping("/msg/like")
+    @ResponseBody
+    public Map<String, Object> like(@RequestParam Long id) {
+        Map<String, Object> map = new HashMap<>();
+        Optional<MsgEntity> msgOpt = msgRepository.findById(id);
+
+        if (msgOpt.isPresent()) {
+            MsgEntity msg = msgOpt.get();
+
+
+            // 좋아요 상태 토글 (좋아요가 없으면 추가하고, 있으면 삭제)
+            if (msg.getLike() == null || !msg.getLike()) {
+                msg.setLike(true); // 좋아요 추가
+                
+                msg.setOrder(1);
+            } else {
+                msg.setLike(false); // 좋아요 취소
+                msg.setOrder(0);
+            }
+
+            msgRepository.save(msg); // 변경된 상태를 저장
+            
+            map.put("like", msg.getLike());
+        } else {
+            map.put("error", "Message not found");
+        }
+
+        return map; // 클라이언트에 map 반환
+    }
+
 
     @PostMapping("/msg")
     public Map<String, Object> msg(@ModelAttribute MsgEntity msg) {
@@ -160,30 +188,5 @@ public class MsgController {
         return map; // 클라이언트에 map 반환
     }
 
-    @GetMapping("/msg/like")
-    @ResponseBody
-    public Map<String, Object> like(@RequestParam Long id) {
-        Map<String, Object> map = new HashMap<>();
-        Optional<MsgEntity> msgOpt = msgRepository.findById(id);
-
-        if (msgOpt.isPresent()) {
-            MsgEntity msg = msgOpt.get();
-
-            // 좋아요 상태 토글 (좋아요가 없으면 추가하고, 있으면 삭제)
-            if (msg.getLike() == null || !msg.getLike()) {
-                msg.setLike(true); // 좋아요 추가
-            } else {
-                msg.setLike(false); // 좋아요 취소
-            }
-
-            msgRepository.save(msg); // 변경된 상태를 저장
-
-            map.put("like", msg.getLike());
-        } else {
-            map.put("error", "Message not found");
-        }
-
-        return map; // 클라이언트에 map 반환
-    }
-
+  
 }
