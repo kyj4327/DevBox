@@ -2,27 +2,46 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import '../assets/css/reservation.css';
 
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { ko } from 'date-fns/locale';
-import { format } from 'date-fns';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import moment from "moment";
 import { useEffect, useState } from 'react';
 
 const Reservation = () => {
-    const [startDate, setStartDate] = useState(new Date());
+    const [value, onChange] = useState(new Date());
     const [year, setYear] = useState('');
     const [month, setMonth] = useState('');
     const [day, setDay] = useState('');
     const [time, setTime] = useState('');
 
-    // 컴포넌트가 처음 렌더링될 때 year, month, day를 설정
     useEffect(() => {
-        setYear(format(startDate, 'yyyy'));
-        // setMonth(format(startDate, 'MM'));
-        // setDay(format(startDate, 'dd'));
-        setMonth(format(startDate, 'M'));
-        setDay(format(startDate, 'd'));
-    }, [startDate]);
+        setYear(moment(value).format("YYYY"));
+        setMonth(moment(value).format("M"));
+        setDay(moment(value).format("D"));
+    }, [value])
+
+    // 일요일(0) 또는 토요일(6)인지 확인하여 클래스를 지정
+    const tileClassName = ({ date, view }) => {
+        if (view === 'month') {
+            if (date.getDay() === 0) {
+                return 'sunday';
+            } else if (date.getDay() === 6) {
+                return 'saturday';
+            } else {
+                return '';
+            }
+        } else {
+            return false;
+        }
+    }
+
+    const disableWeekends = ({ date, view }) => {
+        if (view === 'month') { // 달력 뷰가 일 단위일 때만 주말을 비활성화
+            const day = moment(date).day();
+            return day === 0 || day === 6; // day가 0이면 일요일, 6이면 토요일
+        }
+        return false; // 다른 뷰 (연간, 월간)에서는 비활성화하지 않음
+    };
 
     const timeClick = (e) => {
         e.preventDefault();
@@ -52,17 +71,20 @@ const Reservation = () => {
                     번호 : 051-749-9424/9474
                 </p>
                 <div className="row d-flex align-items-center pb-5">
-                    <div className="col-lg-6 offset-lg-0 col-md-8 offset-md-2">
+                    <div className="col-lg-6 offset-lg-0 col-md-8 offset-md-2" style={{ display: 'flex', justifyContent: 'space-around' }}>
                         <div className="pricing-list rounded-botton rounded-3 py-sm-0 py-5">
-                            <DatePicker
-                                locale={ko}
-                                todayButton="today"
-                                selected={startDate}
-                                onChange={(date) => { setStartDate(date); }}
-                                minDate={new Date()}
-                                inline />
+                            <Calendar onChange={onChange} value={value}
+                                formatDay={(locale, date) => moment(date).format('D')} // "일" 제거(숫자만 보이게)
+                                calendarType='gregory' // 일요일부터 시작
+                                next2Label={null} // +1년 & +10년 이동 버튼 숨기기
+                                prev2Label={null} // -1년 & -10년 이동 버튼 숨기기
+                                minDate={new Date()} // 선택할 수 있는 최소 날짜
+                                minDetail='year'
+                                tileClassName={tileClassName} // 주말 색 설정
+                                tileDisabled={disableWeekends} // 주말 비활성화
+                            />
                         </div>
-                        <div className="pricing-list mt-4 rounded-botton rounded-3 py-sm-0 py-5" style={{ display: 'flex' }}>
+                        <div className="pricing-list rounded-botton rounded-3 py-sm-0 py-5" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
                             <button className="btn px-4 mx-auto btn-outline-primary" onClick={timeClick}>09:00 - 12:00</button>
                             <button className="btn px-4 mx-auto btn-outline-primary" onClick={timeClick}>12:00 - 15:00</button>
                             <button className="btn px-4 mx-auto btn-outline-primary" onClick={timeClick}>15:00 - 18:00</button>
@@ -70,14 +92,22 @@ const Reservation = () => {
                         </div>
                     </div>
                     <div className="col-lg-6">
-                        <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
-                            <ul className="list-unstyled text-center light-300">
-                                <li className="h5 semi-bold-600 mb-0 mt-3">예약자명 : 이예림</li>
-                                <li className="h5 semi-bold-600 mb-0 mt-3">날짜 : {year} 년 {month} 월 {day} 일</li>
-                                <li className="h5 semi-bold-600 mb-0 mt-3">시간 : {time}</li>
-                            </ul>
-                            <div className="pricing-list-footer col-sm-4 col-5 text-center m-auto align-items-center">
-                                <button className="btn rounded-pill px-4 btn-primary light-300">예약하기</button>
+                        <div className="pricing-list shadow-sm rounded-top rounded-3 py-sm-0 py-5 border border-3">
+                            <div className="row p-2">
+                                <div className="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
+                                    <h4>예약정보</h4>
+                                </div>
+                                <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
+                                    <h5><li style={{ listStyle: 'none' }}>예약자명</li></h5>
+                                    <h5><li style={{ marginBottom: '1rem' }}>이예림</li></h5>
+                                    <h5><li style={{ listStyle: 'none' }}>날짜</li></h5>
+                                    <h5><li style={{ marginBottom: '1rem' }}>{year} 년 {month} 월 {day} 일</li></h5>
+                                    <h5><li style={{ listStyle: 'none' }}>시간</li></h5>
+                                    <h5><li>{time}</li></h5>
+                                </div>
+                                <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
+                                    <button className="btn rounded-pill px-4 btn-primary light-300">예약하기</button>
+                                </div>
                             </div>
                         </div>
                     </div>
