@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import emailjs from 'emailjs-com';
+import axios from 'axios';
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -11,41 +11,37 @@ const ContactForm = () => {
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
   const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // 폼 제출 시 로딩 상태로 설정
 
-    const serviceID = 'service_u399tuc';  // EmailJS에서 제공하는 서비스 ID
-    const templateID = 'template_rne728b';  // EmailJS에서 제공하는 템플릿 ID
-    const userID = 'YS3dcD42PIGwJsmda';  // EmailJS에서 제공하는 Public Key (User ID)
-
-    emailjs.send(serviceID, templateID, {
-      to_name: formData.name,        // 문의자 이름
-      from_email: formData.email,    // 문의자 이메일
-      from_phone: formData.phone,    // 문의자 전화번호
-      subject: formData.subject,     // 이메일 주제
-      message: formData.message      // 메시지 내용
-    }, userID)
-      .then((response) => {
-        console.log('SUCCESS!', response.status, response.text);
-        setIsSubmitted(true);
-        setError('');
-      })
-      .catch((err) => {
-        console.error('FAILED...', err);
-        setError('Error sending email. Please try again later.');
-      });
+    try {
+      const response = await axios.post('/api/contact/send', formData);
+      console.log('성공:', response.data);
+      setIsSubmitted(true);
+      setError('');
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '' }); // 폼 초기화
+    } catch (error) {
+      console.error('오류:', error.response?.data || error.message);
+      setError('문의 전송 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.');
+    } finally {
+      setIsLoading(false); // 전송 완료 후 로딩 상태 해제
+    }
   };
 
   return (
     <form className="contact-form row" onSubmit={handleSubmit}>
-      {isSubmitted && <div className="alert alert-success">Message sent successfully!</div>}
+      {isLoading && <div className="alert alert-info">문의사항 전송에는 잠시의 시간이 소요되니, 성공 메시지가 나오는 것을 기다려주세요.</div>}
+      {isSubmitted && !error && <div className="alert alert-success">문의가 성공적으로 전송되었습니다!</div>}
       {error && <div className="alert alert-danger">{error}</div>}
+      
       <div className="col-lg-6 mb-4">
         <div className="form-floating">
           <input 
@@ -122,7 +118,13 @@ const ContactForm = () => {
         </div>
       </div>
       <div className="col-md-12 col-12 m-auto text-end">
-        <button type="submit" className="btn btn-secondary rounded-pill px-md-5 px-4 py-2 radius-0 text-light light-300">Send Message</button>
+        <button 
+          type="submit" 
+          className="btn btn-secondary rounded-pill px-md-5 px-4 py-2 radius-0 text-light light-300"
+          disabled={isLoading} // 로딩 중일 때 버튼 비활성화
+        >
+          문의하기
+        </button>
       </div>
     </form>
   );

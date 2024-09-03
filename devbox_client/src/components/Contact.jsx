@@ -41,6 +41,7 @@ const Contact = () => {
                 <li className="h5 mb-0">교육문의</li>
                 <li className="text-muted">BDIA</li>
                 <li className="text-muted">051-749-9354</li>
+                
               </ul>
             </div>
           </div>

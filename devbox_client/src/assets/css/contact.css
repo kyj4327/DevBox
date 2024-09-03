@@ -1,0 +1,35 @@
+.contact-background {
+    position: relative;
+    height: 300px; /* 필요한 높이로 조정 */
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .contact-background img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%; /* 우측 절반 차지 */
+    height: 100%;
+    object-fit: cover;
+    z-index: 1; /* 이미지가 배경 위에 있도록 설정 */
+  }
+  
+  .contact-background::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%; /* 좌측 절반 */
+    height: 100%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
+    /* 좌측은 투명도 0, 우측으로 갈수록 불투명하게 설정 */
+    z-index: 0; /* 이미지 아래에 있도록 설정 */
+  }
+  
+  .contact-header {
+    position: relative;
+    z-index: 2; /* 내용이 배경 위에 표시되도록 설정 */
+    color: #fff; /* 텍스트 색상 */
+  }
+  
