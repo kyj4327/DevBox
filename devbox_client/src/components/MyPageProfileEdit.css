@@ -1,5 +1,4 @@
-/* MyPageContent와 동일한 스타일 적용 */
-.mypage_content {
+.mypage-profile-edit__content {
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
@@ -11,33 +10,22 @@
   justify-content: center; 
 }
 
-.mypage-profile-edit h2.title {
+.mypage-profile-edit__title {
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 20px;
 }
 
-form {
-  width: 100%; 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; 
-  height: auto; 
-  padding: 10px 0;
-}
-
-.form-row {
-  display: flex;
-  align-items: center;
+.mypage-profile-edit__form-group {
   margin-bottom: 15px;
 }
 
-.form-row label {
-  width: 100px; /* 레이블의 고정 너비 */
+.mypage-profile-edit__form-group label {
+  width: 100px;
   font-weight: 600;
 }
 
-.form-row input {
+.mypage-profile-edit__form-group input {
   flex-grow: 1;
   padding: 10px;
   border: 1px solid #ccc;
@@ -45,11 +33,11 @@ form {
   font-size: 16px;
 }
 
-.form-row input:disabled {
+.mypage-profile-edit__form-group input:disabled {
   background-color: #e9ecef;
 }
 
-.btn-save {
+.mypage-profile-edit__btn-save {
   background-color: #4232C2;
   color: #fff;
   padding: 10px 20px;
@@ -61,25 +49,36 @@ form {
   margin-top: 20px;
 }
 
-.btn-save:hover {
+.mypage-profile-edit__btn-save:hover {
   background-color: #2d24a6;
 }
 
-/* 회원탈퇴 모달 */
-.modal {
+.mypage-profile-edit__btn-delete {
+  background-color: red;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.mypage-profile-edit__modal {
   position: fixed;
   top: 50%;
   left: 50%;
   width: 30%;
-  height: auto; /* 모달 창의 높이를 콘텐츠에 맞게 자동으로 설정 */
+  height: auto;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: translate(-50%, -50%); /* 화면 중앙으로 이동 */
+  transform: translate(-50%, -50%);
 }
 
-.modal-content {
+.mypage-profile-edit__modal-content {
   background: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -87,21 +86,7 @@ form {
   width: 100%;
 }
 
-.modal-content h2 {
-  margin-bottom: 15px;
-}
-
-.modal-content p {
-  margin-bottom: 10px;
-}
-
-.modal-content input {
-  padding: 8px;
-  width: 80%;
-  margin-bottom: 20px;
-}
-
-.modal-content .btn-confirm-delete {
+.mypage-profile-edit__btn-confirm-delete {
   background-color: red;
   color: white;
   padding: 10px 20px;
@@ -110,7 +95,7 @@ form {
   border-radius: 5px;
 }
 
-.modal-content .btn-cancel {
+.mypage-profile-edit__btn-cancel {
   background-color: gray;
   color: white;
   padding: 10px 20px;
@@ -119,7 +104,35 @@ form {
   border-radius: 5px;
 }
 
-.modal-content .btn-confirm-delete:disabled {
+.mypage-profile-edit__btn-confirm-delete:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.edit-input {
+  width: 330px;
+  height: 30px;
+}
+
+/* 라디오버튼 ->  회원 유형 옆으로 배치 */
+.mypage-profile-edit__form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* 전체 라디오 그룹을 감싸는 컨테이너 */
+.mypage-profile-edit__radio-group {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* 라디오 버튼 사이의 간격 */
+}
+
+
+/* 라디오 버튼의 크기 */
+input[type="radio"] {
+  width: 10px; 
+  height: 10px; 
+  vertical-align: middle; /* 라벨 텍스트와 수직 정렬 */
+  margin-right: 9px; /* 라벨과의 간격 조정 */
 }
