@@ -1,3 +1,4 @@
+
 .contact-background {
   position: relative;
   height: 300px; /* 원래 높이로 복원 */
@@ -30,6 +31,7 @@
   position: relative;
   z-index: 2;
   color: #fff;
+  font-family: 'PTBandocheB'; /* 폰트 적용 */
 }
 
 .bg-light {
@@ -37,6 +39,7 @@
 }
 
 .text-primary {
+  font-family: 'PTBandocheB'; /* 폰트 적용 */
   color: #007bff;
 }
 
