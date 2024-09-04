@@ -14,7 +14,8 @@ import HomePage from './pages/HomePage';
 import MyPage from './pages/MyPage';
 import PasswordReset from './pages/PasswordReset';
 import Header from './components/Header';
-import Footer from './components/Footer'; // Footer import 추가
+import Footer from './components/Footer';
+import GatherMateWrite from './pages/GatherMateWrite';
 
 function AppContent() {
   const location = useLocation();
@@ -30,6 +31,7 @@ function AppContent() {
           <Route path="/login" element={<Naver />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/mypage/*" element={<MyPage />} />
+          <Route path="/gatherwrite" element={<GatherMateWrite />} />
         </Routes>
       </main>
       {!hideHeaderFooter && <Footer />} {/* Footer 추가 */}
