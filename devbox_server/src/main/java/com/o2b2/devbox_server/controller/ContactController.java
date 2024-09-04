@@ -27,7 +27,8 @@ public class ContactController {
     
             String systemEmail = "devbox2024@gmail.com";
             helper.setFrom(systemEmail);                  // 발신자는 시스템 이메일로 설정
-            helper.setTo(systemEmail);                    // 수신자는 시스템 이메일로 설정
+            helper.setTo(new String[] {systemEmail, emailRequest.getEmail()});                    // 수신자는 시스템 이메일로 설정
+
             helper.setReplyTo(emailRequest.getEmail());   // 회신 이메일을 문의자의 이메일로 설정
             helper.setSubject("새로운 문의: " + emailRequest.getSubject());
     

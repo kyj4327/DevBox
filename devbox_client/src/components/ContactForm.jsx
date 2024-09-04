@@ -11,7 +11,7 @@ const ContactForm = () => {
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handleChange = (e) => {
@@ -20,13 +20,14 @@ const ContactForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitted(false); // 폼 제출 시 성공 상태 초기화
+    setError(''); // 폼 제출 시 에러 상태 초기화
     setIsLoading(true); // 폼 제출 시 로딩 상태로 설정
 
     try {
       const response = await axios.post('/api/contact/send', formData);
       console.log('성공:', response.data);
       setIsSubmitted(true);
-      setError('');
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' }); // 폼 초기화
     } catch (error) {
       console.error('오류:', error.response?.data || error.message);
