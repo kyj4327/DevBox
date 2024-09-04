@@ -34,7 +34,7 @@ function HomePage() {
           throw new Error('Failed to fetch user data');
         }
       }
-    } catch (error) {
+    } catch (error) { 
       console.error('Error fetching user data:', error);
       setError(error.message);
     } finally {
@@ -44,6 +44,9 @@ function HomePage() {
 
   const handleLoginClick = () => {
     navigate('/auth');
+  };
+  const handleMyPageClick = () => {
+    navigate('/mypage');
   };
 
   const handleLogoutClick = async () => {
@@ -78,14 +81,16 @@ function HomePage() {
   }
 
   return (
-    <div>
+    
+    <div className="home-page-wrapper">
       <h1>Welcome to the Home Page</h1>
       {user ? (
   <div>
     <h2>Welcome, {user.nickname}</h2>
-    {/* <p>Email: {user.email}</p>  */}
     <p>Name: {user.name}</p> 
     <p>Email: {user.email}</p>
+    <button onClick={handleMyPageClick}>마이 페이지로 이동</button>
+
     <button onClick={handleLogoutClick}>로그아웃</button>
   </div>
 ) : (

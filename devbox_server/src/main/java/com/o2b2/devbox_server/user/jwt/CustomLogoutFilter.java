@@ -9,6 +9,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
@@ -97,6 +98,25 @@ import java.io.IOException;
             cookie.setPath("/");
 
             response.addCookie(cookie);
+
+            // 세션 무효화
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
+
+            // JSESSIONID 쿠키 삭제
+            Cookie jsessionidCookie = new Cookie("JSESSIONID", "");
+            jsessionidCookie.setMaxAge(0);
+            jsessionidCookie.setPath("/");
+            response.addCookie(jsessionidCookie);
+
+            // Access Token 쿠키 삭제
+            Cookie accessTokenCookie = new Cookie("AccessToken", null);
+            accessTokenCookie.setMaxAge(0);
+            accessTokenCookie.setPath("/");
+            response.addCookie(accessTokenCookie);
+
             response.setStatus(HttpServletResponse.SC_OK);
 
         }

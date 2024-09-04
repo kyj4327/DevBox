@@ -116,6 +116,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/user").hasRole("USER")
                         .requestMatchers("/reissue").permitAll()
+                        .requestMatchers("/password/**").permitAll() // 비밀번호 재설정 관련 경로에 접근 허용
                         .requestMatchers("/api/user/me").authenticated() // <- 인증된 사용자만 접근 가능하도록 설정
 
                         .anyRequest().authenticated());
