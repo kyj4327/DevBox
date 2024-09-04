@@ -97,7 +97,7 @@ const Reservation = () => {
                     번호 : 051-749-9424/9474
                 </p>
                 <div className="row d-flex align-items-center pb-5">
-                    <div className="col-lg-6 offset-lg-0 col-md-8 offset-md-2" style={{ display: 'flex', justifyContent: 'space-around' }}>
+                    <div className="col-lg-6" style={{ display: 'flex', justifyContent: 'space-around' }}>
                         <div className="pricing-list rounded-botton rounded-3 py-sm-0 py-5">
                             <Calendar onChange={onChange} value={value}
                                 formatDay={(locale, date) => moment(date).format('D')} // "일" 제거(숫자만 보이게)
