@@ -6,9 +6,13 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import moment from "moment";
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Reservation = () => {
+    const navigate = useNavigate();
+
     const [value, onChange] = useState(new Date());
+    const [name, setName] = useState('이예림');
     const [year, setYear] = useState('');
     const [month, setMonth] = useState('');
     const [day, setDay] = useState('');
@@ -46,6 +50,28 @@ const Reservation = () => {
     const timeClick = (e) => {
         e.preventDefault();
         setTime(e.target.innerText);
+    };
+
+    const saveData = (e) => {
+        e.preventDefault();
+        async function send() {
+            const url = 'http://127.0.0.1:8080/reservation';
+            const res = await fetch(url, {
+                method: 'post',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({ name: name, year: year, month: month, day: day, time: time })
+            });
+            const data = await res.json();
+            if (data.code === 200) {
+                alert('예약 완료');
+                navigate('/reservation/check');
+            } else {
+                alert('다시 입력해주세요.');
+            }
+        }
+        send();
     };
 
     return (
@@ -106,7 +132,12 @@ const Reservation = () => {
                                     <h5><li>{time}</li></h5>
                                 </div>
                                 <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
-                                    <button className="btn rounded-pill px-4 btn-primary light-300">예약하기</button>
+                                    <button className="btn rounded-pill px-4 btn-primary light-300" onClick={saveData}>예약하기</button>
+                                    <button className="btn rounded-pill px-4 btn-primary light-300"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            navigate('/reservation/check');
+                                        }}>예약내역</button>
                                 </div>
                             </div>
                         </div>
