@@ -22,5 +22,9 @@ public class Reservation {
     String day;
 
     String time;
-    
+
+    String condition;
+
+    String date;
+
 }
