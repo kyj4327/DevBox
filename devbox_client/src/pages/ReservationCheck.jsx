@@ -64,7 +64,16 @@ const ReservationCheck = () => {
                                                         navigate('/reservation');
                                                     }}>예약하기</button>
                                                 <button className="btn rounded-pill px-4 btn-primary light-300"
-                                                >삭제하기</button>
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        async function send() {
+                                                            const url = `http://127.0.0.1:8080/reservation/delete?reservationId=${v.id}`;
+                                                            await fetch(url);
+                                                            alert("삭제가 완료되었습니다.");
+                                                            window.location.reload();
+                                                        }
+                                                        send();
+                                                    }}>삭제하기</button>
                                             </div>
                                         </div>
                                     </div>
@@ -72,30 +81,6 @@ const ReservationCheck = () => {
                             )
                         })
                     }
-                    {/* <div className="pricing-list shadow-sm rounded-top rounded-3 py-sm-0 py-5 border border-3">
-                            <div className="row p-2">
-                                <div className="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
-                                    <h4>예약정보</h4>
-                                </div>
-                                <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
-                                    <h5><li style={{ listStyle: 'none' }}>예약자명</li></h5>
-                                    <h5><li style={{ marginBottom: '1rem' }}>이예림</li></h5>
-                                    <h5><li style={{ listStyle: 'none' }}>날짜</li></h5>
-                                    <h5><li style={{ marginBottom: '1rem' }}> 년  월  일</li></h5>
-                                    <h5><li style={{ listStyle: 'none' }}>시간</li></h5>
-                                    <h5><li>시간</li></h5>
-                                </div>
-                                <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
-                                    <button className="btn rounded-pill px-4 btn-primary light-300"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            navigate('/reservation');
-                                        }}>예약하기</button>
-                                    <button className="btn rounded-pill px-4 btn-primary light-300"
-                                    >삭제하기</button>
-                                </div>
-                            </div>
-                        </div> */}
                 </div>
             </section >
             <Footer />
