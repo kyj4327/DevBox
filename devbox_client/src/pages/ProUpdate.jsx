@@ -2,6 +2,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import DragDrop from "./DragDrop";
 import Button from "../components/Button";
+import WriteShort from "../components/WriteShort";
+import WriteLong from "../components/WriteLong";
 
 const ProUpdate = () => {
     const navigate = useNavigate();
@@ -18,7 +20,7 @@ const ProUpdate = () => {
     const [coment, setComent] = useState('');
     const [uploadImgs, setUploadImgs] = useState([]);// 이미지 업로드 상태를 관리하는 변수
     const [savedImgs, setSavedImgs] = useState([]);
-    
+
     const [delImgId, setDelImgId] = useState([]);
 
 
@@ -26,21 +28,21 @@ const ProUpdate = () => {
     const [ProData, setProData] = useState({});
 
     const handleDeleteImage = (id) => {
-        setDelImgId([...delImgId, id]); 
+        setDelImgId([...delImgId, id]);
         setSavedImgs(savedImgs.filter((img) => img.id !== id));
     };
 
     const onchangeImageUpload = (e) => {
 
         const { files } = e.target;
-        
+
         setUploadImgs(Array.from(files));
     }
 
     const handleDetail = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append("id",id);
+        formData.append("id", id);
         uploadImgs.forEach((v) => {
             formData.append("file", v);
         })
@@ -49,12 +51,12 @@ const ProUpdate = () => {
         formData.append("name", name);
         formData.append("link", link);
         formData.append("coment", coment);
-        
+
         delImgId.forEach((v) => {
             formData.append("delImgId", v);
         });
         console.log(delImgId);
-        
+
         const url = 'http://localhost:8080/pro/update';
         const res = await fetch(url, {
             method: 'post',
@@ -86,13 +88,13 @@ const ProUpdate = () => {
             object: img.img // img 객체를 파일 객체로 사용
         }));
         setSavedImgs(imageFiles);
-    
+
     }
 
 
     const addFiles = (files) => {
         console.log(files);
-        
+
         const fs = files.map(v => {
             return v.object;
         })
@@ -101,99 +103,52 @@ const ProUpdate = () => {
 
     useEffect(() => {
         get();
-    },[]);
+    }, []);
 
     return (
         <div>
+            <section class="container py-5">
+                <div className="container py-5">
+                    <h1 className="h2 semi-bold-600 text-center mt-2 pb-5 ">프로젝트 자랑 수정</h1>
+                    <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
+                        <p className="text-center pb-5 light-300"></p>
+                        <div className="contact-form row">
+                            <WriteShort titleTag={'제목'} type={'text'} name={'title'} value={title} onChange={(e) => setTitle(e.target.value)} />
+                            <WriteShort titleTag={'이름'} type={'text'} name={'naem'} value={name} onChange={(e) => setName(e.target.value)} />
 
-            <div class="col-lg-8 ">
-                <form class="contact-form row" method="post" action="#" role="form">
+                            <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">프젝 이미지</h2>
+                            <p className="worksingle-footer py-3 text-muted light-300">
+                                    <DragDrop addFiles={addFiles} initialFiles={savedImgs}
+                                        onDeleteImage={handleDeleteImage}
+                                    />
+                            </p>
 
-                    <div class="col-lg-6 mb-4">
-                        <div class="form-floating">
-                            <input
-                                type="text"
-                                class="form-control form-control-lg light-300"
-                                id="floatingname"
-                                placeholder="Name"
-                                name="title"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                            ></input>
-                            <label for="floatingname light-300"
 
-                            >title</label>
+                            <WriteLong titleTag={'링크'} type={'text'} name={'link'} value={link} onChange={(e) => setLink(e.target.value)} />
 
+                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">내용</h2>
+                            <p className="worksingle-footer py-3 text-muted light-300">
+                                <textarea
+                                    class="form-control form-control-lg light-300"
+                                    rows="8"
+                                    placeholder="내용"
+                                    id="floatingtextarea"
+                                    name="coment"
+                                    value={coment}
+                                    onChange={(e) => setComent(e.target.value)}
+                                    type="text"
+                                ></textarea>
+                            </p>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-lg-6 mb-4">
-                        <div class="form-floating">
-                            <input
-                                type="text"
-                                class="form-control form-control-lg light-300"
-                                id="floatingemail"
-                                placeholder="Email"
-                                name="name"
-
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                            ></input>
-                            <label for="floatingemail light-300"
-
-                            >Name</label>
-                        </div>
+                <div className="form-row pt-2">
+                    <div className="col-md-12 col-10 text-end">
+                        <Button text={'프젝 자랑'} onClick={handleDetail} />
                     </div>
-
-                    <div class="row justify-content-center pb-4">
-                        <div class="col-lg-8">
-                            <p>프젝 이미지</p>
-                            <DragDrop addFiles={addFiles} initialFiles={savedImgs}  
-                            onDeleteImage={handleDeleteImage}
-                            />
-                        
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="form-floating mb-4">
-                            <input
-                                type="text"
-                                class="form-control form-control-lg light-300"
-                                id="floatingsubject"
-                                placeholder="Subject"
-                                name="link"
-                                value={link}
-                                onChange={(e) => setLink(e.target.value)}
-                            ></input>
-                            <label for="floatingsubject light-300">Link</label>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="form-floating mb-3">
-                            <textarea
-                                class="form-control light-300"
-                                rows="8"
-                                placeholder="Message"
-                                id="floatingtextarea"
-                                name="coment"
-                                value={coment}
-                                onChange={(e) => setComent(e.target.value)}
-                                type="text"
-                            ></textarea>
-                            <label for="floatingtextarea light-300">coment</label>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12 col-12 m-auto text-end">
-                        <button type="submit" class="btn btn-secondary rounded-pill px-md-5 px-4 py-2 radius-0 text-light light-300"
-                            onClick={handleDetail}
-                        >프젝 자랑</button>
-                    </div>
-
-                </form>
-            </div>
+                </div>
+            </section>
         </div>
     );
 };

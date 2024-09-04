@@ -128,14 +128,14 @@ const DragDrop = (props) => {
         {
           'display': 'flex',
           'width': '400px',
-          'justify-content': 'space-evenly',
+          'justify-content': 'center',
           'margin-bottom': '1rem'
         }
       }>
         {
           initialFiles.map((v) => {
             return (
-              <div style={{ 'display': 'flow' }}>
+              <div  style={{ 'display': 'flow' }}>
                 <img width='120px' height='120px' 
                  src={`http://localhost:8080/pro/download?id=${v.id}`}></img>
                 <div style={{ 

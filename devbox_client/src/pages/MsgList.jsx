@@ -14,9 +14,9 @@ const MsgList = (props) => {
             method: 'GET'
         });
         const data = await res.json();
-        
+
         props.setRefresh(); // 부모 컴포넌트 refresh상태 반전
-     
+
     };
 
     // 상태 필터링 함수
@@ -73,11 +73,15 @@ const MsgList = (props) => {
                     );
                 })}
             </div>
-
-            <Button text={'쪽지'} onClick={(e) => {
-                e.preventDefault();
-                navigate('/message/write');
-            }} />
+            <div className="form-row pt-5">
+                <div className="col-md-11 col-10 text-end">
+                    <Button text={'쪽지'} onClick={(e) => {
+                        e.preventDefault();
+                        navigate('/message/write');
+                    }} />
+                </div>
+            </div>
+            
         </div>
     );
 };

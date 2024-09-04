@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Button from "../components/Button";
 
 const DetailBasic = () => {
     const navigate = useNavigate();
@@ -50,26 +51,26 @@ const DetailBasic = () => {
                             <li>모집상태: {eduData.state}</li>
                             <li>신청 ▶ <a href={eduData.link} target="_blank">{eduData.link}</a></li>
                         </p>
+                        <div className="row">
+                            <div className="col text-start">
+                                <Button text={'목록'} onClick={() => { navigate('/edu/list') }} />
+                            </div>
+                            <div className="col text-end">
+                                <button type="submit" className="me-2 btn btn-secondary text-white px-md-4 px-2 py-md-3 py-1 radius-0 light-300"
+                                    onClick={(e) => { e.preventDefault(); navigate(`/edu/update?id=${eduData.id}`); }}
+                                >수정</button>
+                                <Button text={'삭제'} onClick={async (e) => {
+                                    e.preventDefault();
+                                    const url = `http://localhost:8080/edu/delete?Id=${eduData.id}`;
+                                    await fetch(url, { method: 'DELETE' });
+                                    alert('삭제가 완료되었습니다.');
+                                    navigate('/edu/list');
+                                }} />
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="buttom">
-                    <a href={eduData.link} target="_blank"><button>수강 신청</button></a>
-                    <button onClick={() => {
-                        navigate('/edu/list')
-                    }}>목록</button>
-                    <a href="" onClick={(e) => {
-                        e.preventDefault();
-                        navigate(`/edu/update?id=${eduData.id}`)
-                    }}>수정</a>
-                    <a className="nav-link" href="" id="delete"
-                        onClick={async (e) => {
-                            e.preventDefault();
-                            const url = `http://localhost:8080/edu/delete?Id=${eduData.id}`;
-                            await fetch(url, { method: 'DELETE' });
-                            alert('삭제가 완료되었습니다.');
-                            navigate('/edu/list');
-                        }}>삭제</a>
-                </div>
+
 
 
             </section>
