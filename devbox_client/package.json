@@ -1,164 +1,59 @@
 {
-  
-"name": "devbox_client",
-  
-"version": "0.1.0",
-  
-"private": true,
-  
-"dependencies": {
-  
-  
-"@testing-library/jest-dom": "^5.17.0",
-  
-  
-"@testing-library/react": "^13.4.0",
-  
-  
-"@testing-library/user-event": "^13.5.0",
-  
-  
-"axios": "^1.7.5",
-  
-  
-"body-parser": "^1.20.2",
-  
-  
-"bootstrap": "^5.3.3",
-  
-  
-"cors": "^2.8.5",
-  
-  
-"devbox_client": "file:",
-  
-  
-"emailjs-com": "^3.2.0",
-  
-  
-"express": "^4.19.2",
-  
-  
-"json-server": "^1.0.0-beta.2",
-  
-  
-"nodemailer": "^6.9.14",
-  
-  
-"react": "^18.3.1",
-  
-  
-"react-comments-section": "^3.0.1",
-  
-  
-"react-dom": "^18.3.1",
-  
-  
-"react-kakao-maps-sdk": "^1.1.27",
-  
-  
-"react-router-dom": "^6.26.1",
-  
-  
-"react-scripts": "5.0.1",
-  
-  
-"react-slick": "^0.30.2",
-  
-  
-"slick-carousel": "^1.8.1",
-  
-  
-"styled-components": "^6.1.12",
-  
-  
-"web-vitals": "^2.1.4"
-  
-},
-  
-"scripts": {
-  
-  
-"start": "react-scripts start",
-  
-  
-"build": "react-scripts build",
-  
-  
-"test": "react-scripts test",
-  
-  
-"eject": "react-scripts eject"
-  
-},
-  
-"eslintConfig": {
-  
-  
-"extends": [
-  
-  
-  
-"react-app",
-  
-  
-  
-"react-app/jest"
-  
-  
-]
-  
-},
-  
-"browserslist": {
-  
-  
-"production": [
-  
-  
-  
-">0.2%",
-  
-  
-  
-"not dead",
-  
-  
-  
-"not op_mini all"
-  
-  
-],
-  
-  
-"development": [
-  
-  
-  
-"last 1 chrome version",
-  
-  
-  
-"last 1 firefox version",
-  
-  
-  
-"last 1 safari version"
-  
-  
-]
-  
-},
-  
-"proxy": "http://localhost:8080",
-  
-"description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
-  
-"main": "index.js",
-  
-"keywords": [],
-  
-"author": "",
-  
-"license": "ISC"
+  "name": "devbox_client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.5",
+    "body-parser": "^1.20.2",
+    "bootstrap": "^5.3.3",
+    "cors": "^2.8.5",
+    "devbox_client": "file:",
+    "emailjs-com": "^3.2.0",
+    "express": "^4.19.2",
+    "json-server": "^1.0.0-beta.2",
+    "nodemailer": "^6.9.14",
+    "react": "^18.3.1",
+    "react-comments-section": "^3.0.1",
+    "react-dom": "^18.3.1",
+    "react-kakao-maps-sdk": "^1.1.27",
+    "react-router-dom": "^6.26.1",
+    "react-scripts": "5.0.1",
+    "react-slick": "^0.30.2",
+    "slick-carousel": "^1.8.1",
+    "styled-components": "^6.1.12",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "proxy": "http://localhost:8080",
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

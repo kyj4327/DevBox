@@ -1,91 +1,86 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getPost, createPost, updatePost } from '../services/api-service';
+import { getAllPosts, getPost, createPost, updatePost, getCommentsByPostId, createComment, deleteComment } from '../services/api-service';
 
 const FreeBoardDetail = () => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
-  const isEditing = Boolean(id);
+  const [post, setPost] = useState({ title: '', content: '', author: '' });
 
   useEffect(() => {
-    const fetchPost = async () => {
-      if (isEditing) {
-        setIsLoading(true);
+    if (id) {
+      const fetchPost = async () => {
         try {
           const data = await getPost(id);
-          setTitle(data.title);
-          setContent(data.content);
+          setPost(data);
         } catch (error) {
           console.error('Error fetching post:', error);
-          setError('Failed to fetch post. Please try again.');
-        } finally {
-          setIsLoading(false);
         }
-      }
-    };
+      };
+      fetchPost();
+    }
+  }, [id]);
 
-    fetchPost();
-  }, [id, isEditing]);
+  const handleChange = (e) => {
+    setPost({ ...post, [e.target.name]: e.target.value });
+  };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const postData = { title, content };
-
-      if (isEditing) {
-        await updatePost(id, postData);
+      if (id) {
+        await updatePost(id, post);
       } else {
-        await createPost(postData);
+        await createPost(post);
       }
-
       navigate('/community/freeboard');
     } catch (error) {
       console.error('Error saving post:', error);
-      setError('Failed to save post. Please try again.');
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="container mt-5">
-      <h2 className="mb-4">{isEditing ? 'Edit Post' : 'Create New Post'}</h2>
-
-      {error && <div className="alert alert-danger">{error}</div>}
-
+      <h2>{id ? '게시글 수정' : '새 게시글 작성'}</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Title</label>
+          <label htmlFor="title">제목</label>
           <input
             type="text"
             className="form-control"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            id="title"
+            name="title"
+            value={post.title}
+            onChange={handleChange}
             required
           />
         </div>
         <div className="form-group">
-          <label>Content</label>
-          <textarea
+          <label htmlFor="author">작성자</label>
+          <input
+            type="text"
             className="form-control"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            id="author"
+            name="author"
+            value={post.author}
+            onChange={handleChange}
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary" disabled={isLoading}>
-          {isLoading ? 'Saving...' : (isEditing ? 'Update Post' : 'Create Post')}
+        <div className="form-group">
+          <label htmlFor="content">내용</label>
+          <textarea
+            className="form-control"
+            id="content"
+            name="content"
+            rows="5"
+            value={post.content}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          {id ? '수정' : '작성'}
         </button>
       </form>
     </div>

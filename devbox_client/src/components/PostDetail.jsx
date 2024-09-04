@@ -1,67 +1,94 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getPost, deletePost } from '../services/api-service';
-import Comments from './Comments';
+import { useParams, Link } from 'react-router-dom';
+import { getAllPosts, getPost, createPost, updatePost, getCommentsByPostId, createComment, deleteComment } from '../services/api-service';
 
 const PostDetail = () => {
-    const [post, setPost] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const { id } = useParams();
-    const navigate = useNavigate();
-    
-    useEffect(() => {
-        const fetchPost = async () => {
-            try {
-                const data = await getPost(id);
-                setPost(data);
-            } catch (err) {
-                console.error('Error fetching post:', err);
-                setError('Failed to load post. Please try again.');
-            } finally {
-                setIsLoading(false);
-            }
-        };
+  const { id } = useParams();
+  const [post, setPost] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
 
-        fetchPost();
-    }, [id]);
-
-    const formatDate = (dateString) => {
-        if (!dateString) return 'Date not available';
-        const date = new Date(dateString);
-        return isNaN(date.getTime()) ? 'Invalid date' : date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+  useEffect(() => {
+    const fetchPostAndComments = async () => {
+      try {
+        const postData = await getPost(id);
+        setPost(postData);
+        const commentsData = await getCommentsByPostId(id);
+        setComments(commentsData);
+      } catch (error) {
+        console.error('Error fetching post and comments:', error);
+      }
     };
 
-    const handleEdit = () => {
-        navigate(`/community/freeboard/edit/${id}`);
-    };
+    fetchPostAndComments();
+  }, [id]);
 
-    const handleDelete = async () => {
-        if (window.confirm('Are you sure you want to delete this post?')) {
-            try {
-                await deletePost(id);
-                navigate('/community/freeboard');
-            } catch (err) {
-                console.error('Error deleting post:', err);
-                setError('Failed to delete post. Please try again.');
-            }
-        }
-    };
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const createdComment = await createComment({ postId: id, content: newComment });
+      setComments([...comments, createdComment]);
+      setNewComment('');
+    } catch (error) {
+      console.error('Error creating comment:', error);
+    }
+  };
 
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div className="alert alert-danger">{error}</div>;
-    if (!post) return <div>Post not found.</div>;
+  const handleCommentDelete = async (commentId) => {
+    try {
+      await deleteComment(commentId);
+      setComments(comments.filter(comment => comment.id !== commentId));
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+    }
+  };
 
-    return (
-        <div className="container mt-5">
-            <h1>{post.title}</h1>
-            <p className="text-muted">Posted on: {formatDate(post.date)}</p>
-            <div className="mb-4">{post.content}</div>
-            <button className="btn btn-primary mr-2" onClick={handleEdit}>Edit</button>
-            <button className="btn btn-danger" onClick={handleDelete}>Delete</button>
-            <Comments postId={post.id} />
+  if (!post) return <div>Loading...</div>;
+
+  return (
+    <div className="container mt-5">
+      <h2>{post.title}</h2>
+      <p>작성자: {post.author}</p>
+      <p>작성일: {new Date(post.createdAt).toLocaleString()}</p>
+      <div className="mb-4">{post.content}</div>
+      <Link to={`/community/freeboard/edit/${post.id}`} className="btn btn-primary mr-2">
+        수정
+      </Link>
+      <Link to="/community/freeboard" className="btn btn-secondary">
+        목록으로
+      </Link>
+
+      <h3 className="mt-5">댓글</h3>
+      <form onSubmit={handleCommentSubmit}>
+        <div className="form-group">
+          <textarea
+            className="form-control"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            placeholder="댓글을 입력하세요"
+            required
+          />
         </div>
-    );
+        <button type="submit" className="btn btn-primary">댓글 작성</button>
+      </form>
+
+      <div className="mt-4">
+        {comments.map((comment) => (
+          <div key={comment.id} className="card mb-2">
+            <div className="card-body">
+              <p className="card-text">{comment.content}</p>
+              <p className="card-text"><small className="text-muted">
+                {new Date(comment.createdAt).toLocaleString()}
+              </small></p>
+              <button onClick={() => handleCommentDelete(comment.id)} className="btn btn-sm btn-danger">
+                삭제
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default PostDetail;

@@ -1,105 +1,47 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getAllPosts } from '../services/api-service';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { getAllPosts, getPost, createPost, updatePost, getCommentsByPostId, createComment, deleteComment } from '../services/api-service';
 
 const FreeBoard = () => {
-    const [posts, setPosts] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const postsPerPage = 8;
-    const navigate = useNavigate();
+  const [posts, setPosts] = useState([]);
 
-    const fetchPosts = useCallback(async () => {
-        setIsLoading(true);
-        setError(null);
-        try {
-            const data = await getAllPosts();
-            setPosts(data);
-        } catch (error) {
-            console.error('Error fetching posts:', error);
-            setError('Failed to fetch posts. Please try again.');
-        } finally {
-            setIsLoading(false);
-        }
-    }, []);
-
-    useEffect(() => {
-        fetchPosts();
-    }, [fetchPosts]);
-
-    const formatDate = (dateString) => {
-        if (!dateString) return 'Date not available';
-        const date = new Date(dateString);
-        return isNaN(date.getTime()) ? 'Invalid date' : date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const data = await getAllPosts();
+        setPosts(data);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
     };
 
-    const sortedPosts = posts.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
-    const indexOfLastPost = currentPage * postsPerPage;
-    const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost);
+    fetchPosts();
+  }, []);
 
-    const paginate = (pageNumber) => {
-        const totalPages = Math.ceil(posts.length / postsPerPage);
-        if (pageNumber > 0 && pageNumber <= totalPages) {
-            setCurrentPage(pageNumber);
-        }
-    };
-
-    const handleNewPost = () => {
-        navigate('/community/freeboard/new');
-    };
-
-    const handleViewPost = (postId) => {
-        navigate(`/community/freeboard/post/${postId}`);
-    };
-
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div className="alert alert-danger">{error}</div>;
-    }
-
-    return (
-        <div className="container mt-5">
-            <h2 className="mb-4">FreeBoard</h2>
-            <button className="btn btn-primary mb-4" onClick={handleNewPost}>
-                New Post
-            </button>
-
-            <ul className="list-group mb-4">
-                {currentPosts.length > 0 ? (
-                    currentPosts.map(post => (
-                        <li key={post.id} className="list-group-item" onClick={() => handleViewPost(post.id)} style={{cursor: 'pointer'}}>
-                            <h5>{post.title}</h5>
-                            <p>{post.content.substring(0, 100)}...</p>
-                            <small>{formatDate(post.date)}</small>
-                        </li>
-                    ))
-                ) : (
-                    <li className="list-group-item">No posts available</li>
-                )}
-            </ul>
-
-            <nav>
-                <ul className="pagination">
-                    <li className="page-item">
-                        <button className="page-link" onClick={() => paginate(currentPage - 1)}>Previous</button>
-                    </li>
-                    {[...Array(Math.ceil(posts.length / postsPerPage))].map((_, i) => (
-                        <li key={i} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-                            <button className="page-link" onClick={() => paginate(i + 1)}>{i + 1}</button>
-                        </li>
-                    ))}
-                    <li className="page-item">
-                        <button className="page-link" onClick={() => paginate(currentPage + 1)}>Next</button>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    );
+  return (
+    <div className="container mt-5">
+      <h2 className="mb-4">자유게시판</h2>
+      <Link to="/community/freeboard/new" className="btn btn-primary mb-3">
+        새 글 작성
+      </Link>
+      <div className="list-group">
+        {posts.map((post) => (
+          <Link
+            key={post.id}
+            to={`/community/freeboard/post/${post.id}`}
+            className="list-group-item list-group-item-action"
+          >
+            <div className="d-flex w-100 justify-content-between">
+              <h5 className="mb-1">{post.title}</h5>
+              <small>{new Date(post.createdAt).toLocaleDateString()}</small>
+            </div>
+            <p className="mb-1">{post.content.substring(0, 100)}...</p>
+            <small>작성자: {post.author}</small>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default FreeBoard;
