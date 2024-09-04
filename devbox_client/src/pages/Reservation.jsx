@@ -17,11 +17,16 @@ const Reservation = () => {
     const [month, setMonth] = useState('');
     const [day, setDay] = useState('');
     const [time, setTime] = useState('');
+    const [condition, setCondition] = useState('예약완료');
+
+    const [reservationDate, setReservationDate] = useState('');
 
     useEffect(() => {
         setYear(moment(value).format("YYYY"));
-        setMonth(moment(value).format("M"));
-        setDay(moment(value).format("D"));
+        setMonth(moment(value).format("MM"));
+        setDay(moment(value).format("DD"));
+
+        setReservationDate(moment(value).format("YYYY년 MM월 DD일"));
     }, [value])
 
     // 일요일(0) 또는 토요일(6)인지 확인하여 클래스를 지정
@@ -61,12 +66,12 @@ const Reservation = () => {
                 headers: {
                     'content-type': 'application/json'
                 },
-                body: JSON.stringify({ name: name, year: year, month: month, day: day, time: time })
+                body: JSON.stringify({ name: name, year: year, month: month, day: day, time: time, condition: condition, date: reservationDate })
             });
             const data = await res.json();
             if (data.code === 200) {
                 alert('예약 완료');
-                navigate('/reservation/check');
+                navigate('/reservation/list');
             } else {
                 alert('다시 입력해주세요.');
             }
@@ -127,7 +132,8 @@ const Reservation = () => {
                                     <h5><li style={{ listStyle: 'none' }}>예약자명</li></h5>
                                     <h5><li style={{ marginBottom: '1rem' }}>이예림</li></h5>
                                     <h5><li style={{ listStyle: 'none' }}>날짜</li></h5>
-                                    <h5><li style={{ marginBottom: '1rem' }}>{year} 년 {month} 월 {day} 일</li></h5>
+                                    {/* <h5><li style={{ marginBottom: '1rem' }}>{year} 년 {month} 월 {day} 일</li></h5> */}
+                                    <h5><li style={{ marginBottom: '1rem' }}>{reservationDate}</li></h5>
                                     <h5><li style={{ listStyle: 'none' }}>시간</li></h5>
                                     <h5><li>{time}</li></h5>
                                 </div>
@@ -136,7 +142,7 @@ const Reservation = () => {
                                     <button className="btn rounded-pill px-4 btn-primary light-300"
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            navigate('/reservation/check');
+                                            navigate('/reservation/list');
                                         }}>예약내역</button>
                                 </div>
                             </div>
