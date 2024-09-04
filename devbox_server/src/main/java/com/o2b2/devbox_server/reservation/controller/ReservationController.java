@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.o2b2.devbox_server.reservation.model.Reservation;
@@ -34,6 +35,12 @@ public class ReservationController {
     public List<Reservation> reservationCheck() {
         List<Reservation> list = reservationRepository.findAll();
         return list;
+    }
+
+    @GetMapping("/reservation/delete")
+    public String reservationDelete(@RequestParam Long reservationId) {
+        reservationRepository.deleteById(reservationId);
+        return "삭제 완료";
     }
 
 }
