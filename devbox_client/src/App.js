@@ -25,7 +25,7 @@ import ContestList from './pages/ContestList';
 import ContestWrite from './pages/ContestWrite';
 import ContestUpdate from './pages/ContestUpdate';
 import Reservation from './pages/Reservation';
-import ReservationCheck from './pages/ReservationCheck';
+import ReservationList from './pages/ReservationList';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -60,7 +60,7 @@ function App() {
 
           {/* 6층 회의실 대여 서비스 */}
           <Route path='/reservation' element={<Reservation />} />
-          <Route path='/reservation/check' element={<ReservationCheck />} />
+          <Route path='/reservation/list' element={<ReservationList />} />
         </Routes>
       </BrowserRouter>
     </div>
