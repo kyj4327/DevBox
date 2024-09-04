@@ -1,0 +1,4 @@
+/* select 에 부트스트랩 패딩 조건 보다 우선순위 주기 위해 !important 사용 */
+.custom-select {
+  padding: 16px 12px !important;
+}
