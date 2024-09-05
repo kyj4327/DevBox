@@ -53,7 +53,7 @@ const PostDetail = () => {
   const handleDeletePost = async () => {
     try {
       await deletePost(id);
-      navigate('/freeboard'); // Redirect to the board after deletion
+      navigate('/community/freeboard'); // Redirect to the board after deletion
     } catch (error) {
       console.error('Error deleting post:', error);
       setError('게시글 삭제에 실패했습니다.');
