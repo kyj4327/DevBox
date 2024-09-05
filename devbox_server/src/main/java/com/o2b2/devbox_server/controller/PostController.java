@@ -39,15 +39,17 @@ public class PostController {
         return ResponseEntity.ok(createdPost);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post postDetails) {
-        Post updatedPost = postService.updatePost(id, postDetails);
+
+    @PutMapping("/{postId}")
+    public ResponseEntity<Post> updatePost(@PathVariable Long postId, @RequestBody Post postDetails) {
+        Post updatedPost = postService.updatePost(postId, postDetails);
         return ResponseEntity.ok(updatedPost);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePost(@PathVariable Long id) {
-        postService.deletePost(id);
+    // 게시글 삭제
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<?> deletePost(@PathVariable Long postId) {
+        postService.deletePost(postId);
         return ResponseEntity.ok().build();
     }
 }

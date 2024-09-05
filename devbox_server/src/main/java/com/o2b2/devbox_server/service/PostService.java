@@ -29,15 +29,16 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public Post updatePost(Long id, Post postDetails) {
-        Post post = getPostById(id);
+    public Post updatePost(Long postId, Post postDetails) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
         post.setTitle(postDetails.getTitle());
         post.setContent(postDetails.getContent());
+        post.setAuthor(postDetails.getAuthor());
         return postRepository.save(post);
     }
 
-    public void deletePost(Long id) {
-        Post post = getPostById(id);
+    public void deletePost(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
         postRepository.delete(post);
     }
 }
