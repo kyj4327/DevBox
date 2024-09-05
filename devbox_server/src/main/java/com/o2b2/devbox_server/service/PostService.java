@@ -16,9 +16,10 @@ public class PostService {
     private PostRepository postRepository;
 
     public List<Post> getAllPosts() {
-        return postRepository.findAll();
+        List<Post> posts = postRepository.findAll();
+        System.out.println("Fetched posts: " + posts);  // 로깅 추가
+        return posts;
     }
-
     public Post getPostById(Long id) {
         return postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
     }

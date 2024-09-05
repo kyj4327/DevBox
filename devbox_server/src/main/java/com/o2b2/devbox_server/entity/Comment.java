@@ -2,6 +2,9 @@ package com.o2b2.devbox_server.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -27,6 +30,7 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
+    @JsonBackReference // 댓글에서 Post 필드는 직렬화되지 않음
     private Post post;
 
     // Getters and Setters

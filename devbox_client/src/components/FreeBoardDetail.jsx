@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getAllPosts, getPost, createPost, updatePost, getCommentsByPostId, createComment, deleteComment } from '../services/api-service';
+import { getPost, createPost, updatePost } from '../services/api-service';
 
 const FreeBoardDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState({ title: '', content: '', author: '' });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (id) {
       const fetchPost = async () => {
+        setIsLoading(true);
         try {
           const data = await getPost(id);
           setPost(data);
         } catch (error) {
           console.error('Error fetching post:', error);
+          setError('게시글을 불러오는 데 실패했습니다.');
+        } finally {
+          setIsLoading(false);
         }
       };
       fetchPost();
@@ -27,6 +33,8 @@ const FreeBoardDetail = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError(null);
     try {
       if (id) {
         await updatePost(id, post);
@@ -36,8 +44,14 @@ const FreeBoardDetail = () => {
       navigate('/community/freeboard');
     } catch (error) {
       console.error('Error saving post:', error);
+      setError('게시글 저장에 실패했습니다.');
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (isLoading) return <div>로딩 중...</div>;
+  if (error) return <div className="error">{error}</div>;
 
   return (
     <div className="container mt-5">
@@ -79,7 +93,7 @@ const FreeBoardDetail = () => {
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary" disabled={isLoading}>
           {id ? '수정' : '작성'}
         </button>
       </form>

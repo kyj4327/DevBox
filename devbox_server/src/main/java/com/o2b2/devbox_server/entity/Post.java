@@ -1,5 +1,8 @@
 package com.o2b2.devbox_server.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,7 @@ public class Post {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Post가 직렬화될 때 Comment 필드가 포함됩니다.
     private List<Comment> comments = new ArrayList<>();
 
     // Getters and Setters

@@ -1,22 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { getAllPosts, getPost, createPost, updatePost, getCommentsByPostId, createComment, deleteComment } from '../services/api-service';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import {
+  getPost,
+  getCommentsByPostId,
+  createComment,
+} from "../services/api-service";
 
 const PostDetail = () => {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState('');
+  const [newComment, setNewComment] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchPostAndComments = async () => {
+      setIsLoading(true);
+      setError(null);
       try {
-        const postData = await getPost(id);
+        const [postData, commentsData] = await Promise.all([
+          getPost(id),
+          getCommentsByPostId(id),
+        ]);
         setPost(postData);
-        const commentsData = await getCommentsByPostId(id);
-        setComments(commentsData);
+        setComments(Array.isArray(commentsData) ? commentsData : []);
       } catch (error) {
-        console.error('Error fetching post and comments:', error);
+        console.error("Error fetching post or comments:", error);
+        setError("게시글 또는 댓글을 불러오는 데 실패했습니다.");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -25,68 +38,59 @@ const PostDetail = () => {
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
+    if (!newComment.trim()) return;
+
     try {
-      const createdComment = await createComment({ postId: id, content: newComment });
-      setComments([...comments, createdComment]);
-      setNewComment('');
+      const createdComment = await createComment(id, { content: newComment });
+      setComments((prevComments) => [...prevComments, createdComment]);
+      setNewComment("");
     } catch (error) {
-      console.error('Error creating comment:', error);
+      console.error("Error creating comment:", error);
+      setError("댓글 작성에 실패했습니다.");
     }
   };
 
-  const handleCommentDelete = async (commentId) => {
-    try {
-      await deleteComment(commentId);
-      setComments(comments.filter(comment => comment.id !== commentId));
-    } catch (error) {
-      console.error('Error deleting comment:', error);
-    }
-  };
-
-  if (!post) return <div>Loading...</div>;
+  if (isLoading) return <div>로딩 중...</div>;
+  if (error) return <div className="error">{error}</div>;
+  if (!post) return <div>게시글을 찾을 수 없습니다.</div>;
 
   return (
     <div className="container mt-5">
-      <h2>{post.title}</h2>
+      <h1>{post.title}</h1>
+      <p>{post.content}</p>
       <p>작성자: {post.author}</p>
       <p>작성일: {new Date(post.createdAt).toLocaleString()}</p>
-      <div className="mb-4">{post.content}</div>
-      <Link to={`/community/freeboard/edit/${post.id}`} className="btn btn-primary mr-2">
-        수정
-      </Link>
-      <Link to="/community/freeboard" className="btn btn-secondary">
-        목록으로
-      </Link>
 
-      <h3 className="mt-5">댓글</h3>
+      <h2>댓글</h2>
+      {comments.length === 0 ? (
+        <p>댓글이 없습니다.</p>
+      ) : (
+        comments.map((comment) => (
+          <div key={comment.id} className="card mb-2">
+            <div className="card-body">
+              <p>{comment.content}</p>
+              <small>
+                작성일: {new Date(comment.createdAt).toLocaleString()}
+              </small>
+            </div>
+          </div>
+        ))
+      )}
+
       <form onSubmit={handleCommentSubmit}>
         <div className="form-group">
           <textarea
             className="form-control"
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            placeholder="댓글을 입력하세요"
+            placeholder="댓글을 작성하세요..."
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary">댓글 작성</button>
+        <button type="submit" className="btn btn-primary">
+          댓글 작성
+        </button>
       </form>
-
-      <div className="mt-4">
-        {comments.map((comment) => (
-          <div key={comment.id} className="card mb-2">
-            <div className="card-body">
-              <p className="card-text">{comment.content}</p>
-              <p className="card-text"><small className="text-muted">
-                {new Date(comment.createdAt).toLocaleString()}
-              </small></p>
-              <button onClick={() => handleCommentDelete(comment.id)} className="btn btn-sm btn-danger">
-                삭제
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };

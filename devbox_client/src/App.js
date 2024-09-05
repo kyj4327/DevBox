@@ -34,7 +34,6 @@ function App() {
           <Route path="community/freeboard/edit/:id" element={<FreeBoardDetail />} />
           <Route path="community/freeboard/post/:id" element={<PostDetail />} />
           <Route path="faq" element={<Contact />} />
-          
         </Routes>
         <Footer />
       </div>
@@ -43,4 +42,3 @@ function App() {
 }
 
 export default App;
-  

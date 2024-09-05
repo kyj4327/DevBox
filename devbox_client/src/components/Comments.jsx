@@ -7,8 +7,18 @@ const Comments = ({ postId }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        const fetchComments = async () => {
+          try {
+            const commentsData = await getCommentsByPostId(postId);
+            console.log('Processed comments data:', commentsData); // 처리된 데이터 로깅
+            setComments(commentsData);
+          } catch (error) {
+            console.error('Failed to fetch comments:', error);
+          }
+        };
+      
         fetchComments();
-    }, [postId]);
+      }, [postId]);
 
     const fetchComments = async () => {
         try {
