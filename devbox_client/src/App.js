@@ -15,6 +15,7 @@ import MsgList from './pages/MsgList';
 import MsgWrite from './pages/MsgWrite';
 import MsgDetail from './pages/MsgDedail';
 import Message from './pages/Message';
+import MsgReply from './pages/MsgReply';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path='/message/list' element={<Message />} />
         <Route path='/message/write' element={<MsgWrite />} />
         <Route path='/message/detail' element={<MsgDetail/>} />
+        <Route path='/message/reply' element={<MsgReply />} />
 
 
        </Route>

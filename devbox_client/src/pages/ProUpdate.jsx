@@ -41,6 +41,7 @@ const ProUpdate = () => {
 
     const handleDetail = async (e) => {
         e.preventDefault();
+        const modifiedLink = link.includes("watch?v=") ? link.replace("watch?v=", "embed/") : link;
         const formData = new FormData();
         formData.append("id", id);
         uploadImgs.forEach((v) => {
@@ -49,7 +50,7 @@ const ProUpdate = () => {
 
         formData.append("title", title);
         formData.append("name", name);
-        formData.append("link", link);
+        formData.append("link", modifiedLink);
         formData.append("coment", coment);
 
         delImgId.forEach((v) => {
@@ -117,10 +118,12 @@ const ProUpdate = () => {
                             <WriteShort titleTag={'이름'} type={'text'} name={'naem'} value={name} onChange={(e) => setName(e.target.value)} />
 
                             <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">프젝 이미지</h2>
-                            <p className="worksingle-footer py-3 text-muted light-300">
+                            <p className="worksingle-footer py-2 text-muted light-300">
+                                <div id="templatemo-slide-link-target" class="card mb-3">
                                     <DragDrop addFiles={addFiles} initialFiles={savedImgs}
                                         onDeleteImage={handleDeleteImage}
                                     />
+                                </div>
                             </p>
 
 

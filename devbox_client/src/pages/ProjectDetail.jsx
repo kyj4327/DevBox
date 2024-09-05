@@ -1,6 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/free-mode';
+
+import '../assets/css/styles.css';
+
+import { FreeMode, EffectCoverflow, Autoplay, Pagination, Navigation } from 'swiper/modules';
 
 const
     ProjectDetail = (props) => {
@@ -34,53 +44,51 @@ const
                 <section class="container py-5">
                     <div class="row justify-content-center pb-4">
                         <div class="col-lg-8">
-                            <div id="templatemo-slide-link-target" class="card mb-3">
-                                <img id="mainImage" class="img-fluid border rounded" src={`http://localhost:8080/pro/download?id=${proData.imgs ? proData.imgs[0].id : ''}`} alt="Card image cap"></img>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="worksingle-slide-footer row">
+                            <div id="multi-item-example" class="col-20 carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner" role="listbox">
 
-                        <div class="col-1 align-self-center">
-                            <a href="#multi-item-example" role="button" data-bs-slide="prev">
-                                <i class='bx bxs-chevron-left bx-sm text-dark'></i>
-                            </a>
-                        </div>
-
-                        <div id="multi-item-example" class="col-10 carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-inner" role="listbox">
-
-                                <div class="carousel-item active">
-                                    <div class="row">
-                                        {proData.imgs && proData.imgs.map((img) => {
-                                            return (
-                                                <div class="col">
-                                                    <a class="templatemo-slide-link" onClick={(e) => {
-                                                        e.preventDefault();
-                                                        const mainImage = document.getElementById('mainImage');
-                                                        mainImage.src = `http://localhost:8080/pro/download?id=${img.id}`;
-
-                                                    }}>
-                                                        <img class="img-fluid border rounded" src={`http://localhost:8080/pro/download?id=${img.id}`} alt="Product Image"></img>
-                                                    </a>
-                                                </div>
-                                            );
-                                        })}
-
-                                    </div>
+                                    <Swiper
+                                        loop={true}
+                                        effect={'coverflow'}
+                                        grabCursor={true}
+                                        slidesPerView={'auto'}
+                                        coverflowEffect={{
+                                            rotate: 50,
+                                            stretch: 0,
+                                            depth: 100,
+                                            modifier: 1,
+                                            slideShadows: true,
+                                        }}
+                                        spaceBetween={30}
+                                        centeredSlides={true}
+                                        autoplay={{
+                                            delay: 2500,
+                                            disableOnInteraction: false,
+                                        }}
+                                        pagination={{
+                                            clickable: true,
+                                        }}
+                                        navigation={true}
+                                        modules={[EffectCoverflow, Autoplay, Pagination, Navigation, FreeMode]}
+                                        className="mySwiper"
+                                    >
+                                        {proData.imgs && proData.imgs.map((img, index) => (
+                                            <SwiperSlide key={img.id}>
+                                                <img
+                                                    class="img-fluid border rounded"
+                                                    src={`http://localhost:8080/pro/download?id=${img.id}`}
+                                                    alt={`Slide ${index + 1}`}
+                                                    style={{ width: '100%', height: '500px' }}
+                                                />
+                                            </SwiperSlide>
+                                        ))}
+                                        ...
+                                    </Swiper>
                                 </div>
-
-
                             </div>
                         </div>
-
-                        <div class="col-1 align-self-center text-end">
-                            <a href="#multi-item-example" role="button" data-bs-slide="next">
-                                <i class='bx bxs-chevron-right bx-sm text-dark'></i>
-                            </a>
-                        </div>
-
                     </div>
+
 
                     <div class="row justify-content-center">
                         <div class="col-lg-8 pt-4 pb-4">
@@ -96,23 +104,23 @@ const
                             <p class="worksingle-footer py-3 text-muted light-300">
                                 <li>{proData.coment}</li>
                             </p>
-                        <div className="row">
-                            <div className="col text-start">
-                                <Button text={'목록'} onClick={() => { navigate('/project/list') }} />
-                            </div>
-                            <div className="col text-end">
-                                <button type="submit" className="me-2 btn btn-secondary text-white px-md-4 px-2 py-md-3 py-1 radius-0 light-300"
-                                    onClick={(e) => { e.preventDefault(); navigate(`/project/update?id=${proData.id}`); }}
-                                    >수정</button>
-                                <Button text={'삭제'} onClick={async (e) => {
-                                    e.preventDefault();
-                                    const url = `http://localhost:8080/pro/delete?Id=${proData.id}`;
-                                    await fetch(url, { method: 'DELETE' });
-                                    alert('삭제가 완료되었습니다.');
-                                    navigate('/project/list');
-                                }} />
-                            </div>
+                            <div className="row">
+                                <div className="col text-start">
+                                    <Button text={'목록'} onClick={() => { navigate('/project/list') }} />
                                 </div>
+                                <div className="col text-end">
+                                    <button type="submit" className="me-2 btn btn-secondary text-white px-md-4 px-2 py-md-3 py-1 radius-0 light-300"
+                                        onClick={(e) => { e.preventDefault(); navigate(`/project/update?id=${proData.id}`); }}
+                                    >수정</button>
+                                    <Button text={'삭제'} onClick={async (e) => {
+                                        e.preventDefault();
+                                        const url = `http://localhost:8080/pro/delete?Id=${proData.id}`;
+                                        await fetch(url, { method: 'DELETE' });
+                                        alert('삭제가 완료되었습니다.');
+                                        navigate('/project/list');
+                                    }} />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>

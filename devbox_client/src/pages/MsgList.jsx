@@ -46,7 +46,8 @@ const MsgList = (props) => {
                             <a href={`/message/detail?id=${msg.id}`} className="col-sm-6 col-lg-4 text-decoration-none project">
                                 <div className="row p-2">
                                     <div className="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
-                                        <i className="display-3 bx bx-package"></i>
+                                    <i className={`display-3 bx ${msg.readTime ? 'bx-envelope-open' : 'bx-envelope'}`}></i>
+
                                     </div>
                                     <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                                         <ul className="list-unstyled text-center light-300">

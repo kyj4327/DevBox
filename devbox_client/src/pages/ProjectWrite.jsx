@@ -1,9 +1,10 @@
 import { upload } from "@testing-library/user-event/dist/upload";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import WriteShort from "../components/WriteShort";
 import WriteLong from "../components/WriteLong";
 import Button from "../components/Button";
+import DragDrop from "./DragDrop";
 
 const ProjectWrite = () => {
     const navigate = useNavigate();
@@ -14,6 +15,13 @@ const ProjectWrite = () => {
     const [coment, setComent] = useState('');
     const [uploadImgUrl, setUploadImgUrl] = useState('');
     const [uploadImgs, setUploadImgs] = useState([]);
+    const [delImgId, setDelImgId] = useState([]);
+    const [savedImgs, setSavedImgs] = useState([]);
+
+    const handleDeleteImage = (id) => {
+        setDelImgId([...delImgId, id]);
+        setSavedImgs(savedImgs.filter((img) => img.id !== id));
+    };
 
     const onchangeImageUpload = (e) => {
 
@@ -23,6 +31,9 @@ const ProjectWrite = () => {
 
     const handleDetail = async (e) => {
         e.preventDefault();
+
+        const modifiedLink = link.includes("watch?v=") ? link.replace("watch?v=", "embed/") : link;
+
         const formData = new FormData();
         uploadImgs.forEach((v) => {
             formData.append("file", v);
@@ -30,7 +41,7 @@ const ProjectWrite = () => {
 
         formData.append("title", title);
         formData.append("name", name);
-        formData.append("link", link);
+        formData.append("link", modifiedLink);
         formData.append("img", img);
         formData.append("coment", coment);
 
@@ -49,6 +60,19 @@ const ProjectWrite = () => {
 
     };
 
+    
+    const addFiles = (files) => {
+        console.log(files);
+
+        const fs = files.map(v => {
+            return v.object;
+        })
+        setUploadImgs(fs);
+    }
+
+    useEffect(() => {
+    }, []);
+
     return (
         <div>
             <section class="container py-5">
@@ -64,10 +88,11 @@ const ProjectWrite = () => {
                             <p className="worksingle-footer py-3 text-muted light-300">
                                 <div id="templatemo-slide-link-target" class="card mb-3">
                                     {uploadImgUrl && <img src={uploadImgUrl} alt="Uploaded" />}
-                                    <input
-                                        className="form-control form-control-lg light-300"
-                                        name="img"
-                                        type="file" accept="image/*" onChange={onchangeImageUpload} multiple />
+
+                                    <DragDrop addFiles={addFiles} initialFiles={savedImgs}
+                                        onDeleteImage={handleDeleteImage}
+                                    />
+                                  
                                 </div>
                             </p>
 

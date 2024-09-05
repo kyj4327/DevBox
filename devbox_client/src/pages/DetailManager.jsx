@@ -126,7 +126,7 @@ const DetailManager = () => {
                                 </p>
 
                                 <WriteShort type={'text'} titleTag={'모집인원'} name={people} value={people} onChange={(e) => setPeople(e.target.value)} />
-                                <WriteShort type={'text'} titleTag={'모집상태'} name={state} value={state} oonChange={(e) => setState(e.target.value)} />
+                                <WriteShort type={'text'} titleTag={'모집상태'} name={state} value={state} onChange={(e) => setState(e.target.value)} />
                                 <WriteLong titleTag={'신청 링크'} name={'link'} value={link} onChange={(e) => setLink(e.target.value)} />
                                 <WriteLong titleTag={'로고 링크'} name={'logo'} value={logo} onChange={(e) => setLogo(e.target.value)} />
                             </div>

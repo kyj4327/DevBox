@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ssl.SslProperties.Bundles.Watch.File;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,9 +22,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.o2b2.devbox_server.message.model.MsgEntity;
 import com.o2b2.devbox_server.message.repository.MsgRepository;
+import com.o2b2.devbox_server.project.model.MultiImgEntity;
+import com.o2b2.devbox_server.project.model.ProEntity;
+
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
@@ -148,6 +153,25 @@ public class MsgController {
 
         return map; // 결과 반환
     }
+
+    @GetMapping("/msg/reply")
+    @ResponseBody
+    public Map<String, Object> proUpdate(@RequestParam Long id) {
+        Map<String, Object> map = new HashMap<>();
+
+        // id로 데이터베이스에서 교육 정보를 조회합니다.
+        Optional<MsgEntity> msgOpt = msgRepository.findById(id);
+
+        MsgEntity msg = msgOpt.get();
+        map.put("id", msg.getId());
+        map.put("sender", msg.getSender());
+        map.put("reciver", msg.getReciver());
+
+        return map;
+
+    }
+    
+
 
     @DeleteMapping("/msg/delete")
     public String msgdelete(@RequestParam Long Id) {
