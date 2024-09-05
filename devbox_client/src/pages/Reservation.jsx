@@ -111,6 +111,7 @@ const Reservation = () => {
                                 prev2Label={null} // -1년 & -10년 이동 버튼 숨기기
                                 minDate={new Date()} // 선택할 수 있는 최소 날짜
                                 minDetail='year'
+                                maxDate={new Date(new Date().setDate(new Date().getDate() + 14))}
                                 tileClassName={tileClassName} // 주말 색 설정
                                 tileDisabled={disableWeekends} // 주말 비활성화
                             />
