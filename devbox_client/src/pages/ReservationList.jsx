@@ -2,12 +2,14 @@ import Header from '../components/Header';
 import Category from '../components/Category';
 import Pagination from '../components/Pagination';
 import Footer from '../components/Footer';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import '../assets/css/reservation.css';
+
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { ko } from 'date-fns/locale';
 
 const ReservationList = () => {
-    const navigate = useNavigate();
-
     const [category, setCategory] = useState('예약완료');
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
@@ -40,6 +42,8 @@ const ReservationList = () => {
         setCurrentPage(pageNumber);
     };
 
+    const [startDate, setStartDate] = useState('');
+
     return (
         <div>
             <Header />
@@ -67,6 +71,22 @@ const ReservationList = () => {
                         <Category text={'예약완료'} isActive={category} onClick={clickCategory} />
                         <Category text={'사용완료'} isActive={category} onClick={clickCategory} />
                     </div>
+                    <div className="row py-4" style={{ justifyContent: 'flex-end' }}>
+                        <div className="col-lg-6" style={{ width: '15%' }}>
+                            <DatePicker className="form-control form-control-lg light-300"
+                                selected={startDate}
+                                onChange={(date) => setStartDate(date)}
+                                dateFormat="yyyy년 MM월"
+                                showMonthYearPicker
+                                locale={ko}
+                                placeholderText='년/월'
+                                popperPlacement="top"  // 달력을 위쪽에 표시
+                            />
+                        </div>
+                        <div className="col-lg-6" style={{ width: '10%', alignContent: 'center' }}>
+                            <button className="btn rounded-pill px-4 btn-primary light-300">검색</button>
+                        </div>
+                    </div>
                 </div>
                 <div className="row d-flex align-items-center pb-5">
                     {
@@ -91,19 +111,14 @@ const ReservationList = () => {
                                                 <button className="btn rounded-pill px-4 btn-primary light-300"
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        navigate('/reservation');
-                                                    }}>예약하기</button>
-                                                <button className="btn rounded-pill px-4 btn-primary light-300"
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
                                                         async function send() {
                                                             const url = `http://127.0.0.1:8080/reservation/delete?reservationId=${v.id}`;
                                                             await fetch(url);
-                                                            alert("삭제가 완료되었습니다.");
+                                                            alert("예약이 취소되었습니다.");
                                                             window.location.reload();
                                                         }
                                                         send();
-                                                    }}>삭제하기</button>
+                                                    }}>예약취소</button>
                                             </div>
                                         </div>
                                     </div>

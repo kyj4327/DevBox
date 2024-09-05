@@ -20,3 +20,7 @@
 .react-calendar__tile.sunday {
     color: rgb(255, 161, 161) !important;
 }
+
+.react-datepicker__header {
+    background-color: #d8dfff !important;
+}
