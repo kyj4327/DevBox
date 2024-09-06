@@ -27,6 +27,11 @@ const FreeBoard = () => {
   if (isLoading) return <div>로딩 중...</div>;
   if (error) return <div className="error">{error}</div>;
 
+  // HTML 태그 제거하는 함수
+  const stripHtml = (html) => {
+    return html.replace(/<[^>]+>/g, '');
+  };
+
   return (
     <div className="container mt-5">
       <h2 className="mb-4">자유게시판</h2>
@@ -47,7 +52,8 @@ const FreeBoard = () => {
                 <h5 className="mb-1">{post.title}</h5>
                 <small>{new Date(post.createdAt).toLocaleDateString()}</small>
               </div>
-              <p className="mb-1">{post.content.substring(0, 100)}...</p>
+              {/* HTML 태그 제거 후 텍스트만 표시 */}
+              <p className="mb-1">{stripHtml(post.content).substring(0, 100)}...</p>
               <small>작성자: {post.author}</small>
             </Link>
           ))}
