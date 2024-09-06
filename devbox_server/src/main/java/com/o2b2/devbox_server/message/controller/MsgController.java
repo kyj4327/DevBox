@@ -53,7 +53,7 @@ public class MsgController {
 
 
         // Sort sort = Sort.by(Sort.Direction.ASC, "id");
-        Direction dir = Direction.DESC;
+        Direction dir = Direction.ASC;
         Pageable pageable = PageRequest.of(page - 1, size, dir, "order", "id"); // 페이지 요청 생성
 
         // 카테고리가 받은쪽지이면
@@ -156,10 +156,9 @@ public class MsgController {
 
     @GetMapping("/msg/reply")
     @ResponseBody
-    public Map<String, Object> proUpdate(@RequestParam Long id) {
+    public Map<String, Object> reply(@RequestParam Long id) {
         Map<String, Object> map = new HashMap<>();
 
-        // id로 데이터베이스에서 교육 정보를 조회합니다.
         Optional<MsgEntity> msgOpt = msgRepository.findById(id);
 
         MsgEntity msg = msgOpt.get();
@@ -171,6 +170,33 @@ public class MsgController {
 
     }
     
+    @GetMapping("/msg/bell")
+    @ResponseBody
+    public Map<String, Object> reply(@RequestParam String reciver) {
+        Map<String, Object> map = new HashMap<>();
+
+        // reciver로 메시지를 조회하여 리스트로 반환
+        List<MsgEntity> msgList = msgRepository.findByReciver(reciver);
+
+        // 메시지가 존재하는지 확인
+        if (!msgList.isEmpty()) {
+            // 메시지 리스트를 가공하여 응답에 포함
+            List<Map<String, Object>> responseList = msgList.stream().map(msg -> {
+                Map<String, Object> msgMap = new HashMap<>();
+                msgMap.put("readTime", msg.getReadTime());
+                msgMap.put("reciver", msg.getReciver());
+                return msgMap;
+            }).collect(Collectors.toList());
+
+            // 응답에 메시지 리스트를 포함
+            map.put("messages", responseList);
+        } else {
+            // 수신자(reciver)로 조회된 메시지가 없을 경우 처리
+            map.put("message", "No messages found for the given receiver.");
+        }
+
+        return map;
+    }
 
 
     @DeleteMapping("/msg/delete")
