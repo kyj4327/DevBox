@@ -8,15 +8,17 @@ import '../assets/css/reservation.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/locale';
+import { format } from 'date-fns';
 
 const ReservationList = () => {
     const [category, setCategory] = useState('예약완료');
+    const [date, setDate] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
     const [pageData, setPageData] = useState([]);
     useEffect(() => {
         async function get(page = 1) {
-            const url = `http://127.0.0.1:8080/reservation/list/${category}?page=${page}`;
+            const url = `http://127.0.0.1:8080/reservation/list/${category}/${date}?page=${page}`;
             const res = await fetch(url);
             const data = await res.json();
             const listData = data.slice(0, -1);
@@ -26,7 +28,7 @@ const ReservationList = () => {
             setCurrentPage(page);
         }
         get(currentPage);
-    }, [category, currentPage]);
+    }, [category, date, currentPage]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -43,6 +45,12 @@ const ReservationList = () => {
     };
 
     const [startDate, setStartDate] = useState('');
+    const searchDate = (e) => {
+        e.preventDefault();
+        if (startDate) {
+            setDate(format(startDate, 'yyyy년 MM월'));
+        }
+    };
 
     return (
         <div>
@@ -63,9 +71,9 @@ const ReservationList = () => {
             <section className="container py-5">
                 <h1 className="col-12 col-xl-8 h2 text-left text-primary pt-3">마이페이지</h1>
                 <h2 className="col-12 col-xl-8 h4 text-left regular-400">회의실 예약 내역</h2>
-                {/* <p className="col-12 col-xl-8 text-left text-muted pb-5 light-300">
+                <p className="col-12 col-xl-8 text-left text-muted pb-5 light-300">
                     번호 : 051-749-9424/9474
-                </p> */}
+                </p>
                 <div className="row justify-content-center my-5">
                     <div className="filter-btns shadow-md rounded-pill text-center col-auto">
                         <Category text={'예약완료'} isActive={category} onClick={clickCategory} />
@@ -84,7 +92,7 @@ const ReservationList = () => {
                             />
                         </div>
                         <div className="col-lg-6" style={{ width: '10%', alignContent: 'center' }}>
-                            <button className="btn rounded-pill px-4 btn-primary light-300">검색</button>
+                            <button className="btn rounded-pill px-4 btn-primary light-300" onClick={searchDate}>검색</button>
                         </div>
                     </div>
                 </div>
@@ -102,7 +110,6 @@ const ReservationList = () => {
                                                 <h5><li style={{ listStyle: 'none' }}>예약자명</li></h5>
                                                 <h5><li style={{ marginBottom: '1rem' }}>{v.name}</li></h5>
                                                 <h5><li style={{ listStyle: 'none' }}>날짜</li></h5>
-                                                {/* <h5><li style={{ marginBottom: '1rem' }}>{v.year} 년 {v.month} 월 {v.day} 일</li></h5> */}
                                                 <h5><li style={{ marginBottom: '1rem' }}>{v.date}</li></h5>
                                                 <h5><li style={{ listStyle: 'none' }}>시간</li></h5>
                                                 <h5><li>{v.time}</li></h5>
