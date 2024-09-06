@@ -9,4 +9,6 @@ import com.o2b2.devbox_server.reservation.model.Reservation;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     Page<Reservation> findByCondition(String condition, Pageable pageable);
 
+    Page<Reservation> findByConditionAndDateContaining(String condition, String date, Pageable pageable);
+
 }

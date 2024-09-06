@@ -40,9 +40,10 @@ public class ReservationController {
         return map;
     }
 
-    @GetMapping("/reservation/list/{category}")
+    @GetMapping("/reservation/list/{category}/{date}")
     public List<Map<String, Object>> reservationList(
             @PathVariable("category") String category,
+            @PathVariable("date") String date,
             @RequestParam(value = "page", defaultValue = "1") int page) {
         LocalDateTime today = LocalDateTime.now();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
@@ -68,7 +69,12 @@ public class ReservationController {
 
         Sort sort = Sort.by(Order.asc("date"), Order.asc("time"));
         Pageable pageable = PageRequest.of(page - 1, 4, sort);
-        Page<Reservation> p = reservationRepository.findByCondition(category, pageable);
+        Page<Reservation> p = null;
+        if (date.equals("All")) {
+            p = reservationRepository.findByCondition(category, pageable);
+        } else {
+            p = reservationRepository.findByConditionAndDateContaining(category, date, pageable);
+        }
         List<Reservation> list = p.getContent();
         List<Map<String, Object>> response = new ArrayList<>();
         for (Reservation r : list) {
