@@ -4,6 +4,7 @@ import Pagination from '../components/Pagination';
 import Footer from '../components/Footer';
 import { useEffect, useState } from 'react';
 import '../assets/css/reservation.css';
+import reset from '../assets/img/reset.png';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -91,8 +92,14 @@ const ReservationList = () => {
                                 popperPlacement="top"  // 달력을 위쪽에 표시
                             />
                         </div>
-                        <div className="col-lg-6" style={{ width: '10%', alignContent: 'center' }}>
+                        <div className="col-lg-6" style={{ width: '15%', display: 'flex', justifyContent: 'space-between', alignContent: 'center' }}>
                             <button className="btn rounded-pill px-4 btn-primary light-300" onClick={searchDate}>검색</button>
+                            <button className="btn rounded-pill px-4 btn-primary light-300"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setStartDate('');
+                                    setDate('All');
+                                }}><img src={reset} alt="https://icons8.com" /></button>
                         </div>
                     </div>
                 </div>
