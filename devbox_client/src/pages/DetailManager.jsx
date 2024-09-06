@@ -3,6 +3,7 @@ import { useState } from "react";
 import Button from "../components/Button";
 import WriteShort from "../components/WriteShort";
 import WriteLong from "../components/WriteLong";
+import WriteSelect from "../components/WriteSelect";
 
 const DetailManager = () => {
     const navigate = useNavigate();
@@ -65,72 +66,76 @@ const DetailManager = () => {
             <section class="container py-5">
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2 pb-5 ">개발 교육 정보</h1>
-                        <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
+                    <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
                         <p className="text-center pb-5 light-300"></p>
-                            <div className="contact-form row">
+                        <div className="contact-form row">
 
-                                <WriteShort type={'text'} titleTag={'제목'} name={'title'} value={title} onChange={(e) => setTitle(e.target.value)} />
-                                <WriteShort type={'text'} titleTag={'소제목'} name={'subtitle'} value={subtitle} onChange={(e) => setSubtitle(e.target.value)} />
+                            <WriteShort type={'text'} titleTag={'제목'} name={'title'} value={title} onChange={(e) => setTitle(e.target.value)} />
+                            <WriteShort type={'text'} titleTag={'소제목'} name={'subtitle'} value={subtitle} onChange={(e) => setSubtitle(e.target.value)} />
 
-                                <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">교육 포스터</h2>
-                                <p className="worksingle-footer py-3 text-muted light-300">
+                            <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">교육 포스터</h2>
+                            <p className="worksingle-footer py-3 text-muted light-300">
 
-                                    {uploadImgUrl && <img src={uploadImgUrl} alt="Uploaded" />}
+                                {uploadImgUrl && <img src={uploadImgUrl} alt="Uploaded" />}
+                                <input
+                                    className="form-control form-control-lg light-300"
+                                    name="img"
+                                    value={img}
+                                    type="file" accept="image/*" onChange={onchangeImageUpload} />
+                            </p>
+
+
+                            <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">모집기간</h2>
+                            <p className="worksingle-footer py-3 text-muted light-300">
+                                <div style={{ display: 'flex' }}>
+                                    <input
+                                        className="me-4 form-control form-control-lg light-300"
+                                        name="start"
+                                        value={start}
+                                        onChange={(e) => setStart(e.target.value)}
+                                        type="date"
+                                    />
                                     <input
                                         className="form-control form-control-lg light-300"
-                                        name="img"
-                                        value={img}
-                                        type="file" accept="image/*" onChange={onchangeImageUpload} />
-                                </p>
+                                        name="end"
+                                        value={end}
+                                        onChange={(e) => setEnd(e.target.value)}
+                                        type="date"
+                                    />
+                                </div>
+                            </p>
 
+                            <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">교육기간</h2>
+                            <p className="worksingle-footer py-3 text-muted light-300">
 
-                                <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">모집기간</h2>
-                                <p className="worksingle-footer py-3 text-muted light-300">
-                                    <div style={{ display: 'flex' }}>
-                                        <input
-                                            className="me-4 form-control form-control-lg light-300"
-                                            name="start"
-                                            value={start}
-                                            onChange={(e) => setStart(e.target.value)}
-                                            type="date"
-                                        />
-                                        <input
-                                            className="form-control form-control-lg light-300"
-                                            name="end"
-                                            value={end}
-                                            onChange={(e) => setEnd(e.target.value)}
-                                            type="date"
-                                        />
-                                    </div>
-                                </p>
-
-                                <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">교육기간</h2>
-                                <p className="worksingle-footer py-3 text-muted light-300">
-
-                                    <div style={{ display: 'flex' }}>
-                                        <input
-                                            className="me-4 form-control form-control-lg light-300"
-                                            name="start2"
-                                            value={start2}
-                                            onChange={(e) => setStart2(e.target.value)}
-                                            type="date"
-                                        />
-                                        <input
-                                            className="form-control form-control-lg light-300"
-                                            name="end2"
-                                            value={end2}
-                                            onChange={(e) => setEnd2(e.target.value)}
-                                            type="date"
-                                        />
-                                    </div>
-                                </p>
-
-                                <WriteShort type={'text'} titleTag={'모집인원'} name={people} value={people} onChange={(e) => setPeople(e.target.value)} />
-                                <WriteShort type={'text'} titleTag={'모집상태'} name={state} value={state} onChange={(e) => setState(e.target.value)} />
-                                <WriteLong titleTag={'신청 링크'} name={'link'} value={link} onChange={(e) => setLink(e.target.value)} />
-                                <WriteLong titleTag={'로고 링크'} name={'logo'} value={logo} onChange={(e) => setLogo(e.target.value)} />
-                            </div>
+                                <div style={{ display: 'flex' }}>
+                                    <input
+                                        className="me-4 form-control form-control-lg light-300"
+                                        name="start2"
+                                        value={start2}
+                                        onChange={(e) => setStart2(e.target.value)}
+                                        type="date"
+                                    />
+                                    <input
+                                        className="form-control form-control-lg light-300"
+                                        name="end2"
+                                        value={end2}
+                                        onChange={(e) => setEnd2(e.target.value)}
+                                        type="date"
+                                    />
+                                </div>
+                            </p>
+                            <WriteShort type={'text'} titleTag={'모집인원'} name={people} value={people} onChange={(e) => setPeople(e.target.value)} />
+                            <WriteSelect 
+                                titleTag="모집상태"
+                                name="state"
+                                value={state}
+                                onChange={(e) => setState(e.target.value)}
+                                options={["모집중", "모집완료"]} />
+                            <WriteLong titleTag={'신청 링크'} name={'link'} value={link} onChange={(e) => setLink(e.target.value)} />
+                            <WriteLong titleTag={'로고 링크'} name={'logo'} value={logo} onChange={(e) => setLogo(e.target.value)} />
                         </div>
+                    </div>
                 </div>
 
                 <div className="form-row pt-2">
