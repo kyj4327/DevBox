@@ -15,16 +15,10 @@ public class Reservation {
 
     String name;
 
-    String year;
-
-    String month;
-
-    String day;
+    String date;
 
     String time;
 
     String condition;
-
-    String date;
 
 }

@@ -81,12 +81,9 @@ public class ReservationController {
             Map<String, Object> rMap = new HashMap<>();
             rMap.put("id", r.getId());
             rMap.put("name", r.getName());
-            rMap.put("year", r.getYear());
-            rMap.put("month", r.getMonth());
-            rMap.put("day", r.getDay());
+            rMap.put("date", r.getDate());
             rMap.put("time", r.getTime());
             rMap.put("condition", r.getCondition());
-            rMap.put("date", r.getDate());
             response.add(rMap);
         }
         int totalPage = p.getTotalPages();
