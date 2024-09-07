@@ -132,7 +132,7 @@ const ReservationList = () => {
                                                             window.location.reload();
                                                         }
                                                         send();
-                                                    }}>예약취소</button>
+                                                    }}>{v.condition === "예약완료" ? "예약취소" : "삭제"}</button>
                                             </div>
                                         </div>
                                     </div>
