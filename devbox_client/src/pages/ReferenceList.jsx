@@ -89,6 +89,9 @@ const ReferenceList = () => {
                                             <li style={{ listStyle: 'none' }}>{v.selectJob}</li>
                                             <li>{v.content1}</li>
                                             <li>{v.content2}</li>
+                                            {v.content3 === '' ? '' : <li>{v.content3}</li>}
+                                            {v.content4 === '' ? '' : <li>{v.content4}</li>}
+                                            {v.content5 === '' ? '' : <li>{v.content5}</li>}
                                         </div>
                                         <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
                                             <Link to={v.link} className="btn rounded-pill px-4 btn-primary light-300" target='_blank'>Link</Link>

@@ -1,4 +1,7 @@
 import Header from '../components/Header';
+import WriteLong from '../components/WriteLong';
+import WriteShort from '../components/WriteShort';
+import WriteSelect from '../components/WriteSelect';
 import Footer from '../components/Footer';
 import Button from '../components/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -11,6 +14,9 @@ const ReferenceUpdate = () => {
     const [selectJob, setSelectJob] = useState('');
     const [content1, setContent1] = useState('');
     const [content2, setContent2] = useState('');
+    const [content3, setContent3] = useState('');
+    const [content4, setContent4] = useState('');
+    const [content5, setContent5] = useState('');
     const [link, setLink] = useState('');
 
     const location = useLocation();
@@ -25,6 +31,9 @@ const ReferenceUpdate = () => {
             setSelectJob(data.selectJob);
             setContent1(data.content1);
             setContent2(data.content2);
+            setContent3(data.content3);
+            setContent4(data.content4);
+            setContent5(data.content5);
             setLink(data.link);
         }
         get();
@@ -39,7 +48,10 @@ const ReferenceUpdate = () => {
                 headers: {
                     'content-type': 'application/json'
                 },
-                body: JSON.stringify({ id: referenceId, title: title, selectJob: selectJob, content1: content1, content2: content2, link: link })
+                body: JSON.stringify({
+                    id: referenceId, title: title, selectJob: selectJob, content1: content1, content2: content2,
+                    content3: content3, content4: content4, content5: content5, link: link
+                })
             });
             const data = await res.json();
             if (data.code === 200) {
@@ -68,34 +80,17 @@ const ReferenceUpdate = () => {
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2">추천해요 Update</h1>
                     <p className="text-center pb-5 light-300">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut facilisis.</p>
-                    <div className="pricing-list shadow-sm rounded-top rounded-3 py-sm-0 py-5">
-                        <div className="row p-2">
-                            <div className="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
-                                <input type='text' id='title' name='title'
-                                    value={title} onChange={(e) => { setTitle(e.target.value) }} />
-                            </div>
-                            <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
-                                <li style={{ listStyle: 'none' }}>
-                                    <RadioBtn value={'Web'} />
-                                    <RadioBtn value={'DevOps'} />
-                                    <RadioBtn value={'Cloud'} />
-                                    <RadioBtn value={'Data'} />
-                                    <RadioBtn value={'Mobile'} />
-                                    <RadioBtn value={'Others'} />
-                                </li>
-                                <li>
-                                    <input type='text' id='content1' name='content1'
-                                        value={content1} onChange={(e) => { setContent1(e.target.value) }} />
-                                </li>
-                                <li>
-                                    <input type='text' id='content2' name='content2'
-                                        value={content2} onChange={(e) => { setContent2(e.target.value) }} />
-                                </li>
-                            </div>
-                            <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
-                                url : <input type='text' id='link' name='link'
-                                    value={link} onChange={(e) => { setLink(e.target.value) }} />
-                            </div>
+                    <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
+                        <div className="contact-form row">
+                            <WriteShort type={'text'} titleTag={'제목'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} />
+                            <WriteSelect titleTag="카테고리" name="intro" value={selectJob || "카테고리를 선택해주세요."} onChange={(e) => setSelectJob(e.target.value)}
+                                options={["Web", "DevOps", "Cloud", "Data", "Mobile", "Others"]} />
+                            <WriteLong titleTag={'내용1 (필수)'} name={'content1'} value={content1} onChange={(e) => { setContent1(e.target.value) }} />
+                            <WriteLong titleTag={'내용2 (필수)'} name={'content2'} value={content2} onChange={(e) => { setContent2(e.target.value) }} />
+                            <WriteLong titleTag={'내용3 (선택)'} name={'content3'} value={content3} onChange={(e) => { setContent3(e.target.value) }} />
+                            <WriteLong titleTag={'내용4 (선택)'} name={'content4'} value={content4} onChange={(e) => { setContent4(e.target.value) }} />
+                            <WriteLong titleTag={'내용5 (선택)'} name={'content5'} value={content5} onChange={(e) => { setContent5(e.target.value) }} />
+                            <WriteLong titleTag={'사이트 주소'} name={'link'} value={link} onChange={(e) => { setLink(e.target.value) }} />
                         </div>
                     </div>
                 </div>
