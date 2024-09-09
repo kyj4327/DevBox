@@ -25,7 +25,7 @@ const FreeBoardDetail = () => {
           setContent(data.content);
           setAuthor(data.author);
         } catch (error) {
-          console.error('Error fetching post:', error);
+          console.error('게시글을 불러오는 데 실패했습니다.', error);
           setError('게시글을 불러오는 데 실패했습니다.');
         } finally {
           setIsLoading(false);
@@ -48,7 +48,7 @@ const FreeBoardDetail = () => {
       }
       navigate('/community/freeboard');
     } catch (error) {
-      console.error('Error saving post:', error);
+      console.error('게시글 저장에 실패했습니다.', error);
       setError('게시글 저장에 실패했습니다.');
     } finally {
       setIsLoading(false);
