@@ -4,16 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.o2b2.devbox_server.entity.Comment;
 import com.o2b2.devbox_server.service.CommentService;
+import com.o2b2.devbox_server.exception.ResourceNotFoundException;
 
 @RestController
 @RequestMapping("/api/comments")
@@ -22,8 +17,9 @@ public class CommentController {
     private CommentService commentService;
 
     @GetMapping("/post/{postId}")
-    public List<Comment> getCommentsByPostId(@PathVariable Long postId) {
-        return commentService.getCommentsByPostId(postId);
+    public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable Long postId) {
+        List<Comment> comments = commentService.getCommentsByPostId(postId);
+        return ResponseEntity.ok(comments);
     }
 
     @PostMapping("/post/{postId}")
@@ -31,9 +27,14 @@ public class CommentController {
         Comment createdComment = commentService.createComment(postId, comment);
         return ResponseEntity.ok(createdComment);
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable Long id) {
-        commentService.deleteComment(id);
-        return ResponseEntity.ok().build();
+        try {
+            commentService.deleteComment(id);
+            return ResponseEntity.ok().build();
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

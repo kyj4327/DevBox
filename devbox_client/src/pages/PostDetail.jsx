@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getPost, getCommentsByPostId, createComment, deletePost, updatePost } from '../services/api-service';
-import WriteShort from "../components/WriteShort"; // 작성 시 사용한 컴포넌트들 임포트
+import { getPost, getCommentsByPostId, createComment, deletePost, updatePost, deleteComment } from '../services/api-service';
+import WriteShort from "../components/WriteShort";
 import WriteLong from "../components/WriteLong";
 import QuillEditor from "../components/QuillEditor";
 import Button from "../components/Button";
@@ -30,7 +30,7 @@ const PostDetail = () => {
         ]);
         setPost(postData);
         setComments(Array.isArray(commentsData) ? commentsData : []);
-        setUpdatedTitle(postData.title); // 수정 시 기존 데이터 로드
+        setUpdatedTitle(postData.title);
         setUpdatedContent(postData.content);
         setAuthor(postData.author);
       } catch (error) {
@@ -59,12 +59,14 @@ const PostDetail = () => {
   };
 
   const handleDeletePost = async () => {
-    try {
-      await deletePost(id);
-      navigate('/community/freeboard'); // Redirect to the board after deletion
-    } catch (error) {
-      console.error('Error deleting post:', error);
-      setError('게시글 삭제에 실패했습니다.');
+    if (window.confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
+      try {
+        await deletePost(id);
+        navigate('/community/freeboard');
+      } catch (error) {
+        console.error('Error deleting post:', error);
+        setError('게시글 삭제에 실패했습니다.');
+      }
     }
   };
 
@@ -80,6 +82,18 @@ const PostDetail = () => {
     } catch (error) {
       console.error('Error updating post:', error);
       setError('게시글 수정에 실패했습니다.');
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    if (window.confirm('이 댓글을 삭제하시겠습니까?')) {
+      try {
+        await deleteComment(commentId);
+        setComments(comments.filter(comment => comment.id !== commentId));
+      } catch (error) {
+        console.error('댓글 삭제 중 오류 발생:', error);
+        setError('댓글 삭제에 실패했습니다.');
+      }
     }
   };
 
@@ -139,13 +153,14 @@ const PostDetail = () => {
       ) : (
         <>
           <h1>{post.title}</h1>
-          <p>{post.content}</p>
+          <div dangerouslySetInnerHTML={{ __html: post.content }} />
           <p>작성자: {post.author}</p>
           <p>작성일: {new Date(post.createdAt).toLocaleString()}</p>
-          <button onClick={handleEditPost} className="btn btn-primary">수정</button>
-          <button onClick={handleDeletePost} className="btn btn-danger ml-2">삭제</button>
+          <div className="mb-3">
+            <button onClick={handleEditPost} className="btn btn-primary mr-2">수정</button>
+            <button onClick={handleDeletePost} className="btn btn-danger">삭제</button>
+          </div>
 
-          {/* 댓글 및 댓글 작성 폼은 수정 모드가 아닐 때만 표시 */}
           <h2>댓글</h2>
           {comments.length === 0 ? (
             <p>댓글이 없습니다.</p>
@@ -155,12 +170,18 @@ const PostDetail = () => {
                 <div className="card-body">
                   <p>{comment.content}</p>
                   <small>작성일: {new Date(comment.createdAt).toLocaleString()}</small>
+                  <button 
+                    onClick={() => handleDeleteComment(comment.id)} 
+                    className="btn btn-danger btn-sm float-end"
+                  >
+                    삭제
+                  </button>
                 </div>
               </div>
             ))
           )}
 
-          <form onSubmit={handleCommentSubmit}>
+          <form onSubmit={handleCommentSubmit} className="mt-4">
             <div className="form-group">
               <textarea
                 className="form-control"
@@ -170,7 +191,7 @@ const PostDetail = () => {
                 required
               />
             </div>
-            <button type="submit" className="btn btn-primary">댓글 작성</button>
+            <button type="submit" className="btn btn-primary mt-2">댓글 작성</button>
           </form>
         </>
       )}

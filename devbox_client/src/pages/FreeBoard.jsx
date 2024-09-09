@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllPosts } from '../services/api-service';
-import Pagination from '../components/Pagination';  // Pagination 컴포넌트 import
+import Pagination from '../components/Pagination';
 
 const FreeBoard = () => {
   const [posts, setPosts] = useState([]);
@@ -27,20 +27,19 @@ const FreeBoard = () => {
     fetchPosts();
   }, []);
 
-  // HTML 태그 제거하는 함수
   const stripHtml = (html) => {
     return html.replace(/<[^>]+>/g, '');
   };
 
-  // 현재 페이지의 게시글만 가져오기
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
-  // 페이지 변경 핸들러
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  const totalPages = Math.ceil(posts.length / postsPerPage);
 
   if (isLoading) return <div>로딩 중...</div>;
   if (error) return <div className="error">{error}</div>;
@@ -72,7 +71,9 @@ const FreeBoard = () => {
         </div>
       )}
       <Pagination 
-        // 여기에 필요한 props를 전달합니다
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
       />
     </div>
   );
