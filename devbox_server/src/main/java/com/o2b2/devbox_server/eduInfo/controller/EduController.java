@@ -98,8 +98,15 @@ public class EduController {
             @RequestParam("file") MultipartFile file) {
         System.out.println(edu);
         System.out.println(file.getOriginalFilename());
-
+         
         Map<String, Object> map = new HashMap<>();
+        
+        if (file == null || file.isEmpty()) {
+            map.put("code", 400);
+            map.put("msg", "포스터를 첨부해주세요.");
+            return map;
+        }
+
 
         edu.setImg(file.getOriginalFilename());
         EduEntity result = eduRepository.save(edu);
@@ -108,6 +115,9 @@ public class EduController {
             file.transferTo(new File("c:/images/" + file.getOriginalFilename()));
         } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
+            map.put("code", 500);
+            map.put("msg", "업로드 중 오류 발생: " + e.getMessage());
+            return map;
         }
 
         map.put("code", 200);

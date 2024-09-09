@@ -25,6 +25,8 @@ public class ProEntity {
 
     String coment;
 
+    Integer likeCount;
+
     @OneToMany(mappedBy = "proEntity" )
     List<MultiImgEntity> multiImgEntitys = new ArrayList<>();
 

@@ -53,7 +53,7 @@ public class MsgController {
 
 
         // Sort sort = Sort.by(Sort.Direction.ASC, "id");
-        Direction dir = Direction.ASC;
+        Direction dir = Direction.DESC;
         Pageable pageable = PageRequest.of(page - 1, size, dir, "order", "id"); // 페이지 요청 생성
 
         // 카테고리가 받은쪽지이면

@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.o2b2.devbox_server.message.model.MsgEntity;
 import com.o2b2.devbox_server.project.model.MultiImgEntity;
 import com.o2b2.devbox_server.project.model.ProEntity;
 import com.o2b2.devbox_server.project.repository.MultiImgRepository;
@@ -77,6 +78,8 @@ public class ProController {
             map.put("link", pro.getLink());
             map.put("coment", pro.getComent());
             map.put("name", pro.getName());
+            map.put("likeCount", pro.getLikeCount());
+            map.put("mainImg", pro.getMultiImgEntitys().get(0).getId());
             return map;
         }).collect(Collectors.toList())); // proEntity를 Map으로 변환
         response.put("currentPage", page); // 현재 페이지
@@ -87,6 +90,35 @@ public class ProController {
         return response; // JSON 형태로 반환
     }
 
+    @GetMapping("/pro/like")
+    @ResponseBody
+    public Map<String, Object> like(@RequestParam Long id) {
+        Map<String, Object> map = new HashMap<>();
+        Optional<ProEntity> proOpt = proRepository.findById(id);
+
+        if (proOpt.isPresent()) {
+            ProEntity pro = proOpt.get();
+
+            // 좋아요 상태 토글 
+            if (pro.getLikeCount() == null) {
+                pro.setLikeCount(0);
+
+            }
+
+            // 좋아요 수 증가
+            pro.setLikeCount(pro.getLikeCount() + 1);
+
+            proRepository.save(pro); // 변경된 상태를 저장
+
+            map.put("likeCount", pro.getLikeCount());
+        } else {
+            map.put("error", "Message not found");
+        }
+
+        return map; // 클라이언트에 map 반환
+    }
+
+
     @PostMapping("/pro")
     @ResponseBody
     public Map<String, Object> pro(
@@ -96,6 +128,14 @@ public class ProController {
 
         // 결과를 담을 맵 생성
         Map<String, Object> map = new HashMap<>();
+
+        // 파일이 첨부되지 않았을 경우 처리
+        if (files == null || files.length == 0) {
+            map.put("code", 400);
+            map.put("pro", "이미지를 자랑해주세요.");
+            return map;
+        }
+
         ProEntity result = proRepository.save(pro);
 
         // 각 파일을 처리하는 반복문
@@ -116,14 +156,14 @@ public class ProController {
 
                 // 에러 발생 시 에러 메시지를 맵에 추가
                 map.put("code", 500);
-                map.put("msg", "업로드 중 오류 발생: " + e.getMessage());
+                map.put("pro", "업로드 중 오류 발생: " + e.getMessage());
                 return map; // 에러 발생 시 바로 반환
             }
         }
 
         // 성공 시 응답 메시지 설정
         map.put("code", 200);
-        map.put("msg", "모든 파일 업로드 완료");
+        map.put("pro", "모든 파일 업로드 완료");
 
         return map; // 결과 반환
     }
@@ -176,7 +216,7 @@ public class ProController {
                         e.printStackTrace();
                         // 파일 저장 중 오류 발생 시 에러 메시지를 맵에 추가합니다.
                         map.put("code", 500);
-                        map.put("msg", "파일 업로드 중 오류 발생: " + e.getMessage());
+                        map.put("pro", "파일 업로드 중 오류 발생: " + e.getMessage());
                         return map; // 에러 발생 시 바로 반환합니다.
                     }
                 }
@@ -190,12 +230,12 @@ public class ProController {
 
             // 성공 응답을 맵에 추가합니다.
             map.put("code", 200);
-            map.put("msg", "수정 완료");
+            map.put("pro", "수정 완료");
 
         } else {
             // 기존 ProEntity가 없는 경우의 처리
             map.put("code", 404);
-            map.put("msg", "존재하지 않는 데이터입니다.");
+            map.put("pro", "존재하지 않는 데이터입니다.");
         }
 
         return map; // 수정 완료 응답을 반환합니다.
