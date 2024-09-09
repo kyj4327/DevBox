@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from "../components/Button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Category from "../components/Category";
 
 const MsgList = (props) => {
@@ -12,9 +12,11 @@ const MsgList = (props) => {
         const url = `http://localhost:8080/msg/like?id=${msgId}`;
         const res = await fetch(url, {
             method: 'GET'
+            
         });
         const data = await res.json();
-
+        console.log(data);
+        
         props.setRefresh(); // 부모 컴포넌트 refresh상태 반전
 
     };
@@ -23,6 +25,19 @@ const MsgList = (props) => {
     const clickState = (e) => {
         e.preventDefault();
         props.clickState(e.target.textContent);
+    };
+
+    // 날짜와 시간을 원하는 형식으로 변환하는 함수
+    const formatDateTime = (sendTime) => {
+        const date = new Date(sendTime.replace(" ", "T"));
+        return new Intl.DateTimeFormat('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true, // 오전/오후 표시
+        }).format(date);
     };
 
     return (
@@ -36,15 +51,15 @@ const MsgList = (props) => {
                 </div>
             </div>
 
-            <div className="pricing-horizontal row col-10 m-auto d-flex shadow-sm rounded overflow-hidden bg-white">
+            <div className="pricing-horizontal bg-white">
                 {props.list && props.list.map((msg) => {
                     // 메시지의 좋아요 상태를 상태에서 가져옵니다.
                     const isLiked = likeStatus[msg.id] !== undefined ? likeStatus[msg.id] : msg.like;
-                    const msgStyle = msg.readTime ? { backgroundColor: '#f0f0f0' } : {};
+                    const msgStyle = msg.readTime ? { backgroundColor: '#f0f0f0'} : {};
                     return (
-                        <div key={msg.id} className="pricing-list shadow-sm rounded-top rounded-3 py-sm-0 py-5" style={msgStyle}>
-                            <a href={`/message/detail?id=${msg.id}`} className="col-sm-6 col-lg-4 text-decoration-none project">
-                                <div className="row p-2">
+                        <div  key={msg.id} className="pricing-list mt-3 row-10 col-10 m-auto shadow-sm rounded-3" style={msgStyle}>
+                            <Link to={`/message/detail?id=${msg.id}`} className="col-sm-6 col-lg-4 text-decoration-none project">
+                                <div className="row p-3">
                                     <div className="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
                                     <i className={`display-3 bx ${msg.readTime ? 'bx-envelope-open' : 'bx-envelope'}`}></i>
 
@@ -53,7 +68,7 @@ const MsgList = (props) => {
                                         <ul className="list-unstyled text-center light-300">
                                             <li className="h5 semi-bold-600 mb-0 mt-3">{msg.title}</li>
                                             <li>{msg.sender}</li>
-                                            <li>{msg.sendTime}</li>
+                                            <li>{formatDateTime(msg.sendTime)}</li>
                                         </ul>
                                     </div>
                                     <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
@@ -69,7 +84,7 @@ const MsgList = (props) => {
                                         ></div>
                                     </div>
                                 </div>
-                            </a>
+                            </Link>
                         </div>
                     );
                 })}

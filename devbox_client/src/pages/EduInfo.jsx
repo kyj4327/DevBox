@@ -11,13 +11,7 @@ const EduInfo = (props) => {
         props.clickState(e.target.textContent);
     };
 
-    // progress의 최소값
-    // const progressMin = () => {
-       
-    
-    //     return;
-    // };
-    // progress의 최대값
+
     const progressMax = (recruit) => {
         const recruitDates = recruit.split(' ~ ');
         console.log("추출된 끝 날짜:", recruitDates[1]);
@@ -85,13 +79,13 @@ const EduInfo = (props) => {
                                         <img className="card-img-top" src={`${edu.logo}`} alt={edu.title} style={{ height: '130px', objectFit: 'contain' }} />
                                         <div className="card-body">
                                             {props.state !== '모집완료' && (
-                                                <div style={{ width: '100%', height: '20px', display: 'flex', marginBottom: '1rem' }}>
-                                                    <div className={`progress-bar ${isUrgent ? 'bg-danger' : ''}`} role="progressbar" aria-label="Example 20px high"
-                                                        style={{ width: '70%', height: '20px' }}
+                                                <div style={{ display: 'flex'}}>
+                                                    <div className="progress" role="progressbar" aria-label="Example 20px high"
+                                                        style={{ width: '75%', height:'20px' }}
                                                         aria-valuenow={percentageCompleted}
                                                         aria-valuemin="0"
                                                         aria-valuemax={daysEnd}>
-                                                        <div className="progress-bar" style={{ width: `${percentageCompleted}%` }}></div>
+                                                        <div className={`progress-bar ${isUrgent ? 'bg-danger' : ''}`} style={{ width: `${percentageCompleted}%` }}></div>
                                                     </div>
                                                     <p className={`progress_red ${isUrgent ? 'text-danger' : ''}`} style={{ marginLeft: '1rem' }}>
                                                         {isUrgent ? '마감임박' : `${daysLeft}일 남음`}

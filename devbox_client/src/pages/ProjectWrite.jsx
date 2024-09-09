@@ -5,6 +5,7 @@ import WriteShort from "../components/WriteShort";
 import WriteLong from "../components/WriteLong";
 import Button from "../components/Button";
 import DragDrop from "./DragDrop";
+import Swal from "sweetalert2";
 
 const ProjectWrite = () => {
     const navigate = useNavigate();
@@ -32,6 +33,15 @@ const ProjectWrite = () => {
     const handleDetail = async (e) => {
         e.preventDefault();
 
+        if (uploadImgs.length === 0) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "이미지를 자랑해주세요!!"
+              });
+            return; 
+        }
+
         const modifiedLink = link.includes("watch?v=") ? link.replace("watch?v=", "embed/") : link;
 
         const formData = new FormData();
@@ -55,7 +65,11 @@ const ProjectWrite = () => {
         if (data.code == 200) {
             navigate('/project/list');
         } else {
-            alert(data.msg);
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "이미지를 자랑해주세요!!"
+              });
         }
 
     };
@@ -97,7 +111,7 @@ const ProjectWrite = () => {
                             </p>
 
 
-                            <WriteLong titleTag={'링크'} type={'text'} name={'link'} value={link} onChange={(e) => setLink(e.target.value)} />
+                            <WriteLong titleTag={'시연 영상 링크'} type={'text'} name={'link'} value={link} onChange={(e) => setLink(e.target.value)} />
 
                             <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">내용</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">

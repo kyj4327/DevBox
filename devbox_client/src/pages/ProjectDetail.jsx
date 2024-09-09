@@ -12,8 +12,7 @@ import '../assets/css/styles.css';
 
 import { FreeMode, EffectCoverflow, Autoplay, Pagination, Navigation } from 'swiper/modules';
 
-const
-    ProjectDetail = (props) => {
+const  ProjectDetail = () => {
         const navigate = useNavigate();
         const [proData, setProData] = useState({});
         const location = useLocation();

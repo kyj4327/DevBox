@@ -4,6 +4,7 @@ import Button from "../components/Button";
 import WriteShort from "../components/WriteShort";
 import WriteLong from "../components/WriteLong";
 import WriteSelect from "../components/WriteSelect";
+import Swal from "sweetalert2";
 
 const DetailManager = () => {
     const navigate = useNavigate();
@@ -34,7 +35,18 @@ const DetailManager = () => {
         }
     }
 
-    const handleDetail = async () => {
+    const handleDetail = async (e) => {
+        e.preventDefault();
+
+        if (uploadImg.length === 0) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "포스터를 첨부 해주세요."
+              });
+            return; 
+        }
+
         const formData = new FormData();
         formData.append("file", uploadImg);
         formData.append("title", title);
@@ -56,7 +68,11 @@ const DetailManager = () => {
         if (data.code == 200) {
             navigate('/edu/list');
         } else {
-            alert(data.msg);
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "포스터를 첨부 해주세요."
+              });
         }
 
     };

@@ -4,6 +4,8 @@ import DragDrop from "./DragDrop";
 import Button from "../components/Button";
 import WriteShort from "../components/WriteShort";
 import WriteLong from "../components/WriteLong";
+import Swal from "sweetalert2";
+
 
 const ProUpdate = () => {
     const navigate = useNavigate();
@@ -41,6 +43,16 @@ const ProUpdate = () => {
 
     const handleDetail = async (e) => {
         e.preventDefault();
+
+        if (savedImgs.length === 0) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "이미지를 자랑해주세요!!"
+              });
+            return; 
+        }
+
         const modifiedLink = link.includes("watch?v=") ? link.replace("watch?v=", "embed/") : link;
         const formData = new FormData();
         formData.append("id", id);
@@ -67,7 +79,11 @@ const ProUpdate = () => {
         if (data.code == 200) {
             navigate('/project/list');
         } else {
-            alert(data.msg);
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "이미지를 자랑해주세요!!"
+              });
         }
 
     };
