@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getPost, getCommentsByPostId, createComment, deletePost, deleteComment } from '../services/api-service';
+import { getPost, getCommentsByPostId, createComment, deletePost, deleteComment, updatePost } from '../services/api-service';
+import WriteShort from "../components/WriteShort";
+import WriteLong from "../components/WriteLong";
+import QuillEditor from "../components/QuillEditor";
 import Button from "../components/Button";
+import '../assets/css/PostDetail.css';  // Make sure to create this CSS file
 
 const PostDetail = () => {
   const { id } = useParams();
@@ -11,6 +15,10 @@ const PostDetail = () => {
   const [newComment, setNewComment] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [updatedTitle, setUpdatedTitle] = useState('');
+  const [updatedContent, setUpdatedContent] = useState('');
+  const [author, setAuthor] = useState('');
 
   useEffect(() => {
     const fetchPostAndComments = async () => {
@@ -23,8 +31,11 @@ const PostDetail = () => {
         ]);
         setPost(postData);
         setComments(Array.isArray(commentsData) ? commentsData : []);
+        setUpdatedTitle(postData.title);
+        setUpdatedContent(postData.content);
+        setAuthor(postData.author);
       } catch (error) {
-        console.error('게시글 또는 댓글을 불러오는 데 실패했습니다.', error);
+        console.error('Error fetching post or comments:', error);
         setError('게시글 또는 댓글을 불러오는 데 실패했습니다.');
       } finally {
         setIsLoading(false);
@@ -40,10 +51,10 @@ const PostDetail = () => {
 
     try {
       const createdComment = await createComment(id, { content: newComment });
-      setComments(prevComments => [...prevComments, createdComment]);
+      setComments((prevComments) => [...prevComments, createdComment]);
       setNewComment('');
     } catch (error) {
-      console.error('댓글 작성에 실패했습니다.', error);
+      console.error('Error creating comment:', error);
       setError('댓글 작성에 실패했습니다.');
     }
   };
@@ -54,9 +65,24 @@ const PostDetail = () => {
         await deletePost(id);
         navigate('/community/freeboard');
       } catch (error) {
-        console.error('게시글 삭제에 실패했습니다.', error);
+        console.error('Error deleting post:', error);
         setError('게시글 삭제에 실패했습니다.');
       }
+    }
+  };
+
+  const handleEditPost = () => {
+    navigate(`/community/freeboard/${id}/edit`);
+  };
+
+  const handleUpdatePost = async () => {
+    try {
+      await updatePost(id, { title: updatedTitle, content: updatedContent, author });
+      setPost({ ...post, title: updatedTitle, content: updatedContent });
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error updating post:', error);
+      setError('게시글 수정에 실패했습니다.');
     }
   };
 
@@ -66,59 +92,105 @@ const PostDetail = () => {
         await deleteComment(commentId);
         setComments(comments.filter(comment => comment.id !== commentId));
       } catch (error) {
-        console.error('댓글 삭제에 실패했습니다.', error);
+        console.error('댓글 삭제 중 오류 발생:', error);
         setError('댓글 삭제에 실패했습니다.');
       }
     }
   };
 
-  if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading) return <div className="loading">로딩 중...</div>;
   if (error) return <div className="error">{error}</div>;
-  if (!post) return <div>게시글을 찾을 수 없습니다.</div>;
+  if (!post) return <div className="not-found">게시글을 찾을 수 없습니다.</div>;
 
   return (
-    <div className="container mt-5">
-      <h1>{post.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: post.content }} />
-      <p>작성자: {post.author}</p>
-      <p>작성일: {new Date(post.createdAt).toLocaleString()}</p>
-      <div className="mb-3">
-        <button onClick={() => navigate(`/community/freeboard/${id}/edit`)} className="btn btn-primary mr-2">수정</button>
-        <button onClick={handleDeletePost} className="btn btn-danger">삭제</button>
-      </div>
-
-      <h2>댓글</h2>
-      {comments.length === 0 ? (
-        <p>댓글이 없습니다.</p>
+    <div className="post-detail">
+      {isEditing ? (
+        <div className="edit-post-form">
+          <h2 className="edit-post-title">게시글 수정</h2>
+          <WriteShort
+            type="text"
+            titleTag="작성자"
+            name="author"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+          />
+          <WriteLong
+            titleTag="제목"
+            name="title"
+            value={updatedTitle}
+            onChange={(e) => setUpdatedTitle(e.target.value)}
+          />
+          <div className="edit-content">
+            <h3>내용</h3>
+            <QuillEditor
+              value={updatedContent}
+              onChange={setUpdatedContent}
+              placeholder="내용을 입력하세요."
+            />
+          </div>
+          <div className="edit-actions">
+            <Button text="수정하기" onClick={handleUpdatePost} className="btn btn-primary" />
+            <Button text="취소" onClick={() => setIsEditing(false)} className="btn btn-secondary" />
+          </div>
+        </div>
       ) : (
-        comments.map(comment => (
-          <div key={comment.id} className="card mb-2">
-            <div className="card-body">
-              <p>{comment.content}</p>
-              <small>작성일: {new Date(comment.createdAt).toLocaleString()}</small>
-              <button 
-                onClick={() => handleDeleteComment(comment.id)} 
-                className="btn btn-danger btn-sm float-end"
-              >
-                삭제
-              </button>
+        <>
+          <div className="post-header">
+            <h1 className="post-title">{post.title}</h1>
+            <div className="post-meta">
+              <span className="post-author">{post.author}</span>
+              <span className="post-date">{new Date(post.createdAt).toLocaleString()}</span>
             </div>
           </div>
-        ))
-      )}
+          <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }} />
+          <div className="post-actions">
+            <div className="button-group">
+              <Button text="목록" onClick={() => navigate('/community/freeboard')} className="btn btn-list" />
+              <Button text="답글" onClick={() => {/* 답글 로직 */}} className="btn btn-reply" />
+            </div>
+            <div className="button-group">
+              <Button text="수정" onClick={handleEditPost} className="btn btn-edit" />
+              <Button text="삭제" onClick={handleDeletePost} className="btn btn-delete" />
+            </div>
+          </div>
 
-      <form onSubmit={handleCommentSubmit} className="mt-4">
-        <div className="form-group">
-          <textarea
-            className="form-control"
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            placeholder="댓글을 작성하세요..."
-            required
-          />
-        </div>
-        <button type="submit" className="btn btn-primary mt-2">댓글 작성</button>
-      </form>
+          <div className="comments-section">
+            <h2 className="comments-title">댓글 {comments.length}개</h2>
+            {comments.length === 0 ? (
+              <p className="no-comments">첫 번째 댓글을 남겨보세요.</p>
+            ) : (
+              <ul className="comments-list">
+                {comments.map((comment) => (
+                  <li key={comment.id} className="comment">
+                    <div className="comment-content">{comment.content}</div>
+                    <div className="comment-meta">
+                      <span className="comment-author">{comment.author}</span>
+                      <span className="comment-date">{new Date(comment.createdAt).toLocaleString()}</span>
+                      <button 
+                        onClick={() => handleDeleteComment(comment.id)} 
+                        className="btn btn-delete-comment"
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <form onSubmit={handleCommentSubmit} className="comment-form">
+              <textarea
+                className="comment-input"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="댓글을 작성하세요..."
+                required
+              />
+              <button type="submit" className="btn btn-submit-comment">댓글 작성</button>
+            </form>
+          </div>
+        </>
+      )}
     </div>
   );
 };

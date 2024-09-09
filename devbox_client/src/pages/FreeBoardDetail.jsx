@@ -5,6 +5,8 @@ import Button from "../components/Button";
 import WriteLong from "../components/WriteLong";
 import WriteShort from "../components/WriteShort";
 import QuillEditor from "../components/QuillEditor";
+import '../assets/css/FreeBoardDetail.css'
+
 
 const FreeBoardDetail = () => {
   const { id } = useParams();
@@ -101,7 +103,7 @@ const FreeBoardDetail = () => {
         </div>
         <div className="form-row pt-2">
           <div className="col-md-12 col-10 text-end">
-            <Button text={id ? "수정하기" : "작성하기"} onClick={handleSubmit} />
+            <Button text={id ? "수정하기" : "작성하기"} onClick={handleSubmit} className="btn-submit" />
           </div>
         </div>
       </section>

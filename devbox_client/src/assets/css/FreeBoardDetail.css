@@ -1,0 +1,19 @@
+/* FreeBoardDetail.css */
+.btn-submit {
+    padding: 8px 16px; /* 버튼 크기 조정 */
+    font-size: 14px; /* 폰트 크기 조정 */
+    border: none; /* 기본 스타일을 없애기 */
+    background-color: #03c75a; /* 색상 조정 */
+    color: white; /* 글자 색상 조정 */
+    cursor: pointer; /* 커서 스타일 조정 */
+    border-radius: 4px; /* 모서리 둥글게 */
+  }
+  
+  .btn-submit:hover {
+    background-color: #02b350; /* 호버 색상 조정 */
+  }
+  
+  .error {
+    color: #f44336;
+  }
+  
