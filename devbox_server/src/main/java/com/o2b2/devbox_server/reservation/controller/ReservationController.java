@@ -40,6 +40,12 @@ public class ReservationController {
         return map;
     }
 
+    @GetMapping("/reservation/{date}")
+    public List<Reservation> reservationList(@PathVariable("date") String date) {
+        List<Reservation> list = reservationRepository.findByDate(date);
+        return list;
+    }
+
     @GetMapping("/reservation/list/{category}/{date}")
     public List<Map<String, Object>> reservationList(
             @PathVariable("category") String category,
