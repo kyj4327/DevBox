@@ -21,6 +21,10 @@
     color: rgb(255, 161, 161) !important;
 }
 
+button.disabled-btn {
+    text-decoration: line-through !important;
+}
+
 .react-datepicker__header {
     background-color: #d8dfff !important;
 }

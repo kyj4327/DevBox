@@ -13,13 +13,14 @@ const Reservation = () => {
 
     const [value, onChange] = useState(new Date());
     const [name, setName] = useState('이예림');
-    const [reservationDate, setReservationDate] = useState('');
+    const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [condition, setCondition] = useState('예약완료');
+    const [timeData, setTimeData] = useState([]);
 
     useEffect(() => {
-        setReservationDate(moment(value).format("YYYY년 MM월 DD일"));
-    }, [value])
+        setDate(moment(value).format("YYYY년 MM월 DD일"));
+    }, [value]);
 
     // 일요일(0) 또는 토요일(6)인지 확인하여 클래스를 지정
     const tileClassName = ({ date, view }) => {
@@ -58,7 +59,7 @@ const Reservation = () => {
                 headers: {
                     'content-type': 'application/json'
                 },
-                body: JSON.stringify({ name: name, date: reservationDate, time: time, condition: condition })
+                body: JSON.stringify({ name: name, date: date, time: time, condition: condition })
             });
             const data = await res.json();
             if (data.code === 200) {
@@ -69,6 +70,30 @@ const Reservation = () => {
             }
         }
         send();
+    };
+
+    useEffect(() => {
+        async function get() {
+            const url = `http://127.0.0.1:8080/reservation/${date}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            setTimeData(data);
+        }
+        if (date) {
+            get();
+        }
+    }, [date]);
+
+    const isDisabled = (time) => {
+        return timeData.some((v) => v.time === time);
+    };
+    // some() : 배열의 요소 중 하나라도 주어진 조건을 만족하면 true를 반환하고, 조건을 만족하는 요소가 하나도 없으면 false를 반환
+
+    const TimeButton = ({ value }) => {
+        return (
+            <button className={`btn px-4 mx-auto btn-outline-primary ${isDisabled(value) ? "disabled-btn" : ""}`}
+                onClick={timeClick} disabled={isDisabled(value)}>{value}</button>
+        );
     };
 
     return (
@@ -109,10 +134,10 @@ const Reservation = () => {
                             />
                         </div>
                         <div className="pricing-list rounded-botton rounded-3 py-sm-0 py-5" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
-                            <button className="btn px-4 mx-auto btn-outline-primary" onClick={timeClick}>09:00 - 12:00</button>
-                            <button className="btn px-4 mx-auto btn-outline-primary" onClick={timeClick}>12:00 - 15:00</button>
-                            <button className="btn px-4 mx-auto btn-outline-primary" onClick={timeClick}>15:00 - 18:00</button>
-                            <button className="btn px-4 mx-auto btn-outline-primary" onClick={timeClick}>18:00 - 21:00</button>
+                            <TimeButton value="09:00 - 12:00" />
+                            <TimeButton value="12:00 - 15:00" />
+                            <TimeButton value="15:00 - 18:00" />
+                            <TimeButton value="18:00 - 21:00" />
                         </div>
                     </div>
                     <div className="col-lg-6">
@@ -125,7 +150,7 @@ const Reservation = () => {
                                     <h5><li style={{ listStyle: 'none' }}>예약자명</li></h5>
                                     <h5><li style={{ marginBottom: '1rem' }}>이예림</li></h5>
                                     <h5><li style={{ listStyle: 'none' }}>날짜</li></h5>
-                                    <h5><li style={{ marginBottom: '1rem' }}>{reservationDate}</li></h5>
+                                    <h5><li style={{ marginBottom: '1rem' }}>{date}</li></h5>
                                     <h5><li style={{ listStyle: 'none' }}>시간</li></h5>
                                     <h5><li>{time}</li></h5>
                                 </div>
