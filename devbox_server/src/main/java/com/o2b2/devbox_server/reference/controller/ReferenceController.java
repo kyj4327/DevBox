@@ -44,7 +44,7 @@ public class ReferenceController {
             @PathVariable("selectJob") String selectJob,
             @RequestParam(value = "page", defaultValue = "1") int page) {
         Sort sort = Sort.by(Order.desc("id"));
-        Pageable pageable = PageRequest.of(page - 1, 10, sort);
+        Pageable pageable = PageRequest.of(page - 1, 8, sort);
         Page<Reference> p = null;
         if (selectJob.equals("All")) {
             p = referenceRepository.findAll(pageable);
