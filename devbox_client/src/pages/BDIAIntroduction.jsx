@@ -1,9 +1,9 @@
 import React from "react";
 import "../assets/css/BDIAIntroduction.css"; // 스타일을 별도의 CSS 파일로 관리
-import KakaoMap from "./KakaoMap"; // 카카오 지도 컴포넌트 import
-import ImageSlider from "./ImageSlider";
-import ImageList from "./ImageList";
-import RoadExplain from "./RoadExplain";
+import KakaoMap from "../components/KakaoMap"; // 카카오 지도 컴포넌트 import
+import ImageSlider from "../components/ImageSlider";
+import ImageList from "../components/ImageList";
+import RoadExplain from "../components/RoadExplain";
 
 function BDIAIntroduction() {
   return (
