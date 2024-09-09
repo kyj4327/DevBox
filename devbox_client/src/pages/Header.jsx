@@ -1,8 +1,62 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import '../assets/css/menu.css'
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import '../assets/css/Header.css';
 
 const Header = () => {
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkUserStatus = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/user/me", {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+
+        if (response.ok) {
+          const userInfo = await response.json();
+          console.log("User Info:", userInfo);
+          setUser(userInfo);
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+        setUser(null);
+      }
+    };
+
+    checkUserStatus();
+  }, []);
+
+  const handleLogoutClick = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/logout", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+
+      if (response.ok) {
+        localStorage.removeItem("accessToken");
+        setUser(null);
+        navigate("/auth");
+      } else {
+        throw new Error("Failed to log out");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+      setError(error.message);
+    }
+  };
+
   return (
     <nav
       id="main_nav"
@@ -120,15 +174,31 @@ const Header = () => {
             </ul>
           </div>
           <div className="navbar align-self-center d-flex">
-            <Link className="nav-link" to="#">
-              <i className="bx bx-bell bx-sm bx-tada-hover text-primary"></i>
-            </Link>
-            <Link className="nav-link" to="#">
-              <i className="bx bx-cog bx-sm text-primary"></i>
-            </Link>
-            <Link className="nav-link" to="#">
-              <i className="bx bx-user-circle bx-sm text-primary"></i>
-            </Link>
+            {user ? (
+              <>
+                <Link className="nav-link" to="#">
+                  <i className="bx bx-bell bx-sm bx-tada-hover text-primary"></i>
+                </Link>
+                <Link className="nav-link" to="/mypage">
+                  <i className="bx bx-user-circle bx-sm text-primary"></i>
+                </Link>
+                <button 
+                  onClick={handleLogoutClick} 
+                  className="header-logout-button nav-link"
+                  aria-label="Logout"
+                >
+                  <i className='bx bx-log-out bx-sm text-primary'></i>
+                </button>
+              </>
+            ) : (
+              <Link
+                className="nav-link"
+                to="/auth"
+                style={{ color: "#4232C2", textDecoration: 'underline', cursor: 'pointer' }}
+              >
+                로그인/회원가입
+              </Link>
+            )}
           </div>
         </div>
       </div>
