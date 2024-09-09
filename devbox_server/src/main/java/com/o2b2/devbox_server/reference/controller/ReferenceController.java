@@ -60,6 +60,9 @@ public class ReferenceController {
             rMap.put("selectJob", r.getSelectJob());
             rMap.put("content1", r.getContent1());
             rMap.put("content2", r.getContent2());
+            rMap.put("content3", r.getContent3());
+            rMap.put("content4", r.getContent4());
+            rMap.put("content5", r.getContent5());
             rMap.put("link", r.getLink());
             response.add(rMap);
         }
@@ -95,6 +98,9 @@ public class ReferenceController {
         map.put("selectJob", reference.getSelectJob());
         map.put("content1", reference.getContent1());
         map.put("content2", reference.getContent2());
+        map.put("content3", reference.getContent3());
+        map.put("content4", reference.getContent4());
+        map.put("content5", reference.getContent5());
         map.put("link", reference.getLink());
         return map;
     }

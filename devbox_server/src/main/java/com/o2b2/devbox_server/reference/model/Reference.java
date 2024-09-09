@@ -21,5 +21,11 @@ public class Reference {
 
     String content2;
 
+    String content3;
+
+    String content4;
+
+    String content5;
+
     String link;
 }
