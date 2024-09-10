@@ -75,7 +75,7 @@ function GatherMateWrite() {
               <WriteSelect
                 titleTag="말머리"
                 name="intro"
-                value={intro}
+                value={intro|| "말머리를 선택하세요"}
                 onChange={(e) => setIntro(e.target.value)}
                 options={["스터디", "공모전", "프로젝트", "식사", "기타"]}
               />

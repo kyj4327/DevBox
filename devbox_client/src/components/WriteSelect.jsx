@@ -38,7 +38,7 @@ const WriteSelect = ({ titleTag, name, value, onChange, options }) => {
         <div className="custom-select-container" ref={dropdownRef}>
           <div className="form-floating">
             <div className="custom-select-header" onClick={toggleDropdown}>
-              {value || "말머리를 선택하세요"}
+              {value}
               <span className={`arrow ${isOpen ? 'open' : ''}`}></span>
             </div>
             {isOpen && (
