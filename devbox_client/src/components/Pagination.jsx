@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 const Pagination = (props) => {
     const pageData = props.pageData;
 
@@ -10,7 +8,7 @@ const Pagination = (props) => {
     };
 
     return (
-        <div className="row">
+        <div>
             <div className="btn-toolbar justify-content-center pb-4" role="toolbar" aria-label="Toolbar with button groups">
                 <div className="btn-group me-2" role="group" aria-label="First group">
                     <button
