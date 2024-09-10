@@ -21,14 +21,20 @@ import './assets/css/boxicon.min.css';
 import './assets/css/templatemo.css';
 import './assets/css/custom.css';
 
-import AuthContainer from './components/AuthContainer';
+import AuthContainer from './pages/auth/AuthContainer';
 import { Naver } from './components/Naver';
 import HomePage from './pages/HomePage';
-import MyPage from './pages/MyPage';
-import PasswordReset from './pages/PasswordReset';
+import MyPage from './pages/auth/MyPage';
+import PasswordReset from './pages/auth/PasswordReset';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import GatherMateWrite from './pages/GatherMateWrite';
+import CommentComponent from './components/CommentComponent';
+import GatherMateWrite from './pages/gatherMate/GatherMateWrite';
+import GatherMateList from './pages/gatherMate/GatherMateList';
+import GatherMateDetail from './pages/gatherMate/GatherMateDetail';
+import JobInfoList from './components/JobInfoList';
+import JobInfoBack from './components/JobInfoBack';
+import GatherMateEdit from './pages/gatherMate/GatherMateEdit';
 
 function AppContent() {
   const location = useLocation();
@@ -64,10 +70,16 @@ function AppContent() {
         <Routes>
           <Route path="/auth" element={<AuthContainer />} />
           <Route path="/password" element={<PasswordReset />} />
-          <Route path="/login" element={<Naver />} />
+          {/*<Route path="/login" element={<Naver />} />*/}
           <Route path="/home" element={<HomePage />} />
           <Route path="/mypage/*" element={<MyPage />} />
           <Route path="/gatherwrite" element={<GatherMateWrite />} />
+          <Route path="/gatherlist" element={<GatherMateList />} />
+          <Route path="/comments" element={<CommentComponent />} />
+
+          <Route path="/gatherdetail/:postId" element={<GatherMateDetail />} />
+          <Route path="/gatheredit/:postId" element={<GatherMateEdit />} />
+
         </Routes>
       </main>
       {!hideHeaderFooter && <Footer />} {/* Footer 추가 */}
