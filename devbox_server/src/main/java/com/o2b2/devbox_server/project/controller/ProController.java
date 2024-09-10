@@ -58,7 +58,7 @@ public class ProController {
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "6") int size) {
 
-        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        Sort sort = Sort.by(Sort.Direction.DESC, "likeCount");
         Pageable pageable = PageRequest.of(page - 1, size, sort); // 페이지 요청 생성
 
         Page<ProEntity> p = proRepository.findAll(pageable);
@@ -102,7 +102,7 @@ public class ProController {
             // 좋아요 상태 토글 
             if (pro.getLikeCount() == null) {
                 pro.setLikeCount(0);
-
+                
             }
 
             // 좋아요 수 증가
