@@ -12,13 +12,19 @@ import org.springframework.stereotype.Component;
 import com.o2b2.devbox_server.eduInfo.model.EduEntity;
 import com.o2b2.devbox_server.eduInfo.repository.EduRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component
+@Slf4j
 public class MySchedule {
     @Autowired
     EduRepository eduRepository;
 
     @Scheduled(cron = "0 0 0 * * *")
     public void run() {
+
+        log.error("cron");
+
         List<EduEntity> eduList = eduRepository.findByState("모집중");
 
         LocalDate today = LocalDate.now();
