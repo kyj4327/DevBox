@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getPost, createPost, updatePost } from '../services/api-service';
-import Button from "../components/Button";
-import WriteLong from "../components/WriteLong";
-import WriteShort from "../components/WriteShort";
-import QuillEditor from "../components/QuillEditor";
-import '../assets/css/FreeBoardDetail.css'
+import { getPost, createPost, updatePost } from '../../services/api-service';
+import Button from "../../components/Button";
+import WriteLong from "../../components/WriteLong";
+import WriteShort from "../../components/WriteShort";
+import QuillEditor from "../../components/QuillEditor";
+import '../../assets/css/FreeBoardDetail.css'
 
 
 const FreeBoardDetail = () => {

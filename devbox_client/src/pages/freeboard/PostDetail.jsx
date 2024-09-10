@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getPost, getCommentsByPostId, createComment, deletePost, deleteComment, updatePost } from '../services/api-service';
-import WriteShort from "../components/WriteShort";
-import WriteLong from "../components/WriteLong";
-import QuillEditor from "../components/QuillEditor";
-import Button from "../components/Button";
-import '../assets/css/PostDetail.css';  // Make sure to create this CSS file
+import { getPost, getCommentsByPostId, createComment, deletePost, deleteComment, updatePost } from '../../services/api-service';
+import WriteShort from "../../components/WriteShort";
+import WriteLong from "../../components/WriteLong";
+import QuillEditor from "../../components/QuillEditor";
+import Button from "../../components/Button";
+import '../../assets/css/PostDetail.css';  // Make sure to create this CSS file
 
 const PostDetail = () => {
   const { id } = useParams();

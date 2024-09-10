@@ -8,15 +8,15 @@ import "./assets/css/boxicon.min.css";
 import "./assets/css/templatemo.css";
 import "./assets/css/custom.css";
 
-import Header from "./pages/Header";
-import JobInfoList from "./pages/JobInfoList";
-import Footer from "./pages/Footer";
-import BDIAIntroduction from "./pages/BDIAIntroduction";
-import BDIASchedule from "./pages/BDIASchedule";
-import FreeBoard from "./pages/FreeBoard";
-import FreeBoardDetail from "./pages/FreeBoardDetail";
-import PostDetail from "./pages/PostDetail";
-import Contact from "./pages/Contact";
+import Header from "./components/Header";
+import JobInfoList from "./pages/jobinfo/JobInfoList";
+import Footer from "./components/Footer";
+import BDIAIntroduction from "./pages/bdia/BDIAIntroduction";
+import BDIASchedule from "./pages/bdia/BDIASchedule";
+import FreeBoard from "./pages/freeboard/FreeBoard";
+import FreeBoardDetail from "./pages/freeboard/FreeBoardDetail";
+import PostDetail from "./pages/freeboard/PostDetail";
+import Contact from "./pages/contact/Contact";
 
 function App() {
   return (

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getAllPosts } from '../services/api-service';
-import Pagination from '../components/Pagination';
+import { getAllPosts } from '../../services/api-service';
+import Pagination from '../../components/Pagination';
 
 const FreeBoard = () => {
   const [posts, setPosts] = useState([]);
