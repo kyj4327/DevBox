@@ -6,7 +6,7 @@ import ProPagination from "./ProPagination";
 
 const Project = () => {
     const [pageData, setPageData] = useState({});
-
+    const [refresh, setRefresh] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
 
     async function get(page = 1) {
@@ -24,12 +24,12 @@ const Project = () => {
 
     useEffect(() => {
         get(currentPage);
-    }, [currentPage]);
+    }, [currentPage, refresh]);
 
     return(
         <div className="Project">
             <Header />
-            <ProjectMain list={pageData.list} />
+            <ProjectMain setRefresh={() => setRefresh(prev => !prev)} list={pageData.list} />
             <ProPagination
              handlePageChange={handlePageChange} 
              pageData={
