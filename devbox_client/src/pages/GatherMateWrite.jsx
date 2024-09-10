@@ -1,6 +1,7 @@
 import { useState } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Quill의 스타일시트
+import { useNavigate } from "react-router-dom"; 
+
+import "react-quill/dist/quill.snow.css";
 import Button from "../components/Button";
 import WriteLong from "../components/WriteLong";
 import WriteShort from "../components/WriteShort";
@@ -8,25 +9,55 @@ import QuillEditor from "../components/QuillEditor";
 import WriteSelect from "../components/WriteSelect";
 
 function GatherMateWrite() {
-  const [apply, setApply] = useState("");
   const [intro, setIntro] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [apply, setApply] = useState("");
+  const [isRecruiting, setIsRecruiting] = useState(true);
 
-  const saveData = () => {
+  const navigate = useNavigate();
+
+  const saveData = async () => {
     const newGatherMate = {
+      intro,
       title,
       content,
       apply,
+      isRecruiting,
+      datePosted: new Date().toISOString(),
     };
 
-    // 여기에 데이터를 DB에 저장하는 로직을 추가합니다.
-    console.log("저장할 데이터:", newGatherMate);
+    try {
+      const response = await fetch("http://localhost:8080/gathermate/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newGatherMate),
+      });
 
-    // 입력 필드 초기화
-    setTitle("");
-    setContent("");
-    setApply("");
+      if (!response.ok) {
+        throw new Error("네트워크 응답이 올바르지 않습니다.");
+      }
+
+      const data = await response.json();
+      console.log("저장된 데이터:", data);
+
+      // 저장 후 게시글 상세 페이지로 이동 (data.id는 저장된 게시글 ID)
+      navigate(`/gatherdetail/${data.id}`);
+
+      // 입력 필드 초기화
+      setIntro("");
+      setTitle("");
+      setContent("");
+      setApply("");
+      setIsRecruiting(true);
+
+      alert("글이 성공적으로 저장되었습니다.");
+    } catch (error) {
+      console.error("저장 중 오류 발생:", error);
+      alert("글 저장에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
@@ -69,7 +100,6 @@ function GatherMateWrite() {
               </h2>
               <div className="col-lg-12 mb-4">
                 <div className="form-floating">
-                  {/* QuillEditor 컴포넌트를 사용하여 content 상태와 연동 */}
                   <QuillEditor
                     value={content}
                     onChange={setContent}
@@ -78,6 +108,7 @@ function GatherMateWrite() {
                   />
                 </div>
               </div>
+
             </div>
           </div>
         </div>
