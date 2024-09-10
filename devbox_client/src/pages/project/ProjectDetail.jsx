@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Button from "../components/Button";
+import Button from "../../components/Button";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -8,7 +8,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/free-mode';
 
-import '../assets/css/styles.css';
+import '../../assets/css/styles.css';
 
 import { FreeMode, EffectCoverflow, Autoplay, Pagination, Navigation } from 'swiper/modules';
 

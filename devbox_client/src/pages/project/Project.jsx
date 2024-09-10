@@ -1,25 +1,21 @@
 import { useEffect, useState } from "react";
-import MsgList from "./MsgList";
-import ProPagination from "./ProPagination";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+import ProjectMain from "./ProjectMain";
+import Pagination from "../../components/Pagination";
 
-const Message = () => {
+const Project = () => {
     const [pageData, setPageData] = useState({});
-    const [currentPage, setCurrentPage] = useState(1);
-    
     const [refresh, setRefresh] = useState(false);
-    // 상태 변경 초기값 false
-
-    const [sender, setSender] = useState('민준');
-    const [category, setCategory] = useState('받은쪽지');
+    const [currentPage, setCurrentPage] = useState(1);
 
     async function get(page = 1) {
-        const res = await fetch(`http://localhost:8080/msg/list/${sender}?page=${page}&category=${category}`);
-
+        const res = await fetch(`http://localhost:8080/pro/list?page=${page}`);
         const data = await res.json();
         console.log(data);
+        
         setPageData(data);
         setCurrentPage(page);  // 페이지 데이터 불러온 후, 현재 페이지 업데이트
-        
     }
 
     const handlePageChange = (pageNumber) => {
@@ -28,19 +24,13 @@ const Message = () => {
 
     useEffect(() => {
         get(currentPage);
-    }, [currentPage, sender, category, refresh]); // 상태가 변경될때마다 다시 실행
-
-    const clickState = (s) => {
-        setCategory(s);
-    };
-
+    }, [currentPage, refresh]);
 
     return(
-        <div className="Message">
-
-        <MsgList setRefresh={() => setRefresh(prev => !prev)} // 상태 반전
-            list={pageData.list} sender={sender} category={category} clickState={clickState} />
-        <ProPagination
+        <div className="Project">
+            <Header />
+            <ProjectMain setRefresh={() => setRefresh(prev => !prev)} list={pageData.list} />
+            <Pagination
              handlePageChange={handlePageChange} 
              pageData={
                  {
@@ -51,9 +41,9 @@ const Message = () => {
                  }
              }
             />
+            <Footer />
         </div>
-
     );
 };
 
-export default Message;
+export default Project;

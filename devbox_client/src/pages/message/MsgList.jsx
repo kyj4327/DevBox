@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Button from "../components/Button";
+import Button from "../../components/Button";
 import { Link, useNavigate } from "react-router-dom";
-import Category from "../components/Category";
+import Category from "../../components/Category";
 
 const MsgList = (props) => {
     const navigate = useNavigate();
@@ -50,7 +50,7 @@ const MsgList = (props) => {
                     <Category isActive={props.category} text={'보낸쪽지'} onClick={clickState} />
                 </div>
             </div>
-
+../
             <div className="pricing-horizontal bg-white">
                 {props.list && props.list.map((msg) => {
                     // 메시지의 좋아요 상태를 상태에서 가져옵니다.

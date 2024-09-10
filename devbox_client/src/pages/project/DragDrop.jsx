@@ -4,7 +4,7 @@ import React, {
   useState,
   useEffect
 } from "react";
-import "../assets/css/DragDrop.css";
+import "../../assets/css/DragDrop.css";
 
 const DragDrop = (props) => {
   const [initialFiles, setInitialFiles] = useState([]); // initialFiles를 props로 받습니다

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Button from "../components/Button";
-import WriteShort from "../components/WriteShort";
+import Button from "../../components/Button";
 
 const MesDetail = () => {
     const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import WriteShort from "../components/WriteShort";
-import Button from "../components/Button";
+import WriteShort from "../../components/WriteShort";
+import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 
 const MesWrite = () => {

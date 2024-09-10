@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import WriteShort from "../components/WriteShort";
-import Button from "../components/Button";
+import WriteShort from "../../components/WriteShort";
+import Button from "../../components/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const MesReply = () => {

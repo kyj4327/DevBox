@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import DragDrop from "./DragDrop";
-import Button from "../components/Button";
-import WriteShort from "../components/WriteShort";
-import WriteLong from "../components/WriteLong";
+import Button from "../../components/Button";
+import WriteShort from "../../components/WriteShort";
+import WriteLong from "../../components/WriteLong";
 import Swal from "sweetalert2";
 
 

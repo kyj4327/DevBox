@@ -1,14 +1,14 @@
-import '../assets/img/apple-icon.png';
-import '../assets/img/favicon.ico';
-import '../assets/css/bootstrap.min.css';
-import '../assets/css/boxicon.min.css';
-import '../assets/css/templatemo.css';
-import '../assets/css/custom.css';
+import '../../assets/img/apple-icon.png';
+import '../../assets/img/favicon.ico';
+import '../../assets/css/bootstrap.min.css';
+import '../../assets/css/boxicon.min.css';
+import '../../assets/css/templatemo.css';
+import '../../assets/css/custom.css';
 
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import Pagination from '../components/Pagination';
-import EduInfo from '../pages/EduInfo';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import Pagination from '../../components/Pagination';
+import EduInfo from './EduInfo';
 import { useEffect, useState } from 'react';
 
 const EduMain = () => {

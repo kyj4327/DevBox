@@ -1,20 +1,18 @@
 import './App.css';
 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import EduMain from './pages/EduMain';
-import EduDetail from './pages/EduDetail';
-import DetailManager from './pages/DetailManager';
-import EduUpdate from './pages/EduUpdate';
-import Project from './pages/Project';
-import ProjectWrite from './pages/ProjectWrite';
-import ProDetail from './pages/ProDetail';
-import ProUpdate from './pages/ProUpdate';
-import DragDrop from './pages/DragDrop';
-import MsgList from './pages/MsgList';
-import MsgWrite from './pages/MsgWrite';
-import MsgDetail from './pages/MsgDedail';
-import Message from './pages/Message';
-import MsgReply from './pages/MsgReply';
+import EduMain from './pages/education/EduMain';
+import EduDetail from './pages/education/EduDetail';
+import DetailManager from './pages/education/DetailManager';
+import EduUpdate from './pages/education/EduUpdate';
+import Project from './pages/project/Project';
+import ProjectWrite from './pages/project/ProjectWrite';
+import ProDetail from './pages/project/ProDetail';
+import ProUpdate from './pages/project/ProUpdate';
+import MsgWrite from './pages/message/MsgWrite';
+import MsgDetail from './pages/message/MsgDedail';
+import Message from './pages/message/Message';
+import MsgReply from './pages/message/MsgReply';
 
 function App() {
   return (

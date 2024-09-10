@@ -1,9 +1,9 @@
 import { upload } from "@testing-library/user-event/dist/upload";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import WriteShort from "../components/WriteShort";
-import WriteLong from "../components/WriteLong";
-import Button from "../components/Button";
+import WriteShort from "../../components/WriteShort";
+import WriteLong from "../../components/WriteLong";
+import Button from "../../components/Button";
 import DragDrop from "./DragDrop";
 import Swal from "sweetalert2";
 

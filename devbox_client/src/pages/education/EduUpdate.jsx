@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import WriteShort from "../components/WriteShort";
-import WriteLong from "../components/WriteLong";
-import Button from "../components/Button";
-import WriteSelect from "../components/WriteSelect";
+import WriteShort from "../../components/WriteShort";
+import WriteLong from "../../components/WriteLong";
+import Button from "../../components/Button";
+import WriteSelect from "../../components/WriteSelect";
 
 const EduUpdate = () => {
     const navigate = useNavigate();

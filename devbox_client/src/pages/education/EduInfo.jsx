@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Button from "../components/Button";
-import Category from "../components/Category";
+import Button from "../../components/Button";
+import Category from "../../components/Category";
 
 const EduInfo = (props) => {
     const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import MsgBell from "../pages/MsgBell";
+import MsgBell from "../pages/message/MsgBell";
 
 const Header = () => {
     return (

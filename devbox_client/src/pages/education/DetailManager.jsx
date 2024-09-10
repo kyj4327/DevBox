@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Button from "../components/Button";
-import WriteShort from "../components/WriteShort";
-import WriteLong from "../components/WriteLong";
-import WriteSelect from "../components/WriteSelect";
+import Button from "../../components/Button";
+import WriteShort from "../../components/WriteShort";
+import WriteLong from "../../components/WriteLong";
+import WriteSelect from "../../components/WriteSelect";
 import Swal from "sweetalert2";
 
 const DetailManager = () => {
