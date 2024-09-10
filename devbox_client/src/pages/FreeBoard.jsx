@@ -31,6 +31,12 @@ const FreeBoard = () => {
     return html.replace(/<[^>]+>/g, '');
   };
 
+  const getTrimmedContent = (content) => {
+    const text = stripHtml(content);
+    // 10자가 넘는 경우만 ...을 추가
+    return text.length > 10 ? text.substring(0, 10) + '...' : text;
+  };
+
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
@@ -64,7 +70,7 @@ const FreeBoard = () => {
                 <h5 className="mb-1">{post.title}</h5>
                 <small>{new Date(post.createdAt).toLocaleDateString()}</small>
               </div>
-              <p className="mb-1">{stripHtml(post.content).substring(0, 100)}...</p>
+              <p className="mb-1">{getTrimmedContent(post.content)}</p>
               <small>작성자: {post.author}</small>
             </Link>
           ))}

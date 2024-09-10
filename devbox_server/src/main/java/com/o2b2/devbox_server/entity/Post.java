@@ -1,11 +1,10 @@
 package com.o2b2.devbox_server.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -26,7 +25,7 @@ public class Post {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false, length = 1000)
+    @Column(columnDefinition = "LONGTEXT", nullable = false)  // LONGTEXT로 수정
     private String content;
 
     @Column(nullable = false)
@@ -36,7 +35,7 @@ public class Post {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference // Post가 직렬화될 때 Comment 필드가 포함됩니다.
+    @JsonManagedReference
     private List<Comment> comments = new ArrayList<>();
 
     // Getters and Setters
