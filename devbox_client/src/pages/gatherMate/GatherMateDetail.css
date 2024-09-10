@@ -1,0 +1,17 @@
+.Gather-detail {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.gather-detail{
+  display: flex;
+  margin: 0px !important;
+
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+}

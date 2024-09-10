@@ -1,0 +1,138 @@
+.mypage-profile-edit__content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
+  width: 847px; 
+  height: 500px; 
+  align-items: center; 
+  justify-content: center; 
+}
+
+.mypage-profile-edit__title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.mypage-profile-edit__form-group {
+  margin-bottom: 15px;
+}
+
+.mypage-profile-edit__form-group label {
+  width: 100px;
+  font-weight: 600;
+}
+
+.mypage-profile-edit__form-group input {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.mypage-profile-edit__form-group input:disabled {
+  background-color: #e9ecef;
+}
+
+.mypage-profile-edit__btn-save {
+  background-color: #4232C2;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.mypage-profile-edit__btn-save:hover {
+  background-color: #2d24a6;
+}
+
+.mypage-profile-edit__btn-delete {
+  background-color: red;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.mypage-profile-edit__modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 30%;
+  height: auto;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translate(-50%, -50%);
+}
+
+.mypage-profile-edit__modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 100%;
+}
+
+.mypage-profile-edit__btn-confirm-delete {
+  background-color: red;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.mypage-profile-edit__btn-cancel {
+  background-color: gray;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.mypage-profile-edit__btn-confirm-delete:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.edit-input {
+  width: 330px;
+  height: 30px;
+}
+
+/* 라디오버튼 ->  회원 유형 옆으로 배치 */
+.mypage-profile-edit__form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* 전체 라디오 그룹을 감싸는 컨테이너 */
+.mypage-profile-edit__radio-group {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* 라디오 버튼 사이의 간격 */
+}
+
+
+/* 라디오 버튼의 크기 */
+input[type="radio"] {
+  width: 10px; 
+  height: 10px; 
+  vertical-align: middle; /* 라벨 텍스트와 수직 정렬 */
+  margin-right: 9px; /* 라벨과의 간격 조정 */
+}
