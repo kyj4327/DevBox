@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./WriteSelect.css";
+import "../assets/css/WriteSelect.css";
 
 const WriteSelect = ({ titleTag, name, value, onChange, options }) => {
   const [isOpen, setIsOpen] = useState(false);
