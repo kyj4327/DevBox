@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./AuthContainer.css";
-import google from "../assets/img/Oauth_Google.png";
-import kakao from "../assets/img/Oauth_Kakao.webp";
-import naver from "../assets/img/Oauth_Naver.png";
+import google from "../../assets/img/Oauth_Google.png";
+import kakao from "../../assets/img/Oauth_Kakao.webp";
+import naver from "../../assets/img/Oauth_Naver.png";
 
 function AuthContainer() {
   const [isRightPanelActive, setIsRightPanelActive] = useState(false);

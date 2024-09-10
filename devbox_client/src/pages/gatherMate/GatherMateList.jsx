@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import "react-quill/dist/quill.snow.css";
-import Button from "../components/Button";
-import Pagination from "../components/Pagination";
-import Category from "../components/Category";
+import Button from "../../components/Button";
+import Pagination from "../../components/Pagination";
+import Category from "../../components/Category";
 import { Link, useNavigate } from "react-router-dom";
 
 import "./GatherMateList.css";
 
 // 아이콘들
-import modeCommentIcon from "../assets/img/icons/modeComment.svg";
-import modeFavoriteIcon from "../assets/img/icons/modeFavorite.svg";
-import modevisibilityIcon from "../assets/img/icons/modevisibility.svg";
+import modeCommentIcon from "../../assets/img/icons/modeComment.svg";
+import modeFavoriteIcon from "../../assets/img/icons/modeFavorite.svg";
+import modevisibilityIcon from "../../assets/img/icons/modevisibility.svg";
 
 function GatherMateList() {
   const [category, setCategory] = useState("All");

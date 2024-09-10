@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 
 import "react-quill/dist/quill.snow.css";
-import Button from "../components/Button";
-import WriteLong from "../components/WriteLong";
-import WriteShort from "../components/WriteShort";
-import QuillEditor from "../components/QuillEditor";
-import WriteSelect from "../components/WriteSelect";
+import Button from "../../components/Button";
+import WriteLong from "../../components/WriteLong";
+import WriteShort from "../../components/WriteShort";
+import QuillEditor from "../../components/QuillEditor";
+import WriteSelect from "../../components/WriteSelect";
 
 function GatherMateWrite() {
   const [intro, setIntro] = useState("");

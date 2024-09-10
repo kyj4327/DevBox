@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Comment from "../components/Comments";
-import profilePic from "../assets/img/profilePic.png";
+import Comment from "../../components/Comments";
+import profilePic from "../../assets/img/profilePic.png";
 import "./GatherMateDetail.css";
-import PostButton from "../components/PostButton";
-import WriteShort from "../components/WriteShort";
+import PostButton from "../../components/PostButton";
+import WriteShort from "../../components/WriteShort";
 
 const GatherMateDetail = () => {
   const { postId } = useParams();
