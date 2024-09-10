@@ -5,7 +5,6 @@ import EduMain from './pages/EduMain';
 import EduDetail from './pages/EduDetail';
 import DetailManager from './pages/DetailManager';
 import EduUpdate from './pages/EduUpdate';
-import Main from './pages/Main';
 import Project from './pages/Project';
 import ProjectWrite from './pages/ProjectWrite';
 import ProDetail from './pages/ProDetail';
@@ -23,7 +22,6 @@ function App() {
       <BrowserRouter>
       <Routes>
 
-       <Route path='/' element={<Main />}>
         <Route path='/edu/list' element={<EduMain />} />
         <Route path='/edu/detail' element={<EduDetail />} />
         <Route path='/edu/maneger' element={<DetailManager />} />
@@ -33,7 +31,6 @@ function App() {
         <Route path='/project/write' element={<ProjectWrite />} />
         <Route path='/project/detail' element={<ProDetail />} />
         <Route path='/project/update' element={<ProUpdate />} />
-        <Route path='' element={<DragDrop />} />
 
         <Route path='/message/list' element={<Message />} />
         <Route path='/message/write' element={<MsgWrite />} />
@@ -41,7 +38,6 @@ function App() {
         <Route path='/message/reply' element={<MsgReply />} />
 
 
-       </Route>
 
       </Routes>
       </BrowserRouter>
