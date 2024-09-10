@@ -32,7 +32,11 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 특정 경로는 필터링 제외_회원가입
         String requestURI = request.getRequestURI();
-        if (requestURI.equals("/join") || requestURI.equals("/login") || requestURI.matches("/password/.*")) {
+//        if (requestURI.equals("/join") || requestURI.equals("/login") || requestURI.matches("/password/.*")) {
+
+        // 테스트용 로그인 없이 crud 열기
+        if (requestURI.equals("/join") || requestURI.equals("/login") || requestURI.matches("/password/.*") || requestURI.matches("/gathermate/.*") ) {
+
             filterChain.doFilter(request, response);
             return;
         }

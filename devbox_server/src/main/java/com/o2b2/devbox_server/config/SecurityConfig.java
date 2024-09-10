@@ -119,6 +119,9 @@ public class SecurityConfig {
                         .requestMatchers("/password/**").permitAll() // 비밀번호 재설정 관련 경로에 접근 허용
                         .requestMatchers("/api/user/me").authenticated() // <- 인증된 사용자만 접근 가능하도록 설정
 
+                        // 글 작성 경로에 대해 인증 없이 접근 가능하게 설정
+                        .requestMatchers("/gathermate/**").permitAll()
+
                         .anyRequest().authenticated());
 
         http

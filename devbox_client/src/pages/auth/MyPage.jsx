@@ -1,10 +1,10 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import MyPageSideBar from "../components/MyPageSideBar";
-import MyPageContent from "../components/MyPageContent";
-import MyPageProfileEdit from "../components/MyPageProfileEdit";
+import MyPageSideBar from "../../components/MyPageSideBar";
+import MyPageContent from "../../components/MyPageContent";
+import MyPageProfileEdit from "../../components/MyPageProfileEdit";
 import "./MyPage.css";
-import Header from '../components/Header';
+import Header from '../../components/Header';
 
 function MyPage() {
   return (
