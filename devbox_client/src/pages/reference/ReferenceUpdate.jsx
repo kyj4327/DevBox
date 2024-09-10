@@ -1,13 +1,13 @@
-import Header from '../components/Header';
-import WriteLong from '../components/WriteLong';
-import WriteShort from '../components/WriteShort';
-import WriteSelect from '../components/WriteSelect';
-import Footer from '../components/Footer';
-import Button from '../components/Button';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import Header from '../../components/Header';
+import WriteLong from '../../components/WriteLong';
+import WriteShort from '../../components/WriteShort';
+import WriteSelect from '../../components/WriteSelect';
+import Footer from '../../components/Footer';
+import Button from '../../components/Button';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
-const ReferenceWrite = () => {
+const ReferenceUpdate = () => {
     const navigate = useNavigate();
 
     const [title, setTitle] = useState('');
@@ -19,23 +19,43 @@ const ReferenceWrite = () => {
     const [content5, setContent5] = useState('');
     const [link, setLink] = useState('');
 
-    const saveData = (e) => {
+    const location = useLocation();
+    const search = new URLSearchParams(location.search);
+    const referenceId = search.get('referenceId');
+    useEffect(() => {
+        async function get() {
+            const url = `http://127.0.0.1:8080/reference/update?referenceId=${referenceId}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            setTitle(data.title);
+            setSelectJob(data.selectJob);
+            setContent1(data.content1);
+            setContent2(data.content2);
+            setContent3(data.content3);
+            setContent4(data.content4);
+            setContent5(data.content5);
+            setLink(data.link);
+        }
+        get();
+    }, []);
+
+    const updateData = (e) => {
         e.preventDefault();
         async function send() {
-            const url = 'http://127.0.0.1:8080/reference/write';
+            const url = 'http://127.0.0.1:8080/reference/update';
             const res = await fetch(url, {
                 method: 'post',
                 headers: {
                     'content-type': 'application/json'
                 },
                 body: JSON.stringify({
-                    title: title, selectJob: selectJob, content1: content1, content2: content2,
+                    id: referenceId, title: title, selectJob: selectJob, content1: content1, content2: content2,
                     content3: content3, content4: content4, content5: content5, link: link
                 })
             });
             const data = await res.json();
             if (data.code === 200) {
-                alert('글 작성 완료');
+                alert('글 수정 완료');
                 navigate('/reference/list');
             } else {
                 alert('다시 입력해주세요.');
@@ -44,31 +64,22 @@ const ReferenceWrite = () => {
         send();
     };
 
+    const RadioBtn = ({ value }) => {
+        return (
+            <label htmlFor="radioButton" style={{ marginRight: '1rem' }}>
+                <input type="radio" name='selectJob' checked={selectJob == value ? true : false}
+                    value={value} onChange={(e) => { setSelectJob(e.target.value) }} /> {value}
+            </label>
+        );
+    };
+
     return (
         <div>
             <Header />
             <section className="container py-5">
                 <div className="container py-5">
-                    <h1 className="h2 semi-bold-600 text-center mt-2">추천해요 Write</h1>
-                    <p className="text-center pb-5 light-300">아래와 같은 형식으로 게시됩니다. 참고해주세요!</p>
-                    <div className="pricing-list shadow-sm rounded-top rounded-3 py-sm-0 py-5" style={{ marginBottom: '3rem' }}>
-                        <div className="row p-2">
-                            <div className="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
-                                <h3>제목</h3>
-                            </div>
-                            <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
-                                <li style={{ listStyle: 'none' }}>카테고리</li>
-                                <li>내용1 (필수)</li>
-                                <li>내용2 (필수)</li>
-                                <li>내용3 (선택)</li>
-                                <li>내용4 (선택)</li>
-                                <li>내용5 (선택)</li>
-                            </div>
-                            <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
-                                <span className="btn rounded-pill px-4 btn-primary light-300" target='_blank'>Link</span>
-                            </div>
-                        </div>
-                    </div>
+                    <h1 className="h2 semi-bold-600 text-center mt-2">추천해요 Update</h1>
+                    <p className="text-center pb-5 light-300">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut facilisis.</p>
                     <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
                         <div className="contact-form row">
                             <WriteShort type={'text'} titleTag={'제목'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} />
@@ -85,7 +96,7 @@ const ReferenceWrite = () => {
                 </div>
                 <div className="form-row pt-2">
                     <div className="col-md-12 col-10 text-end">
-                        <Button text={'저장하기'} onClick={saveData} />
+                        <Button text={'수정하기'} onClick={updateData} />
                     </div>
                 </div>
             </section>
@@ -94,4 +105,4 @@ const ReferenceWrite = () => {
     );
 };
 
-export default ReferenceWrite;
+export default ReferenceUpdate;

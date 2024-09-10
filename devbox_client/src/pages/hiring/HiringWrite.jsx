@@ -1,8 +1,8 @@
-import Header from '../components/Header';
-import WriteLong from '../components/WriteLong';
-import WriteShort from '../components/WriteShort';
-import Footer from '../components/Footer';
-import Button from '../components/Button';
+import Header from '../../components/Header';
+import WriteLong from '../../components/WriteLong';
+import WriteShort from '../../components/WriteShort';
+import Footer from '../../components/Footer';
+import Button from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 

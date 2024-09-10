@@ -1,22 +1,24 @@
-import Header from '../components/Header';
-import Pagination from '../components/Pagination';
-import Footer from '../components/Footer';
-import Button from '../components/Button';
+import Header from '../../components/Header';
+import Category from '../../components/Category';
+import Pagination from '../../components/Pagination';
+import Footer from '../../components/Footer';
+import Button from '../../components/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-const ContestList = () => {
+const HiringList = () => {
     const navigate = useNavigate();
     const toWrite = () => {
-        navigate('/contest/write');
+        navigate('/hiring/write');
     };
 
+    const [category, setCategory] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
     const [pageData, setPageData] = useState([]);
     useEffect(() => {
         async function get(page = 1) {
-            const url = `http://127.0.0.1:8080/contest/list?page=${page}`;
+            const url = `http://127.0.0.1:8080/hiring/list/${category}?page=${page}`;
             const res = await fetch(url);
             const data = await res.json();
             const listData = data.slice(0, -1);
@@ -26,24 +28,20 @@ const ContestList = () => {
             setCurrentPage(page);
         }
         get(currentPage);
-    }, [currentPage]);
+    }, [category, currentPage]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [data]);
 
-    const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
+    const clickCategory = (e) => {
+        e.preventDefault();
+        setCategory(e.target.textContent);
+        setCurrentPage(1);
     };
 
-    const calculateDDay = (targetDate) => {
-        const today = new Date(); // 오늘 날짜
-        const target = new Date(targetDate); // String 형태의 날짜를 Date 객체로 변환
-        // 두 날짜 간의 차이를 밀리초 단위로 계산
-        const diff = target.getTime() - today.getTime();
-        // 밀리초를 일수로 변환
-        const dDay = Math.ceil(diff / (1000 * 3600 * 24));
-        return dDay;
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
     };
 
     return (
@@ -51,26 +49,27 @@ const ContestList = () => {
             <Header />
             <section className="container py-5">
                 <div className="container py-5">
-                    <h1 className="h2 semi-bold-600 text-center mt-2">공모전</h1>
-                    <p className="text-center pb-5 light-300">대회/공모전의 세부요강은 주최사의 기획에 의해 내용이 변경될 수 있으니, 주최사의 공고를 반드시 확인해 보시기 바랍니다.</p>
+                    <h1 className="h2 semi-bold-600 text-center mt-2">채용 공고</h1>
+                    <p className="text-center pb-5 light-300">더 다양한 채용 정보를 알고 싶다면 5층 취업 상담실을 방문해주세요.</p>
+                    <div className="row justify-content-center my-5">
+                        <div className="filter-btns shadow-md rounded-pill text-center col-auto">
+                            <Category text={'All'} isActive={category} onClick={clickCategory} />
+                            <Category text={'Busan'} isActive={category} onClick={clickCategory} />
+                            <Category text={'Others'} isActive={category} onClick={clickCategory} />
+                        </div>
+                    </div>
                     <div className="row projects gx-lg-5">
                         {
                             data.map((v) => {
                                 return (
                                     <div className="col-sm-6 col-lg-4" style={{ marginBottom: '3rem' }} key={v.id}>
-                                        <Link to={v.officialUrl} className="text-decoration-none" target='_blank' >
+                                        <Link to={v.wantedUrl} className="text-decoration-none" target='_blank' >
                                             <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
-                                                <img className="card-img-top" src={v.imgUrl} alt="" />
+                                                <img className="card-img-top" src={v.imgUrl} alt="https://www.wanted.co.kr/" />
                                                 <div className="card-body">
-                                                    <h5 className="card-title light-300 text-dark">
-                                                        {v.title}
-                                                        <label htmlFor="dday" style={{ color: 'red' }}>
-                                                            (D-{calculateDDay(v.regEnd) == 0 ? "day" : calculateDDay(v.regEnd)})
-                                                        </label>
-                                                    </h5>
-                                                    <li>주최</li><p className="card-text light-300 text-dark">{v.host}</p>
-                                                    <li>대상</li><p className="card-text light-300 text-dark">{v.target}</p>
-                                                    <li>접수</li><p className="card-text light-300 text-dark">{v.regStart} ~ {v.regEnd}</p>
+                                                    <h5 className="card-title light-300 text-dark">{v.job}</h5>
+                                                    <h5 className="card-title light-300 text-dark">{v.company}</h5>
+                                                    <p className="card-text light-300 text-dark">{v.area} / {v.career}</p>
                                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                                         <span className="text-decoration-none text-primary light-300">
                                                             Read more <i className='bx bxs-hand-right ms-1'></i>
@@ -78,12 +77,12 @@ const ContestList = () => {
                                                         <span className="text-decoration-none text-primary light-300">
                                                             <Link onClick={(e) => {
                                                                 e.preventDefault();
-                                                                navigate(`/contest/update?contestId=${v.id}`);
+                                                                navigate(`/hiring/update?hiringId=${v.id}`);
                                                             }}>수정</Link>
                                                             <Link onClick={(e) => {
                                                                 e.preventDefault();
                                                                 async function send() {
-                                                                    const url = `http://127.0.0.1:8080/contest/delete?contestId=${v.id}`;
+                                                                    const url = `http://127.0.0.1:8080/hiring/delete?hiringId=${v.id}`;
                                                                     await fetch(url);
                                                                     alert("삭제가 완료되었습니다.");
                                                                     window.location.reload();
@@ -113,4 +112,4 @@ const ContestList = () => {
     );
 };
 
-export default ContestList;
+export default HiringList;

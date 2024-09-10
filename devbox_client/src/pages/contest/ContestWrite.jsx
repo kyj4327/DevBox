@@ -1,12 +1,12 @@
-import Header from '../components/Header';
-import WriteLong from '../components/WriteLong';
-import WriteShort from '../components/WriteShort';
-import Footer from '../components/Footer';
-import Button from '../components/Button';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import Header from '../../components/Header';
+import WriteLong from '../../components/WriteLong';
+import WriteShort from '../../components/WriteShort';
+import Footer from '../../components/Footer';
+import Button from '../../components/Button';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
-const ContestUpdate = () => {
+const ContestWrite = () => {
     const navigate = useNavigate();
 
     const [title, setTitle] = useState('');
@@ -17,39 +17,20 @@ const ContestUpdate = () => {
     const [regStart, setRegStart] = useState('');
     const [regEnd, setRegEnd] = useState('');
 
-    const location = useLocation();
-    const search = new URLSearchParams(location.search);
-    const contestId = search.get('contestId');
-    useEffect(() => {
-        async function get() {
-            const url = `http://127.0.0.1:8080/contest/update?contestId=${contestId}`;
-            const res = await fetch(url);
-            const data = await res.json();
-            setTitle(data.title);
-            setOfficialUrl(data.officialUrl);
-            setImgUrl(data.imgUrl);
-            setHost(data.host);
-            setTarget(data.target);
-            setRegStart(data.regStart);
-            setRegEnd(data.regEnd);
-        }
-        get();
-    }, []);
-
-    const updateData = (e) => {
+    const saveData = (e) => {
         e.preventDefault();
         async function send() {
-            const url = 'http://127.0.0.1:8080/contest/update';
+            const url = 'http://127.0.0.1:8080/contest/write';
             const res = await fetch(url, {
                 method: 'post',
                 headers: {
                     'content-type': 'application/json'
                 },
-                body: JSON.stringify({ id: contestId, title: title, officialUrl: officialUrl, imgUrl: imgUrl, host: host, target: target, regStart: regStart, regEnd: regEnd })
+                body: JSON.stringify({ title: title, officialUrl: officialUrl, imgUrl: imgUrl, host: host, target: target, regStart: regStart, regEnd: regEnd })
             });
             const data = await res.json();
             if (data.code === 200) {
-                alert('글 수정 완료');
+                alert('글 작성 완료');
                 navigate('/contest/list');
             } else {
                 alert('다시 입력해주세요.');
@@ -63,7 +44,7 @@ const ContestUpdate = () => {
             <Header />
             <section className="container py-5">
                 <div className="container py-5">
-                    <h1 className="h2 semi-bold-600 text-center mt-2">공모전 Update</h1>
+                    <h1 className="h2 semi-bold-600 text-center mt-2">공모전 Write</h1>
                     <p className="text-center pb-5 light-300">대회/공모전의 세부요강은 주최사의 기획에 의해 내용이 변경될 수 있으니, 주최사의 공고를 반드시 확인해 보시기 바랍니다.</p>
                     <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
                         <div className="contact-form row">
@@ -79,13 +60,13 @@ const ContestUpdate = () => {
                 </div>
                 <div className="form-row pt-2">
                     <div className="col-md-12 col-10 text-end">
-                        <Button text={'수정하기'} onClick={updateData} />
+                        <Button text={'저장하기'} onClick={saveData} />
                     </div>
                 </div>
-            </section>
+            </section >
             <Footer />
-        </div>
+        </div >
     );
 };
 
-export default ContestUpdate;
+export default ContestWrite;

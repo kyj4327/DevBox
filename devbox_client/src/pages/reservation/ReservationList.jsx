@@ -1,10 +1,10 @@
-import Header from '../components/Header';
-import Category from '../components/Category';
-import Pagination from '../components/Pagination';
-import Footer from '../components/Footer';
+import Header from '../../components/Header';
+import Category from '../../components/Category';
+import Pagination from '../../components/Pagination';
+import Footer from '../../components/Footer';
 import { useEffect, useState } from 'react';
-import '../assets/css/reservation.css';
-import reset from '../assets/img/reset.png';
+import '../../assets/css/reservation.css';
+import reset from '../../assets/img/reset.png';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
