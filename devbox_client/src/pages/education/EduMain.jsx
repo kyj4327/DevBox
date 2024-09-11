@@ -53,7 +53,6 @@ const EduMain = () => {
 
     return (
         <div className="EduMain">
-            <Header />
             <EduInfo list={pageData.list} state={state} clickState={clickState} endDate={endDate} />
             <Pagination 
                 handlePageChange={handlePageChange} 
@@ -64,7 +63,6 @@ const EduMain = () => {
                     'totalPage': pageData.totalPage
                 }}
             />
-            <Footer />
         </div>
     );
 };

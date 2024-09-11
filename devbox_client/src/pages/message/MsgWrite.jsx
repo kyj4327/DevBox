@@ -19,7 +19,7 @@ const MesWrite = () => {
         formData.append("reciver", reciver);
         formData.append("content", content);
 
-        const url = 'http://127.0.0.1:8080/msg';
+        const url = 'http://127.0.0.1:8080/msg/write';
         const res = await fetch(url, {
             method: 'post',
             body: formData

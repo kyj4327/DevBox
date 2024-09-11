@@ -20,7 +20,7 @@ const  ProjectDetail = () => {
         const id = searchParams.get('id');
 
         async function get() {
-            const res = await fetch(`http://localhost:8080/pro/detail?id=${id}`)
+            const res = await fetch(`http://localhost:8080/project/detail?id=${id}`)
             const data = await res.json();
             console.log("API Response:", data);
             setProData(data);
@@ -75,7 +75,7 @@ const  ProjectDetail = () => {
                                             <SwiperSlide key={img.id}>
                                                 <img
                                                     class="img-fluid border rounded"
-                                                    src={`http://localhost:8080/pro/download?id=${img.id}`}
+                                                    src={`http://localhost:8080/project/download?id=${img.id}`}
                                                     alt={`Slide ${index + 1}`}
                                                     style={{ width: '100%', height: '500px' }}
                                                 />
@@ -113,7 +113,7 @@ const  ProjectDetail = () => {
                                     >수정</button>
                                     <Button text={'삭제'} onClick={async (e) => {
                                         e.preventDefault();
-                                        const url = `http://localhost:8080/pro/delete?Id=${proData.id}`;
+                                        const url = `http://localhost:8080/project/delete?Id=${proData.id}`;
                                         await fetch(url, { method: 'DELETE' });
                                         alert('삭제가 완료되었습니다.');
                                         navigate('/project/list');

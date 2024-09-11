@@ -59,7 +59,7 @@ const DetailManager = () => {
         formData.append("logo", logo);
         formData.append("state", state);
 
-        const url = 'http://127.0.0.1:8080/edu';
+        const url = 'http://127.0.0.1:8080/edu/write';
         const res = await fetch(url, {
             method: 'post',
             body: formData
