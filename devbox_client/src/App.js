@@ -7,8 +7,6 @@ import DetailManager from './pages/education/DetailManager';
 import EduUpdate from './pages/education/EduUpdate';
 import Project from './pages/project/Project';
 import ProjectWrite from './pages/project/ProjectWrite';
-import ProDetail from './pages/project/ProDetail';
-import ProUpdate from './pages/project/ProUpdate';
 import MsgWrite from './pages/message/MsgWrite';
 import MsgDetail from './pages/message/MsgDedail';
 import Message from './pages/message/Message';
@@ -22,6 +20,7 @@ import './assets/css/custom.css';
 
 import AuthContainer from './pages/auth/AuthContainer';
 // import { Naver } from './components/Naver';
+
 import HomePage from './pages/HomePage';
 import MyPage from './pages/auth/MyPage';
 import PasswordReset from './pages/auth/PasswordReset';
@@ -31,48 +30,44 @@ import GatherMateList from './pages/gatherMate/GatherMateList';
 import GatherMateWrite from './pages/gatherMate/GatherMateWrite';
 import GatherMateDetail from './pages/gatherMate/GatherMateDetail';
 import GatherMateEdit from './pages/gatherMate/GatherMateEdit';
-import ReferenceUpdate from "./pages/reference/ReferenceUpdate";
-import ReferenceWrite from "./pages/reference/ReferenceWrite";
-import ReferenceList from "./pages/reference/ReferenceList";
+
+import ProjectDetail from './pages/project/ProjectDetail';
+import ProjectUpdate from './pages/project/ProjectUpdate';
 
 function AppContent() {
   const location = useLocation();
   const hideHeaderFooter = ['/auth', '/password'].includes(location.pathname);
 
   return (
+
     <div className="app-wrapper">
       {!hideHeaderFooter && <Header />}
       <main className="main-content">
         <Routes>
           <Route path="/auth" element={<AuthContainer />} />
           <Route path="/password" element={<PasswordReset />} />
-          {/* <Route path="/login" element={<Naver />} /> */}
+          {/*<Route path="/login" element={<Naver />} />*/}
           <Route path="/home" element={<HomePage />} />
           <Route path="/mypage/*" element={<MyPage />} />
           <Route path="/gatherwrite" element={<GatherMateWrite />} />
           <Route path="/gatherlist" element={<GatherMateList />} />
+
           <Route path="/gatherdetail/:postId" element={<GatherMateDetail />} />
-          <Route path="/gatheredit/:postId" element={<GatherMateEdit />} />
 
           <Route path='/edu/list' element={<EduMain />} />
-        <Route path='/edu/detail' element={<EduDetail />} />
-        <Route path='/edu/maneger' element={<DetailManager />} />
-        <Route path='/edu/update' element={<EduUpdate />} />
+          <Route path='/edu/detail' element={<EduDetail />} />
+          <Route path='/edu/maneger' element={<DetailManager />} />
+          <Route path='/edu/update' element={<EduUpdate />} />
 
-        <Route path='/project/list' element={<Project />} />
-        <Route path='/project/write' element={<ProjectWrite />} />
-        <Route path='/project/detail' element={<ProDetail />} />
-        <Route path='/project/update' element={<ProUpdate />} />
+          <Route path='/project/list' element={<Project />} />
+          <Route path='/project/write' element={<ProjectWrite />} />
+          <Route path='/project/detail' element={<ProjectDetail />} />
+          <Route path='/project/update' element={<ProjectUpdate />} />
 
-        <Route path='/message/list' element={<Message />} />
-        <Route path='/message/write' element={<MsgWrite />} />
-        <Route path='/message/detail' element={<MsgDetail/>} />
-        <Route path='/message/reply' element={<MsgReply />} />
-
-          {/* 추천해요 게시판 */}
-          <Route path='/reference/list' element={<ReferenceList />} />
-          <Route path='/reference/write' element={<ReferenceWrite />} />
-          <Route path='/reference/update' element={<ReferenceUpdate />} />
+          <Route path='/message/list' element={<Message />} />
+          <Route path='/message/write' element={<MsgWrite />} />
+          <Route path='/message/detail' element={<MsgDetail />} />
+          <Route path='/message/reply' element={<MsgReply />} />
 
         </Routes>
       </main>
