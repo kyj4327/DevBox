@@ -11,6 +11,7 @@ public class DevboxServerApplication {
 
 	public static void main(String[] args) {
 // .env 파일 로드
+
 		// Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 
 		// // 시스템 속성에 환경 변수 설정

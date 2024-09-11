@@ -43,11 +43,12 @@ function AppContent() {
         <Routes>
           <Route path="/auth" element={<AuthContainer />} />
           <Route path="/password" element={<PasswordReset />} />
-          <Route path="/login" element={<Naver />} />
+          {/*<Route path="/login" element={<Naver />} />*/}
           <Route path="/home" element={<HomePage />} />
           <Route path="/mypage/*" element={<MyPage />} />
           <Route path="/gatherwrite" element={<GatherMateWrite />} />
           <Route path="/gatherlist" element={<GatherMateList />} />
+
           <Route path="/gatherdetail/:postId" element={<GatherMateDetail />} />
 
           <Route path='/edu/list' element={<EduMain />} />
@@ -64,6 +65,7 @@ function AppContent() {
           <Route path='/message/write' element={<MsgWrite />} />
           <Route path='/message/detail' element={<MsgDetail />} />
           <Route path='/message/reply' element={<MsgReply />} />
+
         </Routes>
       </main>
       {!hideHeaderFooter && <Footer />} {/* Footer 추가 */}
