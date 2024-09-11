@@ -30,7 +30,7 @@ public class ReservationController {
     @Autowired
     ReservationRepository reservationRepository;
 
-    @PostMapping("/reservation")
+    @PostMapping("/reservation/write")
     public Map<String, Object> reservation(@RequestBody Reservation reservation) {
         Reservation result = reservationRepository.save(reservation);
         Map<String, Object> map = new HashMap<>();
