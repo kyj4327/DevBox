@@ -59,7 +59,7 @@ function App() {
           <Route path='/contest/update' element={<ContestUpdate />} />
 
           {/* 6층 회의실 대여 서비스 */}
-          <Route path='/reservation' element={<Reservation />} />
+          <Route path='/reservation/write' element={<Reservation />} />
           <Route path='/reservation/list' element={<ReservationList />} />
         </Routes>
       </BrowserRouter>
