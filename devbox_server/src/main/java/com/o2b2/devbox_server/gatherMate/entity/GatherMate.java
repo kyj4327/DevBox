@@ -7,7 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.parameters.P;
+// import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDateTime;
 
@@ -25,7 +25,7 @@ public class GatherMate {
 
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    // @Column(columnDefinition = "TEXT")
     private String content;
 
     private LocalDateTime createdAt;

@@ -7,7 +7,7 @@ import WriteLong from "../../components/WriteLong";
 import Swal from "sweetalert2";
 
 
-const ProUpdate = () => {
+const ProjectUpdate = () => {
     const navigate = useNavigate();
 
     const location = useLocation();
@@ -70,7 +70,7 @@ const ProUpdate = () => {
         });
         console.log(delImgId);
 
-        const url = 'http://localhost:8080/pro/update';
+        const url = 'http://localhost:8080/project/update';
         const res = await fetch(url, {
             method: 'post',
             body: formData
@@ -89,7 +89,7 @@ const ProUpdate = () => {
     };
 
     async function get() {
-        const res = await fetch(`http://localhost:8080/pro/update?id=${id}`);
+        const res = await fetch(`http://localhost:8080/project/update?id=${id}`);
         const data = await res.json();
         setProData(data);
 
@@ -172,4 +172,4 @@ const ProUpdate = () => {
     );
 };
 
-export default ProUpdate;
+export default ProjectUpdate;

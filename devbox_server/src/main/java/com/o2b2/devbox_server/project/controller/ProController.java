@@ -53,7 +53,7 @@ public class ProController {
     @Autowired
     MultiImgRepository multiImgRepository;
 
-    @GetMapping("/pro/list")
+    @GetMapping("/project/list")
     public Map<String, Object> proList(
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "6") int size) {
@@ -90,7 +90,7 @@ public class ProController {
         return response; // JSON 형태로 반환
     }
 
-    @GetMapping("/pro/like")
+    @GetMapping("/project/like")
     @ResponseBody
     public Map<String, Object> like(@RequestParam Long id) {
         Map<String, Object> map = new HashMap<>();
@@ -119,7 +119,7 @@ public class ProController {
     }
 
 
-    @PostMapping("/pro")
+    @PostMapping("/project/write")
     @ResponseBody
     public Map<String, Object> pro(
             @ModelAttribute ProEntity pro,
@@ -168,7 +168,7 @@ public class ProController {
         return map; // 결과 반환
     }
 
-    @PostMapping("/pro/update")
+    @PostMapping("/project/update")
     public Map<String, Object> update(
             @ModelAttribute ProEntity pro,
             @RequestParam(value = "delImgId", required = false) Long[] imgIds,
@@ -241,13 +241,13 @@ public class ProController {
         return map; // 수정 완료 응답을 반환합니다.
     }
 
-    @DeleteMapping("/pro/delete")
+    @DeleteMapping("/project/delete")
     public String prodelete(@RequestParam Long Id) {
         proRepository.deleteById(Id);
         return "삭제 완료";
     }
 
-    @GetMapping("/pro/detail")
+    @GetMapping("/project/detail")
     @ResponseBody
     public Map<String, Object> proDetail(@RequestParam Long id) {
         Map<String, Object> map = new HashMap<>();
@@ -266,7 +266,7 @@ public class ProController {
 
     }
 
-    @GetMapping("/pro/update")
+    @GetMapping("/project/update")
     @ResponseBody
     public Map<String, Object> proUpdate(@RequestParam Long id) {
         Map<String, Object> map = new HashMap<>();
@@ -286,7 +286,7 @@ public class ProController {
 
     }
 
-    @GetMapping("/pro/download")
+    @GetMapping("/project/download")
     public ResponseEntity<Resource> downloadFile(@RequestParam Long id) {
         try {
             Optional<MultiImgEntity> img = multiImgRepository.findById(id);
