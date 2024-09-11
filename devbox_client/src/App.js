@@ -1,7 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import EduMain from './pages/education/EduMain';
 import EduDetail from './pages/education/EduDetail';
 import DetailManager from './pages/education/DetailManager';
@@ -21,25 +20,41 @@ import './assets/css/boxicon.min.css';
 import './assets/css/templatemo.css';
 import './assets/css/custom.css';
 
-import AuthContainer from './components/AuthContainer';
-import { Naver } from './components/Naver';
+import AuthContainer from './pages/auth/AuthContainer';
+// import { Naver } from './components/Naver';
 import HomePage from './pages/HomePage';
-import MyPage from './pages/MyPage';
-import PasswordReset from './pages/PasswordReset';
+import MyPage from './pages/auth/MyPage';
+import PasswordReset from './pages/auth/PasswordReset';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import GatherMateWrite from './pages/GatherMateWrite';
+import GatherMateList from './pages/gatherMate/GatherMateList';
+import GatherMateWrite from './pages/gatherMate/GatherMateWrite';
+import GatherMateDetail from './pages/gatherMate/GatherMateDetail';
+import GatherMateEdit from './pages/gatherMate/GatherMateEdit';
+import ReferenceUpdate from "./pages/reference/ReferenceUpdate";
+import ReferenceWrite from "./pages/reference/ReferenceWrite";
+import ReferenceList from "./pages/reference/ReferenceList";
 
 function AppContent() {
   const location = useLocation();
   const hideHeaderFooter = ['/auth', '/password'].includes(location.pathname);
 
   return (
-    <div className="App">
-      <BrowserRouter>
-      <Routes>
+    <div className="app-wrapper">
+      {!hideHeaderFooter && <Header />}
+      <main className="main-content">
+        <Routes>
+          <Route path="/auth" element={<AuthContainer />} />
+          <Route path="/password" element={<PasswordReset />} />
+          {/* <Route path="/login" element={<Naver />} /> */}
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/mypage/*" element={<MyPage />} />
+          <Route path="/gatherwrite" element={<GatherMateWrite />} />
+          <Route path="/gatherlist" element={<GatherMateList />} />
+          <Route path="/gatherdetail/:postId" element={<GatherMateDetail />} />
+          <Route path="/gatheredit/:postId" element={<GatherMateEdit />} />
 
-        <Route path='/edu/list' element={<EduMain />} />
+          <Route path='/edu/list' element={<EduMain />} />
         <Route path='/edu/detail' element={<EduDetail />} />
         <Route path='/edu/maneger' element={<DetailManager />} />
         <Route path='/edu/update' element={<EduUpdate />} />
@@ -54,20 +69,11 @@ function AppContent() {
         <Route path='/message/detail' element={<MsgDetail/>} />
         <Route path='/message/reply' element={<MsgReply />} />
 
+          {/* 추천해요 게시판 */}
+          <Route path='/reference/list' element={<ReferenceList />} />
+          <Route path='/reference/write' element={<ReferenceWrite />} />
+          <Route path='/reference/update' element={<ReferenceUpdate />} />
 
-
-      </Routes>
-      </BrowserRouter>
-    <div className="app-wrapper">
-      {!hideHeaderFooter && <Header />}
-      <main className="main-content">
-        <Routes>
-          <Route path="/auth" element={<AuthContainer />} />
-          <Route path="/password" element={<PasswordReset />} />
-          <Route path="/login" element={<Naver />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/mypage/*" element={<MyPage />} />
-          <Route path="/gatherwrite" element={<GatherMateWrite />} />
         </Routes>
       </main>
       {!hideHeaderFooter && <Footer />} {/* Footer 추가 */}
