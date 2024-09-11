@@ -30,7 +30,7 @@ function App() {
           <Route path="community/freeboard" element={<FreeBoard />} />
           <Route path="community/freeboard/new" element={<FreeBoardDetail />} />
           <Route path="community/freeboard/:id" element={<FreeBoardDetail />} />
-          <Route path="community/freeboard/:id/edit" element={<FreeBoardDetail />} />
+          <Route path="community/freeboard/edit/:id" element={<FreeBoardDetail />} />
           <Route path="community/freeboard/post/:id" element={<PostDetail />} />
           <Route path="faq" element={<Contact />} />
         </Routes>

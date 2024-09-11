@@ -72,7 +72,7 @@ const PostDetail = () => {
   };
 
   const handleEditPost = () => {
-    navigate(`/community/freeboard/${id}/edit`);
+    navigate(`/community/freeboard/edit/${id}`);
   };
 
   const handleUpdatePost = async () => {
