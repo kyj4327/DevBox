@@ -60,7 +60,7 @@ const EduUpdate = () => {
         formData.append("logo", logo);
         formData.append("state", state);
 
-        const url = 'http://localhost:8080/update';
+        const url = 'http://localhost:8080/edu/update';
         const res = await fetch(url, {
             method: 'post',
             body: formData
@@ -124,7 +124,7 @@ const EduUpdate = () => {
                                     <img src={uploadImgUrl} alt="Uploaded" />
                                 )}
                                 {!isImageUploaded && (
-                                    <img src={`http://localhost:8080/download?id=${id}`} alt="Original" />
+                                    <img src={`http://localhost:8080/edu/download?id=${id}`} alt="Original" />
                                 )}
                                 <input
                                     className="form-control form-control-lg light-300"

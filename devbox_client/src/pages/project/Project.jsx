@@ -10,7 +10,7 @@ const Project = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
     async function get(page = 1) {
-        const res = await fetch(`http://localhost:8080/pro/list?page=${page}`);
+        const res = await fetch(`http://localhost:8080/project/list?page=${page}`);
         const data = await res.json();
         console.log(data);
         
@@ -28,7 +28,6 @@ const Project = () => {
 
     return(
         <div className="Project">
-            <Header />
             <ProjectMain setRefresh={() => setRefresh(prev => !prev)} list={pageData.list} />
             <Pagination
              handlePageChange={handlePageChange} 
@@ -41,7 +40,6 @@ const Project = () => {
                  }
              }
             />
-            <Footer />
         </div>
     );
 };

@@ -121,6 +121,11 @@ public class SecurityConfig {
 
                         // 글 작성 경로에 대해 인증 없이 접근 가능하게 설정
                         .requestMatchers("/gathermate/**").permitAll()
+                        .requestMatchers("/edu/**").permitAll()
+                        .requestMatchers("/project/**").permitAll()
+                        .requestMatchers("/message/**").permitAll()
+                        .requestMatchers("/msg/**").permitAll()
+
 
                         .anyRequest().authenticated());
 

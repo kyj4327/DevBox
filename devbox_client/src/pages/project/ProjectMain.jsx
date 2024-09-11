@@ -14,7 +14,7 @@ const ProjectMain = (props) => {
 
     
     const likeCount = async (proId) => {
-        const url = `http://localhost:8080/pro/like?id=${proId}`;
+        const url = `http://localhost:8080/project/like?id=${proId}`;
         const res = await fetch(url, {
             method: 'GET'
         });
@@ -50,7 +50,7 @@ const ProjectMain = (props) => {
                                 <img
                                     style={{ height: '400px' }}
                                     className="card-img-top"
-                                    src={`http://localhost:8080/pro/download?id=${pro.mainImg}`}
+                                    src={`http://localhost:8080/project/download?id=${pro.mainImg}`}
                                     alt={`Project ${pro.id}`}
                                 />
                                 <div className="card-body">

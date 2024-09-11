@@ -37,7 +37,7 @@ const DetailBasic = () => {
                 <div class="row justify-content-center pb-4">
                     <div class="col-lg-8">
                         <div id="templatemo-slide-link-target" class="card mb-3">
-                            <img class="img-fluid border rounded" src={`http://localhost:8080/download?id=${eduData.id}`} alt="Card image cap" />
+                            <img class="img-fluid border rounded" src={`http://localhost:8080/edu/download?id=${eduData.id}`} alt="Card image cap" />
                         </div>
                     </div>
                 </div>

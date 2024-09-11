@@ -55,7 +55,7 @@ const ProjectWrite = () => {
         formData.append("img", img);
         formData.append("coment", coment);
 
-        const url = 'http://localhost:8080/pro';
+        const url = 'http://localhost:8080/project/write';
         const res = await fetch(url, {
             method: 'post',
             body: formData

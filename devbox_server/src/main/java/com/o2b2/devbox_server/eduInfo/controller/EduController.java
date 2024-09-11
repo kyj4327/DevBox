@@ -92,7 +92,7 @@ public class EduController {
     }
 
 
-    @PostMapping("/edu")
+    @PostMapping("/edu/write")
     public Map<String, Object> edu(
             @ModelAttribute EduEntity edu,
             @RequestParam("file") MultipartFile file) {
@@ -126,7 +126,7 @@ public class EduController {
         return map;
     }
 
-    @PostMapping("/update")
+    @PostMapping("/edu/update")
     public Map<String, Object> update(
             @ModelAttribute EduEntity edu,
             @RequestParam(value = "file", required = false) MultipartFile file) {
@@ -225,7 +225,7 @@ public class EduController {
 
     }
 
-    @GetMapping("/download")
+    @GetMapping("/edu/download")
     public ResponseEntity<Resource> downloadFile(@RequestParam Long id) {
         try {
             Optional<EduEntity> opt = eduRepository.findById(id);

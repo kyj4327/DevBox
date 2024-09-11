@@ -129,7 +129,7 @@ public class MsgController {
     }
 
 
-    @PostMapping("/msg")
+    @PostMapping("/msg/write")
     public Map<String, Object> msg(@ModelAttribute MsgEntity msg) {
         System.out.println(msg);
 
