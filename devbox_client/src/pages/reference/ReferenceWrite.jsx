@@ -10,12 +10,12 @@ const ReferenceWrite = () => {
 
     const [title, setTitle] = useState('');
     const [selectJob, setSelectJob] = useState('');
+    const [link, setLink] = useState('');
     const [content1, setContent1] = useState('');
     const [content2, setContent2] = useState('');
     const [content3, setContent3] = useState('');
     const [content4, setContent4] = useState('');
     const [content5, setContent5] = useState('');
-    const [link, setLink] = useState('');
 
     const saveData = (e) => {
         e.preventDefault();
@@ -27,13 +27,13 @@ const ReferenceWrite = () => {
                     'content-type': 'application/json'
                 },
                 body: JSON.stringify({
-                    title: title, selectJob: selectJob, content1: content1, content2: content2,
-                    content3: content3, content4: content4, content5: content5, link: link
+                    title: title, selectJob: selectJob, link: link,
+                    content1: content1, content2: content2, content3: content3, content4: content4, content5: content5
                 })
             });
             const data = await res.json();
             if (data.code === 200) {
-                alert('글 작성 완료');
+                alert('저장되었습니다.');
                 navigate('/reference/list');
             } else {
                 alert('다시 입력해주세요.');
@@ -71,12 +71,12 @@ const ReferenceWrite = () => {
                         <WriteSelect titleTag="카테고리" name="intro"
                             value={selectJob || "카테고리를 선택해주세요."} onChange={(e) => setSelectJob(e.target.value)}
                             options={["Web", "DevOps", "Cloud", "Data", "Mobile", "Others"]} />
+                        <WriteLong titleTag={'사이트 주소'} name={'link'} value={link} onChange={(e) => { setLink(e.target.value) }} />
                         <WriteLong titleTag={'내용1 (필수)'} name={'content1'} value={content1} onChange={(e) => { setContent1(e.target.value) }} />
                         <WriteLong titleTag={'내용2 (필수)'} name={'content2'} value={content2} onChange={(e) => { setContent2(e.target.value) }} />
                         <WriteLong titleTag={'내용3 (선택)'} name={'content3'} value={content3} onChange={(e) => { setContent3(e.target.value) }} />
                         <WriteLong titleTag={'내용4 (선택)'} name={'content4'} value={content4} onChange={(e) => { setContent4(e.target.value) }} />
                         <WriteLong titleTag={'내용5 (선택)'} name={'content5'} value={content5} onChange={(e) => { setContent5(e.target.value) }} />
-                        <WriteLong titleTag={'사이트 주소'} name={'link'} value={link} onChange={(e) => { setLink(e.target.value) }} />
                     </div>
                 </div>
             </div>

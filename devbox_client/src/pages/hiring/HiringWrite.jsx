@@ -27,7 +27,7 @@ const HiringWrite = () => {
             });
             const data = await res.json();
             if (data.code === 200) {
-                alert('글 작성 완료');
+                alert('저장되었습니다.');
                 navigate('/hiring/list');
             } else {
                 alert('다시 입력해주세요.');
