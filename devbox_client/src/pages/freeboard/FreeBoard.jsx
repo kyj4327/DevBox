@@ -15,7 +15,11 @@ const FreeBoard = () => {
       try {
         setIsLoading(true);
         const data = await getAllPosts();
-        setPosts(Array.isArray(data) ? data : []);
+        // 게시글을 최신순으로 정렬
+        const sortedPosts = Array.isArray(data) 
+          ? data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          : [];
+        setPosts(sortedPosts);
       } catch (error) {
         console.error('Error fetching posts:', error);
         setError('게시글을 불러오는 데 실패했습니다.');
@@ -33,7 +37,6 @@ const FreeBoard = () => {
 
   const getTrimmedContent = (content) => {
     const text = stripHtml(content);
-    // 10자가 넘는 경우만 ...을 추가
     return text.length > 10 ? text.substring(0, 10) + '...' : text;
   };
 

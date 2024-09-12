@@ -135,14 +135,19 @@ const PostDetail = () => {
         </div>
       ) : (
         <>
-          <div className="post-header">
-            <h1 className="post-title">{post.title}</h1>
-            <div className="post-meta">
-              <span className="post-author">{post.author}</span>
-              <span className="post-date">{new Date(post.createdAt).toLocaleString()}</span>
-            </div>
+        <div className="post-header">
+          <h1 className="post-title">{post.title}</h1>
+          <div className="post-meta">
+            <span className="post-author">{post.author}</span>
+            <span className="post-date">{new Date(post.createdAt).toLocaleString()}</span>
           </div>
-          <div className="post-content" dangerouslySetInnerHTML={{ __html: post.content }} />
+        </div>
+        <div className="post-content-wrapper">
+          <div 
+            className="post-content" 
+            dangerouslySetInnerHTML={{ __html: post.content }} 
+          />
+        </div>
           <div className="post-actions">
             <div className="button-group">
               <Button text="목록" onClick={() => navigate('/community/freeboard')} className="btn btn-list" />
