@@ -1,5 +1,3 @@
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
 import Button from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,9 +6,9 @@ const JobInfoMobile = () => {
     const toList = () => {
         navigate('/jobinfo/list');
     };
+
     return (
         <div>
-            <Header />
             <div id="work_single_banner" className="bg-light w-100">
                 <div className="container-fluid text-light d-flex justify-content-center align-items-center border-0 rounded-0 p-0 py-5">
                     <div className="banner-content col-lg-8 m-lg-auto text-center py-5 px-3">
@@ -141,7 +139,6 @@ const JobInfoMobile = () => {
                     </div>
                 </div>
             </section>
-            <Footer />
         </div>
     );
 };

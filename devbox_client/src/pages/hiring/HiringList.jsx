@@ -1,7 +1,5 @@
-import Header from '../../components/Header';
 import Category from '../../components/Category';
 import Pagination from '../../components/Pagination';
-import Footer from '../../components/Footer';
 import Button from '../../components/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -46,7 +44,6 @@ const HiringList = () => {
 
     return (
         <div>
-            <Header />
             <section className="container py-5">
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2">채용 공고</h1>
@@ -107,7 +104,6 @@ const HiringList = () => {
                 </div>
             </section>
             <Pagination handlePageChange={handlePageChange} pageData={pageData} />
-            <Footer />
         </div>
     );
 };

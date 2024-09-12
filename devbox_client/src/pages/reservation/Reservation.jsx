@@ -1,5 +1,3 @@
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
 import '../../assets/css/reservation.css';
 
 import Calendar from 'react-calendar';
@@ -98,7 +96,6 @@ const Reservation = () => {
 
     return (
         <div>
-            <Header />
             <section className="bg-light contact-section">
                 <div className="container py-4">
                     <div className="row align-items-center justify-content-between">
@@ -167,7 +164,6 @@ const Reservation = () => {
                     </div>
                 </div>
             </section >
-            <Footer />
         </div >
     );
 };

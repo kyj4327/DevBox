@@ -1,7 +1,5 @@
-import Header from '../../components/Header';
 import Category from '../../components/Category';
 import Pagination from '../../components/Pagination';
-import Footer from '../../components/Footer';
 import Button from '../../components/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -47,7 +45,6 @@ const ReferenceList = () => {
 
     return (
         <div>
-            <Header />
             <section className="container py-5">
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2">추천해요</h1>
@@ -109,7 +106,6 @@ const ReferenceList = () => {
                 </div>
             </section>
             <Pagination handlePageChange={handlePageChange} pageData={pageData} />
-            <Footer />
         </div>
     );
 };

@@ -1,8 +1,6 @@
-import Header from '../../components/Header';
 import WriteLong from '../../components/WriteLong';
 import WriteShort from '../../components/WriteShort';
 import WriteSelect from '../../components/WriteSelect';
-import Footer from '../../components/Footer';
 import Button from '../../components/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -64,44 +62,32 @@ const ReferenceUpdate = () => {
         send();
     };
 
-    const RadioBtn = ({ value }) => {
-        return (
-            <label htmlFor="radioButton" style={{ marginRight: '1rem' }}>
-                <input type="radio" name='selectJob' checked={selectJob == value ? true : false}
-                    value={value} onChange={(e) => { setSelectJob(e.target.value) }} /> {value}
-            </label>
-        );
-    };
-
     return (
-        <div>
-            <Header />
-            <section className="container py-5">
-                <div className="container py-5">
-                    <h1 className="h2 semi-bold-600 text-center mt-2">추천해요 Update</h1>
-                    <p className="text-center pb-5 light-300">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut facilisis.</p>
-                    <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
-                        <div className="contact-form row">
-                            <WriteShort type={'text'} titleTag={'제목'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} />
-                            <WriteSelect titleTag="카테고리" name="intro" value={selectJob || "카테고리를 선택해주세요."} onChange={(e) => setSelectJob(e.target.value)}
-                                options={["Web", "DevOps", "Cloud", "Data", "Mobile", "Others"]} />
-                            <WriteLong titleTag={'내용1 (필수)'} name={'content1'} value={content1} onChange={(e) => { setContent1(e.target.value) }} />
-                            <WriteLong titleTag={'내용2 (필수)'} name={'content2'} value={content2} onChange={(e) => { setContent2(e.target.value) }} />
-                            <WriteLong titleTag={'내용3 (선택)'} name={'content3'} value={content3} onChange={(e) => { setContent3(e.target.value) }} />
-                            <WriteLong titleTag={'내용4 (선택)'} name={'content4'} value={content4} onChange={(e) => { setContent4(e.target.value) }} />
-                            <WriteLong titleTag={'내용5 (선택)'} name={'content5'} value={content5} onChange={(e) => { setContent5(e.target.value) }} />
-                            <WriteLong titleTag={'사이트 주소'} name={'link'} value={link} onChange={(e) => { setLink(e.target.value) }} />
-                        </div>
+        <section className="container py-5">
+            <div className="container py-5">
+                <h1 className="h2 semi-bold-600 text-center mt-2">추천해요 Update</h1>
+                <p className="text-center pb-5 light-300">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut facilisis.</p>
+                <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
+                    <div className="contact-form row">
+                        <WriteShort type={'text'} titleTag={'제목'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} />
+                        <WriteSelect titleTag="카테고리" name="intro"
+                            value={selectJob || "카테고리를 선택해주세요."} onChange={(e) => setSelectJob(e.target.value)}
+                            options={["Web", "DevOps", "Cloud", "Data", "Mobile", "Others"]} />
+                        <WriteLong titleTag={'내용1 (필수)'} name={'content1'} value={content1} onChange={(e) => { setContent1(e.target.value) }} />
+                        <WriteLong titleTag={'내용2 (필수)'} name={'content2'} value={content2} onChange={(e) => { setContent2(e.target.value) }} />
+                        <WriteLong titleTag={'내용3 (선택)'} name={'content3'} value={content3} onChange={(e) => { setContent3(e.target.value) }} />
+                        <WriteLong titleTag={'내용4 (선택)'} name={'content4'} value={content4} onChange={(e) => { setContent4(e.target.value) }} />
+                        <WriteLong titleTag={'내용5 (선택)'} name={'content5'} value={content5} onChange={(e) => { setContent5(e.target.value) }} />
+                        <WriteLong titleTag={'사이트 주소'} name={'link'} value={link} onChange={(e) => { setLink(e.target.value) }} />
                     </div>
                 </div>
-                <div className="form-row pt-2">
-                    <div className="col-md-12 col-10 text-end">
-                        <Button text={'수정하기'} onClick={updateData} />
-                    </div>
+            </div>
+            <div className="form-row pt-2">
+                <div className="col-md-12 col-10 text-end">
+                    <Button text={'수정하기'} onClick={updateData} />
                 </div>
-            </section>
-            <Footer />
-        </div>
+            </div>
+        </section>
     );
 };
 

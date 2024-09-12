@@ -1,7 +1,5 @@
-import Header from '../../components/Header';
 import Category from '../../components/Category';
 import Pagination from '../../components/Pagination';
-import Footer from '../../components/Footer';
 import { useEffect, useState } from 'react';
 import '../../assets/css/reservation.css';
 import reset from '../../assets/img/reset.png';
@@ -55,7 +53,6 @@ const ReservationList = () => {
 
     return (
         <div>
-            <Header />
             <section className="bg-light contact-section">
                 <div className="container py-4">
                     <div className="row align-items-center justify-content-between">
@@ -148,7 +145,6 @@ const ReservationList = () => {
                 </div>
             </section >
             <Pagination handlePageChange={handlePageChange} pageData={pageData} />
-            <Footer />
         </div >
     );
 };
