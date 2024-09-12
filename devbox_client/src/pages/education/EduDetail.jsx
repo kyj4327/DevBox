@@ -14,9 +14,7 @@ const EduDetail = () => {
 
     return (
         <div className="EduMain">
-            <Header />
             <DetailBasic />
-            <Footer />
         </div>
     );
 };

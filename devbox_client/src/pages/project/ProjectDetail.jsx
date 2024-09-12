@@ -81,7 +81,6 @@ const  ProjectDetail = () => {
                                                 />
                                             </SwiperSlide>
                                         ))}
-                                        ...
                                     </Swiper>
                                 </div>
                             </div>

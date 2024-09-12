@@ -3,6 +3,7 @@ package com.o2b2.devbox_server.project.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,7 +28,7 @@ public class ProEntity {
 
     Integer likeCount;
 
-    @OneToMany(mappedBy = "proEntity" )
+    @OneToMany(mappedBy = "proEntity", cascade = CascadeType.REMOVE)
     List<MultiImgEntity> multiImgEntitys = new ArrayList<>();
 
 }
