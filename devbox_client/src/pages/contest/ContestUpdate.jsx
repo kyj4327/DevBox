@@ -47,7 +47,7 @@ const ContestUpdate = () => {
             });
             const data = await res.json();
             if (data.code === 200) {
-                alert('글 수정 완료');
+                alert('수정되었습니다.');
                 navigate('/contest/list');
             } else {
                 alert('다시 입력해주세요.');
