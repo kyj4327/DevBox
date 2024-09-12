@@ -25,7 +25,7 @@ public class GatherMate {
 
     private String title;
 
-    // @Column(columnDefinition = "TEXT")
+    // @Column(columnDefinition = "TEXT")   
     private String content;
 
     private LocalDateTime createdAt;

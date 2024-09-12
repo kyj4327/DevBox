@@ -33,6 +33,7 @@ import GatherMateEdit from './pages/gatherMate/GatherMateEdit';
 
 import ProjectDetail from './pages/project/ProjectDetail';
 import ProjectUpdate from './pages/project/ProjectUpdate';
+import GatherMateEdit from './pages/gatherMate/GatherMateEdit';
 
 function AppContent() {
   const location = useLocation();
@@ -49,10 +50,11 @@ function AppContent() {
           {/*<Route path="/login" element={<Naver />} />*/}
           <Route path="/home" element={<HomePage />} />
           <Route path="/mypage/*" element={<MyPage />} />
+
           <Route path="/gatherwrite" element={<GatherMateWrite />} />
           <Route path="/gatherlist" element={<GatherMateList />} />
-
           <Route path="/gatherdetail/:postId" element={<GatherMateDetail />} />
+          <Route path="/gatheredit/:postId" element={<GatherMateEdit />} />
 
           <Route path='/edu/list' element={<EduMain />} />
           <Route path='/edu/detail' element={<EduDetail />} />
