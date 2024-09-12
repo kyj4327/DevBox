@@ -33,7 +33,6 @@ import GatherMateEdit from './pages/gatherMate/GatherMateEdit';
 
 import ProjectDetail from './pages/project/ProjectDetail';
 import ProjectUpdate from './pages/project/ProjectUpdate';
-import GatherMateEdit from './pages/gatherMate/GatherMateEdit';
 
 function AppContent() {
   const location = useLocation();
