@@ -122,17 +122,22 @@ const ReservationList = () => {
                                                 <h5><li>{v.time}</li></h5>
                                             </div>
                                             <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
-                                                <button className="btn rounded-pill px-4 btn-primary light-300"
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        async function send() {
-                                                            const url = `http://127.0.0.1:8080/reservation/delete?reservationId=${v.id}`;
-                                                            await fetch(url);
-                                                            alert("예약이 취소되었습니다.");
-                                                            window.location.reload();
-                                                        }
-                                                        send();
-                                                    }}>{v.condition === "예약완료" ? "예약취소" : "삭제"}</button>
+                                                {
+                                                    v.condition === "예약완료" ?
+                                                        <button className="btn rounded-pill px-4 btn-primary light-300"
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                async function send() {
+                                                                    const url = `http://127.0.0.1:8080/reservation/delete?reservationId=${v.id}`;
+                                                                    await fetch(url);
+                                                                    alert("예약이 취소되었습니다.");
+                                                                    window.location.reload();
+                                                                }
+                                                                send();
+                                                            }}>예약완료</button>
+                                                        : ""
+                                                }
+
                                             </div>
                                         </div>
                                     </div>
