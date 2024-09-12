@@ -105,7 +105,7 @@ const Header = () => {
               <li className="nav-item">
                 <a
                   className="nav-link btn-outline-primary rounded-pill px-3"
-                  href="work.html"
+                  href="/edu/list"
                 >
                   Information
                 </a>
@@ -113,7 +113,7 @@ const Header = () => {
               <li className="nav-item">
                 <a
                   className="nav-link btn-outline-primary rounded-pill px-3"
-                  href="pricing.html"
+                  href="/project/list"
                 >
                   Community
                 </a>
@@ -121,7 +121,7 @@ const Header = () => {
               <li className="nav-item">
                 <a
                   className="nav-link btn-outline-primary rounded-pill px-3"
-                  href="contact.html"
+                  href="/message/list"
                 >
                   FAQ
                 </a>
@@ -132,7 +132,7 @@ const Header = () => {
             {user ? (
               <>
             <MsgBell />
-                <a className="nav-link" href="/mypage">
+                <a className="nav-link" href="/message/list">
                   <i className="bx bx-user-circle bx-sm text-primary"></i>
                 </a>
                 <button 
