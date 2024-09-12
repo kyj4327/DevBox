@@ -1,0 +1,30 @@
+.contact-section {
+    background-image: url('../img/reservation.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    height: 326px;
+}
+
+.react-calendar__month-view__weekdays>div>* {
+    text-decoration: none;
+}
+
+.react-calendar__month-view__weekdays>div:last-child,
+.react-calendar__tile.saturday {
+    color: rgb(160, 160, 255) !important;
+}
+
+.react-calendar__month-view__weekdays>div:first-child,
+.react-calendar__tile.sunday {
+    color: rgb(255, 161, 161) !important;
+}
+
+button.disabled-btn {
+    text-decoration: line-through !important;
+}
+
+.react-datepicker__header {
+    background-color: #d8dfff !important;
+}
