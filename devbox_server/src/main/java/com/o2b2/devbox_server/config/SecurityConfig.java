@@ -125,6 +125,10 @@ public class SecurityConfig {
                         .requestMatchers("/project/**").permitAll()
                         .requestMatchers("/message/**").permitAll()
                         .requestMatchers("/msg/**").permitAll()
+                        .requestMatchers("/reference/**").permitAll()
+                        .requestMatchers("/hiring/**").permitAll()
+                        .requestMatchers("/contest/**").permitAll()
+                        .requestMatchers("/reservation/**").permitAll()
 
 
                         .anyRequest().authenticated());
