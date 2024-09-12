@@ -13,7 +13,7 @@ const Reservation = () => {
     const [name, setName] = useState('이예림');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
-    const [condition, setCondition] = useState('예약완료');
+    const condition = "예약완료";
     const [timeData, setTimeData] = useState([]);
 
     useEffect(() => {
@@ -50,24 +50,26 @@ const Reservation = () => {
 
     const saveData = (e) => {
         e.preventDefault();
-        async function send() {
-            const url = 'http://127.0.0.1:8080/reservation/write';
-            const res = await fetch(url, {
-                method: 'post',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({ name: name, date: date, time: time, condition: condition })
-            });
-            const data = await res.json();
-            if (data.code === 200) {
-                alert('예약 완료');
-                navigate('/reservation/list');
-            } else {
-                alert('다시 입력해주세요.');
+        if (window.confirm(`${date} ${time} 예약하시겠습니까?`)) {
+            async function send() {
+                const url = 'http://127.0.0.1:8080/reservation/write';
+                const res = await fetch(url, {
+                    method: 'post',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify({ name: name, date: date, time: time, condition: condition })
+                });
+                const data = await res.json();
+                if (data.code === 200) {
+                    alert(`${date} ${time} 예약되었습니다.`);
+                    navigate('/reservation/list');
+                } else {
+                    alert('다시 입력해주세요.');
+                }
             }
+            send();
         }
-        send();
     };
 
     useEffect(() => {
