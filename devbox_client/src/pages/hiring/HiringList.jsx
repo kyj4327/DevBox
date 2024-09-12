@@ -78,13 +78,15 @@ const HiringList = () => {
                                                             }}>수정</Link>
                                                             <Link onClick={(e) => {
                                                                 e.preventDefault();
-                                                                async function send() {
-                                                                    const url = `http://127.0.0.1:8080/hiring/delete?hiringId=${v.id}`;
-                                                                    await fetch(url);
-                                                                    alert("삭제가 완료되었습니다.");
-                                                                    window.location.reload();
+                                                                if (window.confirm("삭제하시겠습니까?")) {
+                                                                    async function send() {
+                                                                        const url = `http://127.0.0.1:8080/hiring/delete?hiringId=${v.id}`;
+                                                                        await fetch(url);
+                                                                        alert("삭제되었습니다.");
+                                                                        window.location.reload();
+                                                                    }
+                                                                    send();
                                                                 }
-                                                                send();
                                                             }}>삭제</Link>
                                                         </span>
                                                     </div>

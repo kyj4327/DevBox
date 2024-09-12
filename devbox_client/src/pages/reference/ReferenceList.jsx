@@ -73,13 +73,15 @@ const ReferenceList = () => {
                                             }}>수정</Link>
                                             <Link onClick={(e) => {
                                                 e.preventDefault();
-                                                async function send() {
-                                                    const url = `http://127.0.0.1:8080/reference/delete?referenceId=${v.id}`;
-                                                    await fetch(url);
-                                                    alert("삭제가 완료되었습니다.");
-                                                    window.location.reload();
+                                                if (window.confirm("삭제하시겠습니까?")) {
+                                                    async function send() {
+                                                        const url = `http://127.0.0.1:8080/reference/delete?referenceId=${v.id}`;
+                                                        await fetch(url);
+                                                        alert("삭제되었습니다.");
+                                                        window.location.reload();
+                                                    }
+                                                    send();
                                                 }
-                                                send();
                                             }}>삭제</Link>
                                         </div>
                                         <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
