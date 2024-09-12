@@ -199,12 +199,6 @@ public class MsgController {
     }
 
 
-    @DeleteMapping("/msg/delete")
-    public String msgdelete(@RequestParam Long Id) {
-        msgRepository.deleteById(Id);
-        return "삭제 완료";
-    }
-
     @GetMapping("/msg/detail")
     @ResponseBody
     public Map<String, Object> msgDetail(@RequestParam Long id) {

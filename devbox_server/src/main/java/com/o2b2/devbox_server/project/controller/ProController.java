@@ -36,6 +36,7 @@ import com.o2b2.devbox_server.project.model.MultiImgEntity;
 import com.o2b2.devbox_server.project.model.ProEntity;
 import com.o2b2.devbox_server.project.repository.MultiImgRepository;
 import com.o2b2.devbox_server.project.repository.ProRepository;
+import com.o2b2.devbox_server.user.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,6 +50,9 @@ public class ProController {
 
     @Autowired
     ProRepository proRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     MultiImgRepository multiImgRepository;

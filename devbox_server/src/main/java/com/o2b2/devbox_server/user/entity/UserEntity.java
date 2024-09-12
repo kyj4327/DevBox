@@ -1,5 +1,11 @@
 package com.o2b2.devbox_server.user.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.o2b2.devbox_server.message.model.MsgEntity;
+import com.o2b2.devbox_server.project.model.ProEntity;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -28,5 +34,11 @@ public class UserEntity {
     private String role;
 
     private String field;
+
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
+    List<ProEntity> proEntitys = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "userEntity")
+    List<MsgEntity> MsgEntitys = new ArrayList<>();
 
 }
