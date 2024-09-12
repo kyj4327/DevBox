@@ -151,7 +151,6 @@ const PostDetail = () => {
           <div className="post-actions">
             <div className="button-group">
               <Button text="목록" onClick={() => navigate('/community/freeboard')} className="btn btn-list" />
-              <Button text="답글" onClick={() => {/* 답글 로직 */}} className="btn btn-reply" />
             </div>
             <div className="button-group">
               <Button text="수정" onClick={handleEditPost} className="btn btn-edit" />
