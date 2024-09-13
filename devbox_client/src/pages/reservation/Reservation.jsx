@@ -78,6 +78,7 @@ const Reservation = () => {
             const res = await fetch(url);
             const data = await res.json();
             setTimeData(data);
+            setTime('');
         }
         if (date) {
             get();
