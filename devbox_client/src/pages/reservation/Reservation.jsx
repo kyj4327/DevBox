@@ -33,7 +33,7 @@ const Reservation = () => {
         } else {
             return false;
         }
-    }
+    };
 
     const disableWeekends = ({ date, view }) => {
         if (view === 'month') { // 달력 뷰가 일 단위일 때만 주말을 비활성화
@@ -85,9 +85,14 @@ const Reservation = () => {
     }, [date]);
 
     const isDisabled = (time) => {
-        return timeData.some((v) => v.time === time);
+        const now = moment(new Date()).format("YYYY년 MM월 DD일 HH:mm");
+        const calTime = `${date} ${time.split(' - ')[0]}`;
+        return (
+            now > calTime // 현재 시간이 더 뒤인 경우 true를 반환
+            || timeData.some((v) => v.time === time)
+            // some() : 배열의 요소 중 하나라도 주어진 조건을 만족하면 true를 반환하고, 조건을 만족하는 요소가 하나도 없으면 false를 반환
+        );
     };
-    // some() : 배열의 요소 중 하나라도 주어진 조건을 만족하면 true를 반환하고, 조건을 만족하는 요소가 하나도 없으면 false를 반환
 
     const TimeButton = ({ value }) => {
         return (
