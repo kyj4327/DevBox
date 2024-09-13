@@ -4,6 +4,8 @@ import com.o2b2.devbox_server.gatherMate.request.GatherMatePostCreate;
 import com.o2b2.devbox_server.gatherMate.request.GatherMatePostEdit;
 import com.o2b2.devbox_server.gatherMate.response.GatherMateResponse;
 import com.o2b2.devbox_server.gatherMate.service.GatherMateService;
+import com.o2b2.devbox_server.user.dto.CustomUserDetails;
+import com.o2b2.devbox_server.user.entity.UserEntity;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -24,8 +27,14 @@ public class GatherMateController {
 
     private final GatherMateService gatherMateService;
 
-    @PostMapping("/posts")
-    public ResponseEntity<Map<String, Object>> post(@RequestBody @Valid GatherMatePostCreate request) {
+    @PostMapping("/write")
+    public ResponseEntity<Map<String, Object>> post(
+            @RequestBody @Valid GatherMatePostCreate request,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        Long userId = userDetails.getUserEntity().getId();
+        request.setUserId(userId);
+
         Long postId = gatherMateService.write(request);
 
         Map<String, Object> response = new HashMap<>();
