@@ -26,14 +26,17 @@ public class GatherMatePostCreate {
     private LocalDateTime createdAt;
     private boolean isRecruiting;
 
+    private Long userId;
+
     @Builder
-    public GatherMatePostCreate(String intro,String apply, String title, String content, String author, LocalDateTime createdAt, boolean isRecruiting) {
+    public GatherMatePostCreate(String intro,String apply, String title, String content, LocalDateTime createdAt, boolean isRecruiting,Long userId) {
         this.intro = intro;
         this.apply = apply;
         this.title = title;
         this.content = content;
         this.isRecruiting = isRecruiting;
         this.createdAt = createdAt;
+        this.userId = userId;
     }
 }
 
