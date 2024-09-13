@@ -4,6 +4,8 @@ import Button from "../../components/Button";
 import Pagination from "../../components/Pagination";
 import Category from "../../components/Category";
 import { Link, useNavigate } from "react-router-dom";
+import { useUser } from '../../components/context/UserContext';  // UserContext 사용
+
 
 import "./GatherMateList.css";
 
@@ -13,6 +15,7 @@ import modeFavoriteIcon from "../../assets/img/icons/modeFavorite.svg";
 import modevisibilityIcon from "../../assets/img/icons/modevisibility.svg";
 
 function GatherMateList() {
+  const { user } = useUser();  // UserContext -> user 가져오기
   const [category, setCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
@@ -23,9 +26,14 @@ function GatherMateList() {
 
   const navigate = useNavigate();
   const toWrite = () => {
-    navigate("/gatherwrite");
+    if (user) {
+      navigate("/gathermate/write");
+    } else {
+      alert("글을 작성하려면 로그인해야 합니다.");
+      navigate("/gathermate/list"); 
+    }
   };
-
+  
   useEffect(() => {
     fetchData();
   }, [category, currentPage]);
@@ -156,7 +164,7 @@ function GatherMateList() {
             <div className="post-list">
               {data.map((post) => (
                 <div key={post.id} className="post-item">
-                  <Link to={`/gatherdetail/${post.id}`} className="post-link">
+                  <Link to={`/gathermate/detail/${post.id}`} className="post-link">
                     <div className="post-header">
                     <div className={`post-status ${post.recruiting ? 'post-status-recruiting' : 'post-status-completed'}`}>
           {post.recruiting ? "모집중" : "모집완료"}
@@ -179,9 +187,8 @@ function GatherMateList() {
                     >
                       {/* 왼쪽 작성자명, 시간 */}
                       <span className="post-info">
-                        <span className="post-author">
-                          {" "}
-                          김개발 {post.author}
+                        <span className="post-author" style={{ marginRight: "5px" }}>
+                          {post.author} 
                         </span>
                         <span className="post-time">
                           {formatDateTime(post.createdAt)}
