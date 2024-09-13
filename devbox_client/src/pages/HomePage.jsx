@@ -49,6 +49,11 @@ function HomePage() {
     navigate('/mypage');
   };
 
+  const handleMGatherMateClick = () => {
+    navigate('/gathermate/list');
+  };
+
+
   const handleLogoutClick = async () => {
     try {
       const response = await fetch('http://localhost:8080/logout', {
@@ -90,6 +95,7 @@ function HomePage() {
     <p>Name: {user.name}</p> 
     <p>Email: {user.email}</p>
     <button onClick={handleMyPageClick}>마이 페이지로 이동</button>
+    <button onClick={handleMGatherMateClick}>모여라메이트</button>
 
     <button onClick={handleLogoutClick}>로그아웃</button>
   </div>

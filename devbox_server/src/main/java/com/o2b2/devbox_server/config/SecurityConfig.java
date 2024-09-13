@@ -109,7 +109,9 @@ public class SecurityConfig {
         http
                 .httpBasic((auth) -> auth.disable());
 
-
+        /**
+        인가 백엔드 수신 HTTP 요청에 대한 권한을 설정
+         **/
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/login", "/", "/join").permitAll()
@@ -119,24 +121,51 @@ public class SecurityConfig {
                         .requestMatchers("/password/**").permitAll() // 비밀번호 재설정 관련 경로에 접근 허용
                         .requestMatchers("/api/user/me").authenticated() // <- 인증된 사용자만 접근 가능하도록 설정
 
-                        // 글 작성 경로에 대해 인증 없이 접근 가능하게 설정
-                        .requestMatchers("/gathermate/**").permitAll()
+
+
+                        // gatherMate 리스트는 누구나
+                        .requestMatchers("/gathermate/list").permitAll()
+
+                        // gatherMate 상세는 누구나
+                        .requestMatchers("/gathermate/detail/**").permitAll()
+                        .requestMatchers("/gathermate/posts/**").permitAll()
+                        .requestMatchers("/gathermate/posts").authenticated()
+                        // gatherMate 글 작성 페이지는 로그인 사용자
+                        .requestMatchers("/gathermate/write").authenticated()
+
+                        // gatherMate 글 수정 페이지는 로그인 사용자
+                        .requestMatchers("/gathermate/edit/**").authenticated()
+
+
+                        /**
+                         추천해요 게시판
+                         */
+                        // 글쓰기
+                        .requestMatchers("/**/write").authenticated()
+                        .requestMatchers("/**/write/**").authenticated()
+
+                        .requestMatchers("/**/update").authenticated()
+                        .requestMatchers("/**/update/**").authenticated()
+                        .requestMatchers("/**/delete").authenticated()
+                        .requestMatchers("/**/delete/**").authenticated()
+
+
+
+                        // 알림 기능은 로그인한 사용자만 접근 가능
+                        .requestMatchers("/msg/bell").authenticated()
+
                         .requestMatchers("/edu/**").permitAll()
                         .requestMatchers("/project/**").permitAll()
                         .requestMatchers("/message/**").permitAll()
-                        .requestMatchers("/msg/**").permitAll()
-                        .requestMatchers("/reference/**").permitAll()
-                        .requestMatchers("/hiring/**").permitAll()
-                        .requestMatchers("/contest/**").permitAll()
-                        .requestMatchers("/reservation/**").permitAll()
 
+//                        .requestMatchers("/msg/**").permitAll()
 
                         .anyRequest().authenticated());
 
         http
                 .addFilterBefore(new JWTFilter(jwtUtil,userRepository), LoginFilter.class)
-                .addFilterAfter(new JWTFilter(jwtUtil,userRepository), OAuth2LoginAuthenticationFilter.class);
-//                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAfter(new JWTFilter(jwtUtil,userRepository), OAuth2LoginAuthenticationFilter.class)
+                .addFilterBefore(new JWTFilter(jwtUtil, userRepository), UsernamePasswordAuthenticationFilter.class);
 
         http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class);

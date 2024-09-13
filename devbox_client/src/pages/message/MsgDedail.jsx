@@ -31,13 +31,6 @@ const MesDetail = () => {
         get();
     }, []);
 
-    const deleteState = async (e) => {
-        e.preventDefault();
-        const url = `http://localhost:8080/msg/delete?Id=${msgData.id}`;
-        await fetch(url, { method: 'DELETE' });
-        alert('삭제가 완료되었습니다.');
-        navigate('/message/list');
-    }
 
     return (
         <div>
@@ -105,7 +98,6 @@ const MesDetail = () => {
                                 <button type="submit" className="me-2 btn btn-secondary text-white px-md-4 px-2 py-md-3 py-1 radius-0 light-300"
                                     onClick={(e) => { e.preventDefault(); navigate(`/message/reply?id=${msgData.id}`); }}
                                 >답장</button>
-                                <Button text={'삭제'} onClick={deleteState} />
                             </div>
                         </div>
                     </div>

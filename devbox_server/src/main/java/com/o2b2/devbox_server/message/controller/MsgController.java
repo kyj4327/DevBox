@@ -7,14 +7,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ssl.SslProperties.Bundles.Watch.File;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,12 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.o2b2.devbox_server.message.model.MsgEntity;
-import com.o2b2.devbox_server.message.repository.MsgRepository;
-import com.o2b2.devbox_server.project.model.MultiImgEntity;
-import com.o2b2.devbox_server.project.model.ProEntity;
+import com.o2b2.devbox_server.message.model.MsgReciverEntity;
+import com.o2b2.devbox_server.message.model.MsgSenderEntity;
+import com.o2b2.devbox_server.message.repository.MsgReciverRepository;
+import com.o2b2.devbox_server.message.repository.MsgSenderRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -38,7 +34,10 @@ import java.time.LocalDateTime;
 @Transactional
 public class MsgController {
     @Autowired
-    MsgRepository msgRepository;
+    MsgReciverRepository msgReciverRepository;
+
+    @Autowired
+    MsgSenderRepository msgSenderRepository;
 
     @GetMapping("/msg/list/{sender}")
     public Map<String, Object> msgList(
@@ -48,27 +47,23 @@ public class MsgController {
             @RequestParam(value = "size", defaultValue = "6") int size) {
 
         System.out.println("Sender: " + sender + ", category: " + category);
-        // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        
 
-
-        // Sort sort = Sort.by(Sort.Direction.ASC, "id");
         Direction dir = Direction.DESC;
         Pageable pageable = PageRequest.of(page - 1, size, dir, "order", "id"); // 페이지 요청 생성
 
         // 카테고리가 받은쪽지이면
         // sender(로그인한사람)로 DB의 receiver 데이터 조회
-        Page<MsgEntity> p;
+        Page<MsgReciverEntity> p;
         if (category.equals("받은쪽지")) {
-            p = msgRepository.findByReciver(sender, pageable);
+            p = msgReciverRepository.findByReciver(sender, pageable);
         } else {
-            p = msgRepository.findBySender(sender, pageable);
+            p = msgReciverRepository.findBySender(sender, pageable);
         }
 
         // 카테고리가 보낸쪽지이면
         // sender(로그인한사람)로 DB의 sender 데이터 조회
 
-        List<MsgEntity> list = p.getContent();
+        List<MsgReciverEntity> list = p.getContent();
 
         // 페이지네이션 관련 정보 계산
         int totalPage = p.getTotalPages();
@@ -102,24 +97,23 @@ public class MsgController {
     @ResponseBody
     public Map<String, Object> like(@RequestParam Long id) {
         Map<String, Object> map = new HashMap<>();
-        Optional<MsgEntity> msgOpt = msgRepository.findById(id);
+        Optional<MsgReciverEntity> msgOpt = msgReciverRepository.findById(id);
 
         if (msgOpt.isPresent()) {
-            MsgEntity msg = msgOpt.get();
-
+            MsgReciverEntity msg = msgOpt.get();
 
             // 좋아요 상태 토글 (좋아요가 없으면 추가하고, 있으면 삭제)
             if (msg.getLike() == null || !msg.getLike()) {
                 msg.setLike(true); // 좋아요 추가
-                
+
                 msg.setOrder(1);
             } else {
                 msg.setLike(false); // 좋아요 취소
                 msg.setOrder(0);
             }
 
-            msgRepository.save(msg); // 변경된 상태를 저장
-            
+            msgReciverRepository.save(msg); // 변경된 상태를 저장
+
             map.put("like", msg.getLike());
         } else {
             map.put("error", "Message not found");
@@ -128,17 +122,18 @@ public class MsgController {
         return map; // 클라이언트에 map 반환
     }
 
-
     @PostMapping("/msg/write")
-    public Map<String, Object> msg(@ModelAttribute MsgEntity msg) {
-        System.out.println(msg);
-
+    public Map<String, Object> msg(@ModelAttribute MsgSenderEntity senderMsg,
+            @ModelAttribute MsgReciverEntity reciverMsg) {
         // 결과를 담을 맵 생성
         Map<String, Object> map = new HashMap<>();
 
         try {
-            // MsgEntity 저장
-            MsgEntity result = msgRepository.save(msg);
+            // Sender 정보 저장
+            MsgSenderEntity savedSenderMsg = msgSenderRepository.save(senderMsg);
+
+            // Reciver 정보 저장
+            MsgReciverEntity savedReciverMsg = msgReciverRepository.save(reciverMsg);
 
             // 성공 시 응답 메시지 설정
             map.put("code", 200);
@@ -159,24 +154,36 @@ public class MsgController {
     public Map<String, Object> reply(@RequestParam Long id) {
         Map<String, Object> map = new HashMap<>();
 
-        Optional<MsgEntity> msgOpt = msgRepository.findById(id);
+        // Reciver 정보 조회
+        Optional<MsgReciverEntity> reciverOpt = msgReciverRepository.findById(id);
+        if (reciverOpt.isPresent()) {
+            MsgReciverEntity reciverMsg = reciverOpt.get();
+            map.put("reciverId", reciverMsg.getId());
+            map.put("reciver", reciverMsg.getReciver());
+        } else {
+            map.put("reciverError", "Receiver message not found");
+        }
 
-        MsgEntity msg = msgOpt.get();
-        map.put("id", msg.getId());
-        map.put("sender", msg.getSender());
-        map.put("reciver", msg.getReciver());
+        // Sender 정보 조회
+        Optional<MsgSenderEntity> senderOpt = msgSenderRepository.findById(id);
+        if (senderOpt.isPresent()) {
+            MsgSenderEntity senderMsg = senderOpt.get();
+            map.put("senderId", senderMsg.getId());
+            map.put("sender", senderMsg.getSender());
+        } else {
+            map.put("senderError", "Sender message not found");
+        }
 
         return map;
-
     }
-    
+
     @GetMapping("/msg/bell")
     @ResponseBody
     public Map<String, Object> reply(@RequestParam String reciver) {
         Map<String, Object> map = new HashMap<>();
 
         // reciver로 메시지를 조회하여 리스트로 반환
-        List<MsgEntity> msgList = msgRepository.findByReciver(reciver);
+        List<MsgReciverEntity> msgList = msgReciverRepository.findByReciver(reciver);
 
         // 메시지가 존재하는지 확인
         if (!msgList.isEmpty()) {
@@ -198,45 +205,53 @@ public class MsgController {
         return map;
     }
 
-
-    @DeleteMapping("/msg/delete")
-    public String msgdelete(@RequestParam Long Id) {
-        msgRepository.deleteById(Id);
-        return "삭제 완료";
-    }
-
     @GetMapping("/msg/detail")
     @ResponseBody
     public Map<String, Object> msgDetail(@RequestParam Long id) {
         Map<String, Object> map = new HashMap<>();
 
-        // id로 데이터베이스에서 쪽지 정보를 조회합니다.
-        Optional<MsgEntity> msgOpt = msgRepository.findById(id);
-
-        if (msgOpt.isPresent()) {
-            MsgEntity msg = msgOpt.get();
+        // Reciver 쪽지 정보 조회
+        Optional<MsgReciverEntity> reciverOpt = msgReciverRepository.findById(id);
+        if (reciverOpt.isPresent()) {
+            MsgReciverEntity reciverMsg = reciverOpt.get();
 
             // readTime이 null이면 현재 시간을 읽은 시간으로 설정하고 저장합니다.
-            if (msg.getReadTime() == null) {
-                msg.setReadTime(LocalDateTime.now());
-                msgRepository.save(msg); // 데이터베이스에 저장
+            if (reciverMsg.getReadTime() == null) {
+                reciverMsg.setReadTime(LocalDateTime.now());
+                msgReciverRepository.save(reciverMsg); // 데이터베이스에 저장
             }
 
-            // 쪽지의 세부 정보를 map에 담습니다.
-            map.put("id", msg.getId());
-            map.put("title", msg.getTitle());
-            map.put("content", msg.getContent());
-            map.put("sender", msg.getSender());
-            map.put("sendTime", msg.getSendTime());
-            map.put("reciver", msg.getReciver());
-            map.put("readTime", msg.getReadTime()); // 읽은 시간도 응답에 포함
+            // Reciver 쪽지의 세부 정보를 map에 담습니다.
+            map.put("reciverId", reciverMsg.getId());
+            map.put("title", reciverMsg.getTitle());
+            map.put("content", reciverMsg.getContent());
+            map.put("sender", reciverMsg.getSender());
+            map.put("sendTime", reciverMsg.getSendTime());
+            map.put("reciver", reciverMsg.getReciver());
+            map.put("readTime", reciverMsg.getReadTime()); // 읽은 시간도 응답에 포함
         } else {
-            // id에 해당하는 쪽지가 없을 경우 빈 map을 반환하거나 에러 처리를 할 수 있습니다.
-            map.put("error", "Message not found");
+            // Reciver 쪽지가 없을 경우 에러 메시지 추가
+            map.put("reciverError", "Receiver message not found");
+        }
+
+        // Sender 쪽지 정보 조회
+        Optional<MsgSenderEntity> senderOpt = msgSenderRepository.findById(id);
+        if (senderOpt.isPresent()) {
+            MsgSenderEntity senderMsg = senderOpt.get();
+
+            // Sender 쪽지의 세부 정보를 map에 담습니다.
+            map.put("senderId", senderMsg.getId());
+            map.put("title", senderMsg.getTitle());
+            map.put("content", senderMsg.getContent());
+            map.put("sender", senderMsg.getSender());
+            map.put("sendTime", senderMsg.getSendTime());
+            map.put("reciver", senderMsg.getReciver());
+        } else {
+            // Sender 쪽지가 없을 경우 에러 메시지 추가
+            map.put("senderError", "Sender message not found");
         }
 
         return map; // 클라이언트에 map 반환
     }
 
-  
 }
