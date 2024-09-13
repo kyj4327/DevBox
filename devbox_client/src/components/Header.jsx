@@ -77,7 +77,7 @@ const Header = () => {
               <li className="nav-item">
                 <a
                   className="nav-link btn-outline-primary rounded-pill px-3"
-                  href="work.html"
+                  href="/edu/list"
                 >
                   Information
                 </a>
@@ -85,7 +85,7 @@ const Header = () => {
               <li className="nav-item">
                 <a
                   className="nav-link btn-outline-primary rounded-pill px-3"
-                  href="pricing.html"
+                  href="/project/list"
                 >
                   Community
                 </a>
@@ -93,7 +93,7 @@ const Header = () => {
               <li className="nav-item">
                 <a
                   className="nav-link btn-outline-primary rounded-pill px-3"
-                  href="contact.html"
+                  href="/message/list"
                 >
                   FAQ
                 </a>

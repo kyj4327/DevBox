@@ -2,7 +2,6 @@ import { upload } from "@testing-library/user-event/dist/upload";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import WriteShort from "../../components/WriteShort";
-import WriteLong from "../../components/WriteLong";
 import Button from "../../components/Button";
 import DragDrop from "./DragDrop";
 import Swal from "sweetalert2";
@@ -19,9 +18,27 @@ const ProjectWrite = () => {
     const [delImgId, setDelImgId] = useState([]);
     const [savedImgs, setSavedImgs] = useState([]);
 
+    const [linkError, setLinkError] = useState('');
+
+    const validateUrl = (link) => {
+        const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/\S*)?$/;
+        return urlRegex.test(link);
+    };
+
     const handleDeleteImage = (id) => {
         setDelImgId([...delImgId, id]);
         setSavedImgs(savedImgs.filter((img) => img.id !== id));
+    };
+
+    const handleLinkChange = (e) => {
+        const inputLink = e.target.value;
+        setLink(inputLink);
+    
+        if (!validateUrl(inputLink)) {
+            setLinkError('유효한 링크를 입력해주세요!');
+        } else {
+            setLinkError(''); // 유효한 링크일 경우 오류 메시지 제거
+        }
     };
 
     const onchangeImageUpload = (e) => {
@@ -32,6 +49,15 @@ const ProjectWrite = () => {
 
     const handleDetail = async (e) => {
         e.preventDefault();
+
+        if (linkError) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: linkError // 링크 오류 메시지 출력
+            });
+            return;
+        }
 
         if (uploadImgs.length === 0) {
             Swal.fire({
@@ -109,9 +135,21 @@ const ProjectWrite = () => {
                                   
                                 </div>
                             </p>
+                            
+                            <div>
+                                <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">시연 영상 링크</h2>
+                                <p className="worksingle-footer py-3 text-muted light-300">
+                                    <div className="col-12">
+                                        <div className="form-floating mb-4">
+                                            <input type="text" className="form-control form-control-lg light-300" id="link" name="link" placeholder="시연 영상 링크"
+                                                value={link} onChange={handleLinkChange} />
+                                            <label htmlFor="floatingsubject light-300">시연 영상 링크</label>
+                                        </div>
+                                    </div>
+                                    {linkError && <p style={{ color: 'red' }}>{linkError}</p>}
+                                </p>
+                            </div>
 
-
-                            <WriteLong titleTag={'시연 영상 링크'} type={'text'} name={'link'} value={link} onChange={(e) => setLink(e.target.value)} />
 
                             <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">내용</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">

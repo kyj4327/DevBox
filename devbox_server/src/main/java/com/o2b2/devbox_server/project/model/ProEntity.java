@@ -3,10 +3,16 @@ package com.o2b2.devbox_server.project.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.o2b2.devbox_server.message.model.MsgReciverEntity;
+import com.o2b2.devbox_server.user.entity.UserEntity;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 
@@ -27,7 +33,13 @@ public class ProEntity {
 
     Integer likeCount;
 
-    @OneToMany(mappedBy = "proEntity" )
+    @OneToMany(mappedBy = "proEntity", cascade = CascadeType.REMOVE)
     List<MultiImgEntity> multiImgEntitys = new ArrayList<>();
 
+    @JsonIgnore
+    @ManyToOne
+    ProEntity proEntity;
+    
+    @ManyToOne
+    UserEntity userEntity;
 }

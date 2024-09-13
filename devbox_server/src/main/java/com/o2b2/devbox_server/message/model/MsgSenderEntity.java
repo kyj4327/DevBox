@@ -5,14 +5,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
+import com.o2b2.devbox_server.user.entity.UserEntity;
+
 
 @Entity
 @Data
-public class MsgEntity {
+public class MsgSenderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -33,5 +36,6 @@ public class MsgEntity {
 
     Integer order;
 
-
+    @ManyToOne
+    UserEntity userEntity;
 }
