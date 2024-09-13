@@ -1,0 +1,157 @@
+@font-face {
+    font-family: 'PTAnboR';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTAnboR.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PTBandocheB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MinSans-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.roadExplain {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 
+        "roadLeft roadRight"
+        "roadInfoSub roadInfoSub";
+    gap: 20px;
+    height: 100vh;
+    padding: 20px;
+}
+
+.roadLeft {
+    grid-area: roadLeft;
+}
+
+.roadRight {
+    grid-area: roadRight;
+}
+
+.roadInfoSub {
+    grid-area: roadInfoSub;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.roadInfoCons {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.roadInfoList, .roadInfoTable {
+    flex: 1;
+}
+
+h5 {
+    font-family: "PTBandocheB", sans-serif;
+    margin-bottom: 12px;
+    font-size: 2.0rem;
+    color: #570ae3;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    width: 2.8rem;
+    height: 2.8rem;
+    margin-right: 10px;
+}
+
+p, ul, table {
+    margin: 0 0 12px 0;
+    padding: 0;
+    font-family: "MinSans-Regular", sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: left;
+}
+.roadTrans ul,li {
+    text-align: left;
+}
+
+.roadInfoList ul {
+    list-style: none; /* 기본 불릿 제거 */
+    padding-left: 0; /* 기본 패딩 제거 */
+    margin: 0; /* 기본 여백 제거 */
+    text-align: center; /* 리스트 항목을 중앙 정렬 */
+}
+.roadInfoList h5 {
+    margin-bottom: 20px; /* h5와 다음 요소 사이의 여백을 설정 */
+}
+
+.roadInfoTit {
+    display: block; /* span을 블록 요소처럼 표시하여 여백 적용 */
+    margin-top: 20px; /* span 위쪽에 여백을 추가 */
+    margin-bottom: 10px; /* span 아래쪽에 여백을 추가 */
+    display: block;
+    color: #0a0a5c;
+    font-size: 1.6rem;
+    font-family: "MinSans-Regular", sans-serif;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 8px;
+    padding-left: 10px;
+    text-align: left;
+ 
+}
+
+.roadInfoTable table {
+    width: 100%;
+    max-width: 600px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 0 auto;
+}
+
+.roadInfoTable thead tr {
+    height: 40px;
+}
+
+.roadInfoTable th,
+.roadInfoTable td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.roadInfoTable thead th {
+    color: #ffffff;
+    font-size: 1.4rem;
+    background: #2f1a66;
+    padding: 12px 8px;
+}
+
+.roadInfoTable th:first-child {
+    border-radius: 4px 0 0 4px;
+}
+
+.roadInfoTable th:last-child {
+    border-radius: 0 4px 4px 0;
+}
+.roadInfoTable td {
+    padding: 10px 6px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.roadInfoTable tbody tr:last-child td {
+    border-bottom: none;
+}

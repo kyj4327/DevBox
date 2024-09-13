@@ -55,6 +55,13 @@ import ProjectDetail from './pages/project/ProjectDetail';
 import ProjectUpdate from './pages/project/ProjectUpdate';
 import { UserProvider } from './components/context/UserContext';
 
+import BDIAIntroduction from "./pages/bdia/BDIAIntroduction";
+import BDIASchedule from "./pages/bdia/BDIASchedule";
+import FreeBoard from "./pages/freeboard/FreeBoard";
+import FreeBoardDetail from "./pages/freeboard/FreeBoardDetail";
+import PostDetail from "./pages/freeboard/PostDetail";
+import Contact from "./pages/contact/Contact";
+
 function AppContent() {
   const location = useLocation();
   const hideHeaderFooter = ['/auth', '/password'].includes(location.pathname);
@@ -126,6 +133,15 @@ function AppContent() {
           {/* 6층 회의실 대여 서비스 */}
           <Route path='/reservation/write' element={<Reservation />} />
           <Route path='/reservation/list' element={<ReservationList />} />
+
+          <Route path="BDIA/introduce" element={<BDIAIntroduction />} />
+          <Route path="BDIA/schedule" element={<BDIASchedule />} />
+          <Route path="community/freeboard" element={<FreeBoard />} />
+          <Route path="community/freeboard/new" element={<FreeBoardDetail />} />
+          <Route path="community/freeboard/:id" element={<FreeBoardDetail />} />
+          <Route path="community/freeboard/edit/:id" element={<FreeBoardDetail />} />
+          <Route path="community/freeboard/post/:id" element={<PostDetail />} />
+          <Route path="faq" element={<Contact />} />
 
         </Routes>
       </main>

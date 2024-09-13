@@ -1,0 +1,275 @@
+.post-detail {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px;
+  font-family: 'Nanum Gothic', sans-serif;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.post-header {
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.post-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.post-meta {
+  font-size: 14px;
+  color: #666;
+}
+
+.post-content {
+  line-height: 1.8;
+  margin-bottom: 40px;
+  min-height: 200px;
+  padding: 20px 0;
+  overflow-x: auto;
+  /* 가로 스크롤 허용 */
+}
+
+.post-content img {
+  max-width: 100%;
+  /* 이미지 최대 너비를 컨테이너의 100%로 제한 */
+  height: auto;
+  /* 높이 자동 조정으로 비율 유지 */
+  display: block;
+  /* 이미지를 블록 요소로 설정 */
+  margin: 1em auto;
+  /* 상하 여백 추가 및 가운데 정렬 */
+}
+
+.post-content .large-image {
+  cursor: pointer;
+  /* 클릭 가능함을 표시 */
+  transition: transform 0.3s ease;
+  /* 부드러운 확대/축소 효과 */
+}
+
+.post-content .large-image:hover {
+  transform: scale(1.05);
+  /* 호버 시 약간 확대 */
+}
+
+.post-content a {
+  color: #03c75a;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.post-content a:hover {
+  color: #02b350;
+  text-decoration: underline;
+}
+
+.youtube-embed {
+  margin: 1em 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.link-preview {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 1em 0;
+  transition: box-shadow 0.3s ease;
+}
+
+.link-preview:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.link-preview-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 15px;
+  border-radius: 4px;
+}
+
+.link-preview-content {
+  flex: 1;
+}
+
+.link-preview-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.link-preview-description {
+  font-size: 0.9em;
+  color: #666;
+}
+
+
+.post-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.button-group {
+  display: flex;
+}
+
+.btn {
+  padding: 8px 16px;
+  font-size: 12px;
+  border: none;
+
+  color: white;
+  cursor: pointer;
+  margin-right: 5px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+
+.btn-delete {
+  background-color: #f44336;
+}
+
+.btn-delete:hover {
+  background-color: #d32f2f;
+}
+
+.comments-section {
+  padding: 20px 0;
+  /* 좌우 패딩 제거, 상하 패딩만 유지 */
+}
+
+.comments-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.comments-list {
+  list-style: none;
+  padding: 0;
+}
+
+.comment {
+  border-bottom: 1px solid #e5e5e5;
+  padding: 15px 0;
+}
+
+.comment-content {
+  margin-bottom: 10px;
+}
+
+.comment-meta {
+  font-size: 12px;
+  color: #666;
+}
+
+.btn-delete-comment {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.btn-delete-comment:hover {
+  background-color: #d32f2f;
+}
+
+.comment-form {
+  margin-top: 20px;
+}
+
+.comment-input {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #e5e5e5;
+}
+
+.btn-submit-comment {
+  padding: 8px 16px;
+  font-size: 12px;
+}
+
+.edit-post-form {
+  padding: 30px 0;
+  /* 좌우 패딩 제거, 상하 패딩만 유지 */
+  margin-top: 20px;
+}
+
+.edit-post-title {
+  font-size: 24px;
+  margin-bottom: 25px;
+}
+
+.edit-content {
+  margin-bottom: 30px;
+}
+
+.loading,
+.error,
+.not-found {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  border-radius: 8px;
+  margin-top: 20px;
+  border: 1px solid #e5e5e5;
+  /* 테두리 추가하여 구분 */
+}
+
+.edit-actions {
+  text-align: right;
+}
+
+
+.error {
+  color: #f44336;
+}
+
+.post-detail .btn,
+.post-detail .btn-submit-comment,
+.post-detail .btn-delete-comment {
+  padding: 8px 16px !important;
+  font-size: 12px !important;
+  border: none !important;
+  color: white !important;
+  cursor: pointer !important;
+  margin-right: 5px !important;
+  border-radius: 4px !important;
+  transition: background-color 0.3s !important;
+}
+
+.post-detail .btn,
+.post-detail .btn-submit-comment {
+  background-color: #03c75a !important;
+}
+
+.post-detail .btn:hover,
+.post-detail .btn-submit-comment:hover {
+  background-color: #02b350 !important;
+}
+
+.post-detail .btn-delete,
+.post-detail .btn-delete-comment {
+  background-color: #f44336 !important;
+}
+
+.post-detail .btn-delete:hover,
+.post-detail .btn-delete-comment:hover {
+  background-color: #d32f2f !important;
+}
