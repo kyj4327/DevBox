@@ -84,8 +84,8 @@ const Comments = ({ postId }) => {
         </div>
     );
 
-
-    // mmmmm
+ 
+    // mmmmm    
 import React, { useState, useEffect } from "react";
 import profilePic from "../assets/img/profilePic.png";
 import "./Comments.css";
