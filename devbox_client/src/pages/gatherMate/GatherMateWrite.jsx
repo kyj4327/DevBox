@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; 
+import { useUser } from '../../components/context/UserContext';
 
 import "react-quill/dist/quill.snow.css";
 import Button from "../../components/Button";
@@ -9,15 +10,31 @@ import QuillEditor from "../../components/QuillEditor";
 import WriteSelect from "../../components/WriteSelect";
 
 function GatherMateWrite() {
+  const { user } = useUser();  // Context에서 유저 정보가져오기
   const [intro, setIntro] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [apply, setApply] = useState("");
   const [isRecruiting, setIsRecruiting] = useState(true);
 
+
   const navigate = useNavigate();
 
-  const saveData = async () => {
+  
+ // 로그인 상태를 확인
+ useEffect(() => {
+  if (!user) {  // user가 없으면 로그인 페이지로 리다이렉트
+    alert("로그인이 필요합니다.");
+    navigate('/auth');
+  }
+}, [user, navigate]);
+
+const saveData = async () => {
+  if (!user) {
+    alert("로그인이 필요합니다.");
+    return;
+  }
+
     const newGatherMate = {
       intro,
       title,
@@ -26,33 +43,33 @@ function GatherMateWrite() {
       isRecruiting,
       datePosted: new Date().toISOString(),
     };
-
+  
     try {
-      const response = await fetch("http://localhost:8080/gathermate/posts", {
+      const token = localStorage.getItem('accessToken');
+  
+      const response = await fetch("http://localhost:8080/gathermate/write", {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify(newGatherMate),
       });
-
+  
       if (!response.ok) {
         throw new Error("네트워크 응답이 올바르지 않습니다.");
       }
-
+  
       const data = await response.json();
-      console.log("저장된 데이터:", data);
-
-      // 저장 후 게시글 상세 페이지로 이동 (data.id는 저장된 게시글 ID)
       navigate(`/gatherdetail/${data.id}`);
-
-      // 입력 필드 초기화
+  
       setIntro("");
       setTitle("");
       setContent("");
       setApply("");
       setIsRecruiting(true);
-
+  
       alert("글이 성공적으로 저장되었습니다.");
     } catch (error) {
       console.error("저장 중 오류 발생:", error);
@@ -60,6 +77,12 @@ function GatherMateWrite() {
     }
   };
 
+  if (!user) {
+    return <div>로그인 후 글쓰기가 가능합니다. <button onClick={() => navigate('/auth')}>로그인하기</button></div>;
+  }
+  // if (!isLoggedIn) {
+  //   return <div>로그인 후 글쓰기가 가능합니다. <button onClick={() => navigate('/auth')}>로그인하기</button></div>;
+  // }
   return (
     <div>
       <section className="container py-5">

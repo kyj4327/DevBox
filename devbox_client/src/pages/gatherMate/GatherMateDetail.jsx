@@ -163,7 +163,7 @@ const GatherMateDetail = () => {
                   }}
                 />
                 <div className="d-flex flex-column">
-                  <span>작성자: 김개발 {post.author}</span>
+                  <span>작성자: {post.author}</span>
                   <span>
                     작성일: {formatDateTime(post.createdAt)} 조회수: 9999
                     {post.views}

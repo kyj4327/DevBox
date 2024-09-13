@@ -1,39 +1,12 @@
+import React from "react";
 import MsgBell from "../pages/message/MsgBell";
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from '../components/context/UserContext';
 import './Header.css';
 
 const Header = () => {
-  const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);
+  const { user, setUser } = useUser();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkUserStatus = async () => {
-      try {
-        const response = await fetch("http://localhost:8080/api/user/me", {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        });
-
-        if (response.ok) {
-          const userInfo = await response.json();
-          console.log("User Info:", userInfo); // API 응답 확인
-          setUser(userInfo); 
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-        setUser(null);
-      }
-    };
-
-    checkUserStatus();
-  }, []);
 
   const handleLogoutClick = async () => {
     try {
@@ -54,7 +27,6 @@ const Header = () => {
       }
     } catch (error) {
       console.error("Error during logout:", error);
-      setError(error.message);
     }
   };
 
@@ -131,8 +103,8 @@ const Header = () => {
           <div className="navbar align-self-center d-flex">
             {user ? (
               <>
-            <MsgBell />
-                <a className="nav-link" href="/message/list">
+                {/* <MsgBell /> */}
+                <a className="nav-link" href="/mypage">
                   <i className="bx bx-user-circle bx-sm text-primary"></i>
                 </a>
                 <button 

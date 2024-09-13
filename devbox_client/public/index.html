@@ -1,16 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
 
+<head>
+    <title>Dev Box HTML Template with Bootstrap 5 Beta 1</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="assets/img/apple-icon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <!-- Load Require CSS -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font CSS -->
+    <link href="assets/css/boxicon.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Load Template CSS -->
+    <link rel="stylesheet" href="assets/css/templatemo.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <!-- 카카오 지도 API 스크립트 추가 -->
+    <link rel="stylesheet" href="%PUBLIC_URL%/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="%PUBLIC_URL%/assets/css/boxicon.min.css">
+    <link rel="stylesheet" href="%PUBLIC_URL%/assets/css/templatemo.css">
+    <link rel="stylesheet" href="%PUBLIC_URL%/assets/css/custom.css">
+    <script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c717c522c9aba1d623422dd8ba455044"></script>
+</head>
+
+<body>
+    <div id="root">
+        <p>Welcome to the site!</p>
+        <button onclick="alert('Hello!')">Click Me</button>
+    </div>
+    <!-- 나머지 컨텐츠는 여기에서 계속 -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <!-- Load jQuery require for Page Script -->

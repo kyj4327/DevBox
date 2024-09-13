@@ -31,19 +31,22 @@ public class GatherMate {
     private LocalDateTime createdAt;
     private boolean isRecruiting;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
-//    private UserEntity user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
+    private String author;
 
     @Builder
-    public GatherMate(String intro, String apply, String title, String content, UserEntity user,LocalDateTime createdAt, boolean isRecruiting) {
+    public GatherMate(String intro, String apply, String title, String content, UserEntity user, LocalDateTime createdAt, boolean isRecruiting, String author) {
         this.intro = intro;
         this.apply = apply;
         this.title = title;
         this.content = content;
-//        this.user = user;
+        this.user = user;
         this.createdAt = createdAt;
         this.isRecruiting = isRecruiting;
+        this.author = author;
     }
 
     public GatherMatePostEditor.GatherMatePostEditorBuilder toEditor(){
