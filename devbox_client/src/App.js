@@ -53,6 +53,7 @@ import GatherMateEdit from './pages/gatherMate/GatherMateEdit';
 
 import ProjectDetail from './pages/project/ProjectDetail';
 import ProjectUpdate from './pages/project/ProjectUpdate';
+import { UserProvider } from './components/context/UserContext';
 
 function AppContent() {
   const location = useLocation();
@@ -64,16 +65,24 @@ function AppContent() {
       <main className="main-content">
         <ScrollToTop />
         <Routes>
+          {/* 로그인/회원가입 */}
           <Route path="/auth" element={<AuthContainer />} />
+
+          {/* 비밀번호 찾기 */}
           <Route path="/password" element={<PasswordReset />} />
-          {/*<Route path="/login" element={<Naver />} />*/}
-          <Route path="/home" element={<HomePage />} />
+
+          {/* MyPage */}
           <Route path="/mypage/*" element={<MyPage />} />
 
-          <Route path="/gatherwrite" element={<GatherMateWrite />} />
-          <Route path="/gatherlist" element={<GatherMateList />} />
-          <Route path="/gatherdetail/:postId" element={<GatherMateDetail />} />
-          <Route path="/gatheredit/:postId" element={<GatherMateEdit />} />
+          {/* 임시 메인 페이지 */}
+          <Route path="/home" element={<HomePage />} />
+
+          {/* 모여라 메이트 */}
+          <Route path="/gathermate/write" element={<GatherMateWrite />} />
+          <Route path="/gathermate/list" element={<GatherMateList />} />
+          <Route path="/gathermate/detail/:postId" element={<GatherMateDetail />} />
+          <Route path="/gathermate/edit/:postId" element={<GatherMateEdit />} />
+
 
           <Route path='/edu/list' element={<EduMain />} />
           <Route path='/edu/detail' element={<EduDetail />} />
@@ -127,9 +136,12 @@ function AppContent() {
 
 function App() {
   return (
+    <UserProvider>  
     <Router>
       <AppContent />
     </Router>
+    </UserProvider>
+
   );
 }
 

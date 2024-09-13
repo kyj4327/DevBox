@@ -6,6 +6,8 @@ import com.o2b2.devbox_server.gatherMate.repository.GatherMateRepository;
 import com.o2b2.devbox_server.gatherMate.request.GatherMatePostCreate;
 import com.o2b2.devbox_server.gatherMate.request.GatherMatePostEdit;
 import com.o2b2.devbox_server.gatherMate.response.GatherMateResponse;
+import com.o2b2.devbox_server.user.entity.UserEntity;
+import com.o2b2.devbox_server.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +21,14 @@ import java.time.LocalDateTime;
 public class GatherMateService {
 
     private final GatherMateRepository gatherMateRepository;
+    private final UserRepository userRepository;
 
     // 글 적기 메서드
     public Long write(GatherMatePostCreate gatherMatePostCreate) {
+
+        // UserRepository를 통해 사용자 정보를 가져옵니다.
+        UserEntity user = userRepository.findById(gatherMatePostCreate.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
         GatherMate gatherMate = GatherMate.builder()
                 .intro(gatherMatePostCreate.getIntro())
@@ -30,6 +37,8 @@ public class GatherMateService {
                 .content(gatherMatePostCreate.getContent())
                 .createdAt(LocalDateTime.now())
                 .isRecruiting(gatherMatePostCreate.isRecruiting())
+                .user(user)
+                .author(user.getNickname())
                 .build();
 
         GatherMate saveGatherMate = gatherMateRepository.save(gatherMate);
@@ -49,6 +58,7 @@ public class GatherMateService {
                 .content(gatherMate.getContent())
                 .createdAt(gatherMate.getCreatedAt())
                 .isRecruiting(gatherMate.isRecruiting())
+                .author(gatherMate.getUser().getNickname())
                 .build();
     }
 
