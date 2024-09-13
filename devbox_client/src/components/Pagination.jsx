@@ -1,36 +1,45 @@
-import React from 'react';
+const Pagination = (props) => {
+    const pageData = props.pageData;
 
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+    const handlePageChange = (pageNumber) => {
+        if (pageNumber >= 1 && pageNumber <= pageData.totalPage) {
+            props.handlePageChange(pageNumber);
+        }
+    };
+
     return (
-        <div className="row">
+        <div>
             <div className="btn-toolbar justify-content-center pb-4" role="toolbar" aria-label="Toolbar with button groups">
                 <div className="btn-group me-2" role="group" aria-label="First group">
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         className="btn btn-secondary text-white"
-                        onClick={() => onPageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
+                        onClick={() => handlePageChange(pageData.currentPage - 1)}
+                        disabled={pageData.currentPage === 1}
                     >
                         Previous
                     </button>
                 </div>
-                {[...Array(totalPages).keys()].map((number) => (
-                    <div key={number + 1} className="btn-group me-2" role="group" aria-label="Page number group">
+
+                <div className="btn-group me-2" role="group" aria-label="Second group">
+                    {Array.from({ length: pageData.endPage - pageData.startPage + 1 }, (_, index) => (
                         <button
+                            key={pageData.startPage + index}
                             type="button"
-                            className={`btn ${currentPage === number + 1 ? 'btn-secondary text-white' : 'btn-light'}`}
-                            onClick={() => onPageChange(number + 1)}
+                            className={`btn ${pageData.currentPage === pageData.startPage + index ? 'btn-primary' : 'btn-light'}`}
+                            onClick={() => handlePageChange(pageData.startPage + index)}
                         >
-                            {number + 1}
+                            {pageData.startPage + index}
                         </button>
-                    </div>
-                ))}
+                    ))}
+                </div>
+
                 <div className="btn-group" role="group" aria-label="Third group">
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         className="btn btn-secondary text-white"
-                        onClick={() => onPageChange(currentPage + 1)}
-                        disabled={currentPage === totalPages}
+                        onClick={() => handlePageChange(pageData.currentPage + 1)}
+                        disabled={pageData.currentPage === pageData.totalPage}
                     >
                         Next
                     </button>

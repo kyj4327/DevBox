@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import '../assets/css/Header.css';
+import MsgBell from "../pages/message/MsgBell";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import './Header.css';
 
 const Header = () => {
   const [user, setUser] = useState(null);
@@ -20,8 +21,8 @@ const Header = () => {
 
         if (response.ok) {
           const userInfo = await response.json();
-          console.log("User Info:", userInfo);
-          setUser(userInfo);
+          console.log("User Info:", userInfo); // API 응답 확인
+          setUser(userInfo); 
         } else {
           setUser(null);
         }
@@ -63,11 +64,11 @@ const Header = () => {
       className="navbar navbar-expand-lg navbar-light bg-white shadow"
     >
       <div className="container d-flex justify-content-between align-items-center">
-        <Link className="navbar-brand h1" to="/">
+        <a className="navbar-brand h1" href="/home">
           <i className="bx bx-buildings bx-sm text-dark"></i>
           <span className="text-dark h4">Dev</span>
           <span className="text-primary h4">Box</span>
-        </Link>
+        </a>
         <button
           className="navbar-toggler border-0"
           type="button"
@@ -85,103 +86,55 @@ const Header = () => {
         >
           <div className="flex-fill mx-xl-5 mb-2">
             <ul className="nav navbar-nav d-flex justify-content-between mx-xl-5 text-center text-dark">
-              <li className="nav-item dropdown primary-nav-item">
-                <Link
-                  className="nav-link dropdown-toggle btn-outline-primary rounded-pill px-3"
-                  to="#"
-                  id="communityDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
+              <li className="nav-item">
+                <a
+                  className="nav-link btn-outline-primary rounded-pill px-3"
+                  href="index.html"
                 >
                   BDIA
-                </Link>
-                <ul
-                  className="dropdown-menu primary-nav-dropdown"
-                  aria-labelledby="communityDropdown"
-                >
-                  <li>
-                    <Link className="dropdown-item" to="/BDIA/introduce">
-                      BDIA 소개
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/BDIA/schedule">
-                      연간일정
-                    </Link>
-                  </li>
-                </ul>
+                </a>
               </li>
-
               <li className="nav-item">
-                <Link
+                <a
                   className="nav-link btn-outline-primary rounded-pill px-3"
-                  to="/notice"
+                  href="about.html"
                 >
                   Notice
-                </Link>
+                </a>
               </li>
               <li className="nav-item">
-                <Link
+                <a
                   className="nav-link btn-outline-primary rounded-pill px-3"
-                  to="/information"
+                  href="work.html"
                 >
                   Information
-                </Link>
+                </a>
               </li>
-
-              <li className="nav-item dropdown primary-nav-item">
-                <Link
-                  className="nav-link dropdown-toggle btn-outline-primary rounded-pill px-3"
-                  to="#"
-                  id="communityDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
+              <li className="nav-item">
+                <a
+                  className="nav-link btn-outline-primary rounded-pill px-3"
+                  href="pricing.html"
                 >
                   Community
-                </Link>
-                <ul
-                  className="dropdown-menu primary-nav-dropdown"
-                  aria-labelledby="communityDropdown"
-                >
-                  <li>
-                    <Link className="dropdown-item" to="/community/freeboard">
-                      FreeBoard
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/community/events">
-                      Events
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/community/groups">
-                      Groups
-                    </Link>
-                  </li>
-                </ul>
+                </a>
               </li>
-
               <li className="nav-item">
-                <Link
+                <a
                   className="nav-link btn-outline-primary rounded-pill px-3"
-                  to="/faq"
+                  href="contact.html"
                 >
                   FAQ
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
           <div className="navbar align-self-center d-flex">
             {user ? (
               <>
-                <Link className="nav-link" to="#">
-                  <i className="bx bx-bell bx-sm bx-tada-hover text-primary"></i>
-                </Link>
-                <Link className="nav-link" to="/mypage">
+            <MsgBell />
+                <a className="nav-link" href="/mypage">
                   <i className="bx bx-user-circle bx-sm text-primary"></i>
-                </Link>
+                </a>
                 <button 
                   onClick={handleLogoutClick} 
                   className="header-logout-button nav-link"
@@ -191,13 +144,13 @@ const Header = () => {
                 </button>
               </>
             ) : (
-              <Link
+              <a
                 className="nav-link"
-                to="/auth"
+                href="/auth"
                 style={{ color: "#4232C2", textDecoration: 'underline', cursor: 'pointer' }}
               >
                 로그인/회원가입
-              </Link>
+              </a>
             )}
           </div>
         </div>

@@ -1,0 +1,68 @@
+.sidebar_profile {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
+  width: 250px;
+  height: 400px;
+}
+
+.profile_user .user_author {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile_user .user_author img {
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.profile_user .user_content {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile_user .author_name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #4232C2;
+  margin: 0;
+}
+
+.profile_user .user_role {
+  font-size: 14px;
+  color: #212529;
+  margin: 0;
+}
+
+.user_list ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+.user_list ul li a {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  margin: 10px 0;
+  color: #333;
+  font-weight: 600;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.user_list ul li a.active,
+.user_list ul li a:hover {
+  background-color: #4232C2;
+  color: #fff;
+}
+
+.user_list ul li a i {
+  margin-right: 10px;
+  font-size: 18px;
+}
