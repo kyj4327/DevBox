@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.o2b2.devbox_server.message.model.MsgEntity;
+import com.o2b2.devbox_server.message.model.MsgReciverEntity;
+import com.o2b2.devbox_server.user.entity.UserEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -40,5 +41,5 @@ public class ProEntity {
     ProEntity proEntity;
     
     @ManyToOne
-    MsgEntity msgEntity;
+    UserEntity userEntity;
 }

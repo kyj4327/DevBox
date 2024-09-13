@@ -3,7 +3,8 @@ package com.o2b2.devbox_server.user.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.o2b2.devbox_server.message.model.MsgEntity;
+import com.o2b2.devbox_server.message.model.MsgReciverEntity;
+import com.o2b2.devbox_server.message.model.MsgSenderEntity;
 import com.o2b2.devbox_server.project.model.ProEntity;
 
 import jakarta.persistence.*;
@@ -39,6 +40,9 @@ public class UserEntity {
     List<ProEntity> proEntitys = new ArrayList<>();
     
     @OneToMany(mappedBy = "userEntity")
-    List<MsgEntity> MsgEntitys = new ArrayList<>();
+    List<MsgReciverEntity> MsgEntitys = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "userEntity")
+    List<MsgSenderEntity> MsgSenderEntitys = new ArrayList<>();
 
 }
