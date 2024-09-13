@@ -1,16 +1,19 @@
-package com.o2b2.devbox_server.controller;
+package com.o2b2.devbox_server.contact.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.o2b2.devbox_server.Dto.ContactRequest;
+import com.o2b2.devbox_server.contact.Dto.ContactRequest;
 
-import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 @RestController
 @RequestMapping("/api/contact")

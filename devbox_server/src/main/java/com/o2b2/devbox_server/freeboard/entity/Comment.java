@@ -1,9 +1,8 @@
-package com.o2b2.devbox_server.entity;
+package com.o2b2.devbox_server.freeboard.entity;
 
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

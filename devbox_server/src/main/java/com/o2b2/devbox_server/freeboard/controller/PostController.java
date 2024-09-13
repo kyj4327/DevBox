@@ -1,4 +1,4 @@
-package com.o2b2.devbox_server.controller;
+package com.o2b2.devbox_server.freeboard.controller;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.o2b2.devbox_server.entity.Post;
-import com.o2b2.devbox_server.service.PostService;
+import com.o2b2.devbox_server.freeboard.entity.Post;
+import com.o2b2.devbox_server.freeboard.service.PostService;
 
 @RestController
 @RequestMapping("/api/posts")

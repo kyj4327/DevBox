@@ -1,4 +1,4 @@
-package com.o2b2.devbox_server.Dto;
+package com.o2b2.devbox_server.contact.Dto;
 
 public class ContactRequest {
     private String name;

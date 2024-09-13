@@ -1,14 +1,20 @@
-package com.o2b2.devbox_server.controller;
+package com.o2b2.devbox_server.freeboard.controller;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.o2b2.devbox_server.entity.Comment;
-import com.o2b2.devbox_server.service.CommentService;
 import com.o2b2.devbox_server.exception.ResourceNotFoundException;
+import com.o2b2.devbox_server.freeboard.entity.Comment;
+import com.o2b2.devbox_server.freeboard.service.CommentService;
 
 @RestController
 @RequestMapping("/api/comments")

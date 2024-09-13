@@ -1,4 +1,4 @@
-package com.o2b2.devbox_server.service;
+package com.o2b2.devbox_server.freeboard.service;
 
 
 import java.time.LocalDateTime;
@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.o2b2.devbox_server.entity.Post;
-import com.o2b2.devbox_server.repository.PostRepository;
+import com.o2b2.devbox_server.freeboard.entity.Post;
+import com.o2b2.devbox_server.freeboard.repository.PostRepository;
 
 @Service
 public class PostService {

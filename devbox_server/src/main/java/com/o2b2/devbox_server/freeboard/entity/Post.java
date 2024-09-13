@@ -1,4 +1,4 @@
-package com.o2b2.devbox_server.entity;
+package com.o2b2.devbox_server.freeboard.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
