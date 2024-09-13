@@ -1,0 +1,26 @@
+.single_dashboard_box {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.single_dashboard_box .box_icon {
+  font-size: 24px;
+  color: #e91e63;
+  margin-right: 20px;
+}
+
+.single_dashboard_box .box_content h6.title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.single_dashboard_box .box_content p {
+  font-size: 14px;
+  color: #999;
+}
