@@ -1,5 +1,3 @@
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
 import '../../assets/css/reservation.css';
 
 import Calendar from 'react-calendar';
@@ -15,7 +13,7 @@ const Reservation = () => {
     const [name, setName] = useState('이예림');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
-    const [condition, setCondition] = useState('예약완료');
+    const condition = "예약완료";
     const [timeData, setTimeData] = useState([]);
 
     useEffect(() => {
@@ -35,7 +33,7 @@ const Reservation = () => {
         } else {
             return false;
         }
-    }
+    };
 
     const disableWeekends = ({ date, view }) => {
         if (view === 'month') { // 달력 뷰가 일 단위일 때만 주말을 비활성화
@@ -52,32 +50,35 @@ const Reservation = () => {
 
     const saveData = (e) => {
         e.preventDefault();
-        async function send() {
-            const url = 'http://127.0.0.1:8080/reservation/write';
-            const res = await fetch(url, {
-                method: 'post',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({ name: name, date: date, time: time, condition: condition })
-            });
-            const data = await res.json();
-            if (data.code === 200) {
-                alert('예약 완료');
-                navigate('/reservation/list');
-            } else {
-                alert('다시 입력해주세요.');
+        if (window.confirm(`${date} ${time} 예약하시겠습니까?`)) {
+            async function send() {
+                const url = 'http://127.0.0.1:8080/reservation/write';
+                const res = await fetch(url, {
+                    method: 'post',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify({ name: name, date: date, time: time, condition: condition })
+                });
+                const data = await res.json();
+                if (data.code === 200) {
+                    alert(`${date} ${time} 예약되었습니다.`);
+                    navigate('/reservation/list');
+                } else {
+                    alert('다시 입력해주세요.');
+                }
             }
+            send();
         }
-        send();
     };
 
     useEffect(() => {
         async function get() {
-            const url = `http://127.0.0.1:8080/reservation/${date}`;
+            const url = `http://127.0.0.1:8080/reservation/write/${date}`;
             const res = await fetch(url);
             const data = await res.json();
             setTimeData(data);
+            setTime('');
         }
         if (date) {
             get();
@@ -85,9 +86,14 @@ const Reservation = () => {
     }, [date]);
 
     const isDisabled = (time) => {
-        return timeData.some((v) => v.time === time);
+        const now = moment(new Date()).format("YYYY년 MM월 DD일 HH:mm");
+        const calTime = `${date} ${time.split(' - ')[0]}`;
+        return (
+            now > calTime // 현재 시간이 더 뒤인 경우 true를 반환
+            || timeData.some((v) => v.time === time)
+            // some() : 배열의 요소 중 하나라도 주어진 조건을 만족하면 true를 반환하고, 조건을 만족하는 요소가 하나도 없으면 false를 반환
+        );
     };
-    // some() : 배열의 요소 중 하나라도 주어진 조건을 만족하면 true를 반환하고, 조건을 만족하는 요소가 하나도 없으면 false를 반환
 
     const TimeButton = ({ value }) => {
         return (
@@ -98,7 +104,6 @@ const Reservation = () => {
 
     return (
         <div>
-            <Header />
             <section className="bg-light contact-section">
                 <div className="container py-4">
                     <div className="row align-items-center justify-content-between">
@@ -167,7 +172,6 @@ const Reservation = () => {
                     </div>
                 </div>
             </section >
-            <Footer />
         </div >
     );
 };

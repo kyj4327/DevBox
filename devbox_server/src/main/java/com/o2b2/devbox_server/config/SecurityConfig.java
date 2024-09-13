@@ -157,6 +157,7 @@ public class SecurityConfig {
                         .requestMatchers("/edu/**").permitAll()
                         .requestMatchers("/project/**").permitAll()
                         .requestMatchers("/message/**").permitAll()
+
 //                        .requestMatchers("/msg/**").permitAll()
 
                         .anyRequest().authenticated());

@@ -1,7 +1,5 @@
-import Header from '../../components/Header';
 import Category from '../../components/Category';
 import Pagination from '../../components/Pagination';
-import Footer from '../../components/Footer';
 import Button from '../../components/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -47,7 +45,6 @@ const ReferenceList = () => {
 
     return (
         <div>
-            <Header />
             <section className="container py-5">
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2">추천해요</h1>
@@ -76,13 +73,15 @@ const ReferenceList = () => {
                                             }}>수정</Link>
                                             <Link onClick={(e) => {
                                                 e.preventDefault();
-                                                async function send() {
-                                                    const url = `http://127.0.0.1:8080/reference/delete?referenceId=${v.id}`;
-                                                    await fetch(url);
-                                                    alert("삭제가 완료되었습니다.");
-                                                    window.location.reload();
+                                                if (window.confirm("삭제하시겠습니까?")) {
+                                                    async function send() {
+                                                        const url = `http://127.0.0.1:8080/reference/delete?referenceId=${v.id}`;
+                                                        await fetch(url);
+                                                        alert("삭제되었습니다.");
+                                                        window.location.reload();
+                                                    }
+                                                    send();
                                                 }
-                                                send();
                                             }}>삭제</Link>
                                         </div>
                                         <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
@@ -109,7 +108,6 @@ const ReferenceList = () => {
                 </div>
             </section>
             <Pagination handlePageChange={handlePageChange} pageData={pageData} />
-            <Footer />
         </div>
     );
 };
