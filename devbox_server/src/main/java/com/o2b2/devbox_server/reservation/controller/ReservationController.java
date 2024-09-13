@@ -40,7 +40,7 @@ public class ReservationController {
         return map;
     }
 
-    @GetMapping("/reservation/{date}")
+    @GetMapping("/reservation/write/{date}")
     public List<Reservation> reservationList(@PathVariable("date") String date) {
         List<Reservation> list = reservationRepository.findByDate(date);
         return list;
