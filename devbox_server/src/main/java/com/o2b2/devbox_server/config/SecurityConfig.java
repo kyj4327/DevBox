@@ -130,24 +130,29 @@ public class SecurityConfig {
                         .requestMatchers("/gathermate/detail/**").permitAll()
                         .requestMatchers("/gathermate/posts/**").permitAll()
                         .requestMatchers("/gathermate/posts").authenticated()
+                        .requestMatchers("/gathermate/likes/**").authenticated()
+                        .requestMatchers("/gathermate/likes").authenticated()
+
                         // gatherMate 글 작성 페이지는 로그인 사용자
                         .requestMatchers("/gathermate/write").authenticated()
-
+                        .requestMatchers("/reference/write").authenticated()
                         // gatherMate 글 수정 페이지는 로그인 사용자
                         .requestMatchers("/gathermate/edit/**").authenticated()
 
 
                         /**
-                         추천해요 게시판
+                         추천해요, 프로젝트 자랑 게시판
                          */
                         // 글쓰기
-                        .requestMatchers("/**/write").authenticated()
-                        .requestMatchers("/**/write/**").authenticated()
+                        .requestMatchers("/*/write").authenticated()
+                        .requestMatchers("/*/write/**").authenticated()
 
-                        .requestMatchers("/**/update").authenticated()
-                        .requestMatchers("/**/update/**").authenticated()
-                        .requestMatchers("/**/delete").authenticated()
-                        .requestMatchers("/**/delete/**").authenticated()
+                        .requestMatchers("/*/update").authenticated()
+                        .requestMatchers("/*/update/**").authenticated()
+                        .requestMatchers("/*/delete").authenticated()
+                        .requestMatchers("/*/delete/**").authenticated()
+
+                        .requestMatchers("/*/list/**").permitAll()
 
 
 
