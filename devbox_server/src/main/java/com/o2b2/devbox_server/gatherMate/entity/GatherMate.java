@@ -1,15 +1,14 @@
 package com.o2b2.devbox_server.gatherMate.entity;
 
 import com.o2b2.devbox_server.gatherMate.domain.GatherMatePostEditor;
+import com.o2b2.devbox_server.gatherMate.like.entity.Like;
 import com.o2b2.devbox_server.user.entity.UserEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 // import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Entity
@@ -37,8 +36,18 @@ public class GatherMate {
 
     private String author;
 
+    // 좋아요 개수
+    @Setter
+    private int likeCount;
+
+    @Setter
+    @OneToMany(mappedBy = "gatherMate", cascade = CascadeType.ALL)
+    private List<Like> likes;
+
+
     @Builder
-    public GatherMate(String intro, String apply, String title, String content, UserEntity user, LocalDateTime createdAt, boolean isRecruiting, String author) {
+    public GatherMate(String intro, String apply, String title, String content, UserEntity user,
+                      LocalDateTime createdAt, boolean isRecruiting, String author, int likeCount) {
         this.intro = intro;
         this.apply = apply;
         this.title = title;
@@ -47,6 +56,7 @@ public class GatherMate {
         this.createdAt = createdAt;
         this.isRecruiting = isRecruiting;
         this.author = author;
+        this.likeCount = likeCount;
     }
 
     public GatherMatePostEditor.GatherMatePostEditorBuilder toEditor(){
@@ -63,5 +73,4 @@ public class GatherMate {
         this.content = gatherMatePostEditor.getContent();
         this.isRecruiting = gatherMatePostEditor.isRecruiting();
     }
-
 }
