@@ -5,18 +5,20 @@ import profilePic from "../../assets/img/profilePic.png";
 import "./GatherMateDetail.css";
 import PostButton from "../../components/PostButton";
 
-
 const GatherMateDetail = () => {
   const { postId } = useParams();
 
   const [post, setPost] = useState(null);
-  const [likes, setLikes] = useState(0);
+
+  // const [likes, setLikes] = useState();
+  const [isLiked, setIsLiked] = useState(false);
+
   const [isRecruiting, setIsRecruiting] = useState("");
   const [apply, setApply] = useState("");
 
   const navigate = useNavigate();
   const toList = () => {
-    navigate("/gatherlist");
+    navigate("/gathermate/list");
   };
 
   useEffect(() => {
@@ -35,9 +37,10 @@ const GatherMateDetail = () => {
       }
       const data = await response.json();
       setPost(data);
-      setLikes(data.likes || 0);
+      // setLikes(data.likes || 0);
+      setIsLiked(data.isLiked || false);
       setIsRecruiting(data.recruiting);
-      setApply(data.apply); 
+      setApply(data.apply);
     } catch (error) {
       console.error("Error fetching post:", error);
     }
@@ -84,9 +87,35 @@ const GatherMateDetail = () => {
     }
   };
 
-  const handleLike = () => {
-    setLikes(likes + 1);
-    // TODO: 백엔드랑 연동하기 좋아요 투표
+  // 좋아요
+  const handleLike = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/gathermate/likes/${postId}`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to toggle like status");
+      }
+
+      const data = await response.json();
+      setPost((prevPost) => ({
+        ...prevPost,
+        likeCount: data.likeCount,
+      }));
+      setIsLiked(data.isLiked);
+    } catch (error) {
+      console.error("Error toggling like status:", error);
+      alert("로그인을 해야지 좋아요를 실행할 수 있습니다.");
+    }
   };
 
   const handleToggleRecruit = async () => {
@@ -190,7 +219,22 @@ const GatherMateDetail = () => {
 
               <div className="d-flex justify-content-center">
                 <div className="d-flex">
-                  <PostButton icon="♡" text={likes} onClick={handleLike} />
+
+                  {/* 좋아요 버튼 */}
+                  {post.likeCount !== undefined && (
+                    <PostButton
+                    icon={
+                      
+                      <ion-icon
+                        name={post.likeCount > 0 ? 'heart' : 'heart-outline'}
+                        style={{ color: post.likeCount > 0 ? 'red' : 'black', fontSize: '25px' }}
+                      ></ion-icon>
+                    }
+                      text={post.likeCount}
+                      onClick={handleLike}
+                    />
+                    
+                  )}
                   <PostButton
                     text={isRecruiting ? "모집중" : "모집완료"}
                     onClick={handleToggleRecruit}
