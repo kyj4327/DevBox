@@ -11,6 +11,7 @@ import WriteSelect from "../../components/WriteSelect";
 
 function GatherMateWrite() {
   const { user } = useUser();  // Context에서 유저 정보가져오기
+  
   const [intro, setIntro] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -62,7 +63,7 @@ const saveData = async () => {
       }
   
       const data = await response.json();
-      navigate(`/gatherdetail/${data.id}`);
+      navigate(`/gathermate/detail/${data.id}`);
   
       setIntro("");
       setTitle("");

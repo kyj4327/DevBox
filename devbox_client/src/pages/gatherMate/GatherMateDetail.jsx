@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Comment from "../../components/Comments";
+import GatherMateComments from "../../components/GatherMateComments";
 import profilePic from "../../assets/img/profilePic.png";
 import "./GatherMateDetail.css";
 import PostButton from "../../components/PostButton";
-import WriteShort from "../../components/WriteShort";
+
 
 const GatherMateDetail = () => {
   const { postId } = useParams();
@@ -218,7 +218,7 @@ const GatherMateDetail = () => {
 
           {/* 댓글 컴포넌트 */}
           <div className="row justify-content-center"></div>
-          <Comment />
+          <GatherMateComments />
         </>
       ) : (
         <div>Loading...</div> // post가 null일 경우 로딩 표시
