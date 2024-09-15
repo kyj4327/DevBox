@@ -46,8 +46,11 @@ public class GatherMateController {
 
     // 게시글 상세
     @GetMapping("/posts/{postId}")
-    public GatherMateResponse get(@PathVariable Long postId) {
-        return gatherMateService.get(postId);
+    public GatherMateResponse get(@PathVariable Long postId,
+                                  @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = (userDetails != null) ? userDetails.getUserEntity().getId() : null;
+
+        return gatherMateService.get(postId, userId);
     }
 
     // 게시글 리스트
@@ -101,4 +104,5 @@ public class GatherMateController {
     public void delete(@PathVariable Long postId) {
         gatherMateService.delete(postId);
     }
+
 }
