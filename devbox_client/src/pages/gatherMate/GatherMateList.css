@@ -58,3 +58,32 @@
 .post-status-completed {
   background-color: #808080;
 }
+
+.search-form {
+  display: flex;
+  align-items: center; 
+  /* gap: 1px; /*버튼, 검색창 간격 */
+}
+
+.search-select-container {
+  display: flex;
+  align-items: center;
+  gap: 1px; /* SearchSelect input 간격 */
+}
+
+.search-input {
+  height: 27px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 0 10px;
+}
+
+.search-button {
+  height: 27px; 
+  border: none;
+  background-color: #4232C2;
+  color: white;
+  padding: 0 15px;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
