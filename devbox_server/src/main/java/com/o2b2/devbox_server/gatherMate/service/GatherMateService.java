@@ -2,6 +2,7 @@ package com.o2b2.devbox_server.gatherMate.service;
 
 import com.o2b2.devbox_server.gatherMate.domain.GatherMatePostEditor;
 import com.o2b2.devbox_server.gatherMate.entity.GatherMate;
+import com.o2b2.devbox_server.gatherMate.like.repository.LikeRepository;
 import com.o2b2.devbox_server.gatherMate.repository.GatherMateRepository;
 import com.o2b2.devbox_server.gatherMate.request.GatherMatePostCreate;
 import com.o2b2.devbox_server.gatherMate.request.GatherMatePostEdit;
@@ -22,6 +23,7 @@ public class GatherMateService {
 
     private final GatherMateRepository gatherMateRepository;
     private final UserRepository userRepository;
+    private final LikeRepository likeRepository;
 
     // 글 적기 메서드
     public Long write(GatherMatePostCreate gatherMatePostCreate) {
@@ -45,10 +47,17 @@ public class GatherMateService {
         return saveGatherMate.getId();
     }
 
-    public GatherMateResponse get(Long postId) {
+    public GatherMateResponse get(Long postId, Long userId) {
 
         GatherMate gatherMate = gatherMateRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+
+        boolean isLiked = false;
+        if (userId != null) {
+            UserEntity user = userRepository.findById(userId)
+                    .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+            isLiked = likeRepository.findByUserAndGatherMate(user, gatherMate).isPresent();
+        }
 
         return GatherMateResponse.builder()
                 .id(gatherMate.getId())
@@ -59,6 +68,8 @@ public class GatherMateService {
                 .createdAt(gatherMate.getCreatedAt())
                 .isRecruiting(gatherMate.isRecruiting())
                 .author(gatherMate.getUser().getNickname())
+                .likeCount(gatherMate.getLikeCount())
+                .isLiked(isLiked)
                 .build();
     }
 
@@ -146,5 +157,14 @@ public class GatherMateService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
 
         gatherMateRepository.delete(gatherMate);
-        }
+    }
+
+    // 좋아요 기능 구현
+
+    public int getLikeCount(Long postId) {
+        GatherMate gatherMate = gatherMateRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+
+        return gatherMate.getLikeCount();
+    }
 }
