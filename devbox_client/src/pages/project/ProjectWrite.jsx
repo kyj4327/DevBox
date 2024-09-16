@@ -5,8 +5,11 @@ import WriteShort from "../../components/WriteShort";
 import Button from "../../components/Button";
 import DragDrop from "./DragDrop";
 import Swal from "sweetalert2";
+import { useUser } from "../../components/context/UserContext";
 
 const ProjectWrite = () => {
+    const { user } = useUser(); 
+
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [name, setName] = useState('');
@@ -50,6 +53,12 @@ const ProjectWrite = () => {
     const handleDetail = async (e) => {
         e.preventDefault();
 
+        if (!user) {
+            alert("로그인이 필요합니다.");
+            return;
+          }
+
+
         if (linkError) {
             Swal.fire({
                 icon: "error",
@@ -69,7 +78,7 @@ const ProjectWrite = () => {
         }
 
         const modifiedLink = link.includes("watch?v=") ? link.replace("watch?v=", "embed/") : link;
-
+        
         const formData = new FormData();
         uploadImgs.forEach((v) => {
             formData.append("file", v);
@@ -81,9 +90,15 @@ const ProjectWrite = () => {
         formData.append("img", img);
         formData.append("coment", coment);
 
+        const token = localStorage.getItem('accessToken');
+
         const url = 'http://localhost:8080/project/write';
         const res = await fetch(url, {
             method: 'post',
+            credentials: "include",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
             body: formData
 
         });
@@ -111,7 +126,11 @@ const ProjectWrite = () => {
     }
 
     useEffect(() => {
-    }, []);
+        if (!user) {  // user가 없으면 로그인 페이지로 리다이렉트
+            alert("로그인이 필요합니다.");
+            navigate('/auth');
+          }
+        }, [user, navigate]);
 
     return (
         <div>

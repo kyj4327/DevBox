@@ -1,12 +1,15 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../components/Button";
 import WriteShort from "../../components/WriteShort";
 import WriteLong from "../../components/WriteLong";
 import WriteSelect from "../../components/WriteSelect";
 import Swal from "sweetalert2";
+import { useUser } from "../../components/context/UserContext";
 
-const DetailManager = () => {
+const EduWrite = () => {
+    const { user } = useUser();
+
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [subtitle, setSubtitle] = useState('');
@@ -21,6 +24,13 @@ const DetailManager = () => {
     const [uploadImg, setUploadImg] = useState('');
     const [logo, setLogo] = useState('');
     const [state, setState] = useState('');
+
+    useEffect(() => {
+        if (!user) {
+            alert("로그인이 필요합니다.");
+            navigate('/auth');
+        }
+    }, [user, navigate]);
 
     const onchangeImageUpload = (e) => {
 
@@ -37,6 +47,11 @@ const DetailManager = () => {
 
     const handleDetail = async (e) => {
         e.preventDefault();
+
+        if (!user) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
 
         if (uploadImg.length === 0) {
             Swal.fire({
@@ -59,22 +74,46 @@ const DetailManager = () => {
         formData.append("logo", logo);
         formData.append("state", state);
 
-        const url = 'http://127.0.0.1:8080/edu/write';
-        const res = await fetch(url, {
-            method: 'post',
-            body: formData
-        });
-        const data = await res.json();
-        if (data.code == 200) {
-            navigate('/edu/list');
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "포스터를 첨부 해주세요."
-              });
-        }
 
+ 
+        try{
+
+            const accessToken = localStorage.getItem("accessToken");
+            if (!accessToken) {
+                console.error('액세스 토큰이 없습니다.');
+                return;
+            }
+
+            const url = 'http://localhost:8080/edu/write';
+            const res = await fetch(url, {
+                method: 'POST',
+                body: formData,
+                credentials: 'include',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    },
+            });
+
+            if (!res.ok) {
+                throw new Error('메시지 가져오기 실패');
+            }
+
+            const data = await res.json();
+            
+            if (data.code == 200) {
+                navigate('/edu/list');
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "포스터를 첨부 해주세요."
+                });
+            }
+        } catch (error) {
+            console.error('저장 중 오류 발생:', error);
+            alert('저장 중 오류가 발생했습니다. 다시 시도해주세요.');
+        }
+            
     };
 
     return (
@@ -165,4 +204,4 @@ const DetailManager = () => {
     );
 };
 
-export default DetailManager;
+export default EduWrite;
