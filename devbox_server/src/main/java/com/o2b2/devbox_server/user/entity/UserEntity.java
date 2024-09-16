@@ -3,6 +3,7 @@ package com.o2b2.devbox_server.user.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.o2b2.devbox_server.eduInfo.model.EduEntity;
 import com.o2b2.devbox_server.message.model.MsgReciverEntity;
 import com.o2b2.devbox_server.message.model.MsgSenderEntity;
 import com.o2b2.devbox_server.project.model.ProEntity;
@@ -38,6 +39,9 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
     List<ProEntity> proEntitys = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
+    List<EduEntity> eduEntitys = new ArrayList<>();
     
     @OneToMany(mappedBy = "userEntity")
     List<MsgReciverEntity> MsgEntitys = new ArrayList<>();

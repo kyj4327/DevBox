@@ -120,7 +120,7 @@ public class SecurityConfig {
                         .requestMatchers("/reissue").permitAll()
                         .requestMatchers("/password/**").permitAll() // 비밀번호 재설정 관련 경로에 접근 허용
                         .requestMatchers("/api/user/me").authenticated() // <- 인증된 사용자만 접근 가능하도록 설정
-
+                        .requestMatchers("/*/list/**").permitAll()
 
 
                         // gatherMate 리스트는 누구나
@@ -141,24 +141,28 @@ public class SecurityConfig {
                          추천해요 게시판
                          */
                         // 글쓰기
-                        .requestMatchers("/**/write").authenticated()
-                        .requestMatchers("/**/write/**").authenticated()
+                        .requestMatchers("/*/write").authenticated()
+                        .requestMatchers("/*/write/**").authenticated()
 
-                        .requestMatchers("/**/update").authenticated()
-                        .requestMatchers("/**/update/**").authenticated()
-                        .requestMatchers("/**/delete").authenticated()
-                        .requestMatchers("/**/delete/**").authenticated()
+                        .requestMatchers("/*/update").authenticated()
+                        .requestMatchers("/*/update/**").authenticated()
+                        .requestMatchers("/*/delete").authenticated()
+                        .requestMatchers("/*/delete/**").authenticated()
 
-
+                        // 교육 정보
+                        .requestMatchers("/edu/write").authenticated()
+                        .requestMatchers("/edu/list/**").permitAll()
+                        .requestMatchers("/edu/detail/**").permitAll()
 
                         // 알림 기능은 로그인한 사용자만 접근 가능
                         .requestMatchers("/msg/bell").authenticated()
 
-                        .requestMatchers("/edu/**").permitAll()
+                        // .requestMatchers("/edu/**").permitAll()
                         .requestMatchers("/project/**").permitAll()
                         .requestMatchers("/message/**").permitAll()
 
 //                        .requestMatchers("/msg/**").permitAll()
+                        .requestMatchers("/msg/bell").authenticated()
 
                         .anyRequest().authenticated());
 

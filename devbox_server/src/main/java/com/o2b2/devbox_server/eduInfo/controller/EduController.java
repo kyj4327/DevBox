@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +34,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.o2b2.devbox_server.eduInfo.model.EduEntity;
 import com.o2b2.devbox_server.eduInfo.repository.EduRepository;
+import com.o2b2.devbox_server.gatherMate.service.GatherMateService;
+import com.o2b2.devbox_server.user.dto.CustomUserDetails;
+import com.o2b2.devbox_server.user.entity.UserEntity;
+import com.o2b2.devbox_server.user.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,12 +47,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Transactional
 public class EduController {
 
+
     private final Path fileStorageLocation = Paths.get("c:/images"); // 파일 저장 경로
 
     @Autowired
     EduRepository eduRepository;
 
-
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/edu/list/{state}")
     public Map<String, Object> eduList(
@@ -93,38 +101,57 @@ public class EduController {
 
 
     @PostMapping("/edu/write")
-    public Map<String, Object> edu(
-            @ModelAttribute EduEntity edu,
-            @RequestParam("file") MultipartFile file) {
-        System.out.println(edu);
-        System.out.println(file.getOriginalFilename());
-         
-        Map<String, Object> map = new HashMap<>();
-        
-        if (file == null || file.isEmpty()) {
-            map.put("code", 400);
-            map.put("msg", "포스터를 첨부해주세요.");
-            return map;
-        }
+public Map<String, Object> edu(
+        @ModelAttribute EduEntity edu,
+        @RequestParam("file") MultipartFile file,
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
 
+    Map<String, Object> map = new HashMap<>();
 
-        edu.setImg(file.getOriginalFilename());
-        EduEntity result = eduRepository.save(edu);
-
-        try {
-            file.transferTo(new File("c:/images/" + file.getOriginalFilename()));
-        } catch (IllegalStateException | IOException e) {
-            e.printStackTrace();
-            map.put("code", 500);
-            map.put("msg", "업로드 중 오류 발생: " + e.getMessage());
-            return map;
-        }
-
-        map.put("code", 200);
-        map.put("msg", "업로드완료");
-
+    // 로그인 사용자 정보 설정
+    if (userDetails == null) {
+        map.put("code", 401);
+        map.put("msg", "로그인 상태가 아닙니다.");
         return map;
     }
+
+    // 파일 검증
+    if (file == null || file.isEmpty()) {
+        map.put("code", 400);
+        map.put("msg", "포스터를 첨부해주세요.");
+        return map;
+    }
+
+    try {
+        // 로그인한 사용자 정보 가져오기
+        UserEntity userEntity = userDetails.getUserEntity();
+        edu.setUserEntity(userEntity);  // EduEntity에 유저 정보 설정
+
+        // 파일 이름 생성
+        String filename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+
+        // 파일 저장 (로컬 파일 시스템 예시)
+        File destinationFile = new File("c:/images/" + filename);
+        file.transferTo(destinationFile);
+
+        // EduEntity에 파일 정보 설정
+        edu.setImg(filename);
+
+        // 데이터베이스에 저장
+        eduRepository.save(edu);
+
+        map.put("code", 200);
+        map.put("msg", "업로드 완료");
+
+    } catch (IllegalStateException | IOException e) {
+        e.printStackTrace();
+        map.put("code", 500);
+        map.put("msg", "업로드 중 오류 발생: " + e.getMessage());
+    }
+
+    return map;
+}
+
 
     @PostMapping("/edu/update")
     public Map<String, Object> update(

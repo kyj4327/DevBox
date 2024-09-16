@@ -35,10 +35,6 @@ public class ProEntity {
 
     @OneToMany(mappedBy = "proEntity", cascade = CascadeType.REMOVE)
     List<MultiImgEntity> multiImgEntitys = new ArrayList<>();
-
-    @JsonIgnore
-    @ManyToOne
-    ProEntity proEntity;
     
     @ManyToOne
     UserEntity userEntity;
