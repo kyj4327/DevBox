@@ -22,7 +22,7 @@ const ReferenceUpdate = () => {
     const referenceId = search.get('referenceId');
     useEffect(() => {
         async function get() {
-            const url = `http://127.0.0.1:8080/reference/update?referenceId=${referenceId}`;
+            const url = `http://localhost:8080/reference/update?referenceId=${referenceId}`;
             const res = await fetch(url);
             const data = await res.json();
             setTitle(data.title);
@@ -40,7 +40,7 @@ const ReferenceUpdate = () => {
     const updateData = (e) => {
         e.preventDefault();
         async function send() {
-            const url = 'http://127.0.0.1:8080/reference/update';
+            const url = 'http://localhost:8080/reference/update';
             const res = await fetch(url, {
                 method: 'post',
                 headers: {

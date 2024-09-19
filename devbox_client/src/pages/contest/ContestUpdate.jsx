@@ -20,7 +20,7 @@ const ContestUpdate = () => {
     const contestId = search.get('contestId');
     useEffect(() => {
         async function get() {
-            const url = `http://127.0.0.1:8080/contest/update?contestId=${contestId}`;
+            const url = `http://localhost:8080/contest/update?contestId=${contestId}`;
             const res = await fetch(url);
             const data = await res.json();
             setTitle(data.title);
@@ -37,7 +37,7 @@ const ContestUpdate = () => {
     const updateData = (e) => {
         e.preventDefault();
         async function send() {
-            const url = 'http://127.0.0.1:8080/contest/update';
+            const url = 'http://localhost:8080/contest/update';
             const res = await fetch(url, {
                 method: 'post',
                 headers: {

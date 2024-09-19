@@ -17,7 +17,7 @@ const ReservationList = () => {
     const [pageData, setPageData] = useState([]);
     useEffect(() => {
         async function get(page = 1) {
-            const url = `http://127.0.0.1:8080/reservation/list/${category}/${date}?page=${page}`;
+            const url = `http://localhost:8080/reservation/list/${category}/${date}?page=${page}`;
             const res = await fetch(url);
             const data = await res.json();
             const listData = data.slice(0, -1);
@@ -126,7 +126,7 @@ const ReservationList = () => {
                                                                 e.preventDefault();
                                                                 if (window.confirm(`${v.date} ${v.time} 예약취소하시겠습니까?`)) {
                                                                     async function send() {
-                                                                        const url = `http://127.0.0.1:8080/reservation/delete?reservationId=${v.id}`;
+                                                                        const url = `http://localhost:8080/reservation/delete?reservationId=${v.id}`;
                                                                         await fetch(url);
                                                                         alert(`${v.date} ${v.time} 예약취소되었습니다.`);
                                                                         window.location.reload();

@@ -16,7 +16,7 @@ const HiringList = () => {
     const [pageData, setPageData] = useState([]);
     useEffect(() => {
         async function get(page = 1) {
-            const url = `http://127.0.0.1:8080/hiring/list/${category}?page=${page}`;
+            const url = `http://localhost:8080/hiring/list/${category}?page=${page}`;
             const res = await fetch(url);
             const data = await res.json();
             const listData = data.slice(0, -1);
@@ -80,7 +80,7 @@ const HiringList = () => {
                                                                 e.preventDefault();
                                                                 if (window.confirm("삭제하시겠습니까?")) {
                                                                     async function send() {
-                                                                        const url = `http://127.0.0.1:8080/hiring/delete?hiringId=${v.id}`;
+                                                                        const url = `http://localhost:8080/hiring/delete?hiringId=${v.id}`;
                                                                         await fetch(url);
                                                                         alert("삭제되었습니다.");
                                                                         window.location.reload();

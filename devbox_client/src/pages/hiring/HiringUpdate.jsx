@@ -19,7 +19,7 @@ const HiringUpdate = () => {
     const hiringId = search.get('hiringId');
     useEffect(() => {
         async function get() {
-            const url = `http://127.0.0.1:8080/hiring/update?hiringId=${hiringId}`;
+            const url = `http://localhost:8080/hiring/update?hiringId=${hiringId}`;
             const res = await fetch(url);
             const data = await res.json();
             setCompany(data.company);
@@ -35,7 +35,7 @@ const HiringUpdate = () => {
     const updateData = (e) => {
         e.preventDefault();
         async function send() {
-            const url = 'http://127.0.0.1:8080/hiring/update';
+            const url = 'http://localhost:8080/hiring/update';
             const res = await fetch(url, {
                 method: 'post',
                 headers: {

@@ -16,7 +16,7 @@ const ReferenceList = () => {
     const [pageData, setPageData] = useState([]);
     useEffect(() => {
         async function get(page = 1) {
-            const url = `http://127.0.0.1:8080/reference/list/${selectJob}?page=${page}`;
+            const url = `http://localhost:8080/reference/list/${selectJob}?page=${page}`;
             const res = await fetch(url);
             const data = await res.json();
             // 페이지 데이터와 실제 데이터 분리
@@ -67,22 +67,7 @@ const ReferenceList = () => {
                                     <div className="row p-2">
                                         <div className="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
                                             <h3>{v.title}</h3>
-                                            <Link onClick={(e) => {
-                                                e.preventDefault();
-                                                navigate(`/reference/update?referenceId=${v.id}`);
-                                            }}>수정</Link>
-                                            <Link onClick={(e) => {
-                                                e.preventDefault();
-                                                if (window.confirm("삭제하시겠습니까?")) {
-                                                    async function send() {
-                                                        const url = `http://127.0.0.1:8080/reference/delete?referenceId=${v.id}`;
-                                                        await fetch(url);
-                                                        alert("삭제되었습니다.");
-                                                        window.location.reload();
-                                                    }
-                                                    send();
-                                                }
-                                            }}>삭제</Link>
+                                            <span>작성자 : 이예림</span>
                                         </div>
                                         <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                                             <li style={{ listStyle: 'none' }}>{v.selectJob}</li>
@@ -93,7 +78,23 @@ const ReferenceList = () => {
                                             {v.content5 === '' ? '' : <li>{v.content5}</li>}
                                         </div>
                                         <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
-                                            <Link to={v.link} className="btn rounded-pill px-4 btn-primary light-300" target='_blank'>Link</Link>
+                                            <Link to={v.link} className="btn rounded-pill px-4 btn-primary light-300" target='_blank' style={{ marginRight: '1rem' }}>Link</Link>
+                                            <Link onClick={(e) => {
+                                                e.preventDefault();
+                                                navigate(`/reference/update?referenceId=${v.id}`);
+                                            }}>수정</Link>
+                                            <Link onClick={(e) => {
+                                                e.preventDefault();
+                                                if (window.confirm("삭제하시겠습니까?")) {
+                                                    async function send() {
+                                                        const url = `http://localhost:8080/reference/delete?referenceId=${v.id}`;
+                                                        await fetch(url);
+                                                        alert("삭제되었습니다.");
+                                                        window.location.reload();
+                                                    }
+                                                    send();
+                                                }
+                                            }}>삭제</Link>
                                         </div>
                                     </div>
                                 </div>

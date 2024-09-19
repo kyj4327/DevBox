@@ -18,7 +18,7 @@ const ContestWrite = () => {
     const saveData = (e) => {
         e.preventDefault();
         async function send() {
-            const url = 'http://127.0.0.1:8080/contest/write';
+            const url = 'http://localhost:8080/contest/write';
             const res = await fetch(url, {
                 method: 'post',
                 headers: {

@@ -52,7 +52,7 @@ const Reservation = () => {
         e.preventDefault();
         if (window.confirm(`${date} ${time} 예약하시겠습니까?`)) {
             async function send() {
-                const url = 'http://127.0.0.1:8080/reservation/write';
+                const url = 'http://localhost:8080/reservation/write';
                 const res = await fetch(url, {
                     method: 'post',
                     headers: {
@@ -74,7 +74,7 @@ const Reservation = () => {
 
     useEffect(() => {
         async function get() {
-            const url = `http://127.0.0.1:8080/reservation/write/${date}`;
+            const url = `http://localhost:8080/reservation/write/${date}`;
             const res = await fetch(url);
             const data = await res.json();
             setTimeData(data);
