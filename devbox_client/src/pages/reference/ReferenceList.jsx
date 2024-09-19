@@ -69,7 +69,7 @@ const ReferenceList = () => {
                                     <div className="row p-2">
                                         <div className="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
                                             <h3>{v.title}</h3>
-                                            <span>작성자 : 이예림</span>
+                                            <span>작성자 : {v.userId}</span>
                                         </div>
                                         <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                                             <li style={{ listStyle: 'none' }}>{v.selectJob}</li>
@@ -81,32 +81,34 @@ const ReferenceList = () => {
                                         </div>
                                         <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
                                             <Link to={v.link} className="btn rounded-pill px-4 btn-primary light-300" target='_blank' style={{ marginRight: '1rem' }}>Link</Link>
-                                            <Link onClick={(e) => {
-                                                e.preventDefault();
-                                                navigate(`/reference/update?referenceId=${v.id}`);
-                                            }}>수정</Link>
-                                            <Link onClick={(e) => {
-                                                e.preventDefault();
-                                                if (!user) {
-                                                    alert("로그인이 필요합니다.");
-                                                    return;
-                                                }
-                                                const token = localStorage.getItem('accessToken');
-                                                if (window.confirm("삭제하시겠습니까?")) {
-                                                    async function send() {
-                                                        const url = `http://localhost:8080/reference/delete?referenceId=${v.id}`;
-                                                        await fetch(url, {
-                                                            credentials: 'include',
-                                                            headers: {
-                                                                'Authorization': `Bearer ${token}`
-                                                            }
-                                                        });
-                                                        alert("삭제되었습니다.");
-                                                        window.location.reload();
+                                            <Link style={{ marginRight: '0.5em', textDecoration: 'none' }}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    navigate(`/reference/update?referenceId=${v.id}`);
+                                                }}>수정</Link>
+                                            <Link style={{ textDecoration: 'none' }}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    if (!user) {
+                                                        alert("로그인이 필요합니다.");
+                                                        return;
                                                     }
-                                                    send();
-                                                }
-                                            }}>삭제</Link>
+                                                    const token = localStorage.getItem('accessToken');
+                                                    if (window.confirm("삭제하시겠습니까?")) {
+                                                        async function send() {
+                                                            const url = `http://localhost:8080/reference/delete?referenceId=${v.id}`;
+                                                            await fetch(url, {
+                                                                credentials: 'include',
+                                                                headers: {
+                                                                    'Authorization': `Bearer ${token}`
+                                                                }
+                                                            });
+                                                            alert("삭제되었습니다.");
+                                                            window.location.reload();
+                                                        }
+                                                        send();
+                                                    }
+                                                }}>삭제</Link>
                                         </div>
                                     </div>
                                 </div>
