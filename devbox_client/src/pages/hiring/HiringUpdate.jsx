@@ -3,8 +3,10 @@ import WriteShort from '../../components/WriteShort';
 import Button from '../../components/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useUser } from '../../components/context/UserContext';
 
 const HiringUpdate = () => {
+    const { user } = useUser();
     const navigate = useNavigate();
 
     const [company, setCompany] = useState('');
@@ -14,13 +16,26 @@ const HiringUpdate = () => {
     const [imgUrl, setImgUrl] = useState('');
     const [wantedUrl, setWantedUrl] = useState('');
 
+    useEffect(() => {
+        if (!user) {
+            alert("로그인이 필요합니다.");
+            navigate('/auth');
+        }
+    }, [user, navigate]);
+    const token = localStorage.getItem('accessToken');
+
     const location = useLocation();
     const search = new URLSearchParams(location.search);
     const hiringId = search.get('hiringId');
     useEffect(() => {
         async function get() {
             const url = `http://localhost:8080/hiring/update?hiringId=${hiringId}`;
-            const res = await fetch(url);
+            const res = await fetch(url, {
+                credentials: 'include',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             const data = await res.json();
             setCompany(data.company);
             setArea(data.area);
@@ -32,26 +47,39 @@ const HiringUpdate = () => {
         get();
     }, []);
 
-    const updateData = (e) => {
+    const updateData = async (e) => {
         e.preventDefault();
-        async function send() {
+        if (!user) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+        try {
             const url = 'http://localhost:8080/hiring/update';
-            const res = await fetch(url, {
-                method: 'post',
+            const response = await fetch(url, {
+                method: 'POST',
+                credentials: 'include',
                 headers: {
-                    'content-type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ id: hiringId, company: company, area: area, job: job, career: career, imgUrl: imgUrl, wantedUrl: wantedUrl })
+                body: JSON.stringify({
+                    id: hiringId, company: company, area: area, job: job, career: career, imgUrl: imgUrl, wantedUrl: wantedUrl
+                })
             });
-            const data = await res.json();
+            if (!response.ok) {
+                throw new Error("서버에서 오류가 발생했습니다.");
+            }
+            const data = await response.json();
             if (data.code === 200) {
                 alert('수정되었습니다.');
                 navigate('/hiring/list');
             } else {
                 alert('다시 입력해주세요.');
             }
+        } catch (error) {
+            console.error("저장 중 오류 발생 : ", error);
+            alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
         }
-        send();
     };
 
     return (
