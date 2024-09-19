@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,59 +98,38 @@ public class EduController {
         return response; // JSON 형태로 반환
     }
 
-
     @PostMapping("/edu/write")
-public Map<String, Object> edu(
-        @ModelAttribute EduEntity edu,
-        @RequestParam("file") MultipartFile file,
-        @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public Map<String, Object> edu(
+            @ModelAttribute EduEntity edu,
+            @RequestParam("file") MultipartFile file) {
+        System.out.println(edu);
+        System.out.println(file.getOriginalFilename());
 
-    Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
 
-    // 로그인 사용자 정보 설정
-    if (userDetails == null) {
-        map.put("code", 401);
-        map.put("msg", "로그인 상태가 아닙니다.");
-        return map;
-    }
+        if (file == null || file.isEmpty()) {
+            map.put("code", 400);
+            map.put("msg", "포스터를 첨부해주세요.");
+            return map;
+        }
 
-    // 파일 검증
-    if (file == null || file.isEmpty()) {
-        map.put("code", 400);
-        map.put("msg", "포스터를 첨부해주세요.");
-        return map;
-    }
+        edu.setImg(file.getOriginalFilename());
+        EduEntity result = eduRepository.save(edu);
 
-    try {
-        // 로그인한 사용자 정보 가져오기
-        UserEntity userEntity = userDetails.getUserEntity();
-        edu.setUserEntity(userEntity);  // EduEntity에 유저 정보 설정
-
-        // 파일 이름 생성
-        String filename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-
-        // 파일 저장 (로컬 파일 시스템 예시)
-        File destinationFile = new File("c:/images/" + filename);
-        file.transferTo(destinationFile);
-
-        // EduEntity에 파일 정보 설정
-        edu.setImg(filename);
-
-        // 데이터베이스에 저장
-        eduRepository.save(edu);
+        try {
+            file.transferTo(new File("c:/images/" + file.getOriginalFilename()));
+        } catch (IllegalStateException | IOException e) {
+            e.printStackTrace();
+            map.put("code", 500);
+            map.put("msg", "업로드 중 오류 발생: " + e.getMessage());
+            return map;
+        }
 
         map.put("code", 200);
-        map.put("msg", "업로드 완료");
+        map.put("msg", "업로드완료");
 
-    } catch (IllegalStateException | IOException e) {
-        e.printStackTrace();
-        map.put("code", 500);
-        map.put("msg", "업로드 중 오류 발생: " + e.getMessage());
+        return map;
     }
-
-    return map;
-}
-
 
     @PostMapping("/edu/update")
     public Map<String, Object> update(

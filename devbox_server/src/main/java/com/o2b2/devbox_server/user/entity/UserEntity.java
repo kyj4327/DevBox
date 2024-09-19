@@ -3,6 +3,7 @@ package com.o2b2.devbox_server.user.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.o2b2.devbox_server.eduInfo.model.EduEntity;
 import com.o2b2.devbox_server.message.model.MsgReciverEntity;
 import com.o2b2.devbox_server.message.model.MsgSenderEntity;
@@ -38,10 +39,11 @@ public class UserEntity {
     private String field;
 
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     List<ProEntity> proEntitys = new ArrayList<>();
     
-    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
-    List<EduEntity> eduEntitys = new ArrayList<>();
+    // @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
+    // List<EduEntity> eduEntitys = new ArrayList<>();
     
     @OneToMany(mappedBy = "userEntity")
     List<MsgReciverEntity> MsgEntitys = new ArrayList<>();

@@ -121,6 +121,8 @@ public class SecurityConfig {
                         .requestMatchers("/password/**").permitAll() // 비밀번호 재설정 관련 경로에 접근 허용
                         .requestMatchers("/api/user/me").authenticated() // <- 인증된 사용자만 접근 가능하도록 설정
                         .requestMatchers("/*/list/**").permitAll()
+                        .requestMatchers("/*/detail/**").permitAll()
+                        .requestMatchers("/*/download/**").permitAll()
 
 
                         // gatherMate 리스트는 누구나
@@ -147,19 +149,34 @@ public class SecurityConfig {
                         .requestMatchers("/*/update").authenticated()
                         .requestMatchers("/*/update/**").authenticated()
                         .requestMatchers("/*/delete").authenticated()
-                        .requestMatchers("/*/delete/**").authenticated()
+                        .requestMatchers("/**/delete/**").authenticated()
 
                         // 교육 정보
-                        .requestMatchers("/edu/write").authenticated()
+                        .requestMatchers("/edu/list/").permitAll()
+                        .requestMatchers("/edu/detail/").permitAll()
                         .requestMatchers("/edu/list/**").permitAll()
                         .requestMatchers("/edu/detail/**").permitAll()
+                        .requestMatchers("/edu/write").authenticated()
+                        .requestMatchers("/edu/update/**").authenticated()
+                        .requestMatchers("/edu/delete/**").authenticated()
+                        .requestMatchers("/edu/delete").authenticated()
+
+                        // 프로젝트 자랑
+                        .requestMatchers("/project/list/").permitAll()
+                        .requestMatchers("/project/detail/").permitAll()
+                        .requestMatchers("/project/list/**").permitAll()
+                        .requestMatchers("/project/detail/**").permitAll()
+                        .requestMatchers("/project/write").authenticated()
+                        .requestMatchers("/project/update/**").authenticated()
+                        .requestMatchers("/project/delete/**").authenticated()
+                        .requestMatchers("/project/delete").authenticated()
 
                         // 알림 기능은 로그인한 사용자만 접근 가능
                         .requestMatchers("/msg/bell").authenticated()
 
                         // .requestMatchers("/edu/**").permitAll()
                         .requestMatchers("/project/**").permitAll()
-                        .requestMatchers("/message/**").permitAll()
+                        .requestMatchers("/message/**").authenticated()
 
 //                        .requestMatchers("/msg/**").permitAll()
                         .requestMatchers("/msg/bell").authenticated()
