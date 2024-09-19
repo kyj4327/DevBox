@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,8 +21,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.o2b2.devbox_server.reference.dto.ReferenceDTO;
 import com.o2b2.devbox_server.reference.model.Reference;
 import com.o2b2.devbox_server.reference.repository.ReferenceRepository;
+import com.o2b2.devbox_server.user.dto.CustomUserDetails;
+import com.o2b2.devbox_server.user.entity.UserEntity;
 
 @RestController
 @CrossOrigin
@@ -30,7 +34,11 @@ public class ReferenceController {
     ReferenceRepository referenceRepository;
 
     @PostMapping("/reference/write")
-    public Map<String, Object> referenceWrite(@RequestBody Reference reference) {
+    public Map<String, Object> referenceWrite(
+            @RequestBody Reference reference,
+            @AuthenticationPrincipal CustomUserDetails userDatails) {
+        UserEntity userEntity = userDatails.getUserEntity();
+        reference.setUserEntity(userEntity);
         Reference result = referenceRepository.save(reference);
         Map<String, Object> map = new HashMap<>();
         map.put("code", 200);
@@ -38,6 +46,29 @@ public class ReferenceController {
         map.put("result", result);
         return map;
     }
+
+    // @PostMapping("/reference/write")
+    // public Map<String, Object> referenceWrite(
+    //         @RequestBody ReferenceDTO referenceDTO,
+    //         @AuthenticationPrincipal CustomUserDetails userDatails) {
+    //     UserEntity userEntity = userDatails.getUserEntity();
+    //     Reference reference = new Reference();
+    //     reference.setTitle(referenceDTO.getTitle());
+    //     reference.setSelectJob(referenceDTO.getSelectJob());
+    //     reference.setContent1(referenceDTO.getContent1());
+    //     reference.setContent2(referenceDTO.getContent2());
+    //     reference.setContent3(referenceDTO.getContent3());
+    //     reference.setContent4(referenceDTO.getContent4());
+    //     reference.setContent5(referenceDTO.getContent5());
+    //     reference.setLink(referenceDTO.getLink());
+    //     reference.setUserEntity(userEntity);
+    //     Reference result = referenceRepository.save(reference);
+    //     Map<String, Object> map = new HashMap<>();
+    //     map.put("code", 200);
+    //     map.put("msg", "입력 완료");
+    //     map.put("result", result);
+    //     return map;
+    // }
 
     @GetMapping("/reference/list/{selectJob}")
     public List<Map<String, Object>> referenceList(
@@ -64,6 +95,7 @@ public class ReferenceController {
             rMap.put("content4", r.getContent4());
             rMap.put("content5", r.getContent5());
             rMap.put("link", r.getLink());
+            rMap.put("userId", r.getUserEntity().getNickname());
             response.add(rMap);
         }
         int totalPage = p.getTotalPages();
