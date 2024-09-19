@@ -75,32 +75,34 @@ const ContestList = () => {
                                                             Read more <i className='bx bxs-hand-right ms-1'></i>
                                                         </span>
                                                         <span className="text-decoration-none text-primary light-300">
-                                                            <Link onClick={(e) => {
-                                                                e.preventDefault();
-                                                                navigate(`/contest/update?contestId=${v.id}`);
-                                                            }}>수정</Link>
-                                                            <Link onClick={(e) => {
-                                                                e.preventDefault();
-                                                                if (!user) {
-                                                                    alert("로그인이 필요합니다.");
-                                                                    return;
-                                                                }
-                                                                const token = localStorage.getItem('accessToken');
-                                                                if (window.confirm("삭제하시겠습니까?")) {
-                                                                    async function send() {
-                                                                        const url = `http://localhost:8080/contest/delete?contestId=${v.id}`;
-                                                                        await fetch(url, {
-                                                                            credentials: 'include',
-                                                                            headers: {
-                                                                                'Authorization': `Bearer ${token}`
-                                                                            }
-                                                                        });
-                                                                        alert("삭제되었습니다.");
-                                                                        window.location.reload();
+                                                            <Link style={{ marginRight: '0.5em', textDecoration: 'none' }}
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    navigate(`/contest/update?contestId=${v.id}`);
+                                                                }}>수정</Link>
+                                                            <Link style={{ textDecoration: 'none' }}
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    if (!user) {
+                                                                        alert("로그인이 필요합니다.");
+                                                                        return;
                                                                     }
-                                                                    send();
-                                                                }
-                                                            }}>삭제</Link>
+                                                                    const token = localStorage.getItem('accessToken');
+                                                                    if (window.confirm("삭제하시겠습니까?")) {
+                                                                        async function send() {
+                                                                            const url = `http://localhost:8080/contest/delete?contestId=${v.id}`;
+                                                                            await fetch(url, {
+                                                                                credentials: 'include',
+                                                                                headers: {
+                                                                                    'Authorization': `Bearer ${token}`
+                                                                                }
+                                                                            });
+                                                                            alert("삭제되었습니다.");
+                                                                            window.location.reload();
+                                                                        }
+                                                                        send();
+                                                                    }
+                                                                }}>삭제</Link>
                                                         </span>
                                                     </div>
                                                 </div>

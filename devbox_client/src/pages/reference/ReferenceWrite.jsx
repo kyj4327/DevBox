@@ -83,7 +83,7 @@ const ReferenceWrite = () => {
                             <li>내용5 (선택)</li>
                         </div>
                         <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
-                            <span className="btn rounded-pill px-4 btn-primary light-300" target='_blank'>Link</span>
+                            <span className="btn rounded-pill px-4 btn-primary light-300" style={{ cursor: 'default' }}>Link</span>
                         </div>
                     </div>
                 </div>
