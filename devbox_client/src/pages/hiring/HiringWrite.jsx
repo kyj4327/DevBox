@@ -2,9 +2,11 @@ import WriteLong from '../../components/WriteLong';
 import WriteShort from '../../components/WriteShort';
 import Button from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useUser } from '../../components/context/UserContext';
 
 const HiringWrite = () => {
+    const { user } = useUser();
     const navigate = useNavigate();
 
     const [company, setCompany] = useState('');
@@ -14,26 +16,48 @@ const HiringWrite = () => {
     const [imgUrl, setImgUrl] = useState('');
     const [wantedUrl, setWantedUrl] = useState('');
 
-    const saveData = (e) => {
+    useEffect(() => {
+        if (!user) {
+            alert("로그인이 필요합니다.");
+            navigate('/auth');
+        }
+    }, [user, navigate]);
+
+    const saveData = async (e) => {
         e.preventDefault();
-        async function send() {
+        if (!user) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+
+        const token = localStorage.getItem('accessToken');
+        try {
             const url = 'http://localhost:8080/hiring/write';
-            const res = await fetch(url, {
-                method: 'post',
+            const response = await fetch(url, {
+                method: 'POST',
+                credentials: 'include',
                 headers: {
-                    'content-type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({ company: company, area: area, job: job, career: career, imgUrl: imgUrl, wantedUrl: wantedUrl })
             });
-            const data = await res.json();
+
+            if (!response.ok) {
+                throw new Error("서버에서 오류가 발생했습니다.");
+            }
+
+            const data = await response.json();
             if (data.code === 200) {
                 alert('저장되었습니다.');
                 navigate('/hiring/list');
             } else {
                 alert('다시 입력해주세요.');
             }
+        } catch (error) {
+            console.error("저장 중 오류 발생 : ", error);
+            alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
         }
-        send();
     };
 
     return (

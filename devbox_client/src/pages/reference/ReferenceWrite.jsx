@@ -3,9 +3,11 @@ import WriteShort from '../../components/WriteShort';
 import WriteSelect from '../../components/WriteSelect';
 import Button from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useUser } from '../../components/context/UserContext';
 
 const ReferenceWrite = () => {
+    const { user } = useUser(); // Context에서 유저 정보 가져오기
     const navigate = useNavigate();
 
     const [title, setTitle] = useState('');
@@ -17,29 +19,52 @@ const ReferenceWrite = () => {
     const [content4, setContent4] = useState('');
     const [content5, setContent5] = useState('');
 
-    const saveData = (e) => {
+    // 로그인 상태 확인
+    useEffect(() => {
+        if (!user) {
+            alert("로그인이 필요합니다.");
+            navigate('/auth');
+        }
+    }, [user, navigate]);
+
+    const saveData = async (e) => {
         e.preventDefault();
-        async function send() {
-            const url = 'http://127.0.0.1:8080/reference/write';
-            const res = await fetch(url, {
-                method: 'post',
+        if (!user) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+
+        const token = localStorage.getItem('accessToken');
+        try {
+            const url = 'http://localhost:8080/reference/write';
+            const response = await fetch(url, {
+                method: 'POST',
+                credentials: 'include',
                 headers: {
-                    'content-type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     title: title, selectJob: selectJob, link: link,
                     content1: content1, content2: content2, content3: content3, content4: content4, content5: content5
                 })
             });
-            const data = await res.json();
+
+            if (!response.ok) {
+                throw new Error("서버에서 오류가 발생했습니다.");
+            }
+
+            const data = await response.json();
             if (data.code === 200) {
                 alert('저장되었습니다.');
                 navigate('/reference/list');
             } else {
                 alert('다시 입력해주세요.');
             }
+        } catch (error) {
+            console.error("저장 중 오류 발생 : ", error);
+            alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
         }
-        send();
     };
 
     return (
