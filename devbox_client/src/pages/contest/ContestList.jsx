@@ -2,8 +2,10 @@ import Pagination from '../../components/Pagination';
 import Button from '../../components/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useUser } from '../../components/context/UserContext';
 
 const ContestList = () => {
+    const { user } = useUser();
     const navigate = useNavigate();
     const toWrite = () => {
         navigate('/contest/write');
@@ -79,10 +81,20 @@ const ContestList = () => {
                                                             }}>수정</Link>
                                                             <Link onClick={(e) => {
                                                                 e.preventDefault();
+                                                                if (!user) {
+                                                                    alert("로그인이 필요합니다.");
+                                                                    return;
+                                                                }
+                                                                const token = localStorage.getItem('accessToken');
                                                                 if (window.confirm("삭제하시겠습니까?")) {
                                                                     async function send() {
                                                                         const url = `http://localhost:8080/contest/delete?contestId=${v.id}`;
-                                                                        await fetch(url);
+                                                                        await fetch(url, {
+                                                                            credentials: 'include',
+                                                                            headers: {
+                                                                                'Authorization': `Bearer ${token}`
+                                                                            }
+                                                                        });
                                                                         alert("삭제되었습니다.");
                                                                         window.location.reload();
                                                                     }
