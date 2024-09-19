@@ -236,7 +236,7 @@ function GatherMateList() {
                             width="16"
                             height="16"
                           />
-                          {post.views} 12
+                          {post.views} 
                         </span>
                         <span className="post-likes">
                           <img
@@ -245,7 +245,7 @@ function GatherMateList() {
                             width="16"
                             height="16"
                           />
-                          {post.likes} 4
+                          {post.likeCount}
                         </span>
                         <span className="post-comment">
                           <img

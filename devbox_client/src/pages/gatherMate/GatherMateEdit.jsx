@@ -66,7 +66,7 @@ function GatherMateEdit() {
       console.log("업데이트된 데이터:", data);
 
       alert("글이 성공적으로 수정되었습니다.");
-      navigate(`/gatherdetail/${postId}`);
+      navigate(`/gathermate/detail/${postId}`);
     } catch (error) {
       console.error("수정 실패:", error);
       alert("글 수정에 실패했습니다.");

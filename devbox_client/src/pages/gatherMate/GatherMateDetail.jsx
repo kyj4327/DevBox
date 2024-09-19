@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useUser } from "../../components/context/UserContext";
 import GatherMateComments from "../../components/GatherMateComments";
 import profilePic from "../../assets/img/profilePic.png";
 import "./GatherMateDetail.css";
@@ -7,7 +8,7 @@ import PostButton from "../../components/PostButton";
 
 const GatherMateDetail = () => {
   const { postId } = useParams();
-
+  const { user } = useUser(); 
   const [post, setPost] = useState(null);
 
   // const [likes, setLikes] = useState();
@@ -59,7 +60,7 @@ const GatherMateDetail = () => {
 
   // 수정 페이지로 이동하는 함수
   const goToEditPage = () => {
-    navigate(`/gatheredit/${postId}`); // postId를 포함한 경로로 이동
+    navigate(`/gathermate/edit/${postId}`); // postId를 포함한 경로로 이동
   };
 
   // 게시글 삭제
@@ -80,7 +81,7 @@ const GatherMateDetail = () => {
       }
 
       alert("게시글이 성공적으로 삭제되었습니다.");
-      navigate("/gatherlist"); // 삭제 후 목록 페이지로 이동
+      navigate("/gathermate/list"); // 삭제 후 목록 페이지로 이동
     } catch (error) {
       console.error("삭제 중 오류 발생:", error);
       alert("글 삭제에 실패했습니다. 다시 시도해주세요.");
@@ -194,8 +195,7 @@ const GatherMateDetail = () => {
                 <div className="d-flex flex-column">
                   <span>작성자: {post.author}</span>
                   <span>
-                    작성일: {formatDateTime(post.createdAt)} 조회수: 9999
-                    {post.views}
+                    작성일: {formatDateTime(post.createdAt)} 조회수: {post.views}
                   </span>
                 </div>
               </div>
@@ -232,6 +232,7 @@ const GatherMateDetail = () => {
                     }
                       text={post.likeCount}
                       onClick={handleLike}
+                      disabled={!user}
                     />
                     
                   )}
