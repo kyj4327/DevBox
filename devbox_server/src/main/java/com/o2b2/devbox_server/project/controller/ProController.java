@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +35,8 @@ import com.o2b2.devbox_server.project.model.MultiImgEntity;
 import com.o2b2.devbox_server.project.model.ProEntity;
 import com.o2b2.devbox_server.project.repository.MultiImgRepository;
 import com.o2b2.devbox_server.project.repository.ProRepository;
+import com.o2b2.devbox_server.user.dto.CustomUserDetails;
+import com.o2b2.devbox_server.user.entity.UserEntity;
 import com.o2b2.devbox_server.user.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -101,10 +104,10 @@ public class ProController {
         if (proOpt.isPresent()) {
             ProEntity pro = proOpt.get();
 
-            // 좋아요 상태 토글 
+            // 좋아요 상태 토글
             if (pro.getLikeCount() == null) {
                 pro.setLikeCount(0);
-                
+
             }
 
             // 좋아요 수 증가
@@ -120,16 +123,22 @@ public class ProController {
         return map; // 클라이언트에 map 반환
     }
 
-
     @PostMapping("/project/write")
     @ResponseBody
     public Map<String, Object> pro(
             @ModelAttribute ProEntity pro,
-            @RequestParam("file") MultipartFile[] files) {
+            @RequestParam("file") MultipartFile[] files,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
         System.out.println(pro);
 
         // 결과를 담을 맵 생성
         Map<String, Object> map = new HashMap<>();
+
+        // 로그인한 유저 정보에서 UserEntity를 가져옴
+        UserEntity user = userDetails.getUserEntity();
+
+        // EduEntity에 UserEntity 설정
+        pro.setUserEntity(user);
 
         // 파일이 첨부되지 않았을 경우 처리
         if (files == null || files.length == 0) {
@@ -174,9 +183,16 @@ public class ProController {
     public Map<String, Object> update(
             @ModelAttribute ProEntity pro,
             @RequestParam(value = "delImgId", required = false) Long[] imgIds,
-            @RequestParam(value = "file", required = false) MultipartFile[] files) {
+            @RequestParam(value = "file", required = false) MultipartFile[] files,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         Map<String, Object> map = new HashMap<>();
+
+        // 로그인한 유저 정보에서 UserEntity를 가져옴
+        UserEntity user = userDetails.getUserEntity();
+
+        // EduEntity에 UserEntity 설정
+        pro.setUserEntity(user);
 
         // 데이터베이스에서 기존의 ProEntity를 가져옵니다.
         ProEntity existingpro = proRepository.findById(pro.getId()).orElse(null);
@@ -244,9 +260,35 @@ public class ProController {
     }
 
     @DeleteMapping("/project/delete")
-    public String prodelete(@RequestParam Long Id) {
-        proRepository.deleteById(Id);
-        return "삭제 완료";
+    public Map<String, Object> prodelete(@RequestParam Long Id,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        // 프로젝트를 조회
+        Optional<ProEntity> projectOpt = proRepository.findById(Id);
+
+        if (projectOpt.isPresent()) {
+            ProEntity project = projectOpt.get();
+
+            // 로그인한 유저의 ID와 프로젝트 작성자의 ID를 비교
+            if (project.getUserEntity().getId().equals(userDetails.getUserEntity().getId())) {
+                // 유저가 일치할 경우 삭제
+                proRepository.deleteById(Id);
+                response.put("code", 200);
+                response.put("msg", "삭제 완료");
+            } else {
+                // 유저가 일치하지 않을 경우 권한 없음 처리
+                response.put("code", 403);
+                response.put("msg", "삭제 권한이 없습니다.");
+            }
+        } else {
+            // 해당 ID의 프로젝트가 없을 경우
+            response.put("code", 404);
+            response.put("msg", "프로젝트를 찾을 수 없습니다.");
+        }
+
+        return response;
     }
 
     @GetMapping("/project/detail")
@@ -263,6 +305,7 @@ public class ProController {
         map.put("coment", pro.getComent());
         map.put("name", pro.getName());
         map.put("imgs", pro.getMultiImgEntitys());
+        map.put("user", pro.getUserEntity());
 
         return map;
 
@@ -270,22 +313,39 @@ public class ProController {
 
     @GetMapping("/project/update")
     @ResponseBody
-    public Map<String, Object> proUpdate(@RequestParam Long id) {
+    public Map<String, Object> proUpdate(@RequestParam Long id,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
         Map<String, Object> map = new HashMap<>();
 
-        // id로 데이터베이스에서 교육 정보를 조회합니다.
+        // 프로젝트를 id로 조회
         Optional<ProEntity> proOpt = proRepository.findById(id);
 
-        ProEntity pro = proOpt.get();
-        map.put("id", pro.getId());
-        map.put("title", pro.getTitle());
-        map.put("link", pro.getLink());
-        map.put("coment", pro.getComent());
-        map.put("name", pro.getName());
-        map.put("imgs", pro.getMultiImgEntitys());
+        // 프로젝트가 존재하는지 확인
+        if (proOpt.isPresent()) {
+            ProEntity pro = proOpt.get();
+
+            // 로그인한 유저와 프로젝트 작성자가 일치하는지 확인
+            if (pro.getUserEntity().getId().equals(userDetails.getUserEntity().getId())) {
+                // 작성자가 일치할 경우 프로젝트 정보를 반환
+                map.put("id", pro.getId());
+                map.put("title", pro.getTitle());
+                map.put("link", pro.getLink());
+                map.put("coment", pro.getComent());
+                map.put("name", pro.getName());
+                map.put("imgs", pro.getMultiImgEntitys());
+                map.put("code", 200); // 성공 코드
+            } else {
+                // 작성자가 일치하지 않을 경우 권한 없음
+                map.put("code", 403);
+                map.put("msg", "프로젝트 수정 권한이 없습니다.");
+            }
+        } else {
+            // 프로젝트가 존재하지 않을 경우
+            map.put("code", 404);
+            map.put("msg", "프로젝트를 찾을 수 없습니다.");
+        }
 
         return map;
-
     }
 
     @GetMapping("/project/download")
