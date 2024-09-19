@@ -30,7 +30,6 @@ const ContestWrite = () => {
             alert("로그인이 필요합니다.");
             return;
         }
-
         const token = localStorage.getItem('accessToken');
         try {
             const url = 'http://localhost:8080/contest/write';
@@ -41,13 +40,14 @@ const ContestWrite = () => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ title: title, officialUrl: officialUrl, imgUrl: imgUrl, host: host, target: target, regStart: regStart, regEnd: regEnd })
+                body: JSON.stringify({
+                    title: title, officialUrl: officialUrl, imgUrl: imgUrl,
+                    host: host, target: target, regStart: regStart, regEnd: regEnd
+                })
             });
-
             if (!response.ok) {
                 throw new Error("서버에서 오류가 발생했습니다.");
             }
-
             const data = await response.json();
             if (data.code === 200) {
                 alert('저장되었습니다.');
