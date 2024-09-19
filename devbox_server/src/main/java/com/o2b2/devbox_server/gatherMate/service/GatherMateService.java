@@ -47,6 +47,7 @@ public class GatherMateService {
         return saveGatherMate.getId();
     }
 
+    @Transactional
     public GatherMateResponse get(Long postId, Long userId) {
 
         GatherMate gatherMate = gatherMateRepository.findById(postId)
@@ -70,6 +71,7 @@ public class GatherMateService {
                 .author(gatherMate.getUser().getNickname())
                 .likeCount(gatherMate.getLikeCount())
                 .isLiked(isLiked)
+                .views(gatherMate.getViews())
                 .build();
     }
 
@@ -160,7 +162,6 @@ public class GatherMateService {
     }
 
     // 좋아요 기능 구현
-
     public int getLikeCount(Long postId) {
         GatherMate gatherMate = gatherMateRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
