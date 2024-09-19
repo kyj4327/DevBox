@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import { useUser } from "../../components/context/UserContext";
 
 const ProjectWrite = () => {
-    const { user } = useUser(); 
+    const { user, loading } = useUser();
 
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
@@ -36,7 +36,7 @@ const ProjectWrite = () => {
     const handleLinkChange = (e) => {
         const inputLink = e.target.value;
         setLink(inputLink);
-    
+
         if (!validateUrl(inputLink)) {
             setLinkError('유효한 링크를 입력해주세요!');
         } else {
@@ -53,12 +53,6 @@ const ProjectWrite = () => {
     const handleDetail = async (e) => {
         e.preventDefault();
 
-        if (!user) {
-            alert("로그인이 필요합니다.");
-            return;
-          }
-
-
         if (linkError) {
             Swal.fire({
                 icon: "error",
@@ -73,12 +67,12 @@ const ProjectWrite = () => {
                 icon: "error",
                 title: "Oops...",
                 text: "이미지를 자랑해주세요!!"
-              });
-            return; 
+            });
+            return;
         }
 
         const modifiedLink = link.includes("watch?v=") ? link.replace("watch?v=", "embed/") : link;
-        
+
         const formData = new FormData();
         uploadImgs.forEach((v) => {
             formData.append("file", v);
@@ -94,7 +88,7 @@ const ProjectWrite = () => {
 
         const url = 'http://localhost:8080/project/write';
         const res = await fetch(url, {
-            method: 'post',
+            method: 'POST',
             credentials: "include",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -110,12 +104,12 @@ const ProjectWrite = () => {
                 icon: "error",
                 title: "Oops...",
                 text: "이미지를 자랑해주세요!!"
-              });
+            });
         }
 
     };
 
-    
+
     const addFiles = (files) => {
         console.log(files);
 
@@ -126,11 +120,15 @@ const ProjectWrite = () => {
     }
 
     useEffect(() => {
-        if (!user) {  // user가 없으면 로그인 페이지로 리다이렉트
-            alert("로그인이 필요합니다.");
+        if (!user && !loading) {
+            Swal.fire({
+                icon: "error",
+                title: "로그인 필요",
+                text: "로그인이 필요합니다."
+            });
             navigate('/auth');
-          }
-        }, [user, navigate]);
+        }
+    }, [user, loading, navigate]);
 
     return (
         <div>
@@ -151,10 +149,10 @@ const ProjectWrite = () => {
                                     <DragDrop addFiles={addFiles} initialFiles={savedImgs}
                                         onDeleteImage={handleDeleteImage}
                                     />
-                                  
+
                                 </div>
                             </p>
-                            
+
                             <div>
                                 <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">시연 영상 링크</h2>
                                 <p className="worksingle-footer py-3 text-muted light-300">

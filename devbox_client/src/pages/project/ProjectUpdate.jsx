@@ -5,6 +5,7 @@ import Button from "../../components/Button";
 import WriteShort from "../../components/WriteShort";
 import WriteLong from "../../components/WriteLong";
 import Swal from "sweetalert2";
+import { useUser } from "../../components/context/UserContext";
 
 
 const ProjectUpdate = () => {
@@ -14,6 +15,7 @@ const ProjectUpdate = () => {
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
 
+    const { user } = useUser();
 
     const [title, setTitle] = useState('');
     const [name, setName] = useState('');
@@ -70,9 +72,15 @@ const ProjectUpdate = () => {
         });
         console.log(delImgId);
 
+        const token = localStorage.getItem('accessToken');
+
         const url = 'http://localhost:8080/project/update';
         const res = await fetch(url, {
             method: 'post',
+            credentials: 'include',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
             body: formData
         });
         const data = await res.json();
@@ -89,7 +97,15 @@ const ProjectUpdate = () => {
     };
 
     async function get() {
-        const res = await fetch(`http://localhost:8080/project/update?id=${id}`);
+        const token = localStorage.getItem('accessToken');
+
+        const res = await fetch(`http://localhost:8080/project/update?id=${id}`,{
+            method: 'GET',
+            credentials: "include",
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+        });
         const data = await res.json();
         setProData(data);
 
@@ -120,7 +136,15 @@ const ProjectUpdate = () => {
 
     useEffect(() => {
         get();
-    }, []);
+        if (!user) {
+            Swal.fire({
+                icon: "error",
+                title: "로그인 필요",
+                text: "로그인이 필요합니다."
+            });
+            navigate('/auth');
+        }
+    }, [user, navigate]);
 
     return (
         <div>
