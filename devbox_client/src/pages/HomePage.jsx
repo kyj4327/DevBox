@@ -49,10 +49,20 @@ function HomePage() {
     navigate('/mypage');
   };
 
-  const handleMGatherMateClick = () => {
+  const handleGatherMateClick = () => {
     navigate('/gathermate/list');
   };
 
+  const handleReferebceClick = () => {
+    navigate('/reference/list');
+  };
+
+  const handleProjectClick = () => {
+    navigate('/project/list');
+  };
+
+
+  
 
   const handleLogoutClick = async () => {
     try {
@@ -95,7 +105,9 @@ function HomePage() {
     <p>Name: {user.name}</p> 
     <p>Email: {user.email}</p>
     <button onClick={handleMyPageClick}>마이 페이지로 이동</button>
-    <button onClick={handleMGatherMateClick}>모여라메이트</button>
+    <button onClick={handleGatherMateClick}>모여라메이트</button>
+    <button onClick={handleReferebceClick}>추천해요</button>
+    <button onClick={handleProjectClick}>프로젝트자랑</button>
 
     <button onClick={handleLogoutClick}>로그아웃</button>
   </div>
