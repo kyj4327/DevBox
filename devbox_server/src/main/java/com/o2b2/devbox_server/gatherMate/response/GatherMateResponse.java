@@ -24,6 +24,7 @@ public class GatherMateResponse {
 
     private int likeCount;
     private boolean isLiked;
+    private int views;
 
 
 
@@ -38,12 +39,13 @@ public class GatherMateResponse {
         this.isRecruiting = gatherMate.isRecruiting();
         this.author = gatherMate.getUser().getNickname();
         this.likeCount = gatherMate.getLikeCount();
+        this.views = gatherMate.getViews();
     }
 
     @Builder
     public GatherMateResponse(Long id, String intro, String apply, String title, String content,
                               LocalDateTime createdAt, boolean isRecruiting, String author,
-                              int likeCount, boolean isLiked) {
+                              int likeCount, boolean isLiked, int views) {
         this.id = id;
         this.intro = intro;
         this.apply = apply;
@@ -54,5 +56,6 @@ public class GatherMateResponse {
         this.author = author;
         this.likeCount = likeCount;
         this.isLiked = isLiked;
+        this.views = views;
     }
 }
