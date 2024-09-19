@@ -10,8 +10,8 @@ import QuillEditor from "../../components/QuillEditor";
 import WriteSelect from "../../components/WriteSelect";
 
 function GatherMateWrite() {
-  const { user } = useUser();  // Context에서 유저 정보가져오기
-  
+  const { user ,loading} = useUser();  // Context에서 유저 정보가져오기
+
   const [intro, setIntro] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -24,11 +24,11 @@ function GatherMateWrite() {
   
  // 로그인 상태를 확인
  useEffect(() => {
-  if (!user) {  // user가 없으면 로그인 페이지로 리다이렉트
+  if (!loading && !user) {  // user가 없으면 로그인 페이지로 리다이렉트
     alert("로그인이 필요합니다.");
     navigate('/auth');
   }
-}, [user, navigate]);
+}, [user,loading, navigate]);
 
 const saveData = async () => {
   if (!user) {
@@ -45,15 +45,12 @@ const saveData = async () => {
       datePosted: new Date().toISOString(),
     };
   
-    try {
-      const token = localStorage.getItem('accessToken');
-  
+    try {  
       const response = await fetch("http://localhost:8080/gathermate/write", {
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify(newGatherMate),
       });
@@ -78,12 +75,14 @@ const saveData = async () => {
     }
   };
 
+  if (loading) {
+    return <div>로딩 중...</div>;
+  }
+
   if (!user) {
     return <div>로그인 후 글쓰기가 가능합니다. <button onClick={() => navigate('/auth')}>로그인하기</button></div>;
   }
-  // if (!isLoggedIn) {
-  //   return <div>로그인 후 글쓰기가 가능합니다. <button onClick={() => navigate('/auth')}>로그인하기</button></div>;
-  // }
+  
   return (
     <div>
       <section className="container py-5">
