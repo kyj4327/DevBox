@@ -5,13 +5,14 @@ import Swal from "sweetalert2";
 import { useUser } from "../../components/context/UserContext";
 
 const EduDetail = () => {
-    const { user } = useUser();
 
+    const { user } = useUser();
     const navigate = useNavigate();
     const [eduData, setEduData] = useState({});
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
+
 
     async function get() {
         const res = await fetch(`http://localhost:8080/edu/detail?id=${id}`);
@@ -67,7 +68,14 @@ const EduDetail = () => {
                                     text={'삭제'}
                                     onClick={async (e) => {
                                         e.preventDefault();
-
+                                        if (!user) {
+                                            Swal.fire({
+                                                icon: "error",
+                                                title: "로그인 필요",
+                                                text: "로그인이 필요합니다."
+                                            });
+                                            navigate('/auth');
+                                        }
                                         // SweetAlert2로 삭제 확인 창 띄우기
                                         const result = await Swal.fire({
                                             icon: "warning",
@@ -80,12 +88,20 @@ const EduDetail = () => {
                                             cancelButtonColor: "#3085d6", // 취소 버튼 색상 (파란색)
                                         });
 
+                                        const token = localStorage.getItem('accessToken');
                                         // 사용자가 '삭제' 버튼을 눌렀을 때만 삭제 요청 보내기
                                         if (result.isConfirmed) {
-                                            const url = `http://localhost:8080/project/delete?Id=${eduData.id}`;
-                                            await fetch(url, { method: 'DELETE' });
-                                            Swal.fire("삭제 완료", "프로젝트가 삭제되었습니다.", "success");
-                                            navigate('/project/list');
+                                            const url = `http://localhost:8080/edu/delete?Id=${eduData.id}`;
+                                            const res = await fetch(url, {
+                                                method: 'DELETE',
+                                                credentials: 'include',
+                                                headers: {
+                                                    'Authorization': `Bearer ${token}`
+                                                },
+                                            });
+
+                                                Swal.fire("삭제 완료", "프로젝트가 삭제되었습니다.", "success");
+                                                navigate('/edu/list');
                                         }
                                     }}
                                 />

@@ -4,12 +4,16 @@ import WriteShort from "../../components/WriteShort";
 import WriteLong from "../../components/WriteLong";
 import Button from "../../components/Button";
 import WriteSelect from "../../components/WriteSelect";
+import { useUser } from "../../components/context/UserContext";
+import Swal from "sweetalert2";
 
 const EduUpdate = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
+
+    const { user } = useUser();
 
     const [title, setTitle] = useState('');
     const [subtitle, setSubtitle] = useState('');
@@ -60,9 +64,15 @@ const EduUpdate = () => {
         formData.append("logo", logo);
         formData.append("state", state);
 
+        const token = localStorage.getItem('accessToken');
+
         const url = 'http://localhost:8080/edu/update';
         const res = await fetch(url, {
             method: 'post',
+            credentials: 'include',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
             body: formData
         });
         const data = await res.json();
@@ -75,7 +85,15 @@ const EduUpdate = () => {
     };
 
     async function get() {
-        const res = await fetch(`http://localhost:8080/edu/update?id=${id}`);
+        const token = localStorage.getItem('accessToken');
+
+        const res = await fetch(`http://localhost:8080/edu/update?id=${id}`,{
+            method: 'GET',
+            credentials: "include",
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+        });
         const data = await res.json();
         setEduData(data);
 
@@ -103,7 +121,15 @@ const EduUpdate = () => {
 
     useEffect(() => {
         get();
-    }, [isImageUploaded]);
+        if (!user) {
+            Swal.fire({
+                icon: "error",
+                title: "로그인 필요",
+                text: "로그인이 필요합니다."
+            });
+            navigate('/auth');
+        }
+    }, [isImageUploaded,user, navigate]);
 
     return (
         <div>

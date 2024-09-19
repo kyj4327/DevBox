@@ -25,13 +25,6 @@ const EduWrite = () => {
     const [logo, setLogo] = useState('');
     const [state, setState] = useState('');
 
-    useEffect(() => {
-        if (!user) {
-            alert("로그인이 필요합니다.");
-            navigate('/auth');
-        }
-    }, [user, navigate]);
-
     const onchangeImageUpload = (e) => {
 
 
@@ -45,13 +38,21 @@ const EduWrite = () => {
         }
     }
 
+
+    useEffect(() => {
+        if (!user) {
+            Swal.fire({
+                icon: "error",
+                title: "로그인 필요",
+                text: "로그인이 필요합니다."
+            });
+            navigate('/auth');
+        }
+    }, [user, navigate]);
+
+
     const handleDetail = async (e) => {
         e.preventDefault();
-
-        if (!user) {
-            alert("로그인이 필요합니다.");
-            return;
-        }
 
         if (uploadImg.length === 0) {
             Swal.fire({
@@ -74,30 +75,22 @@ const EduWrite = () => {
         formData.append("logo", logo);
         formData.append("state", state);
 
+        const token = localStorage.getItem('accessToken');
 
- 
-        try{
-
-            const accessToken = localStorage.getItem("accessToken");
-            if (!accessToken) {
-                console.error('액세스 토큰이 없습니다.');
-                return;
-            }
-
-            const url = 'http://localhost:8080/edu/write';
-            const res = await fetch(url, {
+        try {
+            const res = await fetch('http://localhost:8080/edu/write', {
                 method: 'POST',
-                body: formData,
-                credentials: 'include',
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                    },
+                credentials: "include",
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
             });
-
+    
             if (!res.ok) {
                 throw new Error('메시지 가져오기 실패');
             }
-
+    
             const data = await res.json();
             
             if (data.code == 200) {
@@ -115,6 +108,8 @@ const EduWrite = () => {
         }
             
     };
+
+    
 
     return (
         <div>
