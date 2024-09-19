@@ -24,7 +24,7 @@ public class GatherMate {
 
     private String title;
 
-    // @Column(columnDefinition = "TEXT")   
+    @Column(length = 500, nullable = false)
     private String content;
 
     private LocalDateTime createdAt;
@@ -36,6 +36,9 @@ public class GatherMate {
 
     private String author;
 
+    private int views;
+
+
     // 좋아요 개수
     @Setter
     private int likeCount;
@@ -44,10 +47,13 @@ public class GatherMate {
     @OneToMany(mappedBy = "gatherMate", cascade = CascadeType.ALL)
     private List<Like> likes;
 
+    public void incrementViewCount() {
+        this.views = this.views + 1;
+    }
 
     @Builder
     public GatherMate(String intro, String apply, String title, String content, UserEntity user,
-                      LocalDateTime createdAt, boolean isRecruiting, String author, int likeCount) {
+                      LocalDateTime createdAt, boolean isRecruiting, String author, int likeCount, int views) {
         this.intro = intro;
         this.apply = apply;
         this.title = title;
@@ -57,6 +63,7 @@ public class GatherMate {
         this.isRecruiting = isRecruiting;
         this.author = author;
         this.likeCount = likeCount;
+        this.views = views;
     }
 
     public GatherMatePostEditor.GatherMatePostEditorBuilder toEditor(){
