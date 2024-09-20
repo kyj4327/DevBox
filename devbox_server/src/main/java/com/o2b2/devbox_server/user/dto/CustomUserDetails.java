@@ -38,6 +38,10 @@ public class CustomUserDetails implements UserDetails {
         return userEntity;
     }
 
+    public String getNickname() {
+        return userEntity.getNickname();
+    }
+
     @Override
     public String getPassword() {
 

@@ -149,7 +149,7 @@ public class SecurityConfig {
                         .requestMatchers("/*/update").authenticated()
                         .requestMatchers("/*/update/**").authenticated()
                         .requestMatchers("/*/delete").authenticated()
-                        .requestMatchers("/**/delete/**").authenticated()
+                        .requestMatchers("/*/delete/**").authenticated()
 
                         // 교육 정보
                         .requestMatchers("/edu/list/").permitAll()
@@ -176,10 +176,11 @@ public class SecurityConfig {
 
                         // .requestMatchers("/edu/**").permitAll()
                         .requestMatchers("/project/**").permitAll()
-                        .requestMatchers("/message/**").authenticated()
+                        .requestMatchers("/msg/**").authenticated()
+                        // .requestMatchers("/message/**").authenticated()
 
 //                        .requestMatchers("/msg/**").permitAll()
-                        .requestMatchers("/msg/bell").authenticated()
+                        // .requestMatchers("/msg/bell").authenticated()
 
                         .anyRequest().authenticated());
 

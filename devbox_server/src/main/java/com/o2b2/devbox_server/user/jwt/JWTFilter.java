@@ -8,6 +8,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 // 통합 코드
+@Slf4j
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
@@ -34,6 +37,7 @@ public class JWTFilter extends OncePerRequestFilter {
          *  -> 서버에 요청시 토큰발급받아서 로그인 권한이 필요 없는 것들
          */
         String requestURI = request.getRequestURI();
+        log.error(requestURI);
 //        if (requestURI.equals("/join") || requestURI.equals("/login") || requestURI.matches("/password/.*")) {
 
         // 테스트용 로그인 없이 crud 열기
@@ -60,7 +64,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // || requestURI.matches("/edu/.*")
         // || requestURI.matches("/project/.*")
-        || requestURI.matches("/message/.*")
+        // || requestURI.matches("/msg/.*")
 
 //        || requestURI.matches("/msg/.*")
 

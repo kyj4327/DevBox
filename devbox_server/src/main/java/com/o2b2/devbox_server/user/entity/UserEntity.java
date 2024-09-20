@@ -45,10 +45,10 @@ public class UserEntity {
     // @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
     // List<EduEntity> eduEntitys = new ArrayList<>();
     
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "receiver")
     List<MsgReciverEntity> MsgEntitys = new ArrayList<>();
     
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "sender")
     List<MsgSenderEntity> MsgSenderEntitys = new ArrayList<>();
 
 }

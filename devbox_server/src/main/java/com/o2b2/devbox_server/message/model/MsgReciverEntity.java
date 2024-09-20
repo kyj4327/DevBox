@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
@@ -15,7 +16,7 @@ import com.o2b2.devbox_server.user.entity.UserEntity;
 
 @Entity
 @Data
-public class MsgReciverEntity {
+public class MsgReciverEntity extends MsgEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -23,10 +24,6 @@ public class MsgReciverEntity {
     String content;
 
     String title;
-
-    String sender;
-
-    String reciver;
 
     LocalDateTime sendTime = LocalDateTime.now();
 
@@ -37,5 +34,10 @@ public class MsgReciverEntity {
     Integer order;
 
     @ManyToOne
-    UserEntity userEntity;
+    @JoinColumn(name = "sender_id")
+    UserEntity sender;
+
+    @ManyToOne
+    @JoinColumn(name = "receiver_id")
+    UserEntity receiver;
 }
