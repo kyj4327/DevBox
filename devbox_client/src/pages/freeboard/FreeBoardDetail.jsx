@@ -48,7 +48,7 @@ const FreeBoardDetail = () => {
       } else {
         await createPost(postData);
       }
-      navigate('/community/freeboard');
+      navigate('/freeboard/list');
     } catch (error) {
       console.error('게시글 저장에 실패했습니다.', error);
       setError('게시글 저장에 실패했습니다.');

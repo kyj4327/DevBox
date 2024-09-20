@@ -81,14 +81,16 @@ public class SecurityConfig {
 
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                        
 
                         CorsConfiguration configuration = new CorsConfiguration();
-
+                        
                         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
                         configuration.setMaxAge(3600L);
+                     
 
                         configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
                         configuration.setExposedHeaders(Collections.singletonList("Authorization"));
@@ -125,6 +127,16 @@ public class SecurityConfig {
                         .requestMatchers("/project/**").permitAll()
                         .requestMatchers("/message/**").permitAll()
                         .requestMatchers("/msg/**").permitAll()
+
+                        //freeboard, contact 추가
+                        .requestMatchers("/send/**").permitAll()
+                        .requestMatchers("/api/contact/**").permitAll()
+                        .requestMatchers("/api/posts/**").permitAll()
+                        .requestMatchers("/{id}/**").permitAll()
+                        .requestMatchers("/{postId}/**").permitAll()
+                        .requestMatchers("/api/comments/**").permitAll()
+                        .requestMatchers("/post/{postId}/**").permitAll()
+
 
 
                         .anyRequest().authenticated());

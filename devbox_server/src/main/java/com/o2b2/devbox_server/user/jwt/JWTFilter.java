@@ -41,6 +41,8 @@ public class JWTFilter extends OncePerRequestFilter {
         || requestURI.matches("/project/.*")
         || requestURI.matches("/message/.*")
         || requestURI.matches("/msg/.*")
+        || requestURI.matches("/api/contact/.*")
+        || requestURI.matches("/send/.*")
          ) {
 
             filterChain.doFilter(request, response);

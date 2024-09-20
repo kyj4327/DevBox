@@ -25,7 +25,8 @@ const ContactForm = () => {
     setIsLoading(true); // 폼 제출 시 로딩 상태로 설정
 
     try {
-      const response = await axios.post('/api/contact/send', formData);
+       const response = await axios.post('/api/contact/send', formData);
+
       console.log('성공:', response.data);
       setIsSubmitted(true);
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' }); // 폼 초기화

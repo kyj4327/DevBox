@@ -63,7 +63,7 @@ const PostDetail = () => {
     if (window.confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
       try {
         await deletePost(id);
-        navigate('/community/freeboard');
+        navigate('/freeboard/list');
       } catch (error) {
         console.error('Error deleting post:', error);
         setError('게시글 삭제에 실패했습니다.');
@@ -72,7 +72,7 @@ const PostDetail = () => {
   };
 
   const handleEditPost = () => {
-    navigate(`/community/freeboard/edit/${id}`);
+    navigate(`/freeboard/update/${id}`);
   };
 
   const handleUpdatePost = async () => {
@@ -150,7 +150,7 @@ const PostDetail = () => {
         </div>
           <div className="post-actions">
             <div className="button-group">
-              <Button text="목록" onClick={() => navigate('/community/freeboard')} className="btn btn-list" />
+              <Button text="목록" onClick={() => navigate('/freeboard/list')} className="btn btn-list" />
             </div>
             <div className="button-group">
               <Button text="수정" onClick={handleEditPost} className="btn btn-edit" />

@@ -19,16 +19,21 @@ import './assets/css/templatemo.css';
 import './assets/css/custom.css';
 
 import ScrollToTop from './components/ScrollToTop';
-import JobInfoList from './pages/jobInfo/JobInfoList';
+
+
+import JobInfoList from './components/JobInfo';
 import JobInfoBack from './pages/jobInfo/JobInfoBack';
 import JobInfoFront from './pages/jobInfo/JobInfoFront';
 import JobInfoDevOps from './pages/jobInfo/JobInfoDevOps';
 import JobInfoCloud from './pages/jobInfo/JobInfoCloud';
 import JobInfoData from './pages/jobInfo/JobInfoData';
 import JobInfoMobile from './pages/jobInfo/JobInfoMobile';
+
 import ReferenceList from './pages/reference/ReferenceList';
 import ReferenceWrite from './pages/reference/ReferenceWrite';
 import ReferenceUpdate from './pages/reference/ReferenceUpdate';
+
+
 import HiringList from './pages/hiring/HiringList';
 import HiringWrite from './pages/hiring/HiringWrite';
 import HiringUpdate from './pages/hiring/HiringUpdate';
@@ -98,7 +103,7 @@ function AppContent() {
           <Route path='/message/reply' element={<MsgReply />} />
             
           {/* 개발 직군 게시판 */}
-          <Route path='/jobInfo/list' element={<JobInfoList />} />
+          <Route path='/jobinfo/list' element={<JobInfoList/>} />
           <Route path='/jobinfo/backend' element={<JobInfoBack />} />
           <Route path='/jobinfo/frontend' element={<JobInfoFront />} />
           <Route path='/jobinfo/devops' element={<JobInfoDevOps />} />
@@ -125,14 +130,14 @@ function AppContent() {
           <Route path='/reservation/write' element={<Reservation />} />
           <Route path='/reservation/list' element={<ReservationList />} />
 
-          <Route path="BDIA/introduce" element={<BDIAIntroduction />} />
-          <Route path="BDIA/schedule" element={<BDIASchedule />} />
-          <Route path="community/freeboard" element={<FreeBoard />} />
-          <Route path="community/freeboard/new" element={<FreeBoardDetail />} />
-          <Route path="community/freeboard/:id" element={<FreeBoardDetail />} />
-          <Route path="community/freeboard/edit/:id" element={<FreeBoardDetail />} />
-          <Route path="community/freeboard/post/:id" element={<PostDetail />} />
-          <Route path="faq" element={<Contact />} />
+          <Route path="/introduce" element={<BDIAIntroduction />} />
+          <Route path="/schedule" element={<BDIASchedule />} />
+          <Route path="/freeboard/list" element={<FreeBoard />} />
+          <Route path="/freeboard/write" element={<FreeBoardDetail />} />
+          <Route path="/freeboard/:id" element={<FreeBoardDetail />} />
+          <Route path="/freeboard/update/:id" element={<FreeBoardDetail />} />
+          <Route path="/freeboard/detail/:id" element={<PostDetail />} />
+          <Route path="/faq" element={<Contact />} />
 
         </Routes>
       </main>
