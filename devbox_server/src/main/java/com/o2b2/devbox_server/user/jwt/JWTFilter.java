@@ -43,7 +43,13 @@ public class JWTFilter extends OncePerRequestFilter {
         || requestURI.matches("/msg/.*")
         || requestURI.matches("/api/contact/.*")
         || requestURI.matches("/send/.*")
+        || requestURI.matches("/api/posts")
+        || requestURI.matches("/api/posts/.*")
+        || requestURI.matches("/api/comments/.*")
+        || requestURI.matches("/posts/.*")
+        || requestURI.matches("/comments/.*")
          ) {
+            System.out.println(requestURI);
 
             filterChain.doFilter(request, response);
             return;
