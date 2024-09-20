@@ -98,7 +98,7 @@ const GatherMateDetail = () => {
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
           },
         }
       );
@@ -129,6 +129,7 @@ const GatherMateDetail = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
           },
           body: JSON.stringify({ isRecruiting: newRecruitingStatus }),
         }

@@ -51,6 +51,7 @@ const saveData = async () => {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
         },
         body: JSON.stringify(newGatherMate),
       });
@@ -82,7 +83,7 @@ const saveData = async () => {
   if (!user) {
     return <div>로그인 후 글쓰기가 가능합니다. <button onClick={() => navigate('/auth')}>로그인하기</button></div>;
   }
-  
+
   return (
     <div>
       <section className="container py-5">
