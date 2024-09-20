@@ -20,6 +20,9 @@ const HiringUpdate = () => {
         if (!user) {
             alert("로그인이 필요합니다.");
             navigate('/auth');
+        } else if (user.role != "ROLE_ADMIN") {
+            alert("권한이 없습니다.");
+            navigate('/contest/list');
         }
     }, [user, navigate]);
     const token = localStorage.getItem('accessToken');
