@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
+import Swal from "sweetalert2";
 
 const MesDetail = () => {
     const navigate = useNavigate();
@@ -15,7 +16,14 @@ const MesDetail = () => {
     const [content, setContent] = useState('');
 
     async function get() {
-        const res = await fetch(`http://localhost:8080/msg/detail?id=${id}`)
+        const token = localStorage.getItem('accessToken');
+        const res = await fetch(`http://localhost:8080/msg/detail?id=${id}`, {
+            method: 'GET',
+            credentials: "include",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
+        });
         const data = await res.json();
         console.log("API Response:", data);
         setMsgData(data);
@@ -30,6 +38,9 @@ const MesDetail = () => {
     useEffect(() => {
         get();
     }, []);
+
+     console.log("Message ID:", msgData.senderId);
+    
 
 
     return (
@@ -98,6 +109,47 @@ const MesDetail = () => {
                                 <button type="submit" className="me-2 btn btn-secondary text-white px-md-4 px-2 py-md-3 py-1 radius-0 light-300"
                                     onClick={(e) => { e.preventDefault(); navigate(`/message/reply?id=${msgData.id}`); }}
                                 >답장</button>
+                                <Button
+                                    text={'삭제'}
+                                    onClick={async (e) => {
+                                        e.preventDefault();
+
+                                        const result = await Swal.fire({
+                                            icon: "warning",
+                                            title: "정말 삭제하시겠습니까?",
+                                            text: "삭제 후에는 되돌릴 수 없습니다.",
+                                            showCancelButton: true,
+                                            confirmButtonText: "삭제",
+                                            cancelButtonText: "취소",
+                                            confirmButtonColor: "#d33",
+                                            cancelButtonColor: "#3085d6",
+                                        });
+
+                                        if (result.isConfirmed) {
+                                            try {
+                                                const url = `http://localhost:8080/msg/delete?id=${msgData.id}`;
+                                                const res = await fetch(url, {
+                                                    method: 'DELETE',
+                                                    credentials: 'include',
+                                                });
+
+                                                if (res.ok) {
+                                                    Swal.fire("삭제 완료", "메시지가 삭제되었습니다.", "success");
+                                                    navigate('/message/list');
+                                                } else {
+                                                    throw new Error('삭제 실패');
+                                                }
+                                            } catch (error) {
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: '서버 오류',
+                                                    text: '요청을 처리하는 중 오류가 발생했습니다.'
+                                                });
+                                            }
+                                        }
+                                    }}
+                                />
+
                             </div>
                         </div>
                     </div>

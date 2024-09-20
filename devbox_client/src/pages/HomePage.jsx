@@ -25,6 +25,7 @@ function HomePage() {
 
       if (response.ok) {
         const data = await response.json();
+        sessionStorage.setItem("nickname", data.nickname);
         setUser(data);
       } else {
         // API 호출 실패 시 로그인 페이지로 리디렉션하거나 에러 처리

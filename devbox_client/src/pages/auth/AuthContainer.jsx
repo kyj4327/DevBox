@@ -144,6 +144,7 @@ function AuthContainer() {
     })
       .then((res) => {
         console.log("Response status:", res.status); // 응답 상태 코드 출력
+
         if (res.ok) {
           window.location.href = "/home"; // 로그인 성공 시 /home으로 이동
         } else {

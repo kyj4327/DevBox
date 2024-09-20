@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import WriteShort from "../../components/WriteShort";
 import Button from "../../components/Button";
 import { useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const MesReply = () => {
     const navigate = useNavigate();
@@ -21,14 +22,16 @@ const MesReply = () => {
         const formData = new FormData();
 
 
-        formData.append("sender", sender);
         formData.append("title", title);
         formData.append("content", content);
         formData.append("reciver", reciver);
+        formData.append("sender", sender);
 
-        const url = 'http://127.0.0.1:8080/msg/write';
+
+        const url = 'http://localhost:8080/msg/write';
         const res = await fetch(url, {
-            method: 'post',
+            method: 'POST',
+            credentials: "include",
             body: formData
 
         });
@@ -36,13 +39,24 @@ const MesReply = () => {
         if (data.code == 200) {
             navigate('/message/list');
         } else {
-            alert(data.msg);
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: data.msg
+            });
         }
 
     };
     
     async function get() {
-        const res = await fetch(`http://localhost:8080/msg/reply?id=${id}`);
+        const token = localStorage.getItem('accessToken');
+        const res = await fetch(`http://localhost:8080/msg/reply?id=${id}`,{
+            method: 'GET',
+            credentials: "include",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }, 
+        });
         const data = await res.json();
         setMsgData(data);
         
@@ -63,8 +77,8 @@ const MesReply = () => {
                     <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
                         <p className="text-center pb-5 light-300"></p>
                         <div className="contact-form row">
-                            <WriteShort titleTag={'보낼분'} type={'text'} name={'reciver'} value={reciver} onChange={(e) => { setReciver(e.target.value) }} />
-                            <WriteShort titleTag={'받을분'} type={'text'} name={'sender'} value={sender} onChange={(e) => { setSender(e.target.value) }} />
+                            <WriteShort titleTag={'보낼분'} type={'text'} name={'sender'} value={sender} onChange={(e) => { setReciver(e.target.value) }} />
+                            <WriteShort titleTag={'받을분'} type={'text'} name={'reciver'} value={reciver} onChange={(e) => { setSender(e.target.value) }} />
                             <WriteShort titleTag={'제목'} type={'text'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} />
 
                             <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">작성 내용</h2>
