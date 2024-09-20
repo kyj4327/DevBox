@@ -5,12 +5,14 @@ import 'react-calendar/dist/Calendar.css';
 import moment from "moment";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../../components/context/UserContext';
 
 const Reservation = () => {
+    const { user } = useUser();
     const navigate = useNavigate();
 
     const [value, onChange] = useState(new Date());
-    const [name, setName] = useState('이예림');
+    const userName = useState(user ? user.name : '');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const condition = "예약완료";
@@ -48,27 +50,43 @@ const Reservation = () => {
         setTime(e.target.innerText);
     };
 
-    const saveData = (e) => {
+    const saveData = async (e) => {
         e.preventDefault();
-        if (window.confirm(`${date} ${time} 예약하시겠습니까?`)) {
-            async function send() {
-                const url = 'http://localhost:8080/reservation/write';
-                const res = await fetch(url, {
-                    method: 'post',
-                    headers: {
-                        'content-type': 'application/json'
-                    },
-                    body: JSON.stringify({ name: name, date: date, time: time, condition: condition })
-                });
-                const data = await res.json();
-                if (data.code === 200) {
-                    alert(`${date} ${time} 예약되었습니다.`);
-                    navigate('/reservation/list');
-                } else {
-                    alert('다시 입력해주세요.');
+        if (!user) {
+            alert("로그인이 필요합니다.");
+            return;
+        } else if (user.role === "ROLE_USER") {
+            alert("권한이 없습니다.");
+            navigate("/reservation/write");
+        } else {
+            const token = localStorage.getItem('accessToken');
+            if (window.confirm(`${date} ${time} 예약하시겠습니까?`)) {
+                try {
+                    const url = 'http://localhost:8080/reservation/write';
+                    const response = await fetch(url, {
+                        method: 'post',
+                        credentials: 'include',
+                        headers: {
+                            'content-type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ date: date, time: time, condition: condition })
+                    });
+                    if (!response.ok) {
+                        throw new Error("서버에서 오류가 발생했습니다.");
+                    }
+                    const data = await response.json();
+                    if (data.code === 200) {
+                        alert(`${date} ${time} 예약되었습니다.`);
+                        navigate('/reservation/list');
+                    } else {
+                        alert('다시 입력해주세요.');
+                    }
+                } catch (error) {
+                    console.error("저장 중 오류 발생 : ", error);
+                    alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
                 }
             }
-            send();
         }
     };
 
@@ -153,7 +171,7 @@ const Reservation = () => {
                                 </div>
                                 <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                                     <h5><li style={{ listStyle: 'none' }}>예약자명</li></h5>
-                                    <h5><li style={{ marginBottom: '1rem' }}>이예림</li></h5>
+                                    <h5><li style={{ marginBottom: '1rem' }}>{userName}</li></h5>
                                     <h5><li style={{ listStyle: 'none' }}>날짜</li></h5>
                                     <h5><li style={{ marginBottom: '1rem' }}>{date}</li></h5>
                                     <h5><li style={{ listStyle: 'none' }}>시간</li></h5>

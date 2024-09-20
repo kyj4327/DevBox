@@ -112,7 +112,7 @@ const ReservationList = () => {
                                             </div>
                                             <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                                                 <h5><li style={{ listStyle: 'none' }}>예약자명</li></h5>
-                                                <h5><li style={{ marginBottom: '1rem' }}>{v.name}</li></h5>
+                                                <h5><li style={{ marginBottom: '1rem' }}>{v.userId}</li></h5>
                                                 <h5><li style={{ listStyle: 'none' }}>날짜</li></h5>
                                                 <h5><li style={{ marginBottom: '1rem' }}>{v.date}</li></h5>
                                                 <h5><li style={{ listStyle: 'none' }}>시간</li></h5>
