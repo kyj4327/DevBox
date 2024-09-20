@@ -12,6 +12,9 @@ const ReferenceList = () => {
         navigate('/reference/write');
     };
 
+    // user 객체에서 name 값 추출
+    const userName = user ? user.name : null;
+
     const [selectJob, setSelectJob] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
@@ -21,6 +24,7 @@ const ReferenceList = () => {
             const url = `http://localhost:8080/reference/list/${selectJob}?page=${page}`;
             const res = await fetch(url);
             const data = await res.json();
+            console.log(data); // 데이터 구조 확인
             // 페이지 데이터와 실제 데이터 분리
             const listData = data.slice(0, -1);  // 마지막 페이지 정보 객체를 제외한 부분
             const pageInfo = data[data.length - 1];  // 마지막 객체가 페이지 정보라고 가정
@@ -81,34 +85,43 @@ const ReferenceList = () => {
                                         </div>
                                         <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
                                             <Link to={v.link} className="btn rounded-pill px-4 btn-primary light-300" target='_blank' style={{ marginRight: '1rem' }}>Link</Link>
-                                            <Link style={{ marginRight: '0.5em', textDecoration: 'none' }}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    navigate(`/reference/update?referenceId=${v.id}`);
-                                                }}>수정</Link>
-                                            <Link style={{ textDecoration: 'none' }}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    if (!user) {
-                                                        alert("로그인이 필요합니다.");
-                                                        return;
-                                                    }
-                                                    const token = localStorage.getItem('accessToken');
-                                                    if (window.confirm("삭제하시겠습니까?")) {
-                                                        async function send() {
-                                                            const url = `http://localhost:8080/reference/delete?referenceId=${v.id}`;
-                                                            await fetch(url, {
-                                                                credentials: 'include',
-                                                                headers: {
-                                                                    'Authorization': `Bearer ${token}`
+                                            {
+                                                v.userId === userName
+                                                    ? <>
+                                                        <Link style={{ marginRight: '0.5em', textDecoration: 'none' }}
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                navigate(`/reference/update?referenceId=${v.id}`);
+                                                            }}>수정</Link>
+                                                        <Link style={{ textDecoration: 'none' }}
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                if (!user) {
+                                                                    alert("로그인이 필요합니다.");
+                                                                    return;
                                                                 }
-                                                            });
-                                                            alert("삭제되었습니다.");
-                                                            window.location.reload();
-                                                        }
-                                                        send();
-                                                    }
-                                                }}>삭제</Link>
+                                                                const token = localStorage.getItem('accessToken');
+                                                                if (window.confirm("삭제하시겠습니까?")) {
+                                                                    async function send() {
+                                                                        const url = `http://localhost:8080/reference/delete?referenceId=${v.id}`;
+                                                                        await fetch(url, {
+                                                                            credentials: 'include',
+                                                                            headers: {
+                                                                                'Authorization': `Bearer ${token}`
+                                                                            }
+                                                                        });
+                                                                        alert("삭제되었습니다.");
+                                                                        window.location.reload();
+                                                                    }
+                                                                    send();
+                                                                }
+                                                            }}>삭제</Link>
+                                                    </>
+                                                    : <>
+                                                        <span style={{ marginRight: '0.5em', cursor: 'default' }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                        <span style={{ cursor: 'default' }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                    </>
+                                            }
                                         </div>
                                     </div>
                                 </div>
