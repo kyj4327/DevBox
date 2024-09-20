@@ -36,8 +36,8 @@ public class ReferenceController {
     @PostMapping("/reference/write")
     public Map<String, Object> referenceWrite(
             @RequestBody Reference reference,
-            @AuthenticationPrincipal CustomUserDetails userDatails) {
-        UserEntity userEntity = userDatails.getUserEntity();
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        UserEntity userEntity = userDetails.getUserEntity();
         reference.setUserEntity(userEntity);
         Reference result = referenceRepository.save(reference);
         Map<String, Object> map = new HashMap<>();
@@ -49,25 +49,25 @@ public class ReferenceController {
 
     // @PostMapping("/reference/write")
     // public Map<String, Object> referenceWrite(
-    //         @RequestBody ReferenceDTO referenceDTO,
-    //         @AuthenticationPrincipal CustomUserDetails userDatails) {
-    //     UserEntity userEntity = userDatails.getUserEntity();
-    //     Reference reference = new Reference();
-    //     reference.setTitle(referenceDTO.getTitle());
-    //     reference.setSelectJob(referenceDTO.getSelectJob());
-    //     reference.setContent1(referenceDTO.getContent1());
-    //     reference.setContent2(referenceDTO.getContent2());
-    //     reference.setContent3(referenceDTO.getContent3());
-    //     reference.setContent4(referenceDTO.getContent4());
-    //     reference.setContent5(referenceDTO.getContent5());
-    //     reference.setLink(referenceDTO.getLink());
-    //     reference.setUserEntity(userEntity);
-    //     Reference result = referenceRepository.save(reference);
-    //     Map<String, Object> map = new HashMap<>();
-    //     map.put("code", 200);
-    //     map.put("msg", "입력 완료");
-    //     map.put("result", result);
-    //     return map;
+    // @RequestBody ReferenceDTO referenceDTO,
+    // @AuthenticationPrincipal CustomUserDetails userDetails) {
+    // UserEntity userEntity = userDetails.getUserEntity();
+    // Reference reference = new Reference();
+    // reference.setTitle(referenceDTO.getTitle());
+    // reference.setSelectJob(referenceDTO.getSelectJob());
+    // reference.setContent1(referenceDTO.getContent1());
+    // reference.setContent2(referenceDTO.getContent2());
+    // reference.setContent3(referenceDTO.getContent3());
+    // reference.setContent4(referenceDTO.getContent4());
+    // reference.setContent5(referenceDTO.getContent5());
+    // reference.setLink(referenceDTO.getLink());
+    // reference.setUserEntity(userEntity);
+    // Reference result = referenceRepository.save(reference);
+    // Map<String, Object> map = new HashMap<>();
+    // map.put("code", 200);
+    // map.put("msg", "입력 완료");
+    // map.put("result", result);
+    // return map;
     // }
 
     @GetMapping("/reference/list/{selectJob}")
@@ -138,7 +138,11 @@ public class ReferenceController {
     }
 
     @PostMapping("/reference/update")
-    public Map<String, Object> referenceUpdate(@RequestBody Reference reference) {
+    public Map<String, Object> referenceUpdate(
+            @RequestBody Reference reference,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        UserEntity userEntity = userDetails.getUserEntity();
+        reference.setUserEntity(userEntity);
         Reference result = referenceRepository.save(reference);
         Map<String, Object> map = new HashMap<>();
         map.put("code", 200);
