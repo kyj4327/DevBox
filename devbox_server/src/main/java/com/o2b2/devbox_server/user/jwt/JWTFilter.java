@@ -38,6 +38,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 테스트용 로그인 없이 crud 열기
         if (requestURI.equals("/join") || requestURI.equals("/login") || requestURI.matches("/password/.*")
+        || requestURI.equals("/reissue")
 
         // 모여라메이트 게시글 리스트, 상세페이지는 토큰 발급 제외
         || requestURI.equals("/gathermate/list")
@@ -49,7 +50,6 @@ public class JWTFilter extends OncePerRequestFilter {
         //
                 || requestURI.matches("/.*/list/.*")
                 || requestURI.matches("/.*/list/.*.*")
-
 
 
         || requestURI.matches("/edu/.*")
@@ -77,8 +77,10 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         // Step 2: Authorization 헤더에서 토큰 추출 (쿠키에 토큰이 없을 경우)
+        System.out.println(token);
         if (token == null) {
             String authorization = request.getHeader("Authorization");
+            System.out.println(authorization);
             if (authorization != null && authorization.startsWith("Bearer ")) {
                 token = authorization.split(" ")[1];
             }
@@ -91,7 +93,26 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         // Step 4: 토큰이 access인지 확인
-        String category = jwtUtil.getCategory(token);
+        String category = null;
+        try {
+            category = jwtUtil.getCategory(token);
+        } catch (io.jsonwebtoken.MalformedJwtException e) {
+            e.printStackTrace();
+            System.out.println("Invalid token");
+//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+            response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().print("{\"msg\":\"Invalid token\"}");
+            return;
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            e.printStackTrace();
+            System.out.println("Expired token");
+//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Expired token");
+            response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().print("{\"msg\":\"Expired token\"}");
+            return;
+        }
         if (!"access".equals(category)) {
             filterChain.doFilter(request, response);
             return;
