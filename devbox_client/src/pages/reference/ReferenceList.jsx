@@ -12,8 +12,8 @@ const ReferenceList = () => {
         navigate('/reference/write');
     };
 
-    // user 객체에서 name 값 추출
-    const userName = user ? user.name : null;
+    // user 객체에서 nickname 값 추출
+    const userNickName = user ? user.nickname : null;
 
     const [selectJob, setSelectJob] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
@@ -86,7 +86,7 @@ const ReferenceList = () => {
                                         <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
                                             <Link to={v.link} className="btn rounded-pill px-4 btn-primary light-300" target='_blank' style={{ marginRight: '1rem' }}>Link</Link>
                                             {
-                                                v.userId === userName
+                                                v.userId === userNickName
                                                     ? <>
                                                         <Link style={{ marginRight: '0.5em', textDecoration: 'none' }}
                                                             onClick={(e) => {
