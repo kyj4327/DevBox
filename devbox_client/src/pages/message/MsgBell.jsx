@@ -7,7 +7,7 @@ const MsgBell = () => {
 
     useEffect(() => {
         const getMessages = async () => {
-            if (!user) return; // 사용자가 로그인하지 않았을 경우 fetch를 수행하지 않음
+            if (!user || !user.username) return; // 사용자가 로그인하지 않았거나 username이 없을 경우 fetch를 수행하지 않음
 
             try {
                 const res = await fetch(`http://localhost:8080/msg/bell?reciver=${user.username}`, {
@@ -19,7 +19,7 @@ const MsgBell = () => {
                 });
 
                 if (!res.ok) {
-                    throw new Error('Failed to fetch messages');
+                    throw new Error('메시지 가져오기 실패');
                 }
 
                 const data = await res.json();

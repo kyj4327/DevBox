@@ -70,7 +70,7 @@ export const UserProvider = ({ children }) => {
         console.log(response);
         
         if (response.ok) {
-          const userInfo = await response.text();
+          const userInfo = await response.json();
           // const userInfo = await response.json();
           console.log("User Info:", userInfo);
           setUser(userInfo);

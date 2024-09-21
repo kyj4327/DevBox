@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../src/components/context/UserContext';
@@ -10,57 +10,61 @@ function HomePage() {
   const [error, setError] = useState(null);
   const location = useLocation();
 
-  // 토큰이 있으면 사용자 정보를 가져오는 함수
-  const fetchUserInfo = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/api/user/me", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-      });
+ // fetchUserInfo 함수를 useCallback으로 메모이제이션
+ const fetchUserInfo = useCallback(async () => {
+  try {
+    const response = await fetch("http://localhost:8080/api/user/me", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+    });
 
-      if (response.ok) {
-        const userInfo = await response.json();
-        setUser(userInfo);
-      } else if (response.status === 401) {
-        const refreshed = await refreshAccessToken();
-        if (refreshed) {
-          const newAccessToken = localStorage.getItem('accessToken');
-          if (newAccessToken) {
-            const retryResponse = await fetch("http://localhost:8080/api/user/me", {
-              method: "GET",
-              credentials: "include",
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${newAccessToken}`,
-              },
-            });
+    if (response.ok) {
+      const userInfo = await response.json();
+      setUser(userInfo);
+    } else if (response.status === 401) {
+      const refreshed = await refreshAccessToken();
+      if (refreshed) {
+        const newAccessToken = localStorage.getItem('accessToken');
+        if (newAccessToken) {
+          const retryResponse = await fetch("http://localhost:8080/api/user/me", {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${newAccessToken}`,
+            },
+          });
 
-            if (retryResponse.ok) {
-              const userInfo = await retryResponse.json();
-              setUser(userInfo);
-            } else {
-              setUser(null);
+          if (retryResponse.ok) {
+            const userInfo = await retryResponse.json();
+            setUser(userInfo);
+          } else {
+            setUser(null);
+            if (location.pathname !== '/auth') {
               navigate('/auth');
             }
           }
         }
-      } else {
-        setUser(null);
       }
-    } catch (error) {
-      console.error("사용자 정보 가져오기 에러:", error);
+    } else {
       setUser(null);
-      navigate('/auth');
-    } finally {
-      setLoading(false);  // 로딩 상태 업데이트
     }
-  };
+  } catch (error) {
+    console.error("사용자 정보 가져오기 에러:", error);
+    setUser(null);
+    if (location.pathname !== '/auth') {
+      navigate('/auth');
+    }
+  } finally {
+    setLoading(false);
+  }
+}, [refreshAccessToken, setUser, navigate, location.pathname]);
 
-  useEffect(() => {
+   useEffect(() => {
     const hash = window.location.hash;
     console.log("URL Hash:", hash);
 
@@ -83,7 +87,7 @@ function HomePage() {
         setLoading(false);  // 토큰이 없으면 바로 로딩 종료
       }
     }
-  }, [location.hash, setAccessToken, location.pathname, fetchUserInfo]);
+  }, [location.hash, location.pathname, setAccessToken, fetchUserInfo]);
 
   const handleLoginClick = () => {
     navigate('/auth');
