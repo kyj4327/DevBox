@@ -70,13 +70,20 @@ const GatherMateDetail = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/posts/${postId}`,
+        `http://localhost:8080/gathermate/delete/${postId}`,
         {
           method: "DELETE", // 삭제 요청
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+            "Content-Type": "application/json",
+          },
         }
       );
 
       if (!response.ok) {
+        if (response.status === 403) {
+          throw new Error("작성자가 아닙니다.");
+        }
         throw new Error("네트워크 응답이 올바르지 않습니다.");
       }
 
@@ -84,7 +91,7 @@ const GatherMateDetail = () => {
       navigate("/gathermate/list"); // 삭제 후 목록 페이지로 이동
     } catch (error) {
       console.error("삭제 중 오류 발생:", error);
-      alert("글 삭제에 실패했습니다. 다시 시도해주세요.");
+      alert(error.message || "글 삭제에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -124,7 +131,7 @@ const GatherMateDetail = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/posts/${postId}/recruiting`,
+        `http://localhost:8080/gathermate/edit/${postId}/recruiting`,
         {
           method: "PUT",
           headers: {
@@ -135,20 +142,17 @@ const GatherMateDetail = () => {
         }
       );
 
-      if (!response.ok) {
-        throw new Error("모집 상태 업데이트에 실패했습니다.");
+      if (response.ok) {
+        const data = await response.json();
+        setIsRecruiting(newRecruitingStatus);
+        alert(data.message || "모집 상태가 성공적으로 변경되었습니다.");
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "모집 상태 업데이트에 실패했습니다.");
       }
-
-      // 백엔드 업데이트가 성공한 후에 프론트엔드 상태를 변경
-      setIsRecruiting(newRecruitingStatus);
-      alert(
-        newRecruitingStatus
-          ? "모집중으로 변경되었습니다."
-          : "모집완료로 변경되었습니다."
-      );
     } catch (error) {
       console.error("모집 상태 업데이트 중 오류 발생:", error);
-      alert("모집 상태를 변경하는 데 실패했습니다. 다시 시도해주세요.");
+      alert(error.message || "모집 상태를 변경하는 데 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -253,8 +257,13 @@ const GatherMateDetail = () => {
               style={{ padding: "10px 0px 0px" }}
             >
               <div className="d-flex">
-                <PostButton text="수정" onClick={goToEditPage} />
-                <PostButton text="삭제" onClick={deletePost} />
+                {/* 작성자가 아닐 경우 수정/삭제 버튼을 숨김 */}
+                {user && post.author === user.nickname && (
+                  <>
+                    <PostButton text="수정" onClick={goToEditPage} />
+                    <PostButton text="삭제" onClick={deletePost} />
+                  </>
+                )}
               </div>
               <div className="d-flex">
                 <PostButton text="목록으로" onClick={toList} />
