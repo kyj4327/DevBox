@@ -53,6 +53,11 @@ public class GatherMateService {
         GatherMate gatherMate = gatherMateRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
 
+
+            gatherMate.incrementViews();
+
+
+
         boolean isLiked = false;
         if (userId != null) {
             UserEntity user = userRepository.findById(userId)
@@ -74,26 +79,6 @@ public class GatherMateService {
                 .views(gatherMate.getViews())
                 .build();
     }
-
-//    public List<GatherMateResponse> getList(Pageable pageable) {
-//
-//        // findAll()은 Page<GatherMate> 반환, 이를 GatherMateResponse로 변환한 후 List로 반환
-//        /** TODO: 조회수, 좋아요 넘기기 **/
-////        return gatherMateRepository.findAll().stream()
-////                .map(gatherMate ->
-////                    GatherMateResponse.builder()
-////                            .id(gatherMate.getId())
-////                            .intro(gatherMate.getIntro())
-////                            .title(gatherMate.getTitle())
-////                            .createdAt(gatherMate.getCreatedAt())
-////                            .build())
-////                .collect(Collectors.toList());
-////        Pageable pageable = PageRequest.of(page, 10, Sort.by("id"));
-//
-//        return gatherMateRepository.findAll(pageable).stream()
-//                .map(GatherMateResponse::new)
-//                .collect(Collectors.toList());
-//    }
 
     public Page<GatherMateResponse> getList(Pageable pageable) {
         return gatherMateRepository.findAll(pageable)
