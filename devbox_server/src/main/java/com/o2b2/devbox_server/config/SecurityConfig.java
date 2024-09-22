@@ -18,7 +18,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
@@ -128,7 +127,11 @@ public class SecurityConfig {
 
 
                         // gatherMate 리스트는 누구나
-                        .requestMatchers("/gathermate/list").permitAll()
+                        .requestMatchers("/gathermate/lists").permitAll()
+                        .requestMatchers("/gathermate/lists**").permitAll()
+                        .requestMatchers("/gathermate/lists/**").permitAll()
+                        // 모집중/모집완료
+                        .requestMatchers("/gathermate/edit/*/recruiting").authenticated()
 
                         // gatherMate 상세는 누구나
                         .requestMatchers("/gathermate/detail/**").permitAll()
@@ -136,6 +139,7 @@ public class SecurityConfig {
                         .requestMatchers("/gathermate/posts").authenticated()
                         .requestMatchers("/gathermate/likes/**").authenticated()
                         .requestMatchers("/gathermate/likes").authenticated()
+
 
                         // gatherMate 글 작성 페이지는 로그인 사용자
                         .requestMatchers("/gathermate/write").authenticated()
@@ -172,9 +176,12 @@ public class SecurityConfig {
                         .anyRequest().authenticated());
 
         http
-                .addFilterBefore(new JWTFilter(jwtUtil,userRepository), LoginFilter.class)
-                .addFilterAfter(new JWTFilter(jwtUtil,userRepository), OAuth2LoginAuthenticationFilter.class)
-                .addFilterBefore(new JWTFilter(jwtUtil, userRepository), UsernamePasswordAuthenticationFilter.class);
+//                .addFilterBefore(new JWTFilter(jwtUtil,userRepository), LoginFilter.class)
+//                .addFilterAfter(new JWTFilter(jwtUtil,userRepository), OAuth2LoginAuthenticationFilter.class)
+//                .addFilterBefore(new JWTFilter(jwtUtil, userRepository), UsernamePasswordAuthenticationFilter.class);
+//                .addFilterAfter(new JWTFilter(jwtUtil, userRepository), AnonymousAuthenticationFilter.class);
+
+                  .addFilterBefore(new JWTFilter(jwtUtil, userRepository), UsernamePasswordAuthenticationFilter.class);
 
         http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class);
