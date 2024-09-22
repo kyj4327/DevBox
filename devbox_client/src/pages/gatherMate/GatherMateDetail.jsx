@@ -30,7 +30,14 @@ const GatherMateDetail = () => {
   const fetchPost = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/posts/${postId}`
+        `http://localhost:8080/gathermate/posts/${postId}`,{
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        }
       );
 
       if (!response.ok) {
