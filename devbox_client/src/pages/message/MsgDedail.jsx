@@ -45,12 +45,12 @@ const MesDetail = () => {
 
     return (
         <div>
-            <section class="container py-5">
+            <section className="container py-5">
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2 pb-5 ">쪽지</h1>
                     <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
 
-                        <div class="contact-form row">
+                        <div className="contact-form row">
                             <div className="col-lg-6 mb-4">
                                 <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">보낸사람</h2>
                                 <p className="worksingle-footer py-3 text-muted light-200">
@@ -72,7 +72,7 @@ const MesDetail = () => {
                             </div>
 
 
-                            <div class="contact-form row">
+                            <div className="contact-form row">
                                 <div className="col-lg-6 mb-4">
                                     <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">제목</h2>
                                     <p className="worksingle-footer py-3 text-muted light-200">
@@ -88,7 +88,7 @@ const MesDetail = () => {
                                 <p className="worksingle-footer py-3 text-muted light-200">
 
                                     <textarea
-                                        class="form-control form-control-lg light-300"
+                                        className="form-control form-control-lg light-300"
                                         rows="6"
                                         id="floatingtextarea"
                                         type="text"

@@ -93,7 +93,7 @@ const Header = () => {
               <li className="nav-item">
                 <a
                   className="nav-link btn-outline-primary rounded-pill px-3"
-                  href="/message/list"
+                  href=""
                 >
                   FAQ
                 </a>

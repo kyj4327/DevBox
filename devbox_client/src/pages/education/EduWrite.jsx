@@ -113,7 +113,7 @@ const EduWrite = () => {
 
     return (
         <div>
-            <section class="container py-5">
+            <section className="container py-5">
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2 pb-5 ">개발 교육 정보</h1>
                     <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
@@ -123,7 +123,7 @@ const EduWrite = () => {
                             <WriteShort type={'text'} titleTag={'제목'} name={'title'} value={title} onChange={(e) => setTitle(e.target.value)} />
                             <WriteShort type={'text'} titleTag={'소제목'} name={'subtitle'} value={subtitle} onChange={(e) => setSubtitle(e.target.value)} />
 
-                            <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">교육 포스터</h2>
+                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">교육 포스터</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
 
                                 {uploadImgUrl && <img src={uploadImgUrl} alt="Uploaded" />}
@@ -135,7 +135,7 @@ const EduWrite = () => {
                             </p>
 
 
-                            <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">모집기간</h2>
+                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">모집기간</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
                                 <div style={{ display: 'flex' }}>
                                     <input
@@ -155,7 +155,7 @@ const EduWrite = () => {
                                 </div>
                             </p>
 
-                            <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">교육기간</h2>
+                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">교육기간</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
 
                                 <div style={{ display: 'flex' }}>

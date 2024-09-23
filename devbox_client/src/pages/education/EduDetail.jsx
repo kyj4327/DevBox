@@ -28,28 +28,28 @@ const EduDetail = () => {
 
     return (
         <div>
-            <div id="work_single_banner" class="bg-light w-100">
-                <div class="container-fluid text-light d-flex justify-content-center align-items-center border-0 rounded-0 p-0 py-5">
-                    <div class="banner-content col-lg-8 m-lg-auto text-center py-5 px-3">
-                        <h1 class="banner-heading h2 pb-5 typo-space-line-center">{eduData.title}</h1>
-                        <p class="banner-footer light-300">
+            <div id="work_single_banner" className="bg-light w-100">
+                <div className="container-fluid text-light d-flex justify-content-center align-items-center border-0 rounded-0 p-0 py-5">
+                    <div className="banner-content col-lg-8 m-lg-auto text-center py-5 px-3">
+                        <h1 className="banner-heading h2 pb-5 typo-space-line-center">{eduData.title}</h1>
+                        <p className="banner-footer light-300">
                             {eduData.subtitle}
                         </p>
                     </div>
                 </div>
             </div>
-            <section class="container py-5">
-                <div class="row justify-content-center pb-4">
-                    <div class="col-lg-8">
-                        <div id="templatemo-slide-link-target" class="card mb-3">
-                            <img class="img-fluid border rounded" src={`http://localhost:8080/edu/download?id=${eduData.id}`} alt="Card image cap" />
+            <section className="container py-5">
+                <div className="row justify-content-center pb-4">
+                    <div className="col-lg-8">
+                        <div id="templatemo-slide-link-target" className="card mb-3">
+                            <img className="img-fluid border rounded" src={`http://localhost:8080/edu/download?id=${eduData.id}`} alt="Card image cap" />
                         </div>
                     </div>
                 </div>
-                <div class="row pt-5">
-                    <div class="worksingle-content col-lg-8 m-auto text-left justify-content-center">
-                        <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">과정요약</h2>
-                        <p class="worksingle-footer py-3 text-muted light-300">
+                <div className="row pt-5">
+                    <div className="worksingle-content col-lg-8 m-auto text-left justify-content-center">
+                        <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">과정요약</h2>
+                        <p className="worksingle-footer py-3 text-muted light-300">
                             <li>모집기간: {eduData.recruit}</li>
                             <li>교육기간: {eduData.eduterm}</li>
                             <li>모집인원: {eduData.people}</li>

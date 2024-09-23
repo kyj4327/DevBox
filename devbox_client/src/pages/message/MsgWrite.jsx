@@ -46,7 +46,7 @@ const MesWrite = () => {
 
     return (
         <div>
-            <section class="container py-5">
+            <section className="container py-5">
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2 pb-5 ">쪽지 작성</h1>
                     <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
@@ -67,9 +67,9 @@ const MesWrite = () => {
 
                             <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">작성 내용</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
-                                <div class=" form-floating">
+                                <div className=" form-floating">
                                     <textarea
-                                        class="form-control form-control-lg light-300"
+                                        className="form-control form-control-lg light-300"
                                         rows="8"
                                         placeholder="Message"
                                         id="floatingtextarea"
