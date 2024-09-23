@@ -47,12 +47,15 @@ public class UserEntity {
     // List<EduEntity> eduEntitys = new ArrayList<>();
     
     @OneToMany(mappedBy = "receiver")
+    @JsonIgnore
     List<MsgReciverEntity> MsgEntitys = new ArrayList<>();
     
     @OneToMany(mappedBy = "sender")
+    @JsonIgnore
     List<MsgSenderEntity> MsgSenderEntitys = new ArrayList<>();
     
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     List<ProLike> proLikes = new ArrayList<>();
 
 }

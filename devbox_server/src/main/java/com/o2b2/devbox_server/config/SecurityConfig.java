@@ -162,8 +162,8 @@ public class SecurityConfig {
                         .requestMatchers("/edu/delete").authenticated()
 
                         // 프로젝트 자랑
-                        .requestMatchers("/project/list/").permitAll()
-                        .requestMatchers("/project/detail/").permitAll()
+                        .requestMatchers("/project/list").permitAll()
+                        .requestMatchers("/project/detail").permitAll()
                         .requestMatchers("/project/list/**").permitAll()
                         .requestMatchers("/project/detail/**").permitAll()
                         .requestMatchers("/project/write").authenticated()
@@ -175,7 +175,7 @@ public class SecurityConfig {
                         .requestMatchers("/msg/bell").authenticated()
 
                         // .requestMatchers("/edu/**").permitAll()
-                        .requestMatchers("/project/**").permitAll()
+                        // .requestMatchers("/project/**").permitAll()
                         .requestMatchers("/msg/**").authenticated()
                         // .requestMatchers("/message/**").authenticated()
 

@@ -38,6 +38,7 @@ public class JWTFilter extends OncePerRequestFilter {
          */
         String requestURI = request.getRequestURI();
         log.error(requestURI);
+        log.error(requestURI.matches("/project/detail.*") + "");
 //        if (requestURI.equals("/join") || requestURI.equals("/login") || requestURI.matches("/password/.*")) {
 
         // 테스트용 로그인 없이 crud 열기
@@ -54,7 +55,7 @@ public class JWTFilter extends OncePerRequestFilter {
         || requestURI.matches("/project/detail.*")
 
         //
-                || requestURI.matches("/.*/list/.*")
+                || requestURI.matches("/.*/list")
                 // || requestURI.matches("/.*/detail/.*")
                 || requestURI.matches("/.*/list/.*.*")
                 || requestURI.matches("/.*/download/.*") 
