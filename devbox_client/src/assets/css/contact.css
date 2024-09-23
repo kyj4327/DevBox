@@ -34,21 +34,22 @@
   font-family: 'PTBandocheB'; /* 폰트 적용 */
 }
 
-.bg-light {
-  background-color: #f8f9fa;
-}
-
-.text-primary {
+.contact-primary {
   font-family: 'PTBandocheB'; /* 폰트 적용 */
   color: #007bff;
-}
+} 
 
-.text-muted {
+.contact-muted {
   color: #6c757d;
+  
 }
 
-.light-300 {
+.contact-adress {
   font-weight: 300;
+}
+.contact-button {
+  color: black;
+  font-family: 'PTBandocheB';
 }
 
 /* 추가 스타일을 여기에 작성하세요 */

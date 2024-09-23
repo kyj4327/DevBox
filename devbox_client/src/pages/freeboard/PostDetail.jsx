@@ -5,7 +5,7 @@ import WriteShort from "../../components/WriteShort";
 import WriteLong from "../../components/WriteLong";
 import QuillEditor from "../../components/QuillEditor";
 import Button from "../../components/Button";
-import '../../assets/css/PostDetail.css';  // Make sure to create this CSS file
+import '../../assets/css/freeboard.css';  // Make sure to create this CSS file
 
 const PostDetail = () => {
   const { id } = useParams();
@@ -129,8 +129,8 @@ const PostDetail = () => {
             />
           </div>
           <div className="edit-actions">
-            <Button text="수정하기" onClick={handleUpdatePost} className="btn btn-primary" />
-            <Button text="취소" onClick={() => setIsEditing(false)} className="btn btn-secondary" />
+            <Button text="수정하기" onClick={handleUpdatePost} className="btn-freeboard-edit" />
+            <Button text="취소" onClick={() => setIsEditing(false)} className="btn-freeboard-delete" />
           </div>
         </div>
       ) : (
@@ -149,30 +149,30 @@ const PostDetail = () => {
           />
         </div>
           <div className="post-actions">
-            <div className="button-group">
-              <Button text="목록" onClick={() => navigate('/freeboard/list')} className="btn btn-list" />
+            <div className="freeboard-button-group">
+              <Button text="목록" onClick={() => navigate('/freeboard/list')} className="btn-freeboard-write" />
             </div>
-            <div className="button-group">
-              <Button text="수정" onClick={handleEditPost} className="btn btn-edit" />
-              <Button text="삭제" onClick={handleDeletePost} className="btn btn-delete" />
+            <div className="freeboard-button-group">
+              <Button text="수정" onClick={handleEditPost} className="btn-freeboard-edit" />
+              <Button text="삭제" onClick={handleDeletePost} className="btn-freeboard-delete" />
             </div>
           </div>
 
-          <div className="comments-section">
-            <h2 className="comments-title">댓글 {comments.length}개</h2>
+          <div className="freeboard-comments-section">
+            <h2 className="freeboard-comments-title">댓글 {comments.length}개</h2>
             {comments.length === 0 ? (
               <p className="no-comments">첫 번째 댓글을 남겨보세요.</p>
             ) : (
-              <ul className="comments-list">
+              <ul className="freeboard-comments-list">
                 {comments.map((comment) => (
-                  <li key={comment.id} className="comment">
-                    <div className="comment-content">{comment.content}</div>
-                    <div className="comment-meta">
+                  <li key={comment.id} className="freeboard-comment">
+                    <div className="freeboard-comment-content">{comment.content}</div>
+                    <div className="freeboard-comment-meta">
                       <span className="comment-author">{comment.author}</span>
                       <span className="comment-date">{new Date(comment.createdAt).toLocaleString()}</span>
                       <button 
                         onClick={() => handleDeleteComment(comment.id)} 
-                        className="btn btn-delete-comment"
+                        className="btn-comment-delete"
                       >
                         삭제
                       </button>
@@ -182,15 +182,15 @@ const PostDetail = () => {
               </ul>
             )}
 
-            <form onSubmit={handleCommentSubmit} className="comment-form">
+            <form onSubmit={handleCommentSubmit} className="freeboard-comment-form">
               <textarea
-                className="comment-input"
+                className="freeboard-comment-input"
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="댓글을 작성하세요..."
                 required
               />
-              <button type="submit" className="btn btn-submit-comment">댓글 작성</button>
+              <button type="submit" className="btn-comment-write">댓글 작성</button>
             </form>
           </div>
         </>

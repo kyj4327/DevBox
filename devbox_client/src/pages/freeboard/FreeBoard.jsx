@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllPosts } from '../../services/api-service';
 import Pagination from '../../components/Pagination';
+import '../../assets/css/freeboard.css';
 
 const FreeBoard = () => {
   const [posts, setPosts] = useState([]);
@@ -56,7 +57,7 @@ const FreeBoard = () => {
   return (
     <div className="container mt-5">
       <h2 className="mb-4">자유게시판</h2>
-      <Link to="/freeboard/write" className="btn btn-primary mb-3">
+      <Link to="/freeboard/write" className="btn-freeboard-write mb-3">
         새 글 작성
       </Link>
       {posts.length === 0 ? (

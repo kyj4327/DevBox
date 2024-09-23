@@ -19,7 +19,7 @@ function BDIAIntroduction() {
           }}
           className="bdia-header-logo"
         />
-        <span className="bdia-text">
+        <span className="bdia-header-text">
           <strong>B</strong>usan <strong>D</strong>igital <strong>I</strong>nnovation <strong>A</strong>cademy
         </span>
       </div>
@@ -32,25 +32,25 @@ function BDIAIntroduction() {
       
       {/* 구분선 및 제목 */}
       <div className="section-container">
-        <h2 className="section-title">위치</h2>
+        <h2 className="bdia-section-title">위치</h2>
         <hr className="divider" />
         <KakaoMap />
       </div>
 
       <div className="section-container">
-        <h2 className="section-title"></h2>
+        <h2 className="bdia-section-title"></h2>
         <hr className="divider" />
         <RoadExplain />
       </div>
 
       <div className="section-container">
-        <h2 className="section-title">교육장</h2>
+        <h2 className="bdia-section-title">교육장</h2>
         <hr className="divider" />
         <ImageSlider />
       </div>
 
       <div className="section-container">
-        <h2 className="section-title"></h2>
+        <h2 className="bdia-section-title"></h2>
         <hr className="divider" />
         <ImageList />
       </div>

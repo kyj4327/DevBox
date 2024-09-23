@@ -125,7 +125,7 @@ const ContactForm = () => {
       <div className="col-md-12 col-12 m-auto text-end">
         <button 
           type="submit" 
-          className="btn btn-secondary rounded-pill px-md-5 px-4 py-2 radius-0 text-light light-300"
+          className="contact-button btn-secondary rounded-pill px-md-5 px-4 py-2 radius-0 text-light light-300"
           disabled={isLoading} // 로딩 중일 때 버튼 비활성화
         >
           문의하기

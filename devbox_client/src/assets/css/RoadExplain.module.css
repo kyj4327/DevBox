@@ -24,30 +24,30 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto 1fr;
     grid-template-areas: 
-        "roadLeft roadRight"
-        "roadInfoSub roadInfoSub";
+        "left right"
+        "infoSub infoSub";
     gap: 20px;
     height: 100vh;
     padding: 20px;
 }
 
-.roadLeft {
-    grid-area: roadLeft;
+.roadExplain__left {
+    grid-area: left;
 }
 
-.roadRight {
-    grid-area: roadRight;
+.roadExplain__right {
+    grid-area: right;
 }
 
-.roadInfoSub {
-    grid-area: roadInfoSub;
+.roadExplain__infoSub {
+    grid-area: infoSub;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
 }
 
-.roadInfoCons {
+.roadExplain__infoCons {
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -56,11 +56,11 @@
     max-width: 1200px;
 }
 
-.roadInfoList, .roadInfoTable {
+.roadExplain__infoList, .roadExplain__infoTable {
     flex: 1;
 }
 
-h5 {
+.roadExplain__heading {
     font-family: "PTBandocheB", sans-serif;
     margin-bottom: 12px;
     font-size: 2.0rem;
@@ -70,13 +70,13 @@ h5 {
     align-items: center;
 }
 
-.icon {
+.roadExplain__icon {
     width: 2.8rem;
     height: 2.8rem;
     margin-right: 10px;
 }
 
-p, ul, table {
+.roadExplain__text, .roadExplain__list, .roadExplain__table {
     margin: 0 0 12px 0;
     padding: 0;
     font-family: "MinSans-Regular", sans-serif;
@@ -84,37 +84,35 @@ p, ul, table {
     font-weight: bold;
     text-align: left;
 }
-.roadTrans ul,li {
+
+.roadExplain__transport .roadExplain__list,
+.roadExplain__transport .roadExplain__listItem {
     text-align: left;
 }
 
-.roadInfoList ul {
-    list-style: none; /* 기본 불릿 제거 */
-    padding-left: 0; /* 기본 패딩 제거 */
-    margin: 0; /* 기본 여백 제거 */
-    text-align: center; /* 리스트 항목을 중앙 정렬 */
+.roadExplain__infoList .roadExplain__list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    text-align: left; /* 중앙 정렬에서 왼쪽 정렬로 변경 */
 }
-.roadInfoList h5 {
-    margin-bottom: 20px; /* h5와 다음 요소 사이의 여백을 설정 */
+.roadExplain__infoList .roadExplain__heading {
+    margin-bottom: 20px;
 }
 
-.roadInfoTit {
-    display: block; /* span을 블록 요소처럼 표시하여 여백 적용 */
-    margin-top: 20px; /* span 위쪽에 여백을 추가 */
-    margin-bottom: 10px; /* span 아래쪽에 여백을 추가 */
+.roadExplain__infoTitle {
     display: block;
+    margin-top: 20px;
+    margin-bottom: 10px;
     color: #0a0a5c;
     font-size: 1.6rem;
     font-family: "MinSans-Regular", sans-serif;
     font-weight: bold;
-    margin-top: 10px;
-    margin-bottom: 8px;
     padding-left: 10px;
     text-align: left;
- 
 }
 
-.roadInfoTable table {
+.roadExplain__table {
     width: 100%;
     max-width: 600px;
     border-collapse: collapse;
@@ -122,36 +120,37 @@ p, ul, table {
     margin: 0 auto;
 }
 
-.roadInfoTable thead tr {
+.roadExplain__table thead tr {
     height: 40px;
 }
 
-.roadInfoTable th,
-.roadInfoTable td {
+.roadExplain__table th,
+.roadExplain__table td {
     text-align: center;
     vertical-align: middle;
 }
 
-.roadInfoTable thead th {
+.roadExplain__table thead th {
     color: #ffffff;
     font-size: 1.4rem;
     background: #2f1a66;
     padding: 12px 8px;
 }
 
-.roadInfoTable th:first-child {
+.roadExplain__table th:first-child {
     border-radius: 4px 0 0 4px;
 }
 
-.roadInfoTable th:last-child {
+.roadExplain__table th:last-child {
     border-radius: 0 4px 4px 0;
 }
-.roadInfoTable td {
+
+.roadExplain__table td {
     padding: 10px 6px;
     font-size: 1.2rem;
     border-bottom: 1px solid #ddd;
 }
 
-.roadInfoTable tbody tr:last-child td {
+.roadExplain__table tbody tr:last-child td {
     border-bottom: none;
 }

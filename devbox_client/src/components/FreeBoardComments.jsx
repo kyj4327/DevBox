@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getCommentsByPostId, createComment, deleteComment } from '../services/api-service';
+import '../../assets/css/PostDetail.css';
 
 const FreeBoardComments = ({ postId }) => {
     const [comments, setComments] = useState([]);
@@ -65,7 +66,7 @@ const FreeBoardComments = ({ postId }) => {
                 {comments.map((comment) => (
                     <li key={comment.id} className="list-group-item d-flex justify-content-between align-items-center">
                         <span>{comment.content}</span>
-                        <button className="btn btn-sm btn-danger" onClick={() => handleDelete(comment.id)}>Delete</button>
+                        <button className="btn-comment-delete btn-sm btn-danger" onClick={() => handleDelete(comment.id)}>Delete</button>
                     </li>
                 ))}
             </ul>
@@ -79,7 +80,7 @@ const FreeBoardComments = ({ postId }) => {
                         rows="3"
                     ></textarea>
                 </div>
-                <button type="submit" className="btn btn-primary">Add Comment</button>
+                <button type="submit" className="btn-comment-write">Add Comment</button>
             </form>
         </div>
     );
