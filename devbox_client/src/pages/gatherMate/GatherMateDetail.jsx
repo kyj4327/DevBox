@@ -44,6 +44,7 @@ const GatherMateDetail = () => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
+      console.log("data 뽑기 " + data.isLiked)
       setPost(data);
       // setLikes(data.likes || 0);
       setIsLiked(data.isLiked || false);
@@ -240,6 +241,8 @@ const GatherMateDetail = () => {
                       <ion-icon
                         name={post.likeCount > 0 ? 'heart' : 'heart-outline'}
                         style={{ color: post.likeCount > 0 ? 'red' : 'black', fontSize: '25px' }}
+                        // name={isLiked ? 'heart' : 'heart-outline'}
+                        // style={{ color: isLiked ? 'red' : 'black', fontSize: '25px' }}
                       ></ion-icon>
                     }
                       text={post.likeCount}
@@ -280,8 +283,8 @@ const GatherMateDetail = () => {
 
           {/* 댓글 컴포넌트 */}
           <div className="row justify-content-center"></div>
-          <GatherMateComments postId={postId} />
-          </>
+<GatherMateComments postId={postId} />
+        </>
       ) : (
         <div>Loading...</div> // post가 null일 경우 로딩 표시
       )}
