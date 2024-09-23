@@ -9,15 +9,8 @@ const Project = () => {
     const [refresh, setRefresh] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     
-    const token = localStorage.getItem('accessToken');
     async function get(page = 1) {
-        const res = await fetch(`http://localhost:8080/project/list?page=${page}`,{
-            method: 'GET',
-            credentials: "include",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            },
-        });
+        const res = await fetch(`http://localhost:8080/project/list?page=${page}`);
         const data = await res.json();
         console.log(data);
         

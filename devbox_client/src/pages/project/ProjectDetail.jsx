@@ -9,10 +9,10 @@ import 'swiper/css/free-mode';
 import '../../assets/css/styles.css';
 import { FreeMode, EffectCoverflow, Autoplay, Pagination } from 'swiper/modules';
 import Swal from "sweetalert2";
-import { useUser } from "../../components/context/UserContext";
+// import { useUser } from "../../components/context/UserContext";
 
 const ProjectDetail = () => {
-    const { user } = useUser();  // 로그인된 사용자 정보와 이를 설정하는 함수를 사용합니다.
+    // const { user } = useUser();  // 로그인된 사용자 정보와 이를 설정하는 함수를 사용합니다.
     const navigate = useNavigate();
     const [proData, setProData] = useState({});
     const [userData, setUserData] = useState({});
@@ -42,17 +42,17 @@ const ProjectDetail = () => {
     }
 
     useEffect(() => {
-        getProjectDetail();
-        getUserInfo();
-        if (!user) {
-            Swal.fire({
-                icon: "error",
-                title: "로그인 필요",
-                text: "로그인이 필요합니다."
-            });
-            navigate('/auth');
-          }
-    }, [id,user, navigate]);
+            getProjectDetail();
+        // getUserInfo();
+        // if (!user) {
+        //     Swal.fire({
+        //         icon: "error",
+        //         title: "로그인 필요",
+        //         text: "로그인이 필요합니다."
+        //     });
+        //     navigate('/auth');
+        //   }
+    }, [id, navigate]);
 
     return (
         <div>
@@ -145,15 +145,15 @@ const ProjectDetail = () => {
                                             text={'삭제'}
                                             onClick={async (e) => {
                                                 e.preventDefault();
-                                                if (!user) {
-                                                    Swal.fire({
-                                                        icon: "error",
-                                                        title: "로그인 필요",
-                                                        text: "로그인이 필요합니다."
-                                                    });
-                                                    navigate('/auth');
-                                                    return;
-                                                }
+                                                // if (!user) {
+                                                //     Swal.fire({
+                                                //         icon: "error",
+                                                //         title: "로그인 필요",
+                                                //         text: "로그인이 필요합니다."
+                                                //     });
+                                                //     navigate('/auth');
+                                                //     return;
+                                                // }
                                                 const result = await Swal.fire({
                                                     icon: "warning",
                                                     title: "정말 삭제하시겠습니까?",
