@@ -53,11 +53,12 @@ public class ReservationController {
         return list;
     }
 
-    @GetMapping("/reservation/list/{category}/{date}")
+    @GetMapping("/reservation/check/{category}/{date}")
     public List<Map<String, Object>> reservationList(
             @PathVariable("category") String category,
             @PathVariable("date") String date,
-            @RequestParam(value = "page", defaultValue = "1") int page) {
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
         LocalDateTime today = LocalDateTime.now();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -83,11 +84,24 @@ public class ReservationController {
         Sort sort = Sort.by(Order.asc("date"), Order.asc("time"));
         Pageable pageable = PageRequest.of(page - 1, 4, sort);
         Page<Reservation> p = null;
-        if (date.equals("All")) {
-            p = reservationRepository.findByCondition(category, pageable);
-        } else {
-            p = reservationRepository.findByConditionAndDateContaining(category, date, pageable);
+
+        UserEntity userId = userDetails.getUserEntity();
+        if (userDetails.getUserEntity().getRole().equals("ROLE_ADMIN")) {
+            if (date.equals("All")) {
+                p = reservationRepository.findByCondition(category, pageable);
+            } else {
+                p = reservationRepository.findByConditionAndDateContaining(category, date, pageable);
+            }
+        } else if (userDetails.getUserEntity().getRole().equals("ROLE_STUDENT")) {
+            if (date.equals("All")) {
+                p = reservationRepository.findByUserEntityAndCondition(userId, category,
+                        pageable);
+            } else {
+                p = reservationRepository.findByUserEntityAndConditionAndDateContaining(userId,
+                        category, date, pageable);
+            }
         }
+
         List<Reservation> list = p.getContent();
         List<Map<String, Object>> response = new ArrayList<>();
         for (Reservation r : list) {
