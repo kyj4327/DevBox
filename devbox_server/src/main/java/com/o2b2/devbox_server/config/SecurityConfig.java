@@ -133,6 +133,13 @@ public class SecurityConfig {
                         // 모집중/모집완료
                         .requestMatchers("/gathermate/edit/*/recruiting").authenticated()
 
+                        // 댓글
+                        .requestMatchers("/gathermate/*/comments").authenticated()
+                        .requestMatchers("/gathermate/comments/*/edit").authenticated()
+
+                        .requestMatchers("/gathermate/comments/*/delete").authenticated()
+                        .requestMatchers("/gathermate/*/commentslist").permitAll()
+
                         // gatherMate 상세는 누구나
                         .requestMatchers("/gathermate/detail/**").permitAll()
                         .requestMatchers("/gathermate/posts/**").permitAll()
