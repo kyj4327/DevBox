@@ -63,14 +63,18 @@ function GatherMateEdit() {
         body: JSON.stringify(updatedGatherMate),
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        alert(data.message || "글이 성공적으로 수정되었습니다.");
-        navigate(`/gathermate/detail/${postId}`);
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "글 수정에 실패했습니다.");
+      if (!response.ok) {
+        if (response.status === 403) {
+          throw new Error("작성자가 아닙니다.");
+        }
+        throw new Error("글 수정에 실패했습니다.");
       }
+
+      const data = await response.text();
+      console.log("업데이트된 데이터:", data);
+
+       alert(data.message || "글이 성공적으로 수정되었습니다.");
+      navigate(`/gathermate/detail/${postId}`);
     } catch (error) {
       console.error("수정 실패:", error);
       alert(error.message || "글 수정에 실패했습니다.");
