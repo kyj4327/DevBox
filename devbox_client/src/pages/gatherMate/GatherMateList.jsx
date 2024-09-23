@@ -195,7 +195,15 @@ function GatherMateList() {
                       >
                         {post.recruiting ? "모집중" : "모집완료"}
                       </div>
-                      <h3 className="post-title">{post.title}</h3>
+                      <h3 className="post-title">
+                        {post.title}
+                        {post.commentCount > 0 && (
+                          <span className="comment-count">
+                            {" "}
+                            [{post.commentCount}]
+                          </span>
+                        )}
+                      </h3>
                     </div>
 
                     {/* 카테고리명 -> 해시태그 기능? */}
@@ -236,7 +244,7 @@ function GatherMateList() {
                             width="16"
                             height="16"
                           />
-                          {post.views} 
+                          {post.views}
                         </span>
                         <span className="post-likes">
                           <img
@@ -254,7 +262,7 @@ function GatherMateList() {
                             width="16"
                             height="16"
                           />
-                          {post.comments} 3
+                          {post.commentCount}
                         </span>
                       </div>
                     </div>
