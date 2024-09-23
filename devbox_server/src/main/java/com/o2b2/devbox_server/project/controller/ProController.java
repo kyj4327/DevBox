@@ -33,7 +33,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.o2b2.devbox_server.project.model.MultiImgEntity;
 import com.o2b2.devbox_server.project.model.ProEntity;
+import com.o2b2.devbox_server.project.model.ProLike;
 import com.o2b2.devbox_server.project.repository.MultiImgRepository;
+import com.o2b2.devbox_server.project.repository.ProLikeRepository;
 import com.o2b2.devbox_server.project.repository.ProRepository;
 import com.o2b2.devbox_server.user.dto.CustomUserDetails;
 import com.o2b2.devbox_server.user.entity.UserEntity;
@@ -57,6 +59,9 @@ public class ProController {
 
     @Autowired
     MultiImgRepository multiImgRepository;
+
+    @Autowired
+    ProLikeRepository proLikeRepository;
 
     @GetMapping("/project/list")
     public Map<String, Object> proList(
@@ -97,30 +102,45 @@ public class ProController {
 
     @GetMapping("/project/like")
     @ResponseBody
-    public Map<String, Object> like(@RequestParam Long id) {
+    public Map<String, Object> like(@RequestParam Long id, @AuthenticationPrincipal CustomUserDetails userDetails) {
         Map<String, Object> map = new HashMap<>();
+
+        // 로그인한 유저 정보 가져오기
+        UserEntity user = userDetails.getUserEntity();
+
+        // 게시물 존재 여부 확인
         Optional<ProEntity> proOpt = proRepository.findById(id);
-
-        if (proOpt.isPresent()) {
-            ProEntity pro = proOpt.get();
-
-            // 좋아요 상태 토글
-            if (pro.getLikeCount() == null) {
-                pro.setLikeCount(0);
-
-            }
-
-            // 좋아요 수 증가
-            pro.setLikeCount(pro.getLikeCount() + 1);
-
-            proRepository.save(pro); // 변경된 상태를 저장
-
-            map.put("likeCount", pro.getLikeCount());
-        } else {
-            map.put("error", "Message not found");
+        if (!proOpt.isPresent()) {
+            map.put("error", "Post not found");
+            return map;
         }
 
-        return map; // 클라이언트에 map 반환
+        ProEntity pro = proOpt.get();
+
+        // 유저가 해당 게시물에 이미 좋아요를 눌렀는지 확인
+        Optional<ProLike> likeOpt = proLikeRepository.findByUserAndProEntity(user, pro);
+
+        if (likeOpt.isPresent()) {
+            // 이미 좋아요를 눌렀다면 좋아요 취소
+            proLikeRepository.delete(likeOpt.get());
+            pro.decreaseLikeCount(); // 좋아요 수 감소
+        } else {
+            // 좋아요 추가
+            ProLike newLike = new ProLike();
+            newLike.setUser(user);
+            newLike.setProEntity(pro);
+            proLikeRepository.save(newLike);
+            pro.increaseLikeCount(); // 좋아요 수 증가
+        }
+
+        // 변경된 좋아요 수 저장
+        proRepository.save(pro);
+
+        // 클라이언트에 응답으로 좋아요 수 및 좋아요 상태 반환
+        map.put("likeCount", pro.getLikeCount());
+        map.put("isLiked", !likeOpt.isPresent()); // 좋아요 상태를 클라이언트에 전달
+
+        return map;
     }
 
     @PostMapping("/project/write")

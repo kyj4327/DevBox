@@ -8,6 +8,7 @@ import com.o2b2.devbox_server.eduInfo.model.EduEntity;
 import com.o2b2.devbox_server.message.model.MsgReciverEntity;
 import com.o2b2.devbox_server.message.model.MsgSenderEntity;
 import com.o2b2.devbox_server.project.model.ProEntity;
+import com.o2b2.devbox_server.project.model.ProLike;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -50,5 +51,8 @@ public class UserEntity {
     
     @OneToMany(mappedBy = "sender")
     List<MsgSenderEntity> MsgSenderEntitys = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "user")
+    List<ProLike> proLikes = new ArrayList<>();
 
 }

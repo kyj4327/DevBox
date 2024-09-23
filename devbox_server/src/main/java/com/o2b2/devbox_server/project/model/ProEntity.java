@@ -32,12 +32,27 @@ public class ProEntity {
 
     String coment;
 
-    Integer likeCount;
-
     @OneToMany(mappedBy = "proEntity", cascade = CascadeType.REMOVE)
     List<MultiImgEntity> multiImgEntitys = new ArrayList<>();
+
+    @OneToMany(mappedBy = "proEntity")
+    List<ProLike> proLikes = new ArrayList<>();
     
     @ManyToOne
     @JoinColumn(name = "user_id")
     UserEntity userEntity;
+
+    // 좋아요 카운트를 저장하는 필드 추가
+    int likeCount = 0;
+
+    // 좋아요 수를 업데이트하는 메서드
+    public void increaseLikeCount() {
+        this.likeCount++;
+    }
+
+    public void decreaseLikeCount() {
+        if (this.likeCount > 0) {
+            this.likeCount--;
+        }
+    }
 }
