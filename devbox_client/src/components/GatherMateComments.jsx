@@ -320,19 +320,25 @@ const GatherMateComments = ({ postId }) => {
   
             <div className="comment-content mt-2">
               {editingCommentId === reply.id ? (
-                <div>
+  <div className="edit-form">
+        <div className="textarea-container">
+
                   <textarea
                     className="form-control mb-2"
                     value={editCommentContent}
                     onChange={(e) => setEditCommentContent(e.target.value)}
                     rows="3"
                   />
-                  <button className="btn btn-primary me-2" onClick={() => handleEditSubmit(reply.id)}>
-                    수정 완료
-                  </button>
+                      <div className="edit-buttons">
+
                   <button className="btn btn-secondary" onClick={handleCancelEdit}>
                     취소
                   </button>
+                  <button className="btn btn-primary me-2" onClick={() => handleEditSubmit(reply.id)}>
+                    등록
+                  </button>
+                </div>
+                </div>
                 </div>
               ) : (
                 reply.content
@@ -363,7 +369,7 @@ const GatherMateComments = ({ postId }) => {
                         required
                       ></textarea>
                       <button type="submit" className="btn btn-primary float-end">
-                        답글 등록
+                      등록
                       </button>
                     </div>
                   </form>
@@ -434,24 +440,36 @@ const GatherMateComments = ({ postId }) => {
                       )}
                   </div>
                   <div className="comment-content mt-2">
-                    {editingCommentId === comment.id ? (
-                      <div>
-                        <textarea
-                          className="form-control mb-2"
-                          value={editCommentContent}
-                          onChange={(e) => setEditCommentContent(e.target.value)}
-                          rows="3"
-                        />
-                        <button className="btn btn-primary me-2" onClick={() => handleEditSubmit(comment.id)}>
-                          수정 완료
-                        </button>
-                        <button className="btn btn-secondary" onClick={handleCancelEdit}>
-                          취소
-                        </button>
-                      </div>
-                    ) : (
-                      comment.deleted ? "삭제된 댓글입니다" : comment.content
-                    )}
+                  {editingCommentId === comment.id ? (
+  <div className="edit-form">
+    <div className="textarea-container">
+      <textarea
+        className="form-control mb-2"
+        value={editCommentContent}
+        onChange={(e) => setEditCommentContent(e.target.value)}
+        rows="3"
+      />
+      <div className="edit-buttons">
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={handleCancelEdit}
+        >
+          취소
+        </button>
+        <button
+          type="button"
+          className="btn btn-primary me-2"
+          onClick={() => handleEditSubmit(comment.id)}
+        >
+          등록
+        </button>
+      </div>
+    </div>
+  </div>
+) : (
+  comment.deleted ? "삭제된 댓글입니다" : comment.content
+)}
                   </div>
                   <div className="mt-2">
                     {user && (
@@ -478,7 +496,7 @@ const GatherMateComments = ({ postId }) => {
                               required
                             ></textarea>
                             <button type="submit" className="btn btn-primary float-end">
-                              답글 등록
+                              등록
                             </button>
                           </div>
                         </form>

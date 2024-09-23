@@ -1,3 +1,7 @@
+textarea {
+  resize: none;
+}
+
 .comment {
   position: relative;
   border-bottom: 1px solid #e0e0e0;
@@ -99,4 +103,27 @@
 .leave-comment textarea {
   resize: none;
   padding-bottom: 40px;
+}
+
+.textarea-container {
+  position: relative;
+}
+.textarea-container textarea {
+  width: 100%;
+  padding-right: 120px; /* 버튼 너비에 따라 조정 */
+  box-sizing: border-box;
+}
+
+.edit-buttons {
+  position: absolute;
+  bottom: 10px; 
+  right: 10px;  
+  display: flex;
+  gap: 1px; /* 버튼 간 간격 */
+}
+
+/* 버튼 스타일 */
+.edit-buttons button {
+  padding: 5px 10px;
+  font-size: 0.9em;
 }
