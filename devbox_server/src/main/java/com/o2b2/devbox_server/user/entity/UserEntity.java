@@ -1,16 +1,13 @@
 package com.o2b2.devbox_server.user.entity;
 
-import com.o2b2.devbox_server.freeboard.entity.Comment;
-import com.o2b2.devbox_server.freeboard.entity.Post;
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import com.o2b2.devbox_server.message.model.MsgReciverEntity;
+import com.o2b2.devbox_server.message.model.MsgSenderEntity;
+import com.o2b2.devbox_server.project.model.ProEntity;
+
+import jakarta.persistence.*;
 import lombok.Data;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -44,10 +41,13 @@ public class UserEntity {
 
     private String field;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Post> posts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Comment> comments = new ArrayList<>();
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
+    List<ProEntity> proEntitys = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "userEntity")
+    List<MsgReciverEntity> MsgEntitys = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "userEntity")
+    List<MsgSenderEntity> MsgSenderEntitys = new ArrayList<>();
 
 }

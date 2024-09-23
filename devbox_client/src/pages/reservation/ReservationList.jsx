@@ -1,7 +1,5 @@
-import Header from '../../components/Header';
 import Category from '../../components/Category';
 import Pagination from '../../components/Pagination';
-import Footer from '../../components/Footer';
 import { useEffect, useState } from 'react';
 import '../../assets/css/reservation.css';
 import reset from '../../assets/img/reset.png';
@@ -55,7 +53,6 @@ const ReservationList = () => {
 
     return (
         <div>
-            <Header />
             <section className="bg-light contact-section">
                 <div className="container py-4">
                     <div className="row align-items-center justify-content-between">
@@ -127,14 +124,16 @@ const ReservationList = () => {
                                                         <button className="btn rounded-pill px-4 btn-primary light-300"
                                                             onClick={(e) => {
                                                                 e.preventDefault();
-                                                                async function send() {
-                                                                    const url = `http://127.0.0.1:8080/reservation/delete?reservationId=${v.id}`;
-                                                                    await fetch(url);
-                                                                    alert("예약이 취소되었습니다.");
-                                                                    window.location.reload();
+                                                                if (window.confirm(`${v.date} ${v.time} 예약취소하시겠습니까?`)) {
+                                                                    async function send() {
+                                                                        const url = `http://127.0.0.1:8080/reservation/delete?reservationId=${v.id}`;
+                                                                        await fetch(url);
+                                                                        alert(`${v.date} ${v.time} 예약취소되었습니다.`);
+                                                                        window.location.reload();
+                                                                    }
+                                                                    send();
                                                                 }
-                                                                send();
-                                                            }}>예약완료</button>
+                                                            }}>예약취소</button>
                                                         : ""
                                                 }
 
@@ -148,7 +147,6 @@ const ReservationList = () => {
                 </div>
             </section >
             <Pagination handlePageChange={handlePageChange} pageData={pageData} />
-            <Footer />
         </div >
     );
 };

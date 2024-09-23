@@ -84,8 +84,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         saveRefreshToken(username, refreshToken, 60 * 60 * 24 * 30 * 1000L);
 
         // AccessToken과 RefreshToken을 쿠키에 추가
-        response.addCookie(createCookie("AccessToken", accessToken));
-        response.addCookie(createCookie("refresh", refreshToken));
+        response.setHeader("Authorization", "Bearer " + accessToken);
+//        response.addCookie(createCookie("AccessToken", accessToken));
+        response.addCookie(createCookie("RefreshToken", refreshToken));
 
         // 성공 후 리다이렉트
         response.setStatus(HttpStatus.OK.value());

@@ -1,6 +1,4 @@
-import Header from '../../components/Header';
 import Pagination from '../../components/Pagination';
-import Footer from '../../components/Footer';
 import Button from '../../components/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -48,7 +46,6 @@ const ContestList = () => {
 
     return (
         <div>
-            <Header />
             <section className="container py-5">
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2">공모전</h1>
@@ -82,13 +79,15 @@ const ContestList = () => {
                                                             }}>수정</Link>
                                                             <Link onClick={(e) => {
                                                                 e.preventDefault();
-                                                                async function send() {
-                                                                    const url = `http://127.0.0.1:8080/contest/delete?contestId=${v.id}`;
-                                                                    await fetch(url);
-                                                                    alert("삭제가 완료되었습니다.");
-                                                                    window.location.reload();
+                                                                if (window.confirm("삭제하시겠습니까?")) {
+                                                                    async function send() {
+                                                                        const url = `http://127.0.0.1:8080/contest/delete?contestId=${v.id}`;
+                                                                        await fetch(url);
+                                                                        alert("삭제되었습니다.");
+                                                                        window.location.reload();
+                                                                    }
+                                                                    send();
                                                                 }
-                                                                send();
                                                             }}>삭제</Link>
                                                         </span>
                                                     </div>
@@ -108,7 +107,6 @@ const ContestList = () => {
                 </div>
             </section>
             <Pagination handlePageChange={handlePageChange} pageData={pageData} />
-            <Footer />
         </div>
     );
 };

@@ -3,7 +3,9 @@ import "react-quill/dist/quill.snow.css";
 import Button from "../../components/Button";
 import Pagination from "../../components/Pagination";
 import Category from "../../components/Category";
+import SearchSelect from "../../components/SearchSelect";
 import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "../../components/context/UserContext"; // UserContext 사용
 
 import "./GatherMateList.css";
 
@@ -13,17 +15,24 @@ import modeFavoriteIcon from "../../assets/img/icons/modeFavorite.svg";
 import modevisibilityIcon from "../../assets/img/icons/modevisibility.svg";
 
 function GatherMateList() {
+  const { user } = useUser(); // UserContext -> user 가져오기
   const [category, setCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [searchType, setSearchType] = useState("제목 & 내용");
   const [startPage, setStartPage] = useState(0);
   const [endPage, setEndPage] = useState(0);
 
   const navigate = useNavigate();
   const toWrite = () => {
-    navigate("/gatherwrite");
+    if (user) {
+      navigate("/gathermate/write");
+    } else {
+      alert("글을 작성하려면 로그인해야 합니다.");
+      navigate("/gathermate/list");
+    }
   };
 
   useEffect(() => {
@@ -99,6 +108,10 @@ function GatherMateList() {
     return `${year}-${month}-${day} ${hours}:${minutes}`;
   };
 
+  const handleSelectChange = (value) => {
+    setSearchType(value); // 선택된 값을 상태로 저장
+  };
+
   return (
     <div>
       <section className="container py-5">
@@ -143,24 +156,45 @@ function GatherMateList() {
               />
             </div>
           </div>
-          <form onSubmit={handleSearch} className="mb-3">
-            <input
-              type="text"
-              value={searchKeyword}
-              onChange={(e) => setSearchKeyword(e.target.value)}
-              placeholder="검색어를 입력하세요"
-            />
-            <button type="submit">검색</button>
+          <form onSubmit={handleSearch} className="mb-3 search-form">
+            <div className="search-select-container">
+              <SearchSelect
+                options={["내용 & 제목", "작성자"]} // 드롭다운 옵션
+                value={searchType} // 현재 선택된 값
+                onChange={handleSelectChange} // 값이 변경되면 호출
+              />
+
+              <input
+                type="text"
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
+                placeholder="검색어를 입력하세요"
+                className="search-input"
+              />
+            </div>
+
+            <button type="submit" className="search-button">
+              검색
+            </button>
           </form>
           {data.length > 0 ? (
             <div className="post-list">
               {data.map((post) => (
                 <div key={post.id} className="post-item">
-                  <Link to={`/gatherdetail/${post.id}`} className="post-link">
+                  <Link
+                    to={`/gathermate/detail/${post.id}`}
+                    className="post-link"
+                  >
                     <div className="post-header">
-                    <div className={`post-status ${post.recruiting ? 'post-status-recruiting' : 'post-status-completed'}`}>
-          {post.recruiting ? "모집중" : "모집완료"}
-        </div>
+                      <div
+                        className={`post-status ${
+                          post.recruiting
+                            ? "post-status-recruiting"
+                            : "post-status-completed"
+                        }`}
+                      >
+                        {post.recruiting ? "모집중" : "모집완료"}
+                      </div>
                       <h3 className="post-title">{post.title}</h3>
                     </div>
 
@@ -179,9 +213,11 @@ function GatherMateList() {
                     >
                       {/* 왼쪽 작성자명, 시간 */}
                       <span className="post-info">
-                        <span className="post-author">
-                          {" "}
-                          김개발 {post.author}
+                        <span
+                          className="post-author"
+                          style={{ marginRight: "5px" }}
+                        >
+                          {post.author}
                         </span>
                         <span className="post-time">
                           {formatDateTime(post.createdAt)}
@@ -200,7 +236,7 @@ function GatherMateList() {
                             width="16"
                             height="16"
                           />
-                          {post.views} 12
+                          {post.views} 
                         </span>
                         <span className="post-likes">
                           <img
@@ -209,7 +245,7 @@ function GatherMateList() {
                             width="16"
                             height="16"
                           />
-                          {post.likes} 4
+                          {post.likeCount}
                         </span>
                         <span className="post-comment">
                           <img

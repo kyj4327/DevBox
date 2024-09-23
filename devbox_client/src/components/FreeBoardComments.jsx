@@ -83,7 +83,5 @@ const FreeBoardComments = ({ postId }) => {
             </form>
         </div>
     );
-  
 }
-
-export default FreeBoardComments;
+    export default FreeBoardComments;
