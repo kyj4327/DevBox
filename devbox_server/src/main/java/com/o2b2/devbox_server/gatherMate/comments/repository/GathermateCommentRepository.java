@@ -12,4 +12,5 @@ public interface GathermateCommentRepository extends JpaRepository<GathermateCom
 
     List<GathermateComment> findByParent(GathermateComment parent);
 
+    int countByGatherMate(GatherMate gatherMate);
 }
