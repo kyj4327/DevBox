@@ -10,12 +10,10 @@ const MsgBell = () => {
             if (!user) return; // 사용자가 로그인하지 않았을 경우 fetch를 수행하지 않음
 
             try {
-                const res = await fetch(`http://localhost:8080/msg/bell?reciver=${user.username}`, {
+                const res = await fetch(`http://localhost:8080/msg/bell?reciver=${user.nickname}`, {
                     method: 'GET',
                     credentials: 'include',
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                    },
+                   
                 });
 
                 if (!res.ok) {
