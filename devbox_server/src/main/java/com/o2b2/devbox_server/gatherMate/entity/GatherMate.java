@@ -1,5 +1,6 @@
 package com.o2b2.devbox_server.gatherMate.entity;
 
+import com.o2b2.devbox_server.gatherMate.comments.entity.GathermateComment;
 import com.o2b2.devbox_server.gatherMate.domain.GatherMatePostEditor;
 import com.o2b2.devbox_server.gatherMate.like.entity.Like;
 import com.o2b2.devbox_server.user.entity.UserEntity;
@@ -45,6 +46,9 @@ public class GatherMate {
     @Setter
     @OneToMany(mappedBy = "gatherMate", cascade = CascadeType.ALL)
     private List<Like> likes;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<GathermateComment> gathermateComments;
 
     public void incrementViews() {
         this.views++;
