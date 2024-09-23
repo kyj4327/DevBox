@@ -280,8 +280,8 @@ const GatherMateDetail = () => {
 
           {/* 댓글 컴포넌트 */}
           <div className="row justify-content-center"></div>
-          <GatherMateComments />
-        </>
+          <GatherMateComments postId={postId} />
+          </>
       ) : (
         <div>Loading...</div> // post가 null일 경우 로딩 표시
       )}
