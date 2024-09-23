@@ -55,7 +55,7 @@ function GatherMateEdit() {
 
     try {
       const response = await fetch(`http://localhost:8080/gathermate/edit/${postId}`, {
-        method: "Put",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,

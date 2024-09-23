@@ -1,14 +1,20 @@
 .comment {
   position: relative;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 15px 0;
+}
+
+.comment:last-child {
+  border-bottom: none;
 }
 
 .menu-icon-container {
   position: relative;
 }
 
-.menu-icon{
+.menu-icon {
   cursor: pointer;
-
+  font-weight: bold;
 }
 
 .dropdown-menu {
@@ -21,12 +27,7 @@
   padding: 5px 0;
   display: none;
   min-width: 100px;
-}
-.dropdown-menu {
-  position: absolute;
-  right: 0;
-  top: 100%;
-
+  z-index: 1000;
 }
 
 .dropdown-menu.show {
@@ -48,7 +49,54 @@
 }
 
 .profile-image {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%; /* 선택 사항: 동그란 프로필 이미지를 유지하기 위해 */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.comment-author {
+  font-weight: bold;
+}
+
+.comment-time {
+  font-size: 0.8em;
+  color: #888;
+}
+
+.comment-content {
+  margin-top: 10px;
+}
+
+.reply-button {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  padding: 0;
+}
+
+.reply {
+  position: relative;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 15px 0 15px 20px;
+  margin-left: 20px;
+}
+
+.reply:last-child {
+  border-bottom: none;
+}
+
+.form-group {
+  position: relative;
+}
+
+.form-group .btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.leave-comment textarea {
+  resize: none;
+  padding-bottom: 40px;
 }
