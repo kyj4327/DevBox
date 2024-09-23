@@ -132,7 +132,7 @@ function AppContent() {
 
           {/* 6층 회의실 대여 서비스 */}
           <Route path='/reservation/write' element={<Reservation />} />
-          <Route path='/reservation/list' element={<ReservationList />} />
+          <Route path='/reservation/check' element={<ReservationList />} />
 
           <Route path="BDIA/introduce" element={<BDIAIntroduction />} />
           <Route path="BDIA/schedule" element={<BDIASchedule />} />

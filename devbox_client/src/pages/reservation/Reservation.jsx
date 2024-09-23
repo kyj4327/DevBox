@@ -78,7 +78,7 @@ const Reservation = () => {
                     const data = await response.json();
                     if (data.code === 200) {
                         alert(`${date} ${time} 예약되었습니다.`);
-                        navigate('/reservation/list');
+                        navigate('/reservation/check');
                     } else {
                         alert('다시 입력해주세요.');
                     }
@@ -182,7 +182,7 @@ const Reservation = () => {
                                     <button className="btn rounded-pill px-4 btn-primary light-300"
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            navigate('/reservation/list');
+                                            navigate('/reservation/check');
                                         }}>예약내역</button>
                                 </div>
                             </div>
