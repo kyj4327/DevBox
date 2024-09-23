@@ -14,6 +14,9 @@ const ContactForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // 환경 변수에서 API URL 가져오기
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8080";
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -25,7 +28,7 @@ const ContactForm = () => {
     setIsLoading(true); // 폼 제출 시 로딩 상태로 설정
 
     try {
-       const response = await axios.post('/api/contact/send', formData);
+      const response = await axios.post(`${API_URL}/api/contact/send`, formData); // API URL 사용
 
       console.log('성공:', response.data);
       setIsSubmitted(true);
