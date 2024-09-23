@@ -129,6 +129,27 @@ public class MsgController {
         } else {
             map.put("error", "Message not found");
         }
+        Optional<MsgSenderEntity> msgOpts = msgSenderRepository.findById(id);
+
+        if (msgOpt.isPresent()) {
+            MsgSenderEntity msg = msgOpts.get();
+
+            // 좋아요 상태 토글 (좋아요가 없으면 추가하고, 있으면 삭제)
+            if (msg.getLike() == null || !msg.getLike()) {
+                msg.setLike(true); // 좋아요 추가
+
+                msg.setOrder(1);
+            } else {
+                msg.setLike(false); // 좋아요 취소
+                msg.setOrder(0);
+            }
+
+            msgSenderRepository.save(msg); // 변경된 상태를 저장
+
+            map.put("like", msg.getLike());
+        } else {
+            map.put("error", "Message not found");
+        }
 
         return map; // 클라이언트에 map 반환
     }
@@ -188,7 +209,7 @@ public class MsgController {
         Optional<MsgReciverEntity> reciverOpt = msgReciverRepository.findById(id);
         if (reciverOpt.isPresent()) {
             MsgReciverEntity reciverMsg = reciverOpt.get();
-            map.put("reciverId", reciverMsg.getId());
+            map.put("id", reciverMsg.getId());
             map.put("reciver", reciverMsg.getReceiver().getNickname());
         } else {
             map.put("reciverError", "Receiver message not found");
@@ -198,7 +219,7 @@ public class MsgController {
         Optional<MsgSenderEntity> senderOpt = msgSenderRepository.findById(id);
         if (senderOpt.isPresent()) {
             MsgSenderEntity senderMsg = senderOpt.get();
-            map.put("senderId", senderMsg.getId());
+            map.put("id", senderMsg.getId());
             map.put("sender", senderMsg.getSender().getNickname());
         } else {
             map.put("senderError", "Sender message not found");
