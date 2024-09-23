@@ -36,20 +36,20 @@
 }
 
 /* 헤더 */
-.header-container {
+.bida-header-container {
   display: flex;
   align-items: center;
   justify-content: center; /* 헤더 내용 중앙 정렬 */
   margin-bottom: 20px;
 }
 
-.header-logo {
+.bdia-header-logo {
   width: 150px; /* 로고 크기 설정 */
   height: auto; /* 비율 유지 */
   margin-right: 15px; /* 로고와 텍스트 사이의 간격 조절 */
 }
 
-.header-text {
+.bdia-header-text {
   font-family: 'PTBandocheB', sans-serif;
   font-size: 2.5em; /* 텍스트 크기 증가 */
 }

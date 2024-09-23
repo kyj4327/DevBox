@@ -8,7 +8,7 @@ import RoadExplain from "../../components/RoadExplain";
 function BDIAIntroduction() {
   return (
     <div className="bdia-intro-container">
-      <div className="header-container">
+      <div className="bdia-header-container">
         <img
           src="http://edu.busanit.or.kr/resources/bdia/assets/img/bdia_logo.svg"
           alt="바디아"
@@ -17,9 +17,9 @@ function BDIAIntroduction() {
             height: "30%",
             margin: "10px",
           }}
-          className="header-logo"
+          className="bdia-header-logo"
         />
-        <span className="header-text">
+        <span className="bdia-text">
           <strong>B</strong>usan <strong>D</strong>igital <strong>I</strong>nnovation <strong>A</strong>cademy
         </span>
       </div>

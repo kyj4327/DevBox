@@ -45,6 +45,7 @@ import ReservationList from './pages/reservation/ReservationList';
 
 import AuthContainer from './pages/auth/AuthContainer';
 // import { Naver } from './components/Naver';
+// import { UserProvider } from './components/context/UserContext';
 
 import HomePage from './pages/HomePage';
 import MyPage from './pages/auth/MyPage';
@@ -148,9 +149,11 @@ function AppContent() {
 
 function App() {
   return (
+    // <UserProvider>
     <Router>
       <AppContent />
-    </Router>
+  </Router>
+    // </UserProvider>
   );
 }
 

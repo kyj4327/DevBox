@@ -3,6 +3,7 @@ package com.o2b2.devbox_server.freeboard.entity;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.o2b2.devbox_server.user.entity.UserEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,6 +32,10 @@ public class Comment {
     @JoinColumn(name = "post_id", nullable = false)
     @JsonBackReference // 댓글에서 Post 필드는 직렬화되지 않음
     private Post post;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private UserEntity author;
 
     // Getters and Setters
     public Long getId() {
@@ -63,5 +68,13 @@ public class Comment {
 
     public void setPost(Post post) {
         this.post = post;
+    }
+
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(UserEntity author) {
+        this.author = author;
     }
 }
