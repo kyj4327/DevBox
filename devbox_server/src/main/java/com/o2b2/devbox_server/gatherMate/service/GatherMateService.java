@@ -90,7 +90,9 @@ public class GatherMateService {
         List<GatherMateResponse> responses = posts.stream()
                 .map(post -> {
                     int commentCount = gathermateCommentRepository.countByGatherMate(post);
-                    return new GatherMateResponse(post, commentCount);
+                    boolean isLiked = false; // 필요한 경우 사용자에 따라 설정
+
+                    return new GatherMateResponse(post, commentCount,isLiked);
                 })
                 .collect(Collectors.toList());
 
@@ -103,7 +105,8 @@ public class GatherMateService {
         List<GatherMateResponse> responses = posts.stream()
                 .map(post -> {
                     int commentCount = gathermateCommentRepository.countByGatherMate(post);
-                    return new GatherMateResponse(post, commentCount);
+                    boolean isLiked = false; // 필요한 경우 사용자에 따라 설정
+                    return new GatherMateResponse(post, commentCount,isLiked);
                 })
                 .collect(Collectors.toList());
 
@@ -117,13 +120,22 @@ public class GatherMateService {
 //                .map(GatherMateResponse::new)
 //                .collect(Collectors.toList());
 //    }
-    public Page<GatherMateResponse> search(String keyword, Pageable pageable) {
-        Page<GatherMate> posts = gatherMateRepository.findByTitleContainingOrContentContaining(keyword, keyword, pageable);
+    public Page<GatherMateResponse> search(String keyword, String searchType, Pageable pageable) {
+        Page<GatherMate> posts;
+
+        if ("작성자".equals(searchType)) {
+            // 작성자명으로 검색
+            posts = gatherMateRepository.findByAuthorContaining(keyword, pageable);
+        } else {
+            // 기본적으로 제목과 내용으로 검색
+            posts = gatherMateRepository.findByTitleContainingOrContentContaining(keyword, keyword, pageable);
+        }
 
         List<GatherMateResponse> responses = posts.stream()
                 .map(post -> {
                     int commentCount = gathermateCommentRepository.countByGatherMate(post);
-                    return new GatherMateResponse(post, commentCount);
+                    boolean isLiked = false; // 필요한 경우 사용자에 따라 설정
+                    return new GatherMateResponse(post, commentCount, isLiked);
                 })
                 .collect(Collectors.toList());
 

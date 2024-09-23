@@ -30,7 +30,7 @@ public class GatherMateResponse {
     private int commentCount;
 
     // 생성자 오버로딩
-    public GatherMateResponse(GatherMate gatherMate, int commentCount) {
+    public GatherMateResponse(GatherMate gatherMate, int commentCount, boolean isLiked) {
         this.id = gatherMate.getId();
         this.intro = gatherMate.getIntro();
         this.apply = gatherMate.getApply();
@@ -42,6 +42,7 @@ public class GatherMateResponse {
         this.likeCount = gatherMate.getLikeCount();
         this.views = gatherMate.getViews();
         this.commentCount = commentCount;
+        this.isLiked = isLiked;
     }
 
     @Builder

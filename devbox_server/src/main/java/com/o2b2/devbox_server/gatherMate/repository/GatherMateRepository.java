@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface GatherMateRepository extends JpaRepository<GatherMate, Long> {
     Page<GatherMate> findByTitleContainingOrContentContaining(String title, String content, Pageable pageable);
 
-    Page<GatherMate> findByIntro(String intro, Pageable pageable);
+    Page<GatherMate> findByAuthorContaining(String author, Pageable pageable);
 
+    Page<GatherMate> findByIntro(String intro, Pageable pageable);
 
 }
