@@ -40,20 +40,28 @@ function GatherMateList() {
   }, [category, currentPage]);
 
   const fetchData = async () => {
-    let url = `http://127.0.0.1:8080/gathermate/posts?page=${
+    let url = `http://localhost:8080/gathermate/posts?page=${
       currentPage - 1
     }&size=10&sort=id,desc`;
+
     if (searchKeyword) {
-      url = `http://127.0.0.1:8080/gathermate/posts/search?keyword=${searchKeyword}&page=${
+    url = `http://localhost:8080/gathermate/posts/search?keyword=${encodeURIComponent(searchKeyword)}&searchType=${encodeURIComponent(searchType)}&page=${
         currentPage - 1
       }&size=10&sort=id,desc`;
     }
-    if (category !== "All") {
-      url += `&category=${category}`;
-    }
+
+     if (category !== "All" && !searchKeyword) {
+    url += `&category=${encodeURIComponent(category)}`;
+  }
+
 
     try {
-      const res = await fetch(url);
+      const res = await fetch(url,{
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      });
       const result = await res.json();
       setData(result.content || []);
       setTotalPages(result.totalPages || 0);
