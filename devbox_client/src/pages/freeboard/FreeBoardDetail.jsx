@@ -5,7 +5,7 @@ import Button from "../../components/Button";
 import WriteLong from "../../components/WriteLong";
 import WriteShort from "../../components/WriteShort";
 import QuillEditor from "../../components/QuillEditor";
-import '../../assets/css/FreeBoardDetail.css'
+import '../../assets/css/freeboard.css'
 
 
 const FreeBoardDetail = () => {
@@ -48,7 +48,7 @@ const FreeBoardDetail = () => {
       } else {
         await createPost(postData);
       }
-      navigate('/community/freeboard');
+      navigate('/freeboard/list');
     } catch (error) {
       console.error('게시글 저장에 실패했습니다.', error);
       setError('게시글 저장에 실패했습니다.');
@@ -103,7 +103,7 @@ const FreeBoardDetail = () => {
         </div>
         <div className="form-row pt-2">
           <div className="col-md-12 col-10 text-end">
-            <Button text={id ? "수정하기" : "작성하기"} onClick={handleSubmit} className="btn-submit" />
+            <Button text={id ? "수정하기" : "작성하기"} onClick={handleSubmit} className="btn-freeboard-write" />
           </div>
         </div>
       </section>

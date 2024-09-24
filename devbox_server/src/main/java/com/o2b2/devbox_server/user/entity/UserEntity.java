@@ -14,6 +14,11 @@ import com.o2b2.devbox_server.reservation.model.Reservation;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+
 
 @Entity
 @Data

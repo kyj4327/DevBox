@@ -1,6 +1,5 @@
 package com.o2b2.devbox_server.contact.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -59,4 +58,4 @@ public class ContactController {
             return ResponseEntity.internalServerError().body("문의 전송 실패: " + e.getMessage());
         }
     }
-}    
+}

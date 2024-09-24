@@ -80,14 +80,16 @@ public class SecurityConfig {
 
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                        
 
                         CorsConfiguration configuration = new CorsConfiguration();
-
+                        
                         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
                         configuration.setMaxAge(3600L);
+                     
 
                         configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
                         configuration.setExposedHeaders(Collections.singletonList("Authorization"));
@@ -210,6 +212,19 @@ public class SecurityConfig {
 
 //                        .requestMatchers("/msg/**").permitAll()
                         // .requestMatchers("/msg/bell").authenticated()
+
+
+//                        자유게시판, faq
+                        .requestMatchers("/send/**").permitAll()
+                        .requestMatchers("/api/contact/**").permitAll()
+                        .requestMatchers("/api/posts/**").permitAll()
+                        .requestMatchers("/api/comments/**").permitAll()
+                        .requestMatchers("/posts/**").permitAll()
+                        .requestMatchers("/comments/**").permitAll()
+
+                        .requestMatchers("/freeboard/list/**").permitAll()
+
+
 
                         .anyRequest().authenticated());
 
