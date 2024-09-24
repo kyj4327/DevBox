@@ -14,7 +14,8 @@ const Header = () => {
         method: "POST",
         credentials: "include",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          "Content-Type": "application/json", 
+          "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
         },
       });
 
@@ -103,7 +104,7 @@ const Header = () => {
           <div className="navbar align-self-center d-flex">
             {user ? (
               <>
-                {/* <MsgBell /> */}
+                <MsgBell />
                 <a className="nav-link" href="/mypage">
                   <i className="bx bx-user-circle bx-sm text-primary"></i>
                 </a>

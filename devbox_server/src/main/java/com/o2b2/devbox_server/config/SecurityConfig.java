@@ -18,7 +18,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
@@ -117,37 +116,58 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/", "/join").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/user").hasRole("USER")
+
                         .requestMatchers("/reissue").permitAll()
+                        .requestMatchers("/oauth2/**").permitAll()
+
                         .requestMatchers("/password/**").permitAll() // 비밀번호 재설정 관련 경로에 접근 허용
                         .requestMatchers("/api/user/me").authenticated() // <- 인증된 사용자만 접근 가능하도록 설정
+                        .requestMatchers("/api/user/delete").authenticated() // <- 회원 탈퇴
 
 
 
                         // gatherMate 리스트는 누구나
-                        .requestMatchers("/gathermate/list").permitAll()
+                        .requestMatchers("/gathermate/lists").permitAll()
+                        .requestMatchers("/gathermate/lists**").permitAll()
+                        .requestMatchers("/gathermate/lists/**").permitAll()
+                        // 모집중/모집완료
+                        .requestMatchers("/gathermate/edit/*/recruiting").authenticated()
+
+                        // 댓글
+                        .requestMatchers("/gathermate/*/comments").authenticated()
+                        .requestMatchers("/gathermate/comments/*/edit").authenticated()
+
+                        .requestMatchers("/gathermate/comments/*/delete").authenticated()
+                        .requestMatchers("/gathermate/*/commentslist").permitAll()
 
                         // gatherMate 상세는 누구나
                         .requestMatchers("/gathermate/detail/**").permitAll()
                         .requestMatchers("/gathermate/posts/**").permitAll()
                         .requestMatchers("/gathermate/posts").authenticated()
+                        .requestMatchers("/gathermate/likes/**").authenticated()
+                        .requestMatchers("/gathermate/likes").authenticated()
+
+
                         // gatherMate 글 작성 페이지는 로그인 사용자
                         .requestMatchers("/gathermate/write").authenticated()
-
+                        .requestMatchers("/reference/write").authenticated()
                         // gatherMate 글 수정 페이지는 로그인 사용자
                         .requestMatchers("/gathermate/edit/**").authenticated()
 
 
                         /**
-                         추천해요 게시판
+                         추천해요, 프로젝트 자랑 게시판
                          */
                         // 글쓰기
-                        .requestMatchers("/**/write").authenticated()
-                        .requestMatchers("/**/write/**").authenticated()
+                        .requestMatchers("/*/write").authenticated()
+                        .requestMatchers("/*/write/**").authenticated()
 
-                        .requestMatchers("/**/update").authenticated()
-                        .requestMatchers("/**/update/**").authenticated()
-                        .requestMatchers("/**/delete").authenticated()
-                        .requestMatchers("/**/delete/**").authenticated()
+                        .requestMatchers("/*/update").authenticated()
+                        .requestMatchers("/*/update/**").authenticated()
+                        .requestMatchers("/*/delete").authenticated()
+                        .requestMatchers("/*/delete/**").authenticated()
+
+                        .requestMatchers("/*/list/**").permitAll()
 
 
 
@@ -163,9 +183,12 @@ public class SecurityConfig {
                         .anyRequest().authenticated());
 
         http
-                .addFilterBefore(new JWTFilter(jwtUtil,userRepository), LoginFilter.class)
-                .addFilterAfter(new JWTFilter(jwtUtil,userRepository), OAuth2LoginAuthenticationFilter.class)
-                .addFilterBefore(new JWTFilter(jwtUtil, userRepository), UsernamePasswordAuthenticationFilter.class);
+//                .addFilterBefore(new JWTFilter(jwtUtil,userRepository), LoginFilter.class)
+//                .addFilterAfter(new JWTFilter(jwtUtil,userRepository), OAuth2LoginAuthenticationFilter.class)
+//                .addFilterBefore(new JWTFilter(jwtUtil, userRepository), UsernamePasswordAuthenticationFilter.class);
+//                .addFilterAfter(new JWTFilter(jwtUtil, userRepository), AnonymousAuthenticationFilter.class);
+
+                  .addFilterBefore(new JWTFilter(jwtUtil, userRepository), UsernamePasswordAuthenticationFilter.class);
 
         http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class);

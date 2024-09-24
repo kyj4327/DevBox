@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Comment from "../../components/Comments";
+import { useUser } from "../../components/context/UserContext";
+import GatherMateComments from "../../components/GatherMateComments";
 import profilePic from "../../assets/img/profilePic.png";
 import "./GatherMateDetail.css";
 import PostButton from "../../components/PostButton";
-import WriteShort from "../../components/WriteShort";
 
 const GatherMateDetail = () => {
   const { postId } = useParams();
-
+  const { user } = useUser(); 
   const [post, setPost] = useState(null);
-  const [likes, setLikes] = useState(0);
+
+  // const [likes, setLikes] = useState();
+  const [isLiked, setIsLiked] = useState(false);
+
   const [isRecruiting, setIsRecruiting] = useState("");
   const [apply, setApply] = useState("");
 
   const navigate = useNavigate();
   const toList = () => {
-    navigate("/gatherlist");
+    navigate("/gathermate/list");
   };
 
   useEffect(() => {
@@ -27,17 +30,26 @@ const GatherMateDetail = () => {
   const fetchPost = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/posts/${postId}`
+        `http://localhost:8080/gathermate/posts/${postId}`,{
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        }
       );
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
+      console.log("data 뽑기 " + data.isLiked)
       setPost(data);
-      setLikes(data.likes || 0);
+      // setLikes(data.likes || 0);
+      setIsLiked(data.isLiked || false);
       setIsRecruiting(data.recruiting);
-      setApply(data.apply); 
+      setApply(data.apply);
     } catch (error) {
       console.error("Error fetching post:", error);
     }
@@ -56,7 +68,7 @@ const GatherMateDetail = () => {
 
   // 수정 페이지로 이동하는 함수
   const goToEditPage = () => {
-    navigate(`/gatheredit/${postId}`); // postId를 포함한 경로로 이동
+    navigate(`/gathermate/edit/${postId}`); // postId를 포함한 경로로 이동
   };
 
   // 게시글 삭제
@@ -66,27 +78,60 @@ const GatherMateDetail = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/posts/${postId}`,
+        `http://localhost:8080/gathermate/delete/${postId}`,
         {
           method: "DELETE", // 삭제 요청
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+            "Content-Type": "application/json",
+          },
         }
       );
 
       if (!response.ok) {
+        if (response.status === 403) {
+          throw new Error("작성자가 아닙니다.");
+        }
         throw new Error("네트워크 응답이 올바르지 않습니다.");
       }
 
       alert("게시글이 성공적으로 삭제되었습니다.");
-      navigate("/gatherlist"); // 삭제 후 목록 페이지로 이동
+      navigate("/gathermate/list"); // 삭제 후 목록 페이지로 이동
     } catch (error) {
       console.error("삭제 중 오류 발생:", error);
-      alert("글 삭제에 실패했습니다. 다시 시도해주세요.");
+      alert(error.message || "글 삭제에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
-  const handleLike = () => {
-    setLikes(likes + 1);
-    // TODO: 백엔드랑 연동하기 좋아요 투표
+  // 좋아요
+  const handleLike = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/gathermate/likes/${postId}`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to toggle like status");
+      }
+
+      const data = await response.json();
+      setPost((prevPost) => ({
+        ...prevPost,
+        likeCount: data.likeCount,
+      }));
+      setIsLiked(data.isLiked);
+    } catch (error) {
+      console.error("Error toggling like status:", error);
+      alert("로그인을 해야지 좋아요를 실행할 수 있습니다.");
+    }
   };
 
   const handleToggleRecruit = async () => {
@@ -94,30 +139,28 @@ const GatherMateDetail = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/posts/${postId}/recruiting`,
+        `http://localhost:8080/gathermate/edit/${postId}/recruiting`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
           },
           body: JSON.stringify({ isRecruiting: newRecruitingStatus }),
         }
       );
 
-      if (!response.ok) {
-        throw new Error("모집 상태 업데이트에 실패했습니다.");
+      if (response.ok) {
+        const data = await response.json();
+        setIsRecruiting(newRecruitingStatus);
+        alert(data.message || "모집 상태가 성공적으로 변경되었습니다.");
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "모집 상태 업데이트에 실패했습니다.");
       }
-
-      // 백엔드 업데이트가 성공한 후에 프론트엔드 상태를 변경
-      setIsRecruiting(newRecruitingStatus);
-      alert(
-        newRecruitingStatus
-          ? "모집중으로 변경되었습니다."
-          : "모집완료로 변경되었습니다."
-      );
     } catch (error) {
       console.error("모집 상태 업데이트 중 오류 발생:", error);
-      alert("모집 상태를 변경하는 데 실패했습니다. 다시 시도해주세요.");
+      alert(error.message || "모집 상태를 변경하는 데 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -165,8 +208,7 @@ const GatherMateDetail = () => {
                 <div className="d-flex flex-column">
                   <span>작성자: {post.author}</span>
                   <span>
-                    작성일: {formatDateTime(post.createdAt)} 조회수: 9999
-                    {post.views}
+                    작성일: {formatDateTime(post.createdAt)} 조회수: {post.views}
                   </span>
                 </div>
               </div>
@@ -190,7 +232,25 @@ const GatherMateDetail = () => {
 
               <div className="d-flex justify-content-center">
                 <div className="d-flex">
-                  <PostButton icon="♡" text={likes} onClick={handleLike} />
+
+                  {/* 좋아요 버튼 */}
+                  {post.likeCount !== undefined && (
+                    <PostButton
+                    icon={
+                      
+                      <ion-icon
+                        name={post.likeCount > 0 ? 'heart' : 'heart-outline'}
+                        style={{ color: post.likeCount > 0 ? 'red' : 'black', fontSize: '25px' }}
+                        // name={isLiked ? 'heart' : 'heart-outline'}
+                        // style={{ color: isLiked ? 'red' : 'black', fontSize: '25px' }}
+                      ></ion-icon>
+                    }
+                      text={post.likeCount}
+                      onClick={handleLike}
+                      disabled={!user}
+                    />
+                    
+                  )}
                   <PostButton
                     text={isRecruiting ? "모집중" : "모집완료"}
                     onClick={handleToggleRecruit}
@@ -207,8 +267,13 @@ const GatherMateDetail = () => {
               style={{ padding: "10px 0px 0px" }}
             >
               <div className="d-flex">
-                <PostButton text="수정" onClick={goToEditPage} />
-                <PostButton text="삭제" onClick={deletePost} />
+                {/* 작성자가 아닐 경우 수정/삭제 버튼을 숨김 */}
+                {user && post.author === user.nickname && (
+                  <>
+                    <PostButton text="수정" onClick={goToEditPage} />
+                    <PostButton text="삭제" onClick={deletePost} />
+                  </>
+                )}
               </div>
               <div className="d-flex">
                 <PostButton text="목록으로" onClick={toList} />
@@ -218,7 +283,7 @@ const GatherMateDetail = () => {
 
           {/* 댓글 컴포넌트 */}
           <div className="row justify-content-center"></div>
-          <Comment />
+<GatherMateComments postId={postId} />
         </>
       ) : (
         <div>Loading...</div> // post가 null일 경우 로딩 표시
