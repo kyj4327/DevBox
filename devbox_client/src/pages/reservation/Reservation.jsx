@@ -58,6 +58,8 @@ const Reservation = () => {
         } else if (user.role === "ROLE_USER") {
             alert("권한이 없습니다.");
             navigate("/reservation/write");
+        } else if (time === '') {
+            alert("예약 시간을 선택해주세요.");
         } else {
             const token = localStorage.getItem('accessToken');
             if (window.confirm(`${date} ${time} 예약하시겠습니까?`)) {
