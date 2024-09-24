@@ -137,17 +137,23 @@ public class SecurityConfig {
                         .requestMatchers("/gathermate/edit/**").authenticated()
 
 
-                        /**
-                         추천해요 게시판
-                         */
+                        .requestMatchers("/reservation/write/**").permitAll()
+                        .requestMatchers("/reservation/check/**").authenticated()
+                        // .requestMatchers("/reservation/check/**").hasAnyRole("ADMIN", "STUDENT")
+                        // .requestMatchers("/reservation/write").hasAnyRole("ADMIN", "STUDENT")
+                        .requestMatchers("/contest/write").hasRole("ADMIN")
+                        // .requestMatchers("/hiring/write").hasRole("ADMIN")
+                        
                         // 글쓰기
-                        .requestMatchers("/**/write").authenticated()
-                        .requestMatchers("/**/write/**").authenticated()
+                        .requestMatchers("/*/write").authenticated()
+                        .requestMatchers("/*/write/**").authenticated()
 
-                        .requestMatchers("/**/update").authenticated()
-                        .requestMatchers("/**/update/**").authenticated()
-                        .requestMatchers("/**/delete").authenticated()
-                        .requestMatchers("/**/delete/**").authenticated()
+                        .requestMatchers("/*/update").authenticated()
+                        .requestMatchers("/*/update/**").authenticated()
+                        .requestMatchers("/*/delete").authenticated()
+                        .requestMatchers("/*/delete/**").authenticated()
+
+                        .requestMatchers("/*/list/**").permitAll()
 
 
 
