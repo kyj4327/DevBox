@@ -2,11 +2,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Button from "../../components/Button";
 import Swal from "sweetalert2";
-import { useUser } from "../../components/context/UserContext";
 
 const EduDetail = () => {
-
-    const { user } = useUser();
     const navigate = useNavigate();
     const [eduData, setEduData] = useState({});
     const location = useLocation();
@@ -68,14 +65,6 @@ const EduDetail = () => {
                                     text={'삭제'}
                                     onClick={async (e) => {
                                         e.preventDefault();
-                                        if (!user) {
-                                            Swal.fire({
-                                                icon: "error",
-                                                title: "로그인 필요",
-                                                text: "로그인이 필요합니다."
-                                            });
-                                            navigate('/auth');
-                                        }
                                         // SweetAlert2로 삭제 확인 창 띄우기
                                         const result = await Swal.fire({
                                             icon: "warning",
@@ -100,8 +89,8 @@ const EduDetail = () => {
                                                 },
                                             });
 
-                                                Swal.fire("삭제 완료", "프로젝트가 삭제되었습니다.", "success");
-                                                navigate('/edu/list');
+                                            Swal.fire("삭제 완료", "프로젝트가 삭제되었습니다.", "success");
+                                            navigate('/edu/list');
                                         }
                                     }}
                                 />
