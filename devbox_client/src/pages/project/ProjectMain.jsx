@@ -4,7 +4,7 @@ import devops from '../../assets/img/devops.png';
 import cloud from '../../assets/img/cloud.png';
 import data from '../../assets/img/data.webp';
 import mobile from '../../assets/img/mobile.png';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../../components/Button';
 import { useEffect, useState } from 'react';
 

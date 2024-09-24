@@ -1,0 +1,105 @@
+/* 폰트 설정 */
+@font-face {
+  font-family: 'PTAnboR';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTAnboR.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PTBandocheB';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MinSans-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.schedule {
+  margin: 50px;
+  font-family: 'PTBandocheB';
+
+}
+
+/* 전체 컨테이너 */
+.bdia-intro-container {
+  width: 100%; /* 전체 페이지 너비 차지 */
+  max-width: 1200px; /* 최대 너비 설정 */
+  margin: 0 auto; /* 중앙 정렬 */
+  padding: 20px;
+  text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+/* 헤더 */
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 헤더 내용 중앙 정렬 */
+  margin-bottom: 20px;
+}
+
+.header-logo {
+  width: 150px; /* 로고 크기 설정 */
+  height: auto; /* 비율 유지 */
+  margin-right: 15px; /* 로고와 텍스트 사이의 간격 조절 */
+}
+
+.header-text {
+  font-family: 'PTBandocheB', sans-serif;
+  font-size: 2.5em; /* 텍스트 크기 증가 */
+}
+
+/* 소개 텍스트 */
+.bdia-intro-text {
+  font-family: 'PTBandocheB', sans-serif;
+  font-size: 1.6em; /* 텍스트 크기 증가 */
+  line-height: 1.6;
+  margin-top: 10px; /* 텍스트 위쪽 여백 추가 */
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .header-text {
+    font-size: 1.5em; /* 모바일 화면에서 폰트 크기 조정 */
+  }
+
+  .bdia-intro-text {
+    font-size: 1em; /* 모바일 화면에서 폰트 크기 조정 */
+  }
+}
+
+/* 섹션 컨테이너 */
+.section-container {
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-family: 'PTBandocheB', sans-serif;
+  font-size: 1.8em; /* 텍스트 크기 설정 */
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: left; /* 제목을 왼쪽 정렬 */
+}
+
+.divider {
+  margin: 0 auto 20px;
+  width: 80%;
+  border: none;
+  border-top: 2px solid #666; /* 두께와 색상을 조정하여 구분선을 진하게 */
+}
+
+/* 추가 이미지 */
+.additional-image {
+  display: block;
+  max-width: 100%; /* 부모 요소의 너비를 넘어가지 않도록 설정 */
+  height: auto; /* 비율을 유지하면서 높이 조절 */
+  margin: 20px auto; /* 중앙 정렬 및 상하 여백 추가 */
+}
+
+
+
