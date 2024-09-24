@@ -47,7 +47,7 @@ const ProjectDetail = () => {
                             loop={true}
                             effect={'coverflow'}
                             grabCursor={true}
-                            slidesPerView={3}
+                            slidesPerView={4}
                             coverflowEffect={{
                                 rotate: 50,
                                 stretch: 0,
@@ -98,8 +98,10 @@ const ProjectDetail = () => {
                     <div className="row pt-5">
                         <div className="worksingle-content col-lg-8 m-auto text-left justify-content-center">
                             <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">프로젝트 내용</h2>
-                            <p className="worksingle-footer py-3 text-muted light-300">
-                                <li>{proData.coment}</li>
+                            <p
+                             className="worksingle-footer py-3 text-muted light-300"
+                             dangerouslySetInnerHTML={{ __html: proData.coment }}
+                             >
                             </p>
                             <div className="row">
                                 <div className="col text-start">

@@ -49,6 +49,16 @@ const EduUpdate = () => {
     }
 
     const handleDetail = async () => {
+
+        if (new Date(start) > new Date(end)) {
+            Swal.fire({
+                icon: "error",
+                title: "날짜 오류",
+                text: "종료일은 시작일보다 이후여야 합니다."
+            });
+            return;
+        }
+        
         const formData = new FormData();
         formData.append("id", id);
         if (uploadImg) {

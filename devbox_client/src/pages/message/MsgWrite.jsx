@@ -13,21 +13,55 @@ const MesWrite = () => {
     const [reciver, setReciver] = useState('');
     const [content, setContent] = useState('');
     const [nickNameError, setNickNameError] = useState('');
+    
+    // 닉네임 목록을 가져오는 함수
+    const checkNicknames = async () => {
+        try {
+            const token = localStorage.getItem('accessToken');
+            const res = await fetch(`http://localhost:8080/api/user/nicknames`, {
+                method: 'GET',
+                credentials: "include",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+            });
 
-    const UnReciver = (reciver) => {
+            if (!res.ok) {
+                throw new Error('닉네임 가져오기 실패');
+            }
 
-    }
-
-    const handleNickNameChange = (e) => {
-        const inputLink = e.target.value;
-        setReciver(inputLink);
-
-        if (!UnReciver(inputLink)) {
-            setNickNameError('존재하지 않는 닉네임 입니다.');
-        } else {
-            setNickNameError(''); // 유효한 링크일 경우 오류 메시지 제거
+            const data = await res.json();
+            return data; // 닉네임 배열 반환
+        } catch (error) {
+            console.error('Failed to fetch nicknames:', error);
+            return []; // 실패 시 빈 배열 반환
         }
     };
+
+    // 닉네임을 검증하는 함수
+    const validateNickname = async (nickname) => {
+        if (!nickname.trim()) {
+            setNickNameError('받는 사람의 닉네임을 입력해주세요.'); // 빈 입력 시 오류 메시지
+            return;
+        }
+
+        const nicknames = await checkNicknames(); // 닉네임 목록 가져오기
+        const nicknameExists = nicknames.includes(nickname); // 입력된 닉네임이 목록에 있는지 확인
+
+        if (!nicknameExists) {
+            setNickNameError('존재하지 않는 닉네임입니다.'); // 존재하지 않을 때 오류 메시지
+        } else {
+            setNickNameError(''); // 존재하면 오류 메시지 제거
+        }
+    };
+
+    // 닉네임 입력 핸들러
+    const handleNickNameChange = (e) => {
+        const inputNickname = e.target.value;
+        setReciver(inputNickname);
+        validateNickname(inputNickname); // 입력된 닉네임 검증
+    };
+
 
     const handleDetail = async () => {
         if (nickNameError) {
@@ -47,7 +81,7 @@ const MesWrite = () => {
 
         console.log(reciver);
         console.log(sender);
-        
+
         const token = localStorage.getItem('accessToken');
         const url = 'http://localhost:8080/msg/write';
         const res = await fetch(url, {
@@ -55,10 +89,10 @@ const MesWrite = () => {
             credentials: "include",
             headers: {
                 "Authorization": `Bearer ${token}`,
-            }, 
+            },
             body: formData
         });
-        
+
         const data = await res.json();
         if (data.code == 200) {
             navigate('/message/list');
@@ -85,7 +119,7 @@ const MesWrite = () => {
                                 <p className="worksingle-footer py-3 text-muted light-300">
                                     <div className="form-floating">
                                         <input type='text' className="form-control form-control-lg light-300" id='sender' name='sender' placeholder='보낼분'
-                                            value={sender} onChange={(e) => { setSender(e.target.value) }} readOnly/>
+                                            value={sender} onChange={(e) => { setSender(e.target.value) }} readOnly />
                                         <label htmlFor="floatingsubject light-300">보낼분</label>
                                     </div>
                                 </p>
@@ -100,7 +134,7 @@ const MesWrite = () => {
                                         <label htmlFor="floatingsubject light-300">받을분</label>
                                     </div>
                                 </p>
-                                    {nickNameError && <p style={{ color: 'red' }}>{nickNameError}</p>}
+                                {nickNameError && <p style={{ color: 'red' }}>{nickNameError}</p>}
                             </div>
                             <WriteShort titleTag={'제목'} type={'text'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} />
 

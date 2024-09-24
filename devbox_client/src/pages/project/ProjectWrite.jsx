@@ -6,6 +6,7 @@ import Button from "../../components/Button";
 import DragDrop from "./DragDrop";
 import Swal from "sweetalert2";
 import { useUser } from "../../components/context/UserContext";
+import QuillEditor from "../../components/QuillEditor";
 
 const ProjectWrite = () => {
     const { user, loading } = useUser();
@@ -36,13 +37,15 @@ const ProjectWrite = () => {
     const handleLinkChange = (e) => {
         const inputLink = e.target.value;
         setLink(inputLink);
-
-        if (!validateUrl(inputLink)) {
-            setLinkError('유효한 링크를 입력해주세요!');
+    
+        // 입력된 링크가 비어있거나 유효한 링크인지 확인
+        if (inputLink.trim() === '' || validateUrl(inputLink)) {
+            setLinkError(''); // 링크가 비어있거나 유효한 경우 오류 메시지 제거
         } else {
-            setLinkError(''); // 유효한 링크일 경우 오류 메시지 제거
+            setLinkError('유효한 링크를 입력해주세요!'); // 유효하지 않은 링크일 경우 오류 메시지
         }
     };
+    
 
     const onchangeImageUpload = (e) => {
 
@@ -170,16 +173,12 @@ const ProjectWrite = () => {
 
                             <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">내용</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
-                                <textarea
-                                    className="form-control form-control-lg light-300"
-                                    rows="8"
+                                <QuillEditor 
                                     placeholder="내용"
-                                    id="floatingtextarea"
-                                    name="coment"
                                     value={coment}
-                                    onChange={(e) => setComent(e.target.value)}
-                                    type="text"
-                                ></textarea>
+                                    onChange={setComent}
+                                    height="450px"
+                                />
                             </p>
                         </div>
                     </div>
