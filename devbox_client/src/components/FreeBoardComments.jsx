@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getCommentsByPostId, createComment, deleteComment } from '../services/api-service';
-import '../../assets/css/PostDetail.css';
+import '../assets/css/freeboard.css';
 
 const FreeBoardComments = ({ postId }) => {
     const [comments, setComments] = useState([]);

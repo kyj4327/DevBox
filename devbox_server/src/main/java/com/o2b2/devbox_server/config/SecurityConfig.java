@@ -175,6 +175,19 @@ public class SecurityConfig {
 
 //                        .requestMatchers("/msg/**").permitAll()
 
+
+//                        자유게시판, faq
+                        .requestMatchers("/send/**").permitAll()
+                        .requestMatchers("/api/contact/**").permitAll()
+                        .requestMatchers("/api/posts/**").permitAll()
+                        .requestMatchers("/api/comments/**").permitAll()
+                        .requestMatchers("/posts/**").permitAll()
+                        .requestMatchers("/comments/**").permitAll()
+
+                        .requestMatchers("/freeboard/list/**").permitAll()
+
+
+
                         .anyRequest().authenticated());
 
         http

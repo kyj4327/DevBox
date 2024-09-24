@@ -8,7 +8,7 @@ import RoadExplain from "../../components/RoadExplain";
 function BDIAIntroduction() {
   return (
     <div className="bdia-intro-container">
-      <div className="bdia-header-container">
+      <div className="header-container">
         <img
           src="http://edu.busanit.or.kr/resources/bdia/assets/img/bdia_logo.svg"
           alt="바디아"
@@ -17,9 +17,9 @@ function BDIAIntroduction() {
             height: "30%",
             margin: "10px",
           }}
-          className="bdia-header-logo"
+          className="header-logo"
         />
-        <span className="bdia-header-text">
+        <span className="header-text">
           <strong>B</strong>usan <strong>D</strong>igital <strong>I</strong>nnovation <strong>A</strong>cademy
         </span>
       </div>
@@ -32,25 +32,25 @@ function BDIAIntroduction() {
       
       {/* 구분선 및 제목 */}
       <div className="section-container">
-        <h2 className="bdia-section-title">위치</h2>
+        <h2 className="section-title">위치</h2>
         <hr className="divider" />
         <KakaoMap />
       </div>
 
       <div className="section-container">
-        <h2 className="bdia-section-title"></h2>
+        <h2 className="section-title"></h2>
         <hr className="divider" />
         <RoadExplain />
       </div>
 
       <div className="section-container">
-        <h2 className="bdia-section-title">교육장</h2>
+        <h2 className="section-title">교육장</h2>
         <hr className="divider" />
         <ImageSlider />
       </div>
 
       <div className="section-container">
-        <h2 className="bdia-section-title"></h2>
+        <h2 className="section-title"></h2>
         <hr className="divider" />
         <ImageList />
       </div>

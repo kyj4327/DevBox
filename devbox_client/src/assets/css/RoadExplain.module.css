@@ -94,7 +94,7 @@
     list-style: none;
     padding-left: 0;
     margin: 0;
-    text-align: left; /* 중앙 정렬에서 왼쪽 정렬로 변경 */
+    text-align: left; 
 }
 .roadExplain__infoList .roadExplain__heading {
     margin-bottom: 20px;
