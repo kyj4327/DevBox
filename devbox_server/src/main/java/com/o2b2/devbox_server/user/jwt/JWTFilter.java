@@ -8,6 +8,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 // 통합 코드
+@Slf4j
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
@@ -34,29 +37,42 @@ public class JWTFilter extends OncePerRequestFilter {
          *  -> 서버에 요청시 토큰발급받아서 로그인 권한이 필요 없는 것들
          */
         String requestURI = request.getRequestURI();
+        log.error(requestURI);
+        log.error(requestURI.matches("/project/detail.*") + "");
 //        if (requestURI.equals("/join") || requestURI.equals("/login") || requestURI.matches("/password/.*")) {
 
         // 테스트용 로그인 없이 crud 열기
         if (requestURI.equals("/join") || requestURI.equals("/login") || requestURI.matches("/password/.*")
+        || requestURI.equals("/reissue")
 
         // 모여라메이트 게시글 리스트, 상세페이지는 토큰 발급 제외
         || requestURI.equals("/gathermate/list")
         || requestURI.matches("/gathermate/posts/.*") // 게시글 상세는 제외
         || requestURI.matches("/gathermate/posts.*") // 게시글 상세는 제외
-        || requestURI.matches("/gatherlist.*") // 게시글 상세는 제외
-
+        || requestURI.matches("/gathermate/.*/commentslist") // 게시글 상세는 제외
+            
         || requestURI.matches("/reservation/write/.*")
 
+        || requestURI.matches("/gatherlist.*") // 게시글 상세는 제외
+        || requestURI.matches("/edu/detail/.*")
+        || requestURI.matches("/project/detail/.*")
+        || requestURI.matches("/edu/detail.*")
+        || requestURI.matches("/project/detail.*")
+
         //
-                || requestURI.matches("/.*/list/.*")
-                || requestURI.matches("/.*/list/.*.*")
-                || requestURI.matches("/.*/list.*")
+        || requestURI.matches("/.*/list")
+        // || requestURI.matches("/.*/detail/.*")
+        || requestURI.matches("/.*/list.*")
+        || requestURI.matches("/.*/list/.*")
+        || requestURI.matches("/.*/list/.*.*")
+        || requestURI.matches("/.*/download/.*") 
+        || requestURI.matches("/.*/download.*")
 
+                
 
-
-        || requestURI.matches("/edu/.*")
-        || requestURI.matches("/project/.*")
-        || requestURI.matches("/message/.*")
+        // || requestURI.matches("/edu/.*")
+        // || requestURI.matches("/project/.*")
+        // || requestURI.matches("/msg/.*")
 
 //        || requestURI.matches("/msg/.*")
 
@@ -79,8 +95,10 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         // Step 2: Authorization 헤더에서 토큰 추출 (쿠키에 토큰이 없을 경우)
+        System.out.println(token);
         if (token == null) {
             String authorization = request.getHeader("Authorization");
+            System.out.println(authorization);
             if (authorization != null && authorization.startsWith("Bearer ")) {
                 token = authorization.split(" ")[1];
             }
@@ -93,7 +111,26 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         // Step 4: 토큰이 access인지 확인
-        String category = jwtUtil.getCategory(token);
+        String category = null;
+        try {
+            category = jwtUtil.getCategory(token);
+        } catch (io.jsonwebtoken.MalformedJwtException e) {
+            e.printStackTrace();
+            System.out.println("Invalid token");
+//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+            response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().print("{\"msg\":\"Invalid token\"}");
+            return;
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            e.printStackTrace();
+            System.out.println("Expired token");
+//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Expired token");
+            response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().print("{\"msg\":\"Expired token\"}");
+            return;
+        }
         if (!"access".equals(category)) {
             filterChain.doFilter(request, response);
             return;

@@ -1,12 +1,15 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../components/Button";
 import WriteShort from "../../components/WriteShort";
 import WriteLong from "../../components/WriteLong";
 import WriteSelect from "../../components/WriteSelect";
 import Swal from "sweetalert2";
+import { useUser } from "../../components/context/UserContext";
 
-const DetailManager = () => {
+const EduWrite = () => {
+    const { user } = useUser();
+
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [subtitle, setSubtitle] = useState('');
@@ -35,6 +38,19 @@ const DetailManager = () => {
         }
     }
 
+
+    useEffect(() => {
+        if (!user) {
+            Swal.fire({
+                icon: "error",
+                title: "로그인 필요",
+                text: "로그인이 필요합니다."
+            });
+            navigate('/auth');
+        }
+    }, [user, navigate]);
+
+
     const handleDetail = async (e) => {
         e.preventDefault();
 
@@ -59,27 +75,45 @@ const DetailManager = () => {
         formData.append("logo", logo);
         formData.append("state", state);
 
-        const url = 'http://127.0.0.1:8080/edu/write';
-        const res = await fetch(url, {
-            method: 'post',
-            body: formData
-        });
-        const data = await res.json();
-        if (data.code == 200) {
-            navigate('/edu/list');
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "포스터를 첨부 해주세요."
-              });
-        }
+        const token = localStorage.getItem('accessToken');
 
+        try {
+            const res = await fetch('http://localhost:8080/edu/write', {
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            });
+    
+            if (!res.ok) {
+                throw new Error('메시지 가져오기 실패');
+            }
+    
+            const data = await res.json();
+            
+            if (data.code == 200) {
+                navigate('/edu/list');
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "포스터를 첨부 해주세요."
+                });
+            }
+        } catch (error) {
+            console.error('저장 중 오류 발생:', error);
+            alert('저장 중 오류가 발생했습니다. 다시 시도해주세요.');
+        }
+            
     };
+
+    
 
     return (
         <div>
-            <section class="container py-5">
+            <section className="container py-5">
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2 pb-5 ">개발 교육 정보</h1>
                     <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
@@ -89,7 +123,7 @@ const DetailManager = () => {
                             <WriteShort type={'text'} titleTag={'제목'} name={'title'} value={title} onChange={(e) => setTitle(e.target.value)} />
                             <WriteShort type={'text'} titleTag={'소제목'} name={'subtitle'} value={subtitle} onChange={(e) => setSubtitle(e.target.value)} />
 
-                            <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">교육 포스터</h2>
+                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">교육 포스터</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
 
                                 {uploadImgUrl && <img src={uploadImgUrl} alt="Uploaded" />}
@@ -101,7 +135,7 @@ const DetailManager = () => {
                             </p>
 
 
-                            <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">모집기간</h2>
+                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">모집기간</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
                                 <div style={{ display: 'flex' }}>
                                     <input
@@ -121,7 +155,7 @@ const DetailManager = () => {
                                 </div>
                             </p>
 
-                            <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">교육기간</h2>
+                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">교육기간</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
 
                                 <div style={{ display: 'flex' }}>
@@ -165,4 +199,4 @@ const DetailManager = () => {
     );
 };
 
-export default DetailManager;
+export default EduWrite;

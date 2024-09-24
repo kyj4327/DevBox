@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-route
 
 import EduMain from './pages/education/EduMain';
 import EduDetail from './pages/education/EduDetail';
-import DetailManager from './pages/education/DetailManager';
 import EduUpdate from './pages/education/EduUpdate';
 import Project from './pages/project/Project';
 import ProjectWrite from './pages/project/ProjectWrite';
@@ -61,6 +60,7 @@ import FreeBoard from "./pages/freeboard/FreeBoard";
 import FreeBoardDetail from "./pages/freeboard/FreeBoardDetail";
 import PostDetail from "./pages/freeboard/PostDetail";
 import Contact from "./pages/contact/Contact";
+import EduWrite from './pages/education/EduWrite';
 
 function AppContent() {
   const location = useLocation();
@@ -93,7 +93,7 @@ function AppContent() {
 
           <Route path='/edu/list' element={<EduMain />} />
           <Route path='/edu/detail' element={<EduDetail />} />
-          <Route path='/edu/maneger' element={<DetailManager />} />
+          <Route path='/edu/write' element={<EduWrite />} />
           <Route path='/edu/update' element={<EduUpdate />} />
 
           <Route path='/project/list' element={<Project />} />
@@ -152,12 +152,11 @@ function AppContent() {
 
 function App() {
   return (
-    <UserProvider>  
     <Router>
+    <UserProvider>
       <AppContent />
-    </Router>
     </UserProvider>
-
+  </Router>
   );
 }
 

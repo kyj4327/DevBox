@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.o2b2.devbox_server.eduInfo.model.EduEntity;
 import com.o2b2.devbox_server.message.model.MsgReciverEntity;
 import com.o2b2.devbox_server.message.model.MsgSenderEntity;
 import com.o2b2.devbox_server.project.model.ProEntity;
+import com.o2b2.devbox_server.project.model.ProLike;
 import com.o2b2.devbox_server.reference.model.Reference;
 import com.o2b2.devbox_server.reservation.model.Reservation;
 
@@ -42,14 +44,21 @@ public class UserEntity {
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
     @JsonIgnore
     List<ProEntity> proEntitys = new ArrayList<>();
-
-    @OneToMany(mappedBy = "userEntity")
+    
+    // @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
+    // List<EduEntity> eduEntitys = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "receiver")
     @JsonIgnore
     List<MsgReciverEntity> MsgEntitys = new ArrayList<>();
-
-    @OneToMany(mappedBy = "userEntity")
+    
+    @OneToMany(mappedBy = "sender")
     @JsonIgnore
     List<MsgSenderEntity> MsgSenderEntitys = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    List<ProLike> proLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "userEntity")
     @JsonIgnore

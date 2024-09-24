@@ -5,6 +5,7 @@ import Button from "../../components/Button";
 import WriteShort from "../../components/WriteShort";
 import WriteLong from "../../components/WriteLong";
 import Swal from "sweetalert2";
+import { useUser } from "../../components/context/UserContext";
 
 
 const ProjectUpdate = () => {
@@ -14,6 +15,7 @@ const ProjectUpdate = () => {
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
 
+    const { user } = useUser();
 
     const [title, setTitle] = useState('');
     const [name, setName] = useState('');
@@ -70,9 +72,15 @@ const ProjectUpdate = () => {
         });
         console.log(delImgId);
 
+        const token = localStorage.getItem('accessToken');
+
         const url = 'http://localhost:8080/project/update';
         const res = await fetch(url, {
             method: 'post',
+            credentials: 'include',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
             body: formData
         });
         const data = await res.json();
@@ -89,7 +97,15 @@ const ProjectUpdate = () => {
     };
 
     async function get() {
-        const res = await fetch(`http://localhost:8080/project/update?id=${id}`);
+        const token = localStorage.getItem('accessToken');
+
+        const res = await fetch(`http://localhost:8080/project/update?id=${id}`,{
+            method: 'GET',
+            credentials: "include",
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+        });
         const data = await res.json();
         setProData(data);
 
@@ -120,11 +136,19 @@ const ProjectUpdate = () => {
 
     useEffect(() => {
         get();
-    }, []);
+        if (!user) {
+            Swal.fire({
+                icon: "error",
+                title: "로그인 필요",
+                text: "로그인이 필요합니다."
+            });
+            navigate('/auth');
+        }
+    }, [user, navigate]);
 
     return (
         <div>
-            <section class="container py-5">
+            <section className="container py-5">
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2 pb-5 ">프로젝트 자랑 수정</h1>
                     <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
@@ -133,9 +157,9 @@ const ProjectUpdate = () => {
                             <WriteShort titleTag={'제목'} type={'text'} name={'title'} value={title} onChange={(e) => setTitle(e.target.value)} />
                             <WriteShort titleTag={'이름'} type={'text'} name={'naem'} value={name} onChange={(e) => setName(e.target.value)} />
 
-                            <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">프젝 이미지</h2>
+                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">프젝 이미지</h2>
                             <p className="worksingle-footer py-2 text-muted light-300">
-                                <div id="templatemo-slide-link-target" class="card mb-3">
+                                <div id="templatemo-slide-link-target" className="card mb-3">
                                     <DragDrop addFiles={addFiles} initialFiles={savedImgs}
                                         onDeleteImage={handleDeleteImage}
                                     />
@@ -148,7 +172,7 @@ const ProjectUpdate = () => {
                             <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">내용</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
                                 <textarea
-                                    class="form-control form-control-lg light-300"
+                                    className="form-control form-control-lg light-300"
                                     rows="8"
                                     placeholder="내용"
                                     id="floatingtextarea"

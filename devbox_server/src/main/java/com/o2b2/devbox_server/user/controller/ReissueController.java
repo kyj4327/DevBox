@@ -37,7 +37,7 @@ public class ReissueController {
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
 
-            if (cookie.getName().equals("refresh")) {
+            if (cookie.getName().equals("RefreshToken")) {
 
                 refresh = cookie.getValue();
             }
@@ -87,8 +87,10 @@ public class ReissueController {
         addRefreshEntity(username, newRefresh, 86400000L);
 
         //response
-        response.setHeader("access", newAccess);
-        response.addCookie(createCookie("refresh", newRefresh));
+
+//        response.setHeader("RefreshToken", newAccess);
+        response.setHeader("Authorization", "Bearer " + newAccess);
+        response.addCookie(createCookie("RefreshToken", newRefresh));
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
