@@ -26,39 +26,67 @@ const HiringWrite = () => {
         }
     }, [user, navigate]);
 
+    const inputFocus = (name) => {
+        // alert(message);
+        const element = document.getElementById(name);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            element.focus();
+        }
+    };
+
     const saveData = async (e) => {
         e.preventDefault();
         if (!user) {
             alert("로그인이 필요합니다.");
             return;
-        }
-        const token = localStorage.getItem('accessToken');
-        try {
-            const url = 'http://localhost:8080/hiring/write';
-            const response = await fetch(url, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    company: company, area: area, job: job, career: career, imgUrl: imgUrl, wantedUrl: wantedUrl
-                })
-            });
-            if (!response.ok) {
-                throw new Error("서버에서 오류가 발생했습니다.");
+        } else if (company.trim() === '') {
+            inputFocus("company", "회사명을 입력해주세요.");
+            setCompany('');
+        } else if (area.trim() === '') {
+            inputFocus("area", "지역을 입력해주세요.");
+            setArea('');
+        } else if (job.trim() === '') {
+            inputFocus("job", "직군/직무를 입력해주세요.");
+            setJob('');
+        } else if (career.trim() === '') {
+            inputFocus("career", "경력을 입력해주세요.");
+            setCareer('');
+        } else if (imgUrl.trim() === '') {
+            inputFocus("imgUrl", "이미지 주소를 입력해주세요.");
+            setImgUrl('');
+        } else if (wantedUrl.trim() === '') {
+            inputFocus("wantedUrl", "원티드 주소를 입력해주세요.");
+            setWantedUrl('');
+        } else {
+            const token = localStorage.getItem('accessToken');
+            try {
+                const url = 'http://localhost:8080/hiring/write';
+                const response = await fetch(url, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        company: company, area: area, job: job, career: career, imgUrl: imgUrl, wantedUrl: wantedUrl
+                    })
+                });
+                if (!response.ok) {
+                    throw new Error("서버에서 오류가 발생했습니다.");
+                }
+                const data = await response.json();
+                if (data.code === 200) {
+                    alert('저장되었습니다.');
+                    navigate('/hiring/list');
+                } else {
+                    alert('다시 입력해주세요.');
+                }
+            } catch (error) {
+                console.error("저장 중 오류 발생 : ", error);
+                alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
             }
-            const data = await response.json();
-            if (data.code === 200) {
-                alert('저장되었습니다.');
-                navigate('/hiring/list');
-            } else {
-                alert('다시 입력해주세요.');
-            }
-        } catch (error) {
-            console.error("저장 중 오류 발생 : ", error);
-            alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
         }
     };
 
