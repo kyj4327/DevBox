@@ -20,7 +20,7 @@ import './assets/css/custom.css';
 import ScrollToTop from './components/ScrollToTop';
 
 
-import JobInfoList from './components/JobInfo';
+import JobInfoList from './pages/jobInfo/JobInfoList';
 import JobInfoBack from './pages/jobInfo/JobInfoBack';
 import JobInfoFront from './pages/jobInfo/JobInfoFront';
 import JobInfoDevOps from './pages/jobInfo/JobInfoDevOps';
