@@ -3,12 +3,17 @@ import Pagination from '../../components/Pagination';
 import Button from '../../components/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useUser } from '../../components/context/UserContext';
 
 const ReferenceList = () => {
+    const { user } = useUser();
     const navigate = useNavigate();
     const toWrite = () => {
         navigate('/reference/write');
     };
+
+    // user 객체에서 nickname 값 추출
+    const userNickName = user ? user.nickname : null;
 
     const [selectJob, setSelectJob] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
@@ -16,7 +21,7 @@ const ReferenceList = () => {
     const [pageData, setPageData] = useState([]);
     useEffect(() => {
         async function get(page = 1) {
-            const url = `http://127.0.0.1:8080/reference/list/${selectJob}?page=${page}`;
+            const url = `http://localhost:8080/reference/list/${selectJob}?page=${page}`;
             const res = await fetch(url);
             const data = await res.json();
             // 페이지 데이터와 실제 데이터 분리
@@ -48,7 +53,7 @@ const ReferenceList = () => {
             <section className="container py-5">
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2">추천해요</h1>
-                    <p className="text-center pb-5 light-300">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut facilisis.</p>
+                    <p className="text-center pb-5 light-300">다른 사람에게 알려주고 싶은 나만의 꿀팁을 공유해요!</p>
                     <div className="row justify-content-center my-5">
                         <div className="filter-btns shadow-md rounded-pill text-center col-auto">
                             <Category text={'All'} isActive={selectJob} onClick={clickSelectJob} />
@@ -67,22 +72,7 @@ const ReferenceList = () => {
                                     <div className="row p-2">
                                         <div className="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
                                             <h3>{v.title}</h3>
-                                            <Link onClick={(e) => {
-                                                e.preventDefault();
-                                                navigate(`/reference/update?referenceId=${v.id}`);
-                                            }}>수정</Link>
-                                            <Link onClick={(e) => {
-                                                e.preventDefault();
-                                                if (window.confirm("삭제하시겠습니까?")) {
-                                                    async function send() {
-                                                        const url = `http://127.0.0.1:8080/reference/delete?referenceId=${v.id}`;
-                                                        await fetch(url);
-                                                        alert("삭제되었습니다.");
-                                                        window.location.reload();
-                                                    }
-                                                    send();
-                                                }
-                                            }}>삭제</Link>
+                                            <span>작성자 : {v.userId}</span>
                                         </div>
                                         <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                                             <li style={{ listStyle: 'none' }}>{v.selectJob}</li>
@@ -93,7 +83,44 @@ const ReferenceList = () => {
                                             {v.content5 === '' ? '' : <li>{v.content5}</li>}
                                         </div>
                                         <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
-                                            <Link to={v.link} className="btn rounded-pill px-4 btn-primary light-300" target='_blank'>Link</Link>
+                                            <Link to={v.link} className="btn rounded-pill px-4 btn-primary light-300" target='_blank' style={{ marginRight: '1rem' }}>Link</Link>
+                                            {
+                                                v.userId === userNickName
+                                                    ? <>
+                                                        <Link style={{ marginRight: '0.5em', textDecoration: 'none' }}
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                navigate(`/reference/update?referenceId=${v.id}`);
+                                                            }}>수정</Link>
+                                                        <Link style={{ textDecoration: 'none' }}
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                if (!user) {
+                                                                    alert("로그인이 필요합니다.");
+                                                                    return;
+                                                                }
+                                                                const token = localStorage.getItem('accessToken');
+                                                                if (window.confirm("삭제하시겠습니까?")) {
+                                                                    async function send() {
+                                                                        const url = `http://localhost:8080/reference/delete?referenceId=${v.id}`;
+                                                                        await fetch(url, {
+                                                                            credentials: 'include',
+                                                                            headers: {
+                                                                                'Authorization': `Bearer ${token}`
+                                                                            }
+                                                                        });
+                                                                        alert("삭제되었습니다.");
+                                                                        window.location.reload();
+                                                                    }
+                                                                    send();
+                                                                }
+                                                            }}>삭제</Link>
+                                                    </>
+                                                    : <>
+                                                        <span style={{ marginRight: '0.5em', cursor: 'default' }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                        <span style={{ cursor: 'default' }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                    </>
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -101,11 +128,14 @@ const ReferenceList = () => {
                         })
                     }
                 </div>
-                <div className="form-row pt-2">
-                    <div className="col-md-12 col-10 text-end">
-                        <Button text={'작성하기'} onClick={toWrite} />
-                    </div>
-                </div>
+                {
+                    !user ? ''
+                        : <div className="form-row pt-2">
+                            <div className="col-md-12 col-10 text-end">
+                                <Button text={'작성하기'} onClick={toWrite} />
+                            </div>
+                        </div>
+                }
             </section>
             <Pagination handlePageChange={handlePageChange} pageData={pageData} />
         </div>

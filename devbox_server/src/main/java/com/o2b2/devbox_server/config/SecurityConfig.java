@@ -158,6 +158,13 @@ public class SecurityConfig {
                         .requestMatchers("/gathermate/edit/**").authenticated()
 
 
+                        .requestMatchers("/reservation/write/**").permitAll()
+                        .requestMatchers("/reservation/check/**").authenticated()
+                        // .requestMatchers("/reservation/check/**").hasAnyRole("ADMIN", "STUDENT")
+                        // .requestMatchers("/reservation/write").hasAnyRole("ADMIN", "STUDENT")
+                        .requestMatchers("/contest/write").hasRole("ADMIN")
+                        // .requestMatchers("/hiring/write").hasRole("ADMIN")
+                        
                         /**
                          추천해요, 프로젝트 자랑 게시판
                          */

@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.o2b2.devbox_server.reservation.model.Reservation;
 import com.o2b2.devbox_server.reservation.repository.ReservationRepository;
+import com.o2b2.devbox_server.user.dto.CustomUserDetails;
+import com.o2b2.devbox_server.user.entity.UserEntity;
 
 @RestController
 @CrossOrigin
@@ -31,7 +34,11 @@ public class ReservationController {
     ReservationRepository reservationRepository;
 
     @PostMapping("/reservation/write")
-    public Map<String, Object> reservation(@RequestBody Reservation reservation) {
+    public Map<String, Object> reservation(
+            @RequestBody Reservation reservation,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        UserEntity userEntity = userDetails.getUserEntity();
+        reservation.setUserEntity(userEntity);
         Reservation result = reservationRepository.save(reservation);
         Map<String, Object> map = new HashMap<>();
         map.put("code", 200);
@@ -46,11 +53,12 @@ public class ReservationController {
         return list;
     }
 
-    @GetMapping("/reservation/list/{category}/{date}")
+    @GetMapping("/reservation/check/{category}/{date}")
     public List<Map<String, Object>> reservationList(
             @PathVariable("category") String category,
             @PathVariable("date") String date,
-            @RequestParam(value = "page", defaultValue = "1") int page) {
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
         LocalDateTime today = LocalDateTime.now();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -76,20 +84,33 @@ public class ReservationController {
         Sort sort = Sort.by(Order.asc("date"), Order.asc("time"));
         Pageable pageable = PageRequest.of(page - 1, 4, sort);
         Page<Reservation> p = null;
-        if (date.equals("All")) {
-            p = reservationRepository.findByCondition(category, pageable);
-        } else {
-            p = reservationRepository.findByConditionAndDateContaining(category, date, pageable);
+
+        UserEntity userId = userDetails.getUserEntity();
+        if (userDetails.getUserEntity().getRole().equals("ROLE_ADMIN")) {
+            if (date.equals("All")) {
+                p = reservationRepository.findByCondition(category, pageable);
+            } else {
+                p = reservationRepository.findByConditionAndDateContaining(category, date, pageable);
+            }
+        } else if (userDetails.getUserEntity().getRole().equals("ROLE_STUDENT")) {
+            if (date.equals("All")) {
+                p = reservationRepository.findByUserEntityAndCondition(userId, category,
+                        pageable);
+            } else {
+                p = reservationRepository.findByUserEntityAndConditionAndDateContaining(userId,
+                        category, date, pageable);
+            }
         }
+
         List<Reservation> list = p.getContent();
         List<Map<String, Object>> response = new ArrayList<>();
         for (Reservation r : list) {
             Map<String, Object> rMap = new HashMap<>();
             rMap.put("id", r.getId());
-            rMap.put("name", r.getName());
             rMap.put("date", r.getDate());
             rMap.put("time", r.getTime());
             rMap.put("condition", r.getCondition());
+            rMap.put("userId", r.getUserEntity().getName());
             response.add(rMap);
         }
         int totalPage = p.getTotalPages();

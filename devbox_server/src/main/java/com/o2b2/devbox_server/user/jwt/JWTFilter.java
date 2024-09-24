@@ -50,6 +50,8 @@ public class JWTFilter extends OncePerRequestFilter {
         || requestURI.matches("/gathermate/posts/.*") // 게시글 상세는 제외
         || requestURI.matches("/gathermate/posts.*") // 게시글 상세는 제외
         || requestURI.matches("/gathermate/.*/commentslist") // 게시글 상세는 제외
+            
+        || requestURI.matches("/reservation/write/.*")
 
         || requestURI.matches("/gatherlist.*") // 게시글 상세는 제외
         || requestURI.matches("/edu/detail/.*")
@@ -60,13 +62,13 @@ public class JWTFilter extends OncePerRequestFilter {
         //
         || requestURI.matches("/.*/list")
         // || requestURI.matches("/.*/detail/.*")
+        || requestURI.matches("/.*/list.*")
         || requestURI.matches("/.*/list/.*")
         || requestURI.matches("/.*/list/.*.*")
         || requestURI.matches("/.*/download/.*") 
         || requestURI.matches("/.*/download.*")
 
                 
-
 
         // || requestURI.matches("/edu/.*")
         // || requestURI.matches("/project/.*")

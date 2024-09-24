@@ -8,8 +8,20 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/locale';
 import { format } from 'date-fns';
+import { useUser } from '../../components/context/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 const ReservationList = () => {
+    const { user } = useUser();
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (!user) {
+            alert("로그인이 필요합니다.");
+            navigate('/auth');
+        }
+    }, [user, navigate]);
+    const token = localStorage.getItem('accessToken');
+
     const [category, setCategory] = useState('예약완료');
     const [date, setDate] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
@@ -17,8 +29,13 @@ const ReservationList = () => {
     const [pageData, setPageData] = useState([]);
     useEffect(() => {
         async function get(page = 1) {
-            const url = `http://127.0.0.1:8080/reservation/list/${category}/${date}?page=${page}`;
-            const res = await fetch(url);
+            const url = `http://localhost:8080/reservation/check/${category}/${date}?page=${page}`;
+            const res = await fetch(url, {
+                credentials: 'include',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             const data = await res.json();
             const listData = data.slice(0, -1);
             const pageInfo = data[data.length - 1];
@@ -37,6 +54,8 @@ const ReservationList = () => {
         e.preventDefault();
         setCategory(e.target.textContent);
         setCurrentPage(1);
+        setDate('All');
+        setStartDate('');
     };
 
     const handlePageChange = (pageNumber) => {
@@ -112,7 +131,7 @@ const ReservationList = () => {
                                             </div>
                                             <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                                                 <h5><li style={{ listStyle: 'none' }}>예약자명</li></h5>
-                                                <h5><li style={{ marginBottom: '1rem' }}>{v.name}</li></h5>
+                                                <h5><li style={{ marginBottom: '1rem' }}>{v.userId}</li></h5>
                                                 <h5><li style={{ listStyle: 'none' }}>날짜</li></h5>
                                                 <h5><li style={{ marginBottom: '1rem' }}>{v.date}</li></h5>
                                                 <h5><li style={{ listStyle: 'none' }}>시간</li></h5>
@@ -126,7 +145,7 @@ const ReservationList = () => {
                                                                 e.preventDefault();
                                                                 if (window.confirm(`${v.date} ${v.time} 예약취소하시겠습니까?`)) {
                                                                     async function send() {
-                                                                        const url = `http://127.0.0.1:8080/reservation/delete?reservationId=${v.id}`;
+                                                                        const url = `http://localhost:8080/reservation/delete?reservationId=${v.id}`;
                                                                         await fetch(url);
                                                                         alert(`${v.date} ${v.time} 예약취소되었습니다.`);
                                                                         window.location.reload();

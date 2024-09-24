@@ -4,8 +4,10 @@ import WriteSelect from '../../components/WriteSelect';
 import Button from '../../components/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useUser } from '../../components/context/UserContext';
 
 const ReferenceUpdate = () => {
+    const { user } = useUser();
     const navigate = useNavigate();
 
     const [title, setTitle] = useState('');
@@ -17,13 +19,26 @@ const ReferenceUpdate = () => {
     const [content4, setContent4] = useState('');
     const [content5, setContent5] = useState('');
 
+    useEffect(() => {
+        if (!user) {
+            alert("로그인이 필요합니다.");
+            navigate('/auth');
+        }
+    }, [user, navigate]);
+    const token = localStorage.getItem('accessToken');
+
     const location = useLocation();
     const search = new URLSearchParams(location.search);
     const referenceId = search.get('referenceId');
     useEffect(() => {
         async function get() {
-            const url = `http://127.0.0.1:8080/reference/update?referenceId=${referenceId}`;
-            const res = await fetch(url);
+            const url = `http://localhost:8080/reference/update?referenceId=${referenceId}`;
+            const res = await fetch(url, {
+                credentials: 'include',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             const data = await res.json();
             setTitle(data.title);
             setSelectJob(data.selectJob);
@@ -37,36 +52,70 @@ const ReferenceUpdate = () => {
         get();
     }, []);
 
-    const updateData = (e) => {
+    const inputFocus = (name) => {
+        const element = document.getElementById(name);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            element.focus();
+        }
+    };
+
+    const updateData = async (e) => {
         e.preventDefault();
-        async function send() {
-            const url = 'http://127.0.0.1:8080/reference/update';
-            const res = await fetch(url, {
-                method: 'post',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({
-                    id: referenceId, title: title, selectJob: selectJob, link: link,
-                    content1: content1, content2: content2, content3: content3, content4: content4, content5: content5
-                })
-            });
-            const data = await res.json();
-            if (data.code === 200) {
-                alert('수정되었습니다.');
-                navigate('/reference/list');
-            } else {
-                alert('다시 입력해주세요.');
+        if (!user) {
+            alert("로그인이 필요합니다.");
+            return;
+        } else if (title.trim() === '') {
+            inputFocus("title", "제목을 입력해주세요.");
+            setTitle('');
+        } else if (selectJob === '') {
+            window.scrollTo(0, 0);
+        } else if (link.trim() === '') {
+            inputFocus("link", "사이트 주소를 입력해주세요.");
+            setLink('');
+        } else if (content1.trim() === '') {
+            inputFocus("content1", "내용1을 입력해주세요.");
+            setContent1('');
+        } else if (content2.trim() === '') {
+            inputFocus("content2", "내용2를 입력해주세요.");
+            setContent2('');
+        } else {
+            try {
+                const url = 'http://localhost:8080/reference/update';
+                const response = await fetch(url, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        id: referenceId, title: title, selectJob: selectJob, link: link,
+                        content1: content1, content2: content2, content3: content3.trim(), content4: content4.trim(), content5: content5.trim()
+                    })
+                });
+                if (!response.ok) {
+                    throw new Error("서버에서 오류가 발생했습니다.");
+                }
+                const data = await response.json();
+                if (data.code === 200) {
+                    alert('수정되었습니다.');
+                    navigate('/reference/list');
+                } else {
+                    alert('다시 입력해주세요.');
+                }
+            } catch (error) {
+                console.error("저장 중 오류 발생 : ", error);
+                alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
             }
         }
-        send();
     };
 
     return (
         <section className="container py-5">
             <div className="container py-5">
                 <h1 className="h2 semi-bold-600 text-center mt-2">추천해요 Update</h1>
-                <p className="text-center pb-5 light-300">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut facilisis.</p>
+                <p className="text-center pb-5 light-300">다른 사람에게 알려주고 싶은 나만의 꿀팁을 공유해요!</p>
                 <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
                     <div className="contact-form row">
                         <WriteShort type={'text'} titleTag={'제목'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} />
