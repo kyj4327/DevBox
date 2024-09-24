@@ -8,7 +8,7 @@ const Project = () => {
     const [pageData, setPageData] = useState({});
     const [refresh, setRefresh] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-
+    
     async function get(page = 1) {
         const res = await fetch(`http://localhost:8080/project/list?page=${page}`);
         const data = await res.json();

@@ -11,7 +11,8 @@ const MsgList = (props) => {
     const like = async (msgId) => {
         const url = `http://localhost:8080/msg/like?id=${msgId}`;
         const res = await fetch(url, {
-            method: 'GET'
+            method: 'GET',
+            credentials: "include",
             
         });
         const data = await res.json();
@@ -50,7 +51,6 @@ const MsgList = (props) => {
                     <Category isActive={props.category} text={'보낸쪽지'} onClick={clickState} />
                 </div>
             </div>
-../
             <div className="pricing-horizontal bg-white">
                 {props.list && props.list.map((msg) => {
                     // 메시지의 좋아요 상태를 상태에서 가져옵니다.

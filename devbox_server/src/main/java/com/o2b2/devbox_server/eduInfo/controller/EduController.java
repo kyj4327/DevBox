@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.o2b2.devbox_server.eduInfo.model.EduEntity;
 import com.o2b2.devbox_server.eduInfo.repository.EduRepository;
+import com.o2b2.devbox_server.gatherMate.service.GatherMateService;
+import com.o2b2.devbox_server.user.dto.CustomUserDetails;
+import com.o2b2.devbox_server.user.entity.UserEntity;
+import com.o2b2.devbox_server.user.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,12 +46,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Transactional
 public class EduController {
 
+
     private final Path fileStorageLocation = Paths.get("c:/images"); // 파일 저장 경로
 
     @Autowired
     EduRepository eduRepository;
 
-
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/edu/list/{state}")
     public Map<String, Object> eduList(
@@ -91,22 +98,20 @@ public class EduController {
         return response; // JSON 형태로 반환
     }
 
-
     @PostMapping("/edu/write")
     public Map<String, Object> edu(
             @ModelAttribute EduEntity edu,
             @RequestParam("file") MultipartFile file) {
         System.out.println(edu);
         System.out.println(file.getOriginalFilename());
-         
+
         Map<String, Object> map = new HashMap<>();
-        
+
         if (file == null || file.isEmpty()) {
             map.put("code", 400);
             map.put("msg", "포스터를 첨부해주세요.");
             return map;
         }
-
 
         edu.setImg(file.getOriginalFilename());
         EduEntity result = eduRepository.save(edu);
