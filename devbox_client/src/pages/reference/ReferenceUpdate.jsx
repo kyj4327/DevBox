@@ -52,39 +52,62 @@ const ReferenceUpdate = () => {
         get();
     }, []);
 
+    const inputFocus = (name) => {
+        const element = document.getElementById(name);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            element.focus();
+        }
+    };
+
     const updateData = async (e) => {
         e.preventDefault();
         if (!user) {
             alert("로그인이 필요합니다.");
             return;
-        }
-        try {
-            const url = 'http://localhost:8080/reference/update';
-            const response = await fetch(url, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    id: referenceId, title: title, selectJob: selectJob, link: link,
-                    content1: content1, content2: content2, content3: content3, content4: content4, content5: content5
-                })
-            });
-            if (!response.ok) {
-                throw new Error("서버에서 오류가 발생했습니다.");
+        } else if (title.trim() === '') {
+            inputFocus("title", "제목을 입력해주세요.");
+            setTitle('');
+        } else if (selectJob === '') {
+            window.scrollTo(0, 0);
+        } else if (link.trim() === '') {
+            inputFocus("link", "사이트 주소를 입력해주세요.");
+            setLink('');
+        } else if (content1.trim() === '') {
+            inputFocus("content1", "내용1을 입력해주세요.");
+            setContent1('');
+        } else if (content2.trim() === '') {
+            inputFocus("content2", "내용2를 입력해주세요.");
+            setContent2('');
+        } else {
+            try {
+                const url = 'http://localhost:8080/reference/update';
+                const response = await fetch(url, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        id: referenceId, title: title, selectJob: selectJob, link: link,
+                        content1: content1, content2: content2, content3: content3.trim(), content4: content4.trim(), content5: content5.trim()
+                    })
+                });
+                if (!response.ok) {
+                    throw new Error("서버에서 오류가 발생했습니다.");
+                }
+                const data = await response.json();
+                if (data.code === 200) {
+                    alert('수정되었습니다.');
+                    navigate('/reference/list');
+                } else {
+                    alert('다시 입력해주세요.');
+                }
+            } catch (error) {
+                console.error("저장 중 오류 발생 : ", error);
+                alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
             }
-            const data = await response.json();
-            if (data.code === 200) {
-                alert('수정되었습니다.');
-                navigate('/reference/list');
-            } else {
-                alert('다시 입력해주세요.');
-            }
-        } catch (error) {
-            console.error("저장 중 오류 발생 : ", error);
-            alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
         }
     };
 
@@ -92,7 +115,7 @@ const ReferenceUpdate = () => {
         <section className="container py-5">
             <div className="container py-5">
                 <h1 className="h2 semi-bold-600 text-center mt-2">추천해요 Update</h1>
-                <p className="text-center pb-5 light-300">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut facilisis.</p>
+                <p className="text-center pb-5 light-300">다른 사람에게 알려주고 싶은 나만의 꿀팁을 공유해요!</p>
                 <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
                     <div className="contact-form row">
                         <WriteShort type={'text'} titleTag={'제목'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} />

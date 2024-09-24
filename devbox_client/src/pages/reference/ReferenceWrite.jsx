@@ -27,40 +27,64 @@ const ReferenceWrite = () => {
         }
     }, [user, navigate]);
 
+    const inputFocus = (name) => {
+        // alert(message); // alert 표시
+        const element = document.getElementById(name); // id로 요소를 찾음
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' }); // 스크롤 이동
+            element.focus(); // 해당 input에 focus
+        }
+    };
+
     const saveData = async (e) => {
         e.preventDefault();
         if (!user) {
             alert("로그인이 필요합니다.");
             return;
-        }
-        const token = localStorage.getItem('accessToken');
-        try {
-            const url = 'http://localhost:8080/reference/write';
-            const response = await fetch(url, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    title: title, selectJob: selectJob, link: link,
-                    content1: content1, content2: content2, content3: content3, content4: content4, content5: content5
-                })
-            });
-            if (!response.ok) {
-                throw new Error("서버에서 오류가 발생했습니다.");
+        } else if (title.trim() === '') {
+            inputFocus("title", "제목을 입력해주세요.");
+            setTitle('');
+        } else if (selectJob === '') {
+            window.scrollTo(0, 0);
+        } else if (link.trim() === '') {
+            inputFocus("link", "사이트 주소를 입력해주세요.");
+            setLink('');
+        } else if (content1.trim() === '') {
+            inputFocus("content1", "내용1을 입력해주세요.");
+            setContent1('');
+        } else if (content2.trim() === '') {
+            inputFocus("content2", "내용2를 입력해주세요.");
+            setContent2('');
+        } else {
+            const token = localStorage.getItem('accessToken');
+            try {
+                const url = 'http://localhost:8080/reference/write';
+                const response = await fetch(url, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        title: title, selectJob: selectJob, link: link,
+                        content1: content1, content2: content2, content3: content3.trim(), content4: content4.trim(), content5: content5.trim()
+                    })
+                });
+                if (!response.ok) {
+                    throw new Error("서버에서 오류가 발생했습니다.");
+                }
+                const data = await response.json();
+                if (data.code === 200) {
+                    alert('저장되었습니다.');
+                    navigate('/reference/list');
+                } else {
+                    alert('다시 입력해주세요.');
+                }
+            } catch (error) {
+                console.error("저장 중 오류 발생 : ", error);
+                alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
             }
-            const data = await response.json();
-            if (data.code === 200) {
-                alert('저장되었습니다.');
-                navigate('/reference/list');
-            } else {
-                alert('다시 입력해주세요.');
-            }
-        } catch (error) {
-            console.error("저장 중 오류 발생 : ", error);
-            alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
         }
     };
 

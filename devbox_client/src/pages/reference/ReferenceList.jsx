@@ -24,7 +24,6 @@ const ReferenceList = () => {
             const url = `http://localhost:8080/reference/list/${selectJob}?page=${page}`;
             const res = await fetch(url);
             const data = await res.json();
-            console.log(data); // 데이터 구조 확인
             // 페이지 데이터와 실제 데이터 분리
             const listData = data.slice(0, -1);  // 마지막 페이지 정보 객체를 제외한 부분
             const pageInfo = data[data.length - 1];  // 마지막 객체가 페이지 정보라고 가정
@@ -54,7 +53,7 @@ const ReferenceList = () => {
             <section className="container py-5">
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2">추천해요</h1>
-                    <p className="text-center pb-5 light-300">Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut facilisis.</p>
+                    <p className="text-center pb-5 light-300">다른 사람에게 알려주고 싶은 나만의 꿀팁을 공유해요!</p>
                     <div className="row justify-content-center my-5">
                         <div className="filter-btns shadow-md rounded-pill text-center col-auto">
                             <Category text={'All'} isActive={selectJob} onClick={clickSelectJob} />
