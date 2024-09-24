@@ -14,7 +14,7 @@ const Message = () => {
 
     async function get(page = 1) {
         const token = localStorage.getItem('accessToken');
-        const res = await fetch(`http://localhost:8080/msg/list?page=${page}&category=${category}`,{
+        const res = await fetch(`http://localhost:8080/msg/box?page=${page}&category=${category}`,{
             method: 'GET',
             credentials: "include",
             headers: {
