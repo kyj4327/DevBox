@@ -126,6 +126,7 @@ public class SecurityConfig {
                         .requestMatchers("/*/detail/**").permitAll()
                         .requestMatchers("/*/download/**").permitAll()
                         .requestMatchers("/api/user/delete").authenticated() // <- 회원 탈퇴
+                        .requestMatchers("/api/user/nicknames").authenticated() // <- 회원 탈퇴
 
 
 

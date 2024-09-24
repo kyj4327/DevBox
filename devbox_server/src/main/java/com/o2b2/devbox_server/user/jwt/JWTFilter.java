@@ -59,20 +59,10 @@ public class JWTFilter extends OncePerRequestFilter {
 
         //
         || requestURI.matches("/.*/list")
-        // || requestURI.matches("/.*/detail/.*")
         || requestURI.matches("/.*/list/.*")
         || requestURI.matches("/.*/list/.*.*")
         || requestURI.matches("/.*/download/.*") 
         || requestURI.matches("/.*/download.*")
-
-                
-
-
-        // || requestURI.matches("/edu/.*")
-        // || requestURI.matches("/project/.*")
-        // || requestURI.matches("/msg/.*")
-
-//        || requestURI.matches("/msg/.*")
 
          ) {
             filterChain.doFilter(request, response);
