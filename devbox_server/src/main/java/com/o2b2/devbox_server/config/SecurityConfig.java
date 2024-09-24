@@ -177,6 +177,7 @@ public class SecurityConfig {
                         // .requestMatchers("/edu/**").permitAll()
                         // .requestMatchers("/project/**").permitAll()
                         .requestMatchers("/msg/**").authenticated()
+                        .requestMatchers("/msg/list**").authenticated()
                         // .requestMatchers("/message/**").authenticated()
 
 //                        .requestMatchers("/msg/**").permitAll()

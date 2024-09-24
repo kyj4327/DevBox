@@ -47,7 +47,7 @@ public class MsgController {
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping("/msg/list")
+    @GetMapping("/msg/box")
     public Map<String, Object> msgList(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestParam(value = "category") String category,
