@@ -52,39 +52,68 @@ const ContestUpdate = () => {
         get();
     }, []);
 
+    const inputFocus = (name) => {
+        // alert(message);
+        const element = document.getElementById(name);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            element.focus();
+        }
+    };
+
     const updateData = async (e) => {
         e.preventDefault();
         if (!user) {
             alert("로그인이 필요합니다.");
             return;
-        }
-        try {
-            const url = 'http://localhost:8080/contest/update';
-            const response = await fetch(url, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    id: contestId, title: title, officialUrl: officialUrl, imgUrl: imgUrl,
-                    host: host, target: target, regStart: regStart, regEnd: regEnd
-                })
-            });
-            if (!response.ok) {
-                throw new Error("서버에서 오류가 발생했습니다.");
+        } else if (title.trim() === '') {
+            inputFocus("title", "공모명을 입력해주세요.");
+            setTitle('');
+        } else if (host.trim() === '') {
+            inputFocus("host", "주최/주관을 입력해주세요.");
+            setHost('');
+        } else if (target.trim() === '') {
+            inputFocus("target", "참가대상을 입력해주세요.");
+            setTarget('');
+        } else if (regStart === '') {
+            inputFocus("regStart", "접수시작 날짜를 선택해주세요.");
+        } else if (regEnd === '') {
+            inputFocus("regEnd", "접수마감 날짜를 선택해주세요.");
+        } else if (officialUrl.trim() === '') {
+            inputFocus("officialUrl", "공식 홈페이지 주소를 입력해주세요.");
+            setOfficialUrl('');
+        } else if (imgUrl.trim() === '') {
+            inputFocus("imgUrl", "이미지 주소를 입력해주세요.");
+            setImgUrl('');
+        } else {
+            try {
+                const url = 'http://localhost:8080/contest/update';
+                const response = await fetch(url, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        id: contestId, title: title, officialUrl: officialUrl, imgUrl: imgUrl,
+                        host: host, target: target, regStart: regStart, regEnd: regEnd
+                    })
+                });
+                if (!response.ok) {
+                    throw new Error("서버에서 오류가 발생했습니다.");
+                }
+                const data = await response.json();
+                if (data.code === 200) {
+                    alert('수정되었습니다.');
+                    navigate('/contest/list');
+                } else {
+                    alert('다시 입력해주세요.');
+                }
+            } catch (error) {
+                console.error("저장 중 오류 발생 : ", error);
+                alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
             }
-            const data = await response.json();
-            if (data.code === 200) {
-                alert('수정되었습니다.');
-                navigate('/contest/list');
-            } else {
-                alert('다시 입력해주세요.');
-            }
-        } catch (error) {
-            console.error("저장 중 오류 발생 : ", error);
-            alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
         }
     };
 
