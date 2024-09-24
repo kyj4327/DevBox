@@ -152,12 +152,11 @@ function AppContent() {
 
 function App() {
   return (
-    <UserProvider>  
     <Router>
+    <UserProvider>
       <AppContent />
-    </Router>
     </UserProvider>
-
+  </Router>
   );
 }
 

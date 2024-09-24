@@ -22,10 +22,15 @@ public class GatherMateResponse {
 
     private final String author;
 
+    private int likeCount;
+    private boolean isLiked;
+    private int views;
 
+    // 댓글의 수
+    private int commentCount;
 
     // 생성자 오버로딩
-    public GatherMateResponse(GatherMate gatherMate) {
+    public GatherMateResponse(GatherMate gatherMate, int commentCount, boolean isLiked) {
         this.id = gatherMate.getId();
         this.intro = gatherMate.getIntro();
         this.apply = gatherMate.getApply();
@@ -34,10 +39,16 @@ public class GatherMateResponse {
         this.createdAt = gatherMate.getCreatedAt();
         this.isRecruiting = gatherMate.isRecruiting();
         this.author = gatherMate.getUser().getNickname();
+        this.likeCount = gatherMate.getLikeCount();
+        this.views = gatherMate.getViews();
+        this.commentCount = commentCount;
+        this.isLiked = isLiked;
     }
 
     @Builder
-    public GatherMateResponse(Long id, String intro, String apply, String title, String content, LocalDateTime createdAt, boolean isRecruiting, String author) {
+    public GatherMateResponse(Long id, String intro, String apply, String title, String content,
+                              LocalDateTime createdAt, boolean isRecruiting, String author,
+                              int likeCount, boolean isLiked, int views, int commentCount) {
         this.id = id;
         this.intro = intro;
         this.apply = apply;
@@ -46,5 +57,9 @@ public class GatherMateResponse {
         this.createdAt = createdAt;
         this.isRecruiting = isRecruiting;
         this.author = author;
+        this.likeCount = likeCount;
+        this.isLiked = isLiked;
+        this.views = views;
+        this.commentCount = commentCount;
     }
 }

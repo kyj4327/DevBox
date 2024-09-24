@@ -20,7 +20,7 @@ function GatherMateEdit() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8080/gathermate/posts/${postId}`);
+        const response = await fetch(`http://localhost:8080/gathermate/posts/${postId}`);
         if (!response.ok) {
           throw new Error("네트워크 응답이 올바르지 않습니다.");
         }
@@ -54,24 +54,33 @@ function GatherMateEdit() {
     };
 
     try {
-      const response = await fetch(`http://localhost:8080/gathermate/posts/${postId}`, {
-        method: "Put",
+      const response = await fetch(`http://localhost:8080/gathermate/edit/${postId}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
         },
         body: JSON.stringify(updatedGatherMate),
       });
 
+      if (!response.ok) {
+        if (response.status === 403) {
+          throw new Error("작성자가 아닙니다.");
+        }
+        throw new Error("글 수정에 실패했습니다.");
+      }
+
       const data = await response.text();
       console.log("업데이트된 데이터:", data);
 
-      alert("글이 성공적으로 수정되었습니다.");
-      navigate(`/gatherdetail/${postId}`);
+       alert(data.message || "글이 성공적으로 수정되었습니다.");
+      navigate(`/gathermate/detail/${postId}`);
     } catch (error) {
       console.error("수정 실패:", error);
-      alert("글 수정에 실패했습니다.");
+      alert(error.message || "글 수정에 실패했습니다.");
     }
   };
+
 
   return (
     <div>

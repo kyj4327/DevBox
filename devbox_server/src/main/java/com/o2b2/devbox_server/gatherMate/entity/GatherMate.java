@@ -1,15 +1,15 @@
 package com.o2b2.devbox_server.gatherMate.entity;
 
+import com.o2b2.devbox_server.gatherMate.comments.entity.GathermateComment;
 import com.o2b2.devbox_server.gatherMate.domain.GatherMatePostEditor;
+import com.o2b2.devbox_server.gatherMate.like.entity.Like;
 import com.o2b2.devbox_server.user.entity.UserEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 // import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Entity
@@ -25,7 +25,7 @@ public class GatherMate {
 
     private String title;
 
-    // @Column(columnDefinition = "TEXT")   
+    @Column(length = 500, nullable = false)
     private String content;
 
     private LocalDateTime createdAt;
@@ -37,8 +37,26 @@ public class GatherMate {
 
     private String author;
 
+    private int views;
+
+    // 좋아요 개수
+    @Setter
+    private int likeCount;
+
+    @Setter
+    @OneToMany(mappedBy = "gatherMate", cascade = CascadeType.ALL)
+    private List<Like> likes;
+
+    @OneToMany(mappedBy = "gatherMate", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GathermateComment> gathermateComments;
+
+    public void incrementViews() {
+        this.views++;
+    }
+
     @Builder
-    public GatherMate(String intro, String apply, String title, String content, UserEntity user, LocalDateTime createdAt, boolean isRecruiting, String author) {
+    public GatherMate(String intro, String apply, String title, String content, UserEntity user,
+                      LocalDateTime createdAt, boolean isRecruiting, String author, int likeCount, int views) {
         this.intro = intro;
         this.apply = apply;
         this.title = title;
@@ -47,6 +65,8 @@ public class GatherMate {
         this.createdAt = createdAt;
         this.isRecruiting = isRecruiting;
         this.author = author;
+        this.likeCount = likeCount;
+        this.views = views;
     }
 
     public GatherMatePostEditor.GatherMatePostEditorBuilder toEditor(){
@@ -63,5 +83,4 @@ public class GatherMate {
         this.content = gatherMatePostEditor.getContent();
         this.isRecruiting = gatherMatePostEditor.isRecruiting();
     }
-
 }
