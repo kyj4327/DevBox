@@ -28,11 +28,14 @@ const MesReply = () => {
         formData.append("content", content);
         formData.append("reciver", reciver);
 
-
+        const token = localStorage.getItem('accessToken');
         const url = 'http://localhost:8080/msg/write';
         const res = await fetch(url, {
             method: 'POST',
             credentials: "include",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }, 
             body: formData
 
         });

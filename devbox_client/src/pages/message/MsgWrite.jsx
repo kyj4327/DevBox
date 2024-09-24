@@ -12,9 +12,33 @@ const MesWrite = () => {
     const [sender, setSender] = useState(user.nickname);
     const [reciver, setReciver] = useState('');
     const [content, setContent] = useState('');
+    const [nickNameError, setNickNameError] = useState('');
 
+    const UnReciver = (reciver) => {
+
+    }
+
+    const handleNickNameChange = (e) => {
+        const inputLink = e.target.value;
+        setReciver(inputLink);
+
+        if (!UnReciver(inputLink)) {
+            setNickNameError('존재하지 않는 닉네임 입니다.');
+        } else {
+            setNickNameError(''); // 유효한 링크일 경우 오류 메시지 제거
+        }
+    };
 
     const handleDetail = async () => {
+        if (nickNameError) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: nickNameError // 링크 오류 메시지 출력
+            });
+            return;
+        }
+
         const formData = new FormData();
 
         formData.append("title", title);
@@ -24,13 +48,17 @@ const MesWrite = () => {
         console.log(reciver);
         console.log(sender);
         
-
+        const token = localStorage.getItem('accessToken');
         const url = 'http://localhost:8080/msg/write';
         const res = await fetch(url, {
             method: 'POST',
             credentials: "include",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }, 
             body: formData
         });
+        
         const data = await res.json();
         if (data.code == 200) {
             navigate('/message/list');
@@ -62,7 +90,18 @@ const MesWrite = () => {
                                     </div>
                                 </p>
                             </div>
-                            <WriteShort titleTag={'받을분'} type={'text'} name={'reciver'} value={reciver} onChange={(e) => { setReciver(e.target.value) }} />
+
+                            <div className="col-lg-6 mb-4">
+                                <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">받을분</h2>
+                                <p className="worksingle-footer py-3 text-muted light-300">
+                                    <div className="form-floating">
+                                        <input type="text" className="form-control form-control-lg light-300" id={'reciver'} name={'reciver'} placeholder={'받을분'}
+                                            value={reciver} onChange={handleNickNameChange} />
+                                        <label htmlFor="floatingsubject light-300">받을분</label>
+                                    </div>
+                                </p>
+                                    {nickNameError && <p style={{ color: 'red' }}>{nickNameError}</p>}
+                            </div>
                             <WriteShort titleTag={'제목'} type={'text'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} />
 
                             <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">작성 내용</h2>

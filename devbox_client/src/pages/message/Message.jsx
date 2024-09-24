@@ -8,8 +8,6 @@ const Message = () => {
     
     const [refresh, setRefresh] = useState(false);
     // 상태 변경 초기값 false
-
-    // const [sender, setSender] = useState(sessionStorage.getItem('nickname'));
     const [category, setCategory] = useState('받은쪽지');
 
     async function get(page = 1) {
@@ -23,7 +21,7 @@ const Message = () => {
         });
 
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
         setPageData(data);
         setCurrentPage(page);  // 페이지 데이터 불러온 후, 현재 페이지 업데이트
         

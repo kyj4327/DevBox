@@ -9,11 +9,14 @@ const MsgList = (props) => {
     const [likeStatus, setLikeStatus] = useState({});
 
     const like = async (msgId) => {
+        const token = localStorage.getItem('accessToken');
         const url = `http://localhost:8080/msg/like?id=${msgId}`;
         const res = await fetch(url, {
             method: 'GET',
             credentials: "include",
-            
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }, 
         });
         const data = await res.json();
         console.log(data);

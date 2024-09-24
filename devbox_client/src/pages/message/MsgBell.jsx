@@ -6,11 +6,13 @@ const MsgBell = () => {
     const { user } = useUser();
 
     useEffect(() => {
+        console.log(user);
+        
         const getMessages = async () => {
-            if (!user || !user.username) return; // 사용자가 로그인하지 않았거나 username이 없을 경우 fetch를 수행하지 않음
+            if (!user || !user.nickname) return; // 사용자가 로그인하지 않았거나 username이 없을 경우 fetch를 수행하지 않음
 
             try {
-                const res = await fetch(`http://localhost:8080/msg/bell?reciver=${user.username}`, {
+                const res = await fetch(`http://localhost:8080/msg/bell?reciver=${user.nickname}`, {
                     method: 'GET',
                     credentials: 'include',
                     headers: {
@@ -48,6 +50,7 @@ const MsgBell = () => {
                         {nullReadTimeCount}
                     </span>
                 )}
+                
             </i>
         </a>
     );

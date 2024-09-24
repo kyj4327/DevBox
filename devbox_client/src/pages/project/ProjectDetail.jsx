@@ -9,11 +9,12 @@ import 'swiper/css/free-mode';
 import '../../assets/css/styles.css';
 import { FreeMode, EffectCoverflow, Autoplay, Pagination } from 'swiper/modules';
 import Swal from "sweetalert2";
+import { useUser } from "../../components/context/UserContext";
 
 const ProjectDetail = () => {
+    const {user} = useUser();
     const navigate = useNavigate();
     const [proData, setProData] = useState({});
-    const [userData, setUserData] = useState({});
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
@@ -23,20 +24,6 @@ const ProjectDetail = () => {
         const data = await res.json();
         console.log("Project Detail API Response:", data);
         setProData(data);
-    }
-
-    async function getUserInfo() {
-        const token = localStorage.getItem('accessToken');
-        const res = await fetch('http://localhost:8080/api/user/me', {
-            method: 'GET',
-            credentials: "include",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            },
-        });
-        const data = await res.json();
-        console.log("User Info API Response:", data);
-        setUserData(data); // 로그인된 사용자 정보를 상태에 저장
     }
 
     useEffect(() => {
@@ -119,7 +106,7 @@ const ProjectDetail = () => {
                                     <Button text={'목록'} onClick={() => { navigate('/project/list') }} />
                                 </div>
                                 <div className="col text-end">
-                                    {proData.user && userData.id === proData.user.id && (
+                                    {proData.user && user.id === proData.user.id && (
                                         <>
                                             <button
                                                 type="button"
