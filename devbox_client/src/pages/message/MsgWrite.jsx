@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import WriteShort from "../../components/WriteShort";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
@@ -6,13 +6,22 @@ import Swal from "sweetalert2";
 import { useUser } from "../../components/context/UserContext";
 
 const MesWrite = () => {
-    const { user } = useUser();
+    const { user,loading } = useUser();
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
+    console.log('user :: ' + user);
+    
     const [sender, setSender] = useState(user.nickname);
     const [reciver, setReciver] = useState('');
     const [content, setContent] = useState('');
     const [nickNameError, setNickNameError] = useState('');
+
+    useEffect(() => {
+        if (!loading && !user) {  // user가 없으면 로그인 페이지로 리다이렉트
+          alert("로그인이 필요합니다.");
+          navigate('/auth');
+        }
+      }, [user,loading, navigate]);
     
     // 닉네임 목록을 가져오는 함수
     const checkNicknames = async () => {

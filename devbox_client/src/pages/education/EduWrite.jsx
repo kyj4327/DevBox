@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import { useUser } from "../../components/context/UserContext";
 
 const EduWrite = () => {
-    const { user } = useUser();
+    const { user,loading } = useUser();
 
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
@@ -38,9 +38,8 @@ const EduWrite = () => {
         }
     }
 
-
     useEffect(() => {
-        if (!user) {
+        if (!loading &&!user) {
             Swal.fire({
                 icon: "error",
                 title: "로그인 필요",
@@ -48,7 +47,7 @@ const EduWrite = () => {
             });
             navigate('/auth');
         }
-    }, [user, navigate]);
+    }, [user,loading, navigate]);
 
 
     const handleDetail = async (e) => {
