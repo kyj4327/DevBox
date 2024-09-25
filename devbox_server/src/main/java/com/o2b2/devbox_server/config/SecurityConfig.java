@@ -196,14 +196,9 @@ public class SecurityConfig {
                         // 알림 기능은 로그인한 사용자만 접근 가능
                         .requestMatchers("/msg/bell").authenticated()
 
-                        // .requestMatchers("/edu/**").permitAll()
-                        // .requestMatchers("/project/**").permitAll()
                         .requestMatchers("/msg/**").authenticated()
                         .requestMatchers("/msg/list**").authenticated()
-                        // .requestMatchers("/message/**").authenticated()
 
-//                        .requestMatchers("/msg/**").permitAll()
-                        // .requestMatchers("/msg/bell").authenticated()
 
                         .anyRequest().authenticated());
 
