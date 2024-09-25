@@ -5,6 +5,7 @@ import GatherMateComments from "../../components/GatherMateComments";
 import profilePic from "../../assets/img/profilePic.png";
 import "./GatherMateDetail.css";
 import PostButton from "../../components/PostButton";
+import BoardComments from '../../components/BoardComments';
 
 const GatherMateDetail = () => {
   const { postId } = useParams();
@@ -283,7 +284,10 @@ const GatherMateDetail = () => {
 
           {/* 댓글 컴포넌트 */}
           <div className="row justify-content-center"></div>
-<GatherMateComments postId={postId} />
+{/* <GatherMateComments postId={postId} /> */}
+
+<BoardComments postId={postId} boardType="gathermate" />
+
         </>
       ) : (
         <div>Loading...</div> // post가 null일 경우 로딩 표시
