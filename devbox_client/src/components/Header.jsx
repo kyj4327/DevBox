@@ -5,7 +5,7 @@ import { useUser } from '../components/context/UserContext';
 import './Header.css';
 
 const Header = () => {
-  const { user, setUser } = useUser();
+  const { user, setUser , loading} = useUser();
   const navigate = useNavigate();
 
   const handleLogoutClick = async () => {
@@ -30,6 +30,18 @@ const Header = () => {
       console.error("Error during logout:", error);
     }
   };
+
+  if (loading) {
+    return (
+      <nav id="main_nav" className="navbar navbar-expand-lg navbar-light bg-white shadow">
+        <div className="container d-flex justify-content-between align-items-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading</span>
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav
