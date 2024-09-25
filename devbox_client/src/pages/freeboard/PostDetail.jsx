@@ -5,11 +5,13 @@ import WriteShort from "../../components/WriteShort";
 import WriteLong from "../../components/WriteLong";
 import QuillEditor from "../../components/QuillEditor";
 import Button from "../../components/Button";
-import '../../assets/css/freeboard.css';  // Make sure to create this CSS file
+import { useUser } from '../../components/context/UserContext'; // 사용자 정보 가져오기
+import '../../assets/css/freeboard.css';
 
 const PostDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useUser(); // 로그인한 사용자 정보 가져오기
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
@@ -18,7 +20,6 @@ const PostDetail = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedTitle, setUpdatedTitle] = useState('');
   const [updatedContent, setUpdatedContent] = useState('');
-  const [author, setAuthor] = useState('');
 
   useEffect(() => {
     const fetchPostAndComments = async () => {
@@ -33,7 +34,6 @@ const PostDetail = () => {
         setComments(Array.isArray(commentsData) ? commentsData : []);
         setUpdatedTitle(postData.title);
         setUpdatedContent(postData.content);
-        setAuthor(postData.author);
       } catch (error) {
         console.error('Error fetching post or comments:', error);
         setError('게시글 또는 댓글을 불러오는 데 실패했습니다.');
@@ -77,7 +77,7 @@ const PostDetail = () => {
 
   const handleUpdatePost = async () => {
     try {
-      await updatePost(id, { title: updatedTitle, content: updatedContent, author });
+      await updatePost(id, { title: updatedTitle, content: updatedContent });
       setPost({ ...post, title: updatedTitle, content: updatedContent });
       setIsEditing(false);
     } catch (error) {
@@ -111,8 +111,8 @@ const PostDetail = () => {
             type="text"
             titleTag="작성자"
             name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
+            value={post.author}
+            readOnly
           />
           <WriteLong
             titleTag="제목"
@@ -135,26 +135,30 @@ const PostDetail = () => {
         </div>
       ) : (
         <>
-        <div className="post-header">
-          <h1 className="post-title">{post.title}</h1>
-          <div className="post-meta">
-            <span className="post-author">{post.author}</span>
-            <span className="post-date">{new Date(post.createdAt).toLocaleString()}</span>
+          <div className="post-header">
+            <h1 className="post-title">{post.title}</h1>
+            <div className="post-meta">
+              <span className="post-author">{post.author}</span>
+              <span className="post-date">{new Date(post.createdAt).toLocaleString()}</span>
+            </div>
           </div>
-        </div>
-        <div className="post-content-wrapper">
-          <div 
-            className="post-content" 
-            dangerouslySetInnerHTML={{ __html: post.content }} 
-          />
-        </div>
+          <div className="post-content-wrapper">
+            <div 
+              className="post-content" 
+              dangerouslySetInnerHTML={{ __html: post.content }} 
+            />
+          </div>
           <div className="post-actions">
             <div className="freeboard-button-group">
               <Button text="목록" onClick={() => navigate('/freeboard/list')} className="btn-freeboard-write" />
             </div>
             <div className="freeboard-button-group">
-              <Button text="수정" onClick={handleEditPost} className="btn-freeboard-edit" />
-              <Button text="삭제" onClick={handleDeletePost} className="btn-freeboard-delete" />
+              {user && post.author === user.nickname && ( // 작성자와 로그인한 사용자가 같은 경우에만 수정 및 삭제 버튼 활성화
+                <>
+                  <Button text="수정" onClick={handleEditPost} className="btn-freeboard-edit" />
+                  <Button text="삭제" onClick={handleDeletePost} className="btn-freeboard-delete" />
+                </>
+              )}
             </div>
           </div>
 
@@ -170,28 +174,32 @@ const PostDetail = () => {
                     <div className="freeboard-comment-meta">
                       <span className="comment-author">{comment.author}</span>
                       <span className="comment-date">{new Date(comment.createdAt).toLocaleString()}</span>
-                      <button 
-                        onClick={() => handleDeleteComment(comment.id)} 
-                        className="btn-comment-delete"
-                      >
-                        삭제
-                      </button>
+                      {user && comment.author === user.nickname && ( // 댓글 작성자와 로그인한 사용자가 같은 경우에만 삭제 버튼 활성화
+                        <button 
+                          onClick={() => handleDeleteComment(comment.id)} 
+                          className="btn-comment-delete"
+                        >
+                          삭제
+                        </button>
+                      )}
                     </div>
                   </li>
                 ))}
               </ul>
             )}
 
-            <form onSubmit={handleCommentSubmit} className="freeboard-comment-form">
-              <textarea
-                className="freeboard-comment-input"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="댓글을 작성하세요..."
-                required
-              />
-              <button type="submit" className="btn-comment-write">댓글 작성</button>
-            </form>
+            {user && ( // 로그인한 사용자만 댓글을 작성할 수 있음
+              <form onSubmit={handleCommentSubmit} className="freeboard-comment-form">
+                <textarea
+                  className="freeboard-comment-input"
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  placeholder="댓글을 작성하세요..."
+                  required
+                />
+                <button type="submit" className="btn-comment-write">댓글 작성</button>
+              </form>
+            )}
           </div>
         </>
       )}

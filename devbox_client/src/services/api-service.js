@@ -2,9 +2,20 @@ import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8080/api'; // 백엔드 서버 URL에 맞게 수정하세요
 
+// 공통 설정: withCredentials와 Authorization 헤더를 axios 인스턴스에 추가
+const apiClient = axios.create({
+  baseURL: API_BASE_URL,
+  withCredentials: true, // 자격증명 포함
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${localStorage.getItem('accessToken')}`, // Bearer 토큰 추가
+  },
+});
+
+// 전체 게시글 가져오기
 export const getAllPosts = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/posts`);
+    const response = await apiClient.get('/posts');
     return response.data;
   } catch (error) {
     console.error('Error fetching posts:', error);
@@ -12,9 +23,10 @@ export const getAllPosts = async () => {
   }
 };
 
+// 특정 게시글 가져오기
 export const getPost = async (id) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/posts/${id}`);
+    const response = await apiClient.get(`/posts/${id}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching post:', error);
@@ -22,9 +34,10 @@ export const getPost = async (id) => {
   }
 };
 
+// 게시글 생성
 export const createPost = async (postData) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/posts`, postData);
+    const response = await apiClient.post('/posts/write', postData);
     return response.data;
   } catch (error) {
     console.error('Error creating post:', error);
@@ -32,9 +45,10 @@ export const createPost = async (postData) => {
   }
 };
 
+// 게시글 업데이트
 export const updatePost = async (id, postData) => {
   try {
-    const response = await axios.put(`${API_BASE_URL}/posts/${id}`, postData);
+    const response = await apiClient.put(`/posts/${id}`, postData);
     return response.data;
   } catch (error) {
     console.error('Error updating post:', error);
@@ -42,9 +56,10 @@ export const updatePost = async (id, postData) => {
   }
 };
 
+// 게시글 삭제
 export const deletePost = async (id) => {
   try {
-    const response = await axios.delete(`${API_BASE_URL}/posts/${id}`);
+    const response = await apiClient.delete(`/posts/${id}`);
     return response.data;
   } catch (error) {
     console.error('Error deleting post:', error);
@@ -52,27 +67,21 @@ export const deletePost = async (id) => {
   }
 };
 
+// 특정 게시글에 해당하는 댓글 목록 가져오기
 export const getCommentsByPostId = async (postId) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/comments/post/${postId}`);
-    console.log('Raw comments data:', response.data);
-    if (Array.isArray(response.data)) {
-      return response.data;
-    } else if (response.data && Array.isArray(response.data.comments)) {
-      return response.data.comments;
-    } else {
-      console.error('Unexpected response format:', response.data);
-      return [];
-    }
+    const response = await apiClient.get(`/comments/post/${postId}`);
+    return response.data;
   } catch (error) {
     console.error('Error fetching comments:', error);
     throw error;
   }
 };
 
+// 댓글 생성
 export const createComment = async (postId, commentData) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/comments/post/${postId}`, commentData);
+    const response = await apiClient.post(`/comments/post/${postId}`, commentData);
     return response.data;
   } catch (error) {
     console.error('Error creating comment:', error);
@@ -80,9 +89,10 @@ export const createComment = async (postId, commentData) => {
   }
 };
 
+// 댓글 삭제
 export const deleteComment = async (id) => {
   try {
-    const response = await axios.delete(`${API_BASE_URL}/comments/${id}`);
+    const response = await apiClient.delete(`/comments/${id}`);
     return response.data;
   } catch (error) {
     console.error('Error deleting comment:', error);

@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getPost, createPost, updatePost } from '../../services/api-service';
+import { useUser } from '../../components/context/UserContext';
 import Button from "../../components/Button";
 import WriteLong from "../../components/WriteLong";
 import WriteShort from "../../components/WriteShort";
 import QuillEditor from "../../components/QuillEditor";
-import '../../assets/css/freeboard.css'
-
+import '../../assets/css/freeboard.css';
 
 const FreeBoardDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user, loading } = useUser(); // 유저 정보 가져오기
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [author, setAuthor] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!loading && !user) { // user가 없으면 로그인 페이지로 리다이렉트
+      alert("로그인이 필요합니다.");
+      navigate('/auth');
+    }
+  }, [user, loading, navigate]);
 
   useEffect(() => {
     if (id) {
@@ -25,7 +32,6 @@ const FreeBoardDetail = () => {
           const data = await getPost(id);
           setTitle(data.title);
           setContent(data.content);
-          setAuthor(data.author);
         } catch (error) {
           console.error('게시글을 불러오는 데 실패했습니다.', error);
           setError('게시글을 불러오는 데 실패했습니다.');
@@ -42,7 +48,11 @@ const FreeBoardDetail = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const postData = { title, content, author };
+      if (!user) {
+        alert("로그인이 필요합니다."); // 로그인 확인
+        return;
+      }
+      const postData = { title, content, author: user.nickname }; // 작성자는 현재 로그인한 사용자
       if (id) {
         await updatePost(id, postData);
       } else {
@@ -76,8 +86,8 @@ const FreeBoardDetail = () => {
                 type="text"
                 titleTag="작성자"
                 name="author"
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
+                value={user ? user.nickname : ''} // 현재 로그인한 사용자의 닉네임
+                readOnly
               />
               <WriteLong
                 titleTag="제목"

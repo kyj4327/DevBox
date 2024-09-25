@@ -34,8 +34,8 @@ public class Comment {
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", nullable = false)
-    private UserEntity author;
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
 
     // Getters and Setters
     public Long getId() {
@@ -70,11 +70,11 @@ public class Comment {
         this.post = post;
     }
 
-    public UserEntity getAuthor() {
-        return author;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setAuthor(UserEntity author) {
-        this.author = author;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 }

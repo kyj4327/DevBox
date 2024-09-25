@@ -7,17 +7,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.o2b2.devbox_server.user.entity.UserEntity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "posts")
@@ -29,12 +19,13 @@ public class Post {
     @Column(nullable = false)
     private String title;
 
-    @Column(columnDefinition = "LONGTEXT", nullable = false) // LONGTEXT로 수정
+    @Column(length = 500, nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", nullable = false)
-    private UserEntity author;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false) // nullable을 false로 설정
+    private UserEntity user; // UserEntity와의 관계를 정의
+    
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -44,6 +35,8 @@ public class Post {
     private List<Comment> comments = new ArrayList<>();
 
     // Getters and Setters
+
+
     public Long getId() {
         return id;
     }
@@ -68,12 +61,13 @@ public class Post {
         this.content = content;
     }
 
-    public UserEntity getAuthor() {
-        return author;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setAuthor(UserEntity author) {
-        this.author = author;
+    public void setUser(UserEntity user) {
+        this.user = user;
+     
     }
 
     public LocalDateTime getCreatedAt() {
