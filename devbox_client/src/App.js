@@ -40,7 +40,6 @@ import ContestList from './pages/contest/ContestList';
 import ContestWrite from './pages/contest/ContestWrite';
 import ContestUpdate from './pages/contest/ContestUpdate';
 import Reservation from './pages/reservation/Reservation';
-import ReservationList from './pages/reservation/ReservationList';
 
 import AuthContainer from './pages/auth/AuthContainer';
 // import { Naver } from './components/Naver';
@@ -138,7 +137,6 @@ function AppContent() {
 
           {/* 6층 회의실 대여 서비스 */}
           <Route path='/reservation/write' element={<Reservation />} />
-          <Route path='/reservation/check' element={<ReservationList />} />
 
           <Route path="/introduce" element={<BDIAIntroduction />} />
           <Route path="/schedule" element={<BDIASchedule />} />

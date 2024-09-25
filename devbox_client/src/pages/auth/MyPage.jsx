@@ -5,6 +5,7 @@ import MyPageContent from "../../components/MyPageContent";
 import MyPageProfileEdit from "../../components/MyPageProfileEdit";
 import "./MyPage.css";
 import Header from '../../components/Header';
+import ReservationList from "../reservation/ReservationList";
 
 function MyPage() {
   return (
@@ -18,6 +19,7 @@ function MyPage() {
           <Route index element={<MyPageContent />} /> 기본 경로에서 MyPageContent 렌더링
           {/* <Route path="content" element={<MyPageContent />} />  */}
           <Route path="edit" element={<MyPageProfileEdit />} />
+          <Route path='/reservation/check' element={<ReservationList />} />
             <Route path="*" element={<Navigate to="/mypage" replace />} />
           </Routes>
         </div>
