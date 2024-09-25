@@ -14,7 +14,6 @@ const EduInfo = (props) => {
 
     const progressMax = (recruit) => {
         const recruitDates = recruit.split(' ~ ');
-        console.log("추출된 끝 날짜:", recruitDates[1]);
         
         const startDate = new Date(recruitDates[0]);
         const end = new Date(recruitDates[1]);
@@ -22,7 +21,6 @@ const EduInfo = (props) => {
 
         const timeDiff = end - startDate;
         const daysEnd = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-        console.log(daysEnd);
         
         return daysEnd;
     };
@@ -31,27 +29,15 @@ const EduInfo = (props) => {
     const progressNow = (daysLeft, daysEnd) => {
         const percentageRemaining = (daysLeft / daysEnd) * 100; // 남은 일수의 백분율 계산
         const percentageCompleted = 100 - percentageRemaining;
-        console.log(percentageCompleted);
-        
         return percentageCompleted;
     };
 
     const calculateDaysLeft = (recruit) => {
         const recruitDates = recruit.split(' ~ ');
-        console.log("추출된 끝 날짜:", recruitDates[1]);
-        
-        
         const today = new Date();
         const end = new Date(recruitDates[1]);
-        
-
-       
-        console.log("endDate:", recruitDates[1]);
-        console.log("종료 날짜:", end);
-
         const timeDiff = end - today;
         const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-        console.log("남은 일수:", daysLeft);
         return daysLeft;
     };
 

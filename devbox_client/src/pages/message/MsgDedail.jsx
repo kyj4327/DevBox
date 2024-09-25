@@ -39,8 +39,8 @@ const MesDetail = () => {
         get();
     }, []);
 
-     console.log("Message ID:", msgData.senderId);
-    
+    console.log("Message ID:", msgData.senderId);
+
 
 
     return (
@@ -85,16 +85,21 @@ const MesDetail = () => {
 
 
                                 <h1 className="worksingle-heading h4 pb-4 light-300 typo-space-line">내용</h1>
-                                <p className="worksingle-footer py-3 text-muted light-200">
+                                <div className="floating">
 
-                                    <textarea
+                                    <p className="form-control form-control-lg light-300"
+                                        dangerouslySetInnerHTML={{ __html: content }}
+                                    >
+
+                                        {/* <textarea
                                         className="form-control form-control-lg light-300"
                                         rows="6"
                                         id="floatingtextarea"
                                         type="text"
                                         value={content}
-                                    ></textarea>
-                                </p>
+                                        ></textarea> */}
+                                    </p>
+                                </div>
                             </div>
                         </div>
 

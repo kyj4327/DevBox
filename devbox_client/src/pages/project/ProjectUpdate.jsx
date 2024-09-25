@@ -6,6 +6,7 @@ import WriteShort from "../../components/WriteShort";
 import WriteLong from "../../components/WriteLong";
 import Swal from "sweetalert2";
 import { useUser } from "../../components/context/UserContext";
+import QuillEditor from "../../components/QuillEditor";
 
 
 const ProjectUpdate = () => {
@@ -171,7 +172,14 @@ const ProjectUpdate = () => {
 
                             <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">내용</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
-                                <textarea
+                            <div className=" form-floating">
+                                    <QuillEditor
+                                        placeholder="내용"
+                                        value={coment}
+                                        onChange={setComent}
+                                        height="450px"
+                                    />
+                                {/* <textarea
                                     className="form-control form-control-lg light-300"
                                     rows="8"
                                     placeholder="내용"
@@ -180,7 +188,8 @@ const ProjectUpdate = () => {
                                     value={coment}
                                     onChange={(e) => setComent(e.target.value)}
                                     type="text"
-                                ></textarea>
+                                ></textarea> */}
+                                </div>
                             </p>
                         </div>
                     </div>

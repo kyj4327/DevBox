@@ -6,8 +6,6 @@ const MsgBell = () => {
     const { user } = useUser();
 
     useEffect(() => {
-        console.log(user);
-        
         const getMessages = async () => {
             if (!user || !user.nickname) return; // 사용자가 로그인하지 않았거나 username이 없을 경우 fetch를 수행하지 않음
 

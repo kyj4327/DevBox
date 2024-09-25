@@ -4,6 +4,7 @@ import Button from "../../components/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useUser } from "../../components/context/UserContext";
+import QuillEditor from "../../components/QuillEditor";
 
 const MesReply = () => {
     const { user } = useUser();
@@ -35,7 +36,7 @@ const MesReply = () => {
             credentials: "include",
             headers: {
                 "Authorization": `Bearer ${token}`,
-            }, 
+            },
             body: formData
 
         });
@@ -112,7 +113,13 @@ const MesReply = () => {
                             <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">작성 내용</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
                                 <div className=" form-floating">
-                                    <textarea
+                                    <QuillEditor
+                                        placeholder="내용"
+                                        value={content}
+                                        onChange={setContent}
+                                        height="450px"
+                                    />
+                                    {/* <textarea
                                         className="form-control form-control-lg light-300"
                                         rows="8"
                                         placeholder="Message"
@@ -122,7 +129,7 @@ const MesReply = () => {
                                         type="text"
                                         onChange={(e) => { setContent(e.target.value) }}
                                     ></textarea>
-                                    <label htmlFor="floatingsubject light-300">작성 내용</label>
+                                    <label htmlFor="floatingsubject light-300">작성 내용</label> */}
                                 </div>
                             </p>
                         </div>

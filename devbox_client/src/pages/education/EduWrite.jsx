@@ -53,6 +53,15 @@ const EduWrite = () => {
     const handleDetail = async (e) => {
         e.preventDefault();
 
+        if (!state || (state !== '모집중' && state !== '모집완료')) {
+            Swal.fire({
+                icon: "error",
+                title: "상태 오류",
+                text: "모집중 또는 모집완료 상태를 선택해주세요."
+            });
+            return;
+        }
+
         if (new Date(start) > new Date(end)) {
             Swal.fire({
                 icon: "error",

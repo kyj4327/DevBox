@@ -4,24 +4,33 @@ import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useUser } from "../../components/context/UserContext";
+import QuillEditor from "../../components/QuillEditor";
 
 const MesWrite = () => {
     const { user,loading } = useUser();
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
-    console.log('user :: ' + user);
-    
-    const [sender, setSender] = useState(user.nickname);
+    const [sender, setSender] = useState('');
     const [reciver, setReciver] = useState('');
     const [content, setContent] = useState('');
     const [nickNameError, setNickNameError] = useState('');
 
     useEffect(() => {
-        if (!loading && !user) {  // user가 없으면 로그인 페이지로 리다이렉트
-          alert("로그인이 필요합니다.");
-          navigate('/auth');
+        if (!loading) {
+            if (user) {
+                setSender(user.nickname || '');
+            } else {
+                Swal.fire({
+                    icon: "warning",
+                    title: "로그인 필요",
+                    text: "로그인이 필요합니다.",
+                }).then(() => {
+                    navigate('/auth');
+                });
+            }
         }
-      }, [user,loading, navigate]);
+    }, [user, loading, navigate]);
+
     
     // 닉네임 목록을 가져오는 함수
     const checkNicknames = async () => {
@@ -150,17 +159,12 @@ const MesWrite = () => {
                             <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">작성 내용</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
                                 <div className=" form-floating">
-                                    <textarea
-                                        className="form-control form-control-lg light-300"
-                                        rows="8"
-                                        placeholder="Message"
-                                        id="floatingtextarea"
-                                        name="content"
+                                    <QuillEditor 
+                                        placeholder="내용"
                                         value={content}
-                                        type="text"
-                                        onChange={(e) => { setContent(e.target.value) }}
-                                    ></textarea>
-                                    <label htmlFor="floatingsubject light-300">작성 내용</label>
+                                        onChange={setContent}
+                                        height="450px"
+                                    />
                                 </div>
                             </p>
                         </div>
