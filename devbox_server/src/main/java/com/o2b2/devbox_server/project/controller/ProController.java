@@ -143,6 +143,29 @@ public class ProController {
         return map;
     }
 
+    @GetMapping("/project/like/status")
+    @ResponseBody
+    public Map<String, Object> getUserLikeStatus(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Map<String, Object> map = new HashMap<>();
+
+        // 로그인한 유저 정보 가져오기
+        UserEntity user = userDetails.getUserEntity();
+
+        // 사용자가 좋아요한 게시물 목록 가져오기
+        List<ProLike> likes = proLikeRepository.findByUser(user);
+
+        // 사용자가 좋아요한 게시물 ID와 좋아요 수를 응답으로 반환
+        List<Map<String, Object>> likedProjects = likes.stream().map(like -> {
+            Map<String, Object> likeInfo = new HashMap<>();
+            likeInfo.put("proId", like.getProEntity().getId());
+            likeInfo.put("likeCount", like.getProEntity().getLikeCount());
+            return likeInfo;
+        }).collect(Collectors.toList());
+
+        map.put("likedProjects", likedProjects);
+        return map;
+    }
+
     @PostMapping("/project/write")
     @ResponseBody
     public Map<String, Object> pro(
