@@ -54,6 +54,8 @@ const ContestWrite = () => {
             inputFocus("regStart", "접수시작 날짜를 선택해주세요.");
         } else if (regEnd === '') {
             inputFocus("regEnd", "접수마감 날짜를 선택해주세요.");
+        } else if (regEnd < regStart) {
+            alert("접수마감 날짜가 접수시작 날짜보다 이후여야 합니다.");
         } else if (officialUrl.trim() === '') {
             inputFocus("officialUrl", "공식 홈페이지 주소를 입력해주세요.");
             setOfficialUrl('');
