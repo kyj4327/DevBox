@@ -73,6 +73,7 @@ public class NoticeController {
                                                       @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<NoticeResponse> page = noticeService.search(keyword, pageable);
         Map<String, Object> response = new HashMap<>();
+        response.put("posts", page.getContent());
         response.put("content", page.getContent());
         response.put("totalPages", page.getTotalPages());
 
