@@ -117,8 +117,8 @@ const ReferenceList = () => {
                                                             }}>삭제</Link>
                                                     </>
                                                     : <>
-                                                        <span style={{ marginRight: '0.5em', cursor: 'default' }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                        <span style={{ cursor: 'default' }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                        <span style={{ visibility: 'hidden', marginRight: '0.5em', cursor: 'default' }}>수정</span>
+                                                        <span style={{ visibility: 'hidden', cursor: 'default' }}>삭제</span>
                                                     </>
                                             }
                                         </div>
