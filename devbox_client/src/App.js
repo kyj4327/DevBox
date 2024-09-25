@@ -51,6 +51,12 @@ import GatherMateWrite from './pages/gatherMate/GatherMateWrite';
 import GatherMateDetail from './pages/gatherMate/GatherMateDetail';
 import GatherMateEdit from './pages/gatherMate/GatherMateEdit';
 
+import NoticeList from './pages/notice/NoticeList';
+import NoticeWrite from './pages/notice/NoticeWrite';
+import NoticeDetail from './pages/notice/NoticeDetail';
+import NoticeEdit from './pages/notice/NoticeEdit';
+
+
 import ProjectDetail from './pages/project/ProjectDetail';
 import ProjectUpdate from './pages/project/ProjectUpdate';
 import { UserProvider } from './components/context/UserContext';
@@ -90,6 +96,11 @@ function AppContent() {
           <Route path="/gathermate/detail/:postId" element={<GatherMateDetail />} />
           <Route path="/gathermate/edit/:postId" element={<GatherMateEdit />} />
 
+{/* 공지사항 게시판 */}
+<Route path="/notice/write" element={<NoticeWrite />} />
+<Route path="/notice/list" element={<NoticeList />} />
+<Route path="/notice/detail/:postId" element={<NoticeDetail />} />
+<Route path="/notice/edit/:postId" element={<NoticeEdit />} />
 
           <Route path='/edu/list' element={<EduMain />} />
           <Route path='/edu/detail' element={<EduDetail />} />
