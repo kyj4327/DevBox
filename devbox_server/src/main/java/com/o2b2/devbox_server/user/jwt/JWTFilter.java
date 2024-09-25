@@ -48,6 +48,9 @@ public class JWTFilter extends OncePerRequestFilter {
 
         || requestURI.matches("/gatherlist.*") // 게시글 상세는 제외
 
+                || requestURI.matches("/notice/posts/.*") // 게시글 상세는 제외
+                || requestURI.matches("/notice/posts.*") // 게시글 상세는 제외
+
         || requestURI.matches("/.*/list/.*")
         || requestURI.matches("/.*/list/.*.*")
 

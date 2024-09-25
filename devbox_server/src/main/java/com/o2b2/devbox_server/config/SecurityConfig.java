@@ -136,7 +136,6 @@ public class SecurityConfig {
                         // 댓글
                         .requestMatchers("/gathermate/*/comments").authenticated()
                         .requestMatchers("/gathermate/comments/*/edit").authenticated()
-
                         .requestMatchers("/gathermate/comments/*/delete").authenticated()
                         .requestMatchers("/gathermate/*/commentslist").permitAll()
 
@@ -154,6 +153,14 @@ public class SecurityConfig {
                         // gatherMate 글 수정 페이지는 로그인 사용자
                         .requestMatchers("/gathermate/edit/**").authenticated()
 
+
+//                        공지사항
+//                        /notice/posts?page=0&size=10&sort=id,desc
+//                        /gathermate/posts?page=0&size=10&sort=id,desc
+                        .requestMatchers("/notice/detail/**").permitAll()
+                        .requestMatchers("/notice/posts/**").permitAll()
+                        .requestMatchers("/notice/posts").authenticated()
+                        .requestMatchers("/notice/posts**").authenticated()
 
                         /**
                          추천해요, 프로젝트 자랑 게시판
