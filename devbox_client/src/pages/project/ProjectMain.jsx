@@ -1,8 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../../components/Button';
 import { useEffect, useState } from 'react';
+import { useUser } from '../../components/context/UserContext';
 
 const ProjectMain = (props) => {
+    const { user } = useUser();
     const navigate = useNavigate();
     const [likeStatus, setLikeStatus] = useState({});
 
@@ -84,7 +86,11 @@ const ProjectMain = (props) => {
                     ))}
                     <div className="form-row pt-5">
                         <div className="col-md-12 col-10 text-end">
+                            {user && (
+                                <>
                             <Button text={'글쓰기'} onClick={() => { navigate('/project/write') }} />
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

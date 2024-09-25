@@ -22,13 +22,12 @@ const ProjectDetail = () => {
     async function getProjectDetail() {
         const res = await fetch(`http://localhost:8080/project/detail?id=${id}`);
         const data = await res.json();
-        console.log("Project Detail API Response:", data);
         setProData(data);
     }
 
     useEffect(() => {
         getProjectDetail();
-    }, [id, navigate]);
+    }, []);
 
     return (
         <div className="container-full">
@@ -108,7 +107,7 @@ const ProjectDetail = () => {
                                     <Button text={'목록'} onClick={() => { navigate('/project/list') }} />
                                 </div>
                                 <div className="col text-end">
-                                    {proData.user && user.id === proData.user.id && (
+                                    {proData.user && user && user.id === proData.user.id && (
                                         <>
                                             <button
                                                 type="button"

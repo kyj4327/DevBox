@@ -2,8 +2,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Button from "../../components/Button";
 import Swal from "sweetalert2";
+import { useUser } from "../../components/context/UserContext";
 
 const EduDetail = () => {
+    const { user } = useUser();
     const navigate = useNavigate();
     const [eduData, setEduData] = useState({});
     const location = useLocation();
@@ -58,42 +60,46 @@ const EduDetail = () => {
                                 <Button text={'목록'} onClick={() => { navigate('/edu/list') }} />
                             </div>
                             <div className="col text-end">
-                                <button type="submit" className="me-2 btn btn-secondary text-white px-md-4 px-2 py-md-3 py-1 radius-0 light-300"
-                                    onClick={(e) => { e.preventDefault(); navigate(`/edu/update?id=${eduData.id}`); }}
-                                >수정</button>
-                                <Button
-                                    text={'삭제'}
-                                    onClick={async (e) => {
-                                        e.preventDefault();
-                                        // SweetAlert2로 삭제 확인 창 띄우기
-                                        const result = await Swal.fire({
-                                            icon: "warning",
-                                            title: "정말 삭제하시겠습니까?",
-                                            text: "삭제 후에는 되돌릴 수 없습니다.",
-                                            showCancelButton: true, // 취소 버튼 추가
-                                            confirmButtonText: "삭제",
-                                            cancelButtonText: "취소",
-                                            confirmButtonColor: "#d33", // 삭제 버튼 색상 (빨간색)
-                                            cancelButtonColor: "#3085d6", // 취소 버튼 색상 (파란색)
-                                        });
+                                { user &&  (
+                                    <>
+                                        <button type="submit" className="me-2 btn btn-secondary text-white px-md-4 px-2 py-md-3 py-1 radius-0 light-300"
+                                            onClick={(e) => { e.preventDefault(); navigate(`/edu/update?id=${eduData.id}`); }}
+                                        >수정</button>
+                                        <Button
+                                            text={'삭제'}
+                                            onClick={async (e) => {
+                                                e.preventDefault();
+                                                // SweetAlert2로 삭제 확인 창 띄우기
+                                                const result = await Swal.fire({
+                                                    icon: "warning",
+                                                    title: "정말 삭제하시겠습니까?",
+                                                    text: "삭제 후에는 되돌릴 수 없습니다.",
+                                                    showCancelButton: true, // 취소 버튼 추가
+                                                    confirmButtonText: "삭제",
+                                                    cancelButtonText: "취소",
+                                                    confirmButtonColor: "#d33", // 삭제 버튼 색상 (빨간색)
+                                                    cancelButtonColor: "#3085d6", // 취소 버튼 색상 (파란색)
+                                                });
 
-                                        const token = localStorage.getItem('accessToken');
-                                        // 사용자가 '삭제' 버튼을 눌렀을 때만 삭제 요청 보내기
-                                        if (result.isConfirmed) {
-                                            const url = `http://localhost:8080/edu/delete?Id=${eduData.id}`;
-                                            const res = await fetch(url, {
-                                                method: 'DELETE',
-                                                credentials: 'include',
-                                                headers: {
-                                                    'Authorization': `Bearer ${token}`
-                                                },
-                                            });
+                                                const token = localStorage.getItem('accessToken');
+                                                // 사용자가 '삭제' 버튼을 눌렀을 때만 삭제 요청 보내기
+                                                if (result.isConfirmed) {
+                                                    const url = `http://localhost:8080/edu/delete?Id=${eduData.id}`;
+                                                    const res = await fetch(url, {
+                                                        method: 'DELETE',
+                                                        credentials: 'include',
+                                                        headers: {
+                                                            'Authorization': `Bearer ${token}`
+                                                        },
+                                                    });
 
-                                            Swal.fire("삭제 완료", "프로젝트가 삭제되었습니다.", "success");
-                                            navigate('/edu/list');
-                                        }
-                                    }}
-                                />
+                                                    Swal.fire("삭제 완료", "프로젝트가 삭제되었습니다.", "success");
+                                                    navigate('/edu/list');
+                                                }
+                                            }}
+                                        />
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>

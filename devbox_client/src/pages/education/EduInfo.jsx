@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Category from "../../components/Category";
+import { useUser } from "../../components/context/UserContext";
 
 const EduInfo = (props) => {
+    const { user } = useUser();
     const navigate = useNavigate();
 
     const clickState = (e) => {
@@ -95,7 +97,11 @@ const EduInfo = (props) => {
                 </div>
                 <div className="form-row pt-2">
                     <div className="col-md-12 col-10 text-end">
+                        { user && (
+                            <>
                         <Button text={'글쓰기'} onClick={() => { navigate('/edu/write') }} />
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
