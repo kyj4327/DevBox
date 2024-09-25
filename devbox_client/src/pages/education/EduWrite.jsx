@@ -120,8 +120,11 @@ const EduWrite = () => {
                 });
             }
         } catch (error) {
-            console.error('저장 중 오류 발생:', error);
-            alert('저장 중 오류가 발생했습니다. 다시 시도해주세요.');
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "저장 중 오류가 발생했습니다. 다시 시도해주세요."
+            });
         }
             
     };

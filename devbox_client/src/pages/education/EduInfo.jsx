@@ -44,7 +44,6 @@ const EduInfo = (props) => {
     };
 
     return (
-        <section className="container py-5">
             <div className="container py-5">
                 <h1 className="h2 semi-bold-600 text-center mt-2">개발 교육 정보</h1>
                 <div className="row justify-content-center my-5">
@@ -64,7 +63,7 @@ const EduInfo = (props) => {
                             <div key={edu.id} className="col-sm-6 col-lg-4">
                                 <Link to={`/edu/detail?id=${edu.id}`} className="text-decoration-none">
                                     <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
-                                        <img className="card-img-top" src={`${edu.logo}`} alt={edu.title} style={{ height: '130px', objectFit: 'contain' }} />
+                                        <img className="card-img-top" src={`${edu.logo}`} alt={edu.logo} style={{ height: '130px', objectFit: 'contain' }} />
                                         <div className="card-body">
                                             {props.state !== '모집완료' && (
                                                 <div style={{ display: 'flex'}}>
@@ -105,7 +104,6 @@ const EduInfo = (props) => {
                     </div>
                 </div>
             </div>
-        </section>
     );
 };
 

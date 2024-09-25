@@ -45,8 +45,8 @@ const MsgList = (props) => {
     };
 
     return (
-        <div className="MsgList">
-            <h2 style={{ textAlign: 'center', marginTop: '2em' }}>쪽지 보관함</h2>
+        <div className="container py-5">
+            <h1 className="h2 semi-bold-600 text-center mt-2">쪽지 보관함</h1>
 
             <div className="row justify-content-center my-5">
                 <div className="filter-btns shadow-md rounded-pill text-center col-auto">

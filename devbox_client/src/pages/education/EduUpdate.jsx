@@ -89,7 +89,11 @@ const EduUpdate = () => {
         if (data.code == 200) {
             navigate('/edu/list');
         } else {
-            alert(data.msg);
+            Swal.fire({
+                icon: "error",
+                title: "Opps..",
+                text: data.msg
+            });
         }
 
     };
