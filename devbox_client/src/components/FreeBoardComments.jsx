@@ -1,33 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { getCommentsByPostId, createComment, deleteComment } from '../services/api-service';
+import { useUser } from '../components/context/UserContext';
+import Button from '../components/Button';
 import '../assets/css/freeboard.css';
 
 const FreeBoardComments = ({ postId }) => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [error, setError] = useState(null);
+    const { user } = useUser();
 
     useEffect(() => {
-        const fetchComments = async () => {
-          try {
-            const commentsData = await getCommentsByPostId(postId);
-            console.log('Processed comments data:', commentsData); // 처리된 데이터 로깅
-            setComments(commentsData);
-          } catch (error) {
-            console.error('Failed to fetch comments:', error);
-          }
-        };
-      
         fetchComments();
-      }, [postId]);
+    }, [postId]);
 
     const fetchComments = async () => {
         try {
-            const data = await getCommentsByPostId(postId);
-            setComments(data);
+            const commentsData = await getCommentsByPostId(postId);
+            setComments(commentsData);
         } catch (err) {
             console.error('Error fetching comments:', err);
-            setError('Failed to load comments. Please try again.');
+            setError('댓글을 불러오는데 실패했습니다. 다시 시도해 주세요.');
         }
     };
 
@@ -36,53 +29,71 @@ const FreeBoardComments = ({ postId }) => {
         if (!newComment.trim()) return;
 
         try {
-            const comment = { postId, content: newComment };
-            await createComment(comment);
+            const createdComment = await createComment(postId, { content: newComment });
+            setComments(prevComments => [...prevComments, createdComment]);
             setNewComment('');
-            fetchComments(); // Refresh comments after adding a new one
         } catch (err) {
             console.error('Error creating comment:', err);
-            setError('Failed to add comment. Please try again.');
+            setError('댓글 작성에 실패했습니다. 다시 시도해 주세요.');
         }
     };
 
     const handleDelete = async (commentId) => {
-        if (window.confirm('Are you sure you want to delete this comment?')) {
+        if (window.confirm('이 댓글을 삭제하시겠습니까?')) {
             try {
                 await deleteComment(commentId);
-                fetchComments(); // Refresh comments after deleting
+                setComments(prevComments => prevComments.filter(comment => comment.id !== commentId));
             } catch (err) {
                 console.error('Error deleting comment:', err);
-                setError('Failed to delete comment. Please try again.');
+                setError('댓글 삭제에 실패했습니다. 다시 시도해 주세요.');
             }
         }
     };
 
     return (
-        <div className="mt-5">
-            <h3>Comments</h3>
-            {error && <div className="alert alert-danger">{error}</div>}
-            <ul className="list-group mb-3">
-                {comments.map((comment) => (
-                    <li key={comment.id} className="list-group-item d-flex justify-content-between align-items-center">
-                        <span>{comment.content}</span>
-                        <button className="btn-comment-delete btn-sm btn-danger" onClick={() => handleDelete(comment.id)}>Delete</button>
-                    </li>
-                ))}
-            </ul>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <textarea 
-                        className="form-control" 
+        <div className="freeboard-comments-section">
+            <h2 className="freeboard-comments-title">댓글 {comments.length}개</h2>
+            {error && <div className="error">{error}</div>}
+            {comments.length === 0 ? (
+                <p className="no-comments">첫 번째 댓글을 남겨보세요.</p>
+            ) : (
+                <ul className="freeboard-comments-list">
+                    {comments.map((comment) => (
+                        <li key={comment.id} className="freeboard-comment">
+                            <div className="freeboard-comment-content">{comment.content}</div>
+                            <div className="freeboard-comment-meta">
+                                <span className="comment-author">{comment.author}</span>
+                                <span className="comment-date">
+                                    {new Date(comment.createdAt).toLocaleString()}
+                                </span>
+                                {user && comment.author === user.nickname && (
+                                    <button
+                                        onClick={() => handleDelete(comment.id)}
+                                        className="btn-comment-delete"
+                                    >
+                                        삭제
+                                    </button>
+                                )}
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            )}
+
+            {user && (
+                <form onSubmit={handleSubmit} className="freeboard-comment-form">
+                    <textarea
+                        className="freeboard-comment-input"
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
-                        placeholder="Write a comment..."
-                        rows="3"
-                    ></textarea>
-                </div>
-                <button type="submit" className="btn-comment-write">Add Comment</button>
-            </form>
+                        placeholder="댓글을 작성하세요..."
+                        required
+                    />
+                    <Button text="댓글 작성" />
+                </form>
+            )}
         </div>
     );
-}
-    export default FreeBoardComments;
+};
+
+export default FreeBoardComments;
