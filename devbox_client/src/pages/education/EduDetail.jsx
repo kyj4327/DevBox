@@ -26,17 +26,23 @@ const EduDetail = () => {
     }, []);
 
     return (
-        <div>
-            <div id="work_single_banner" className="bg-light w-100">
-                <div className="container-fluid text-light d-flex justify-content-center align-items-center border-0 rounded-0 p-0 py-5">
-                    <div className="banner-content col-lg-8 m-lg-auto text-center py-5 px-3">
-                        <h1 className="banner-heading h2 pb-5 typo-space-line-center">{eduData.title}</h1>
-                        <p className="banner-footer light-300">
-                            {eduData.subtitle}
-                        </p>
+        <div className="container py-5">
+            <div className="container">
+                    <h1 className="h2 semi-bold-600 text-center mt-2">교육 프로그램</h1>
+                    <p
+                        className="text-center light-300"
+                        style={{ marginBottom: "0", padding: "0px" }}
+                    >
+                        멀 보고 있냐~ 신청해야지!!
+                    </p>
+                </div>
+
+                <div className="row pt-5">
+                    <div className="worksingle-content col-lg-8 m-auto text-left justify-content-center">
+                        <h1 className="worksingle-heading h3 pb-3 light-300 typo-space-line">{eduData.title}</h1>
+                        
                     </div>
                 </div>
-            </div>
             <section className="container py-5">
                 <div className="row justify-content-center pb-4">
                     <div className="col-lg-8">

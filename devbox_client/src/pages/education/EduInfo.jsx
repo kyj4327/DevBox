@@ -45,7 +45,13 @@ const EduInfo = (props) => {
 
     return (
             <div className="container py-5">
-                <h1 className="h2 semi-bold-600 text-center mt-2">개발 교육 정보</h1>
+                <h1 className="h2 semi-bold-600 text-center mt-2">교육 프로그램</h1>
+                <p
+                        className="text-center light-300"
+                        style={{ marginBottom: "0", padding: "0px" }}
+                    >
+                        멀 보고 있냐~ 신청해야지!!
+                    </p>
                 <div className="row justify-content-center my-5">
                     <div className="filter-btns shadow-md rounded-pill text-center col-auto">
                         <Category text={'모집중'} onClick={clickState} isActive={props.state} />

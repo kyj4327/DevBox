@@ -75,6 +75,12 @@ const ProjectMain = (props) => {
     return (
         <div className="container py-5">
             <h1 className="h2 semi-bold-600 text-center mt-2">프로젝트 자랑 게시판</h1>
+            <p
+                        className="text-center light-300"
+                        style={{ marginBottom: "0", padding: "0px" }}
+                    >
+                        맘껏 자랑해봐!
+                    </p>
             <section className="container py-5">
                 <div className="row projects gx-lg-5">
                     {props.list && props.list.map((pro) => (

@@ -22,8 +22,6 @@ const Project = () => {
     };
 
     useEffect(() => {
-        console.log("refresh");
-        
         get(currentPage);
     }, [currentPage, refresh]);
 
