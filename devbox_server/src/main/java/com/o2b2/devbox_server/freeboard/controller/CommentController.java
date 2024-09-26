@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.o2b2.devbox_server.exception.ResourceNotFoundException;
+import com.o2b2.devbox_server.freeboard.DTO.CommentsDTO;
 import com.o2b2.devbox_server.freeboard.entity.Comment;
 import com.o2b2.devbox_server.freeboard.service.CommentService;
 import com.o2b2.devbox_server.user.dto.CustomUserDetails;
@@ -24,15 +25,22 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    // @GetMapping("/post/{postId}")
+    // public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable Long
+    // postId) {
+    // List<Comment> comments = commentService.getCommentsByPostId(postId);
+    // return ResponseEntity.ok(comments);
+    // }
+
     @GetMapping("/post/{postId}")
-    public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable Long postId) {
-        List<Comment> comments = commentService.getCommentsByPostId(postId);
+    public ResponseEntity<List<CommentsDTO>> getCommentsByPostId(@PathVariable Long postId) {
+        List<CommentsDTO> comments = commentService.getCommentsByPostId(postId);
         return ResponseEntity.ok(comments);
     }
 
     @PostMapping("/post/write/{postId}")
     public ResponseEntity<Comment> createComment(@PathVariable Long postId, @RequestBody Comment comment,
-     @AuthenticationPrincipal CustomUserDetails userDetails) {
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getUserEntity().getId();
         Comment createdComment = commentService.createComment(postId, comment, userId);
         return ResponseEntity.ok(createdComment);

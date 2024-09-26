@@ -81,7 +81,7 @@ export const getCommentsByPostId = async (postId) => {
 // 댓글 생성
 export const createComment = async (postId, commentData) => {
   try {
-    const response = await apiClient.post(`/comments/post/${postId}`, commentData);
+    const response = await apiClient.post(`/comments/post/write/${postId}`, commentData);
     return response.data;
   } catch (error) {
     console.error('Error creating comment:', error);
