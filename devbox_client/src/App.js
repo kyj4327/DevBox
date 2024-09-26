@@ -66,6 +66,7 @@ import FreeBoardDetail from "./pages/freeboard/FreeBoardDetail";
 import PostDetail from "./pages/freeboard/PostDetail";
 import Contact from "./pages/contact/Contact";
 import EduWrite from './pages/education/EduWrite';
+import Main from './pages/Main';
 
 function AppContent() {
   const location = useLocation();
@@ -77,6 +78,9 @@ function AppContent() {
       <main className="main-content">
         <ScrollToTop />
         <Routes>
+          {/* 메인페이지 */}
+          <Route path="/" element={<Main />} />
+
           {/* 로그인/회원가입 */}
           <Route path="/auth" element={<AuthContainer />} />
 
