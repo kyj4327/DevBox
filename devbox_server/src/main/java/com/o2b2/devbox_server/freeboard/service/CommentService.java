@@ -12,6 +12,7 @@ import com.o2b2.devbox_server.freeboard.entity.Comment;
 import com.o2b2.devbox_server.freeboard.entity.Post;
 import com.o2b2.devbox_server.freeboard.repository.CommentRepository;
 import com.o2b2.devbox_server.freeboard.repository.PostRepository;
+import com.o2b2.devbox_server.user.entity.UserEntity;
 
 @Service
 public class CommentService {
@@ -26,10 +27,13 @@ public class CommentService {
     }
 
     @Transactional
-    public Comment createComment(Long postId, Comment comment) {
+    public Comment createComment(Long postId, Comment comment, long userId) {
         Post post = postRepository.findById(postId)
             .orElseThrow(() -> new ResourceNotFoundException("Post not found with id: " + postId));
         comment.setPost(post);
+        UserEntity user = new UserEntity();
+        user.setId(userId);
+        comment.setUser(user);
         comment.setCreatedAt(LocalDateTime.now());
         return commentRepository.save(comment);
     }
