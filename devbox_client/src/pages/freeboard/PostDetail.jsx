@@ -174,8 +174,7 @@ const PostDetail = () => {
               />
             </div>
             <div className="freeboard-button-group">
-              {user && post.user.id === user.id && (
-                <>
+             
                   <Button
                     text="수정"
                     onClick={handleEditPost}
@@ -186,8 +185,8 @@ const PostDetail = () => {
                     onClick={handleDeletePost}
                     className="btn-freeboard-delete"
                   />
-                </>
-              )}
+             
+              
             </div>
           </div>
 
