@@ -46,7 +46,7 @@ const Footer = () => {
                     <div className="col-lg-3 col-md-4 my-sm-0 mt-4">
                         <h2 className="h4 pb-lg-3 text-light light-300">김영준(조장)</h2>
                         <ul className="list-unstyled text-light light-300">
-                            <List link='/notice/list' text='BDIA 공지사항' />
+                            <List link='/notice/list' text='공지사항' />
                             <List link='/greeting/list' text='가입 인사' />
                             <List link='/gathermate/list' text='모여라 메이트' />
                             <li className="pb-2">
@@ -70,7 +70,7 @@ const Footer = () => {
                     <div className="col-lg-3 col-md-4 my-sm-0 mt-4">
                         <h2 className="h4 pb-lg-3 text-light light-300">김민준</h2>
                         <ul className="list-unstyled text-light light-300">
-                            <List link='/edu/list' text='교육 정보' />
+                            <List link='/edu/list' text='교육 과정' />
                             <List link='/project/list' text='프로젝트 자랑' />
                             <List link='/message/list' text='쪽지' />
                         </ul>
@@ -79,9 +79,9 @@ const Footer = () => {
                         <h2 className="h4 pb-lg-3 text-light light-300">이예림</h2>
                         <ul className="list-unstyled text-light light-300">
                             <List link='/' text='메인페이지' />
+                            <List link='/jobinfo/list' text='개발 직군' />
                             <List link='/hiring/list' text='채용 공고' />
                             <List link='/contest/list' text='공모전 공고' />
-                            <List link='/jobinfo/list' text='개발 직군 정보' />
                             <List link='/reference/list' text='추천해요' />
                             <List link='/reservation/write' text='6층 회의실 대여' />
                         </ul>
