@@ -1,99 +1,89 @@
+import { Link } from "react-router-dom";
+
 const Footer = () => {
+    const List = ({ link, text }) => {
+        return (
+            <li className="pb-2">
+                <i className='bx-fw bx bxs-chevron-right bx-xs'></i><Link to={link} className="text-decoration-none text-light py-1">{text}</Link>
+            </li>
+        );
+    };
+
     return (
-        <footer className="bg-secondary pt-4">
+        <footer className="bg-secondary">
+            <div className="w-100 py-3">
+                <div className="container">
+                    <div className="row pt-2">
+                        <div className="col-lg-6 col-sm-12">
+                            <Link to='/' className="navbar-brand">
+                                <i className='bx bx-buildings bx-sm text-light'></i>
+                                <span className="text-light h4">DevBox</span>
+                            </Link>
+                            <p className="text-light my-2">개발의 모든 것을 담은 상자처럼, 신입 개발자들이 필요한 모든 것이 있는 공간</p>
+                            <p className="text-light my-2">기간 : 2024. 08. 19. - 2024. 10. 15.</p>
+                        </div>
+                        <div className="col-lg-6 col-sm-12">
+                            <p className="text-lg-end text-center text-light light-300">
+                                <ul className="list-inline footer-icons light-300">
+                                    <li className="list-inline-item m-0">
+                                        <a className="text-light" target="_blank" href="깃주소">
+                                            <i className='bx bxl-facebook-square bx-md'></i>
+                                        </a>
+                                    </li>
+                                    <li className="list-inline-item m-0">
+                                        <a className="text-light" target="_blank" href="구글시트">
+                                            <i className='bx bxl-linkedin-square bx-md'></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div className="container">
                 <div className="row py-4">
-                    <div className="col-lg-3 col-12 align-left">
-                        <a className="navbar-brand" href="index.html">
-                            <i className='bx bx-buildings bx-sm text-light'></i>
-                            <span className="text-light h5">Dev</span> <span className="text-light h5 semi-bold-600">Box</span>
-                        </a>
-                        <p className="text-light my-lg-4 my-2">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                            sed do eiusmod tempor incididunt ut.
-                        </p>
-                        <ul className="list-inline footer-icons light-300">
-                            <li className="list-inline-item m-0">
-                                <a className="text-light" target="_blank" href="http://facebook.com/">
-                                    <i className='bx bxl-facebook-square bx-md'></i>
-                                </a>
-                            </li>
-                            <li className="list-inline-item m-0">
-                                <a className="text-light" target="_blank" href="https://www.linkedin.com/">
-                                    <i className='bx bxl-linkedin-square bx-md'></i>
-                                </a>
-                            </li>
-                            <li className="list-inline-item m-0">
-                                <a className="text-light" target="_blank" href="https://www.whatsapp.com/">
-                                    <i className='bx bxl-whatsapp-square bx-md'></i>
-                                </a>
-                            </li>
-                            <li className="list-inline-item m-0">
-                                <a className="text-light" target="_blank" href="https://www.flickr.com/">
-                                    <i className='bx bxl-flickr-square bx-md'></i>
-                                </a>
-                            </li>
-                            <li className="list-inline-item m-0">
-                                <a className="text-light" target="_blank" href="https://www.medium.com/">
-                                    <i className='bx bxl-medium-square bx-md' ></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
                     <div className="col-lg-3 col-md-4 my-sm-0 mt-4">
-                        <h2 className="h4 pb-lg-3 text-light light-300">Our Company</h2>
+                        <h2 className="h4 pb-lg-3 text-light light-300">김영준(조장)</h2>
                         <ul className="list-unstyled text-light light-300">
+                            <List link='/notice/list' text='BDIA 공지사항' />
+                            <List link='/greeting/list' text='가입 인사' />
+                            <List link='/gathermate/list' text='모여라 메이트' />
                             <li className="pb-2">
-                                <i className='bx-fw bx bxs-chevron-right bx-xs'></i><a className="text-decoration-none text-light py-1" href="index.html">BDIA</a>
+                                <i className='bx-fw bx bxs-chevron-right bx-xs'></i><span className="text-decoration-none text-light py-1" style={{ cursor: 'default' }}>로그인</span>
                             </li>
+                            <List link='/mypage' text='마이페이지' />
                             <li className="pb-2">
-                                <i className='bx-fw bx bxs-chevron-right bx-xs'></i><a className="text-decoration-none text-light py-1" href="about.html">Notice</a>
-                            </li>
-                            <li className="pb-2">
-                                <i className='bx-fw bx bxs-chevron-right bx-xs'></i><a className="text-decoration-none text-light py-1" href="work.html">Information</a>
-                            </li>
-                            <li className="pb-2">
-                                <i className='bx-fw bx bxs-chevron-right bx-xs'></i><a className="text-decoration-none text-light py-1" href="pricing.html">Community</a>
-                            </li>
-                            <li className="pb-2">
-                                <i className='bx-fw bx bxs-chevron-right bx-xs'></i><a className="text-decoration-none text-light py-1" href="contact.html">FAQ</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div className="col-lg-3 col-md-4 my-sm-0 mt-4">
-                        <h2 className="h4 pb-lg-3 text-light light-300">Our Works</h2>
-                        <ul className="list-unstyled text-light light-300">
-                            <li className="pb-2">
-                                <i className='bx-fw bx bxs-chevron-right bx-xs'></i><a className="text-decoration-none text-light py-1" href="#">Branding</a>
-                            </li>
-                            <li className="pb-2">
-                                <i className='bx-fw bx bxs-chevron-right bx-xs'></i><a className="text-decoration-none text-light py-1" href="#">Business</a>
-                            </li>
-                            <li className="pb-2">
-                                <i className='bx-fw bx bxs-chevron-right bx-xs'></i><a className="text-decoration-none text-light py-1" href="#">Marketing</a>
-                            </li>
-                            <li className="pb-2">
-                                <i className='bx-fw bx bxs-chevron-right bx-xs'></i><a className="text-decoration-none text-light py-1" href="#">Social Media</a>
-                            </li>
-                            <li className="pb-2">
-                                <i className='bx-fw bx bxs-chevron-right bx-xs'></i><a className="text-decoration-none text-light py-1" href="#">Digital Solution</a>
-                            </li>
-                            <li className="pb-2">
-                                <i className='bx-fw bx bxs-chevron-right bx-xs'></i><a className="text-decoration-none text-light py-1" href="#">Graphic</a>
+                                <i className='bx-fw bx bxs-chevron-right bx-xs'></i><span className="text-decoration-none text-light py-1" style={{ cursor: 'default' }}>배포</span>
                             </li>
                         </ul>
                     </div>
                     <div className="col-lg-3 col-md-4 my-sm-0 mt-4">
-                        <h2 className="h4 pb-lg-3 text-light light-300">For Client</h2>
+                        <h2 className="h4 pb-lg-3 text-light light-300">구본환</h2>
                         <ul className="list-unstyled text-light light-300">
-                            <li className="pb-2">
-                                <i className='bx-fw bx bx-phone bx-xs'></i><a className="text-decoration-none text-light py-1" href="tel:010-020-0340">010-020-0340</a>
-                            </li>
-                            <li className="pb-2">
-                                <i className='bx-fw bx bx-mail-send bx-xs'></i><a className="text-decoration-none text-light py-1" href="mailto:info@company.com">info@company.com</a>
-                            </li>
+                            <List link='/introduce' text='BDIA 소개' />
+                            <List link='/schedule' text='연간 교육 일정' />
+                            <List link='/freeboard/list' text='자유게시판' />
+                            <List link='/faq' text='FAQ' />
+                        </ul>
+                    </div>
+                    <div className="col-lg-3 col-md-4 my-sm-0 mt-4">
+                        <h2 className="h4 pb-lg-3 text-light light-300">김민준</h2>
+                        <ul className="list-unstyled text-light light-300">
+                            <List link='/edu/list' text='교육 정보' />
+                            <List link='/project/list' text='프로젝트 자랑' />
+                            <List link='/message/list' text='쪽지' />
+                        </ul>
+                    </div>
+                    <div className="col-lg-3 col-md-4 my-sm-0 mt-4">
+                        <h2 className="h4 pb-lg-3 text-light light-300">이예림</h2>
+                        <ul className="list-unstyled text-light light-300">
+                            <List link='/' text='메인페이지' />
+                            <List link='/hiring/list' text='채용 공고' />
+                            <List link='/contest/list' text='공모전 공고' />
+                            <List link='/jobinfo/list' text='개발 직군 정보' />
+                            <List link='/reference/list' text='추천해요' />
+                            <List link='/reservation/write' text='6층 회의실 대여' />
                         </ul>
                     </div>
                 </div>
@@ -103,7 +93,7 @@ const Footer = () => {
                     <div className="row pt-2">
                         <div className="col-lg-6 col-sm-12">
                             <p className="text-lg-start text-center text-light light-300">
-                                © Copyright 2021 Dev Box Company. All Rights Reserved.
+                                © Copyright 2021 Purple Buzz Company. All Rights Reserved.
                             </p>
                         </div>
                         <div className="col-lg-6 col-sm-12">
