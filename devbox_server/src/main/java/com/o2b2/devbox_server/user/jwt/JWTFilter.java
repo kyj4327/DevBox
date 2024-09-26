@@ -63,7 +63,7 @@ public class JWTFilter extends OncePerRequestFilter {
         || requestURI.matches("/send/.*")
         || requestURI.matches("/api/posts")
         || requestURI.matches("/api/posts/[0-9]+")
-        || requestURI.matches("/api/comments/.*")
+        || requestURI.matches("/api/comments/post/[0-9]+")
         || requestURI.matches("/posts/.*")
         || requestURI.matches("/comments/.*")
 
