@@ -17,6 +17,7 @@ public class GreetingResponse {
     private final LocalDateTime createdAt;
 
     private final String author;
+    private final String field;
 
 
     // 댓글의 수
@@ -29,18 +30,21 @@ public class GreetingResponse {
         this.content = greeting.getContent();
         this.createdAt = greeting.getCreatedAt();
         this.author = greeting.getUser().getNickname();
+        this.field = greeting.getUser().getField();
         this.commentCount = commentCount;
     }
 
     @Builder
     public GreetingResponse(Long id, String content,
                             LocalDateTime createdAt, String author,
+                            String field,
                             int commentCount) {
         this.id = id;
 
         this.content = content;
         this.createdAt = createdAt;
         this.author = author;
+        this.field = field;
         this.commentCount = commentCount;
     }
 }

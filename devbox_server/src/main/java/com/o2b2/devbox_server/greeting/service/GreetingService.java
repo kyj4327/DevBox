@@ -40,6 +40,7 @@ public class GreetingService {
                 .createdAt(LocalDateTime.now())
                 .user(user)
                 .author(user.getNickname())
+                .field(user.getField())
                 .build();
 
         Greeting saveGreeting = greetingRepository.save(greeting);

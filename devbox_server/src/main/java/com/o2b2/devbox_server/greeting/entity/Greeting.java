@@ -32,18 +32,21 @@ public class Greeting {
 
     private String author;
 
+    private String field;
+
 
     @OneToMany(mappedBy = "greeting", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GreetingComment> greetingComments;
 
     @Builder
     public Greeting(String content, UserEntity user,
-                    LocalDateTime createdAt, String author) {
+                    LocalDateTime createdAt, String author, String field) {
 
         this.content = content;
         this.user = user;
         this.createdAt = createdAt;
         this.author = author;
+        this.field = field;
     }
 
     public GreetingPostEditor.GreetingPostEditorBuilder toEditor(){
