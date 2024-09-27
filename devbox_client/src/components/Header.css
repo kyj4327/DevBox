@@ -60,3 +60,17 @@
   color: #007bff;
   font-weight: bold;
 }
+
+.custom-tooltip .tooltip-inner {
+  background-color: rgb(89, 88, 88);
+  max-width: 250px; 
+  text-align: left; 
+}
+.custom-tooltip.bs-tooltip-bottom .arrow::before {
+  border-bottom-color: white;
+}
+
+.header-logo-image {
+  width: 110px;  /* 원하는 이미지 크기 */
+  height: auto; /* 비율 유지 */
+}

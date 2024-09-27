@@ -82,6 +82,7 @@ public class SecurityConfig {
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                         
 
+
                         CorsConfiguration configuration = new CorsConfiguration();
                         
                         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
@@ -90,6 +91,7 @@ public class SecurityConfig {
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
                         configuration.setMaxAge(3600L);
                      
+
 
                         configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
                         configuration.setExposedHeaders(Collections.singletonList("Authorization"));
@@ -141,7 +143,6 @@ public class SecurityConfig {
                         // 댓글
                         .requestMatchers("/gathermate/*/comments").authenticated()
                         .requestMatchers("/gathermate/comments/*/edit").authenticated()
-
                         .requestMatchers("/gathermate/comments/*/delete").authenticated()
                         .requestMatchers("/gathermate/*/commentslist").permitAll()
 
@@ -159,6 +160,43 @@ public class SecurityConfig {
                         // gatherMate 글 수정 페이지는 로그인 사용자
                         .requestMatchers("/gathermate/edit/**").authenticated()
 
+                        // 가입인사 greeting
+                        // greeting 리스트는 누구나
+                        .requestMatchers("/greeting/lists").permitAll()
+                        .requestMatchers("/greeting/lists**").permitAll()
+                        .requestMatchers("/greeting/lists/**").permitAll()
+
+                        // greeting댓글
+                        .requestMatchers("/greeting/*/comments").authenticated()
+                        .requestMatchers("/greeting/comments/*/edit").authenticated()
+                        .requestMatchers("/greeting/comments/*/delete").authenticated()
+                        .requestMatchers("/greeting/*/commentslist").permitAll()
+
+                        // greeting 상세는 누구나
+                        .requestMatchers("/greeting/detail/**").permitAll()
+                        .requestMatchers("/greeting/posts/**").permitAll()
+                        .requestMatchers("/greeting/posts").authenticated()
+
+
+                        // greeting 글 작성 페이지는 로그인 사용자
+                        .requestMatchers("/greeting/write").authenticated()
+                        .requestMatchers("/greeting/write").authenticated()
+                        // greeting 글 수정 페이지는 로그인 사용자
+                        .requestMatchers("/greeting/edit/**").authenticated()
+
+
+//                        공지사항
+                        .requestMatchers("/notice/detail/**").permitAll()
+                        .requestMatchers("/notice/posts/**").permitAll()
+                        .requestMatchers("/notice/posts").authenticated()
+                        .requestMatchers("/notice/posts**").authenticated()
+
+                        .requestMatchers("/reservation/write/**").permitAll()
+                        .requestMatchers("/reservation/check/**").authenticated()
+                        // .requestMatchers("/reservation/check/**").hasAnyRole("ADMIN", "STUDENT")
+                        // .requestMatchers("/reservation/write").hasAnyRole("ADMIN", "STUDENT")
+                        .requestMatchers("/contest/write").hasRole("ADMIN")
+                        // .requestMatchers("/hiring/write").hasRole("ADMIN")
 
                         .requestMatchers("/reservation/write/**").permitAll()
                         .requestMatchers("/reservation/check/**").authenticated()
@@ -204,6 +242,15 @@ public class SecurityConfig {
 
                         // 알림 기능은 로그인한 사용자만 접근 가능
                         .requestMatchers("/msg/bell").authenticated()
+                        .requestMatchers("/edu/**").permitAll()
+                        .requestMatchers("/project/**").permitAll()
+                        .requestMatchers("/message/**").permitAll()
+
+                        // .requestMatchers("/edu/**").permitAll()
+                        // .requestMatchers("/project/**").permitAll()
+                        .requestMatchers("/msg/**").authenticated()
+                        .requestMatchers("/msg/list**").authenticated()
+                        // .requestMatchers("/message/**").authenticated()
 
                         // .requestMatchers("/edu/**").permitAll()
                         // .requestMatchers("/project/**").permitAll()

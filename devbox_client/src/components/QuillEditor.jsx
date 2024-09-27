@@ -15,7 +15,7 @@ function QuillEditor({ value, onChange, height, placeholder}) {
         { indent: "-1" },
         { indent: "+1" },
       ],
-      ["link", "image", "formula"],
+      ["link", "formula"],
       ["clean"],
     ],
   };
@@ -32,7 +32,6 @@ function QuillEditor({ value, onChange, height, placeholder}) {
     "bullet",
     "indent",
     "link",
-    "image",
     "formula",
   ];
 

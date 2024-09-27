@@ -3,9 +3,10 @@ import MsgBell from "../pages/message/MsgBell";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from '../components/context/UserContext';
 import './Header.css';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const Header = () => {
-  const { user, setUser } = useUser();
+  const { user, setUser , loading} = useUser();
   const navigate = useNavigate();
 
   const handleLogoutClick = async () => {
@@ -30,6 +31,30 @@ const Header = () => {
       console.error("Error during logout:", error);
     }
   };
+
+  const renderTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props} className="custom-tooltip">
+      {user && (
+        <>
+          로그인 정보<br />
+          이메일: {user.email}<br />
+          닉네임: {user.nickname}
+        </>
+      )}
+    </Tooltip>
+  );
+
+  if (loading) {
+    return (
+      <nav id="main_nav" className="navbar navbar-expand-lg navbar-light bg-white shadow">
+        <div className="container d-flex justify-content-between align-items-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading</span>
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav id="main_nav" className="navbar navbar-expand-lg navbar-light bg-white shadow">
@@ -88,9 +113,15 @@ const Header = () => {
               user ? (
                 <>
                   <MsgBell />
+                  <OverlayTrigger
+                    placement="bottom"
+                    delay={{ show: 250, hide: 400 }}
+                    overlay={renderTooltip}
+                  >
                   <Link to="/mypage" className="nav-link">
                     <i className="bx bx-user-circle bx-sm text-primary"></i>
                   </Link>
+                  </OverlayTrigger>
                   <button onClick={handleLogoutClick} className="header-logout-button nav-link" aria-label="Logout">
                     <i className='bx bx-log-out bx-sm text-primary'></i>
                   </button>

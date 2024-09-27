@@ -50,10 +50,20 @@ import MyPage from './pages/auth/MyPage';
 import PasswordReset from './pages/auth/PasswordReset';
 import Header from './components/Header';
 import Footer from './components/Footer';
+
 import GatherMateList from './pages/gatherMate/GatherMateList';
 import GatherMateWrite from './pages/gatherMate/GatherMateWrite';
 import GatherMateDetail from './pages/gatherMate/GatherMateDetail';
 import GatherMateEdit from './pages/gatherMate/GatherMateEdit';
+
+import GreetingList from './pages/greeting/GreetingList';
+
+
+import NoticeList from './pages/notice/NoticeList';
+import NoticeWrite from './pages/notice/NoticeWrite';
+import NoticeDetail from './pages/notice/NoticeDetail';
+import NoticeEdit from './pages/notice/NoticeEdit';
+
 
 import ProjectDetail from './pages/project/ProjectDetail';
 import ProjectUpdate from './pages/project/ProjectUpdate';
@@ -70,11 +80,11 @@ import Main from './pages/Main';
 
 function AppContent() {
   const location = useLocation();
-  const hideHeaderFooter = ['/auth', '/password'].includes(location.pathname);
+  const hideFooter = ['/auth', '/password'].includes(location.pathname);
 
   return (
     <div className="app-wrapper">
-      {!hideHeaderFooter && <Header />}
+      <Header />
       <main className="main-content">
         <ScrollToTop />
         <Routes>
@@ -98,6 +108,16 @@ function AppContent() {
           <Route path="/gathermate/list" element={<GatherMateList />} />
           <Route path="/gathermate/detail/:postId" element={<GatherMateDetail />} />
           <Route path="/gathermate/edit/:postId" element={<GatherMateEdit />} />
+
+          {/* 공지사항 게시판 */}
+          <Route path="/notice/write" element={<NoticeWrite />} />
+          <Route path="/notice/list" element={<NoticeList />} />
+          <Route path="/notice/detail/:postId" element={<NoticeDetail />} />
+          <Route path="/notice/edit/:postId" element={<NoticeEdit />} />
+
+          {/* 가입인사 게시판 */}
+          <Route path="/greeting/list" element={<GreetingList />} />
+ 
 
 
           <Route path='/edu/list' element={<EduMain />} />
@@ -153,7 +173,7 @@ function AppContent() {
 
         </Routes>
       </main>
-      {!hideHeaderFooter && <Footer />} {/* Footer 추가 */}
+      {!hideFooter && <Footer />} {/* Footer 추가 */}
     </div>
   );
 }

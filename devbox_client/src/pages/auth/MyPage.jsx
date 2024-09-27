@@ -4,8 +4,8 @@ import MyPageSideBar from "../../components/MyPageSideBar";
 import MyPageContent from "../../components/MyPageContent";
 import MyPageProfileEdit from "../../components/MyPageProfileEdit";
 import "./MyPage.css";
-import Header from '../../components/Header';
 import ReservationList from "../reservation/ReservationList";
+
 
 function MyPage() {
   return (

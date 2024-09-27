@@ -104,6 +104,15 @@ function HomePage() {
   const handleProjectClick = () => {
     navigate('/project/list');
   };
+  const handleNoticeClick = () => {
+    navigate('/notice/list');
+  }; 
+  
+  const handleGreetingClick = () => {
+    navigate('/greeting/list');
+  };
+
+  
 
   const handleLogoutClick = async () => {
     try {
@@ -149,6 +158,8 @@ function HomePage() {
           <button onClick={handleGatherMateClick}>모여라메이트</button>
           <button onClick={handleReferenceClick}>추천해요</button>
           <button onClick={handleProjectClick}>프로젝트자랑</button>
+          <button onClick={handleNoticeClick}>공지사항</button>
+          <button onClick={handleGreetingClick}>가입인사</button>
 
           <button onClick={handleLogoutClick}>로그아웃</button>
         </div>
