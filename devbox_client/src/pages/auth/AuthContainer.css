@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh; /* 화면 높이 전체에서 중앙에 배치 */
+  min-height: 91.5vh; /* 화면 높이 전체에서 중앙에 배치 */
   background-color: #f6f5f7; /* 배경색을 설정 */
 }
 
@@ -291,4 +291,11 @@
 .auth-social-container img {
   width: 40px;
   height: 40px;
+}
+
+.logo-image {
+  width: 250px; /* 원하는 크기로 조정 */
+  height: auto;
+  display: block;
+  margin: 0 auto 20px; /* 이미지 중앙 정렬 및 아래에 여백 추가 */
 }

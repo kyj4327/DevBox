@@ -50,7 +50,7 @@ function GatherMateList() {
       }&size=10&sort=id,desc`;
     }
 
-     if (category !== "All" && !searchKeyword) {
+    if (category !== "All" && !searchKeyword) {
     url += `&category=${encodeURIComponent(category)}`;
   }
 

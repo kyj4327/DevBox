@@ -3,8 +3,10 @@ import "./AuthContainer.css";
 import google from "../../assets/img/Oauth_Google.png";
 import kakao from "../../assets/img/Oauth_Kakao.webp";
 import naver from "../../assets/img/Oauth_Naver.png";
+import { useNavigate } from "react-router-dom"; 
 
 import { useUser } from "../../components/context/UserContext";
+import devBox from "../../assets/img/devBox.png";
 
 
 function AuthContainer() {
@@ -17,17 +19,20 @@ function AuthContainer() {
   const [field, setField] = useState(null); // 초기에는 null로 설정
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
   const [email, setEmail] = useState(""); // 이메일 상태 관리 추가
+  const navigate = useNavigate();
 
-  const { login, refreshAccessToken } = useUser(); // UserContext에서 login, refreshAccessToken 가져오기
+  const { login, refreshAccessToken } = useUser();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
     if (token) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
+      navigate("/home");
     }
-  }, []);
+  }, [navigate]);
+
+  const handleLogoClick = () => {
+    navigate("/home"); // /home 경로로 이동
+  };
 
   const onNaverLogin = () => {
     window.location.href = "http://localhost:8080/oauth2/authorization/naver";
@@ -117,6 +122,7 @@ function AuthContainer() {
       .then((result) => {
         console.log("Success:", result); // 성공적으로 처리된 결과를 출력
         alert(result); // 백엔드에서 반환한 메시지 출력
+        setIsRightPanelActive(false);
       })
       .catch((error) => {
         console.error("Error:", error); // 에러 메시지 출력
@@ -139,91 +145,39 @@ function AuthContainer() {
 
     console.log("Logging in with data:", data); // 로그인 데이터 출력
 
-  //   fetch("http://localhost:8080/login", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(data),
-  //     credentials: "include", // 쿠키를 포함해서 보내기
-  //   })
-  //     .then((res) => {
-  //       console.log("Response status:", res.status); // 응답 상태 코드 출력
-  //       if (res.ok) {
-  //         window.location.href = "/home"; // 로그인 성공 시 /home으로 이동
-  //       } else {
-  //         throw new Error(`HTTP error! status: ${res.status}`);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error); // 에러 메시지 출력
-  //       alert("로그인에 실패했습니다.");
-  //     });
-  // };
-  try {
-    const response = await fetch("http://localhost:8080/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-      credentials: "include", // Refresh Token을 쿠키로 포함하여 요청
-    });
+    try {
+      const response = await fetch("http://localhost:8080/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        credentials: "include", // Refresh Token을 쿠키로 포함하여 요청
+      });
 
-    console.log("Response status:", response.status); // 응답 상태 확인
+      console.log("Response status:", response.status); // 응답 상태 확인
 
-    if (response.ok) {
-      // 로그인 성공 시 응답 헤더에서 Access Token을 받아서 로컬 스토리지에 저장
-      const authHeader = response.headers.get("Authorization");
-      if (authHeader && authHeader.startsWith("Bearer ")) {
-        const accessToken = authHeader.split(" ")[1];
-        localStorage.setItem("accessToken", accessToken);
-      }
-      // 로그인 성공 시 홈 페이지로 리다이렉트
-      window.location.href = "/home";
-//     } else {
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
-//   } catch (error) {
-//     console.error("로그인 중 오류 발생:", error);
-//     alert("로그인에 실패했습니다. 다시 시도해주세요.");
-//   }
-// };
-
-    }
-    else if (response.status === 401) {
-      console.warn("Access token expired. Trying to refresh.");
-      const refreshed = await refreshAccessToken(); // 토큰 만료 시 재발급 시도
-      if (refreshed) {
-        console.log("토큰 재발급 성공, 다시 로그인 시도.");
-        const retryResponse = await fetch("http://localhost:8080/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-          credentials: "include",
-        });
-
-        if (retryResponse.ok) {
-          const authHeader = retryResponse.headers.get("Authorization");
-          if (authHeader && authHeader.startsWith("Bearer ")) {
-            const accessToken = authHeader.split(" ")[1];
-            localStorage.setItem("accessToken", accessToken);
-          }
-          window.location.href = "/home";
-        } else {
-          throw new Error(`HTTP error! status: ${retryResponse.status}`);
+      if (response.ok) {
+        // 로그인 성공 시 응답 헤더에서 Access Token을 받아서 로컬 스토리지에 저장
+        const authHeader = response.headers.get("Authorization");
+        if (authHeader && authHeader.startsWith("Bearer ")) {
+          const accessToken = authHeader.split(" ")[1];
+          localStorage.setItem("accessToken", accessToken);
         }
+        // 로그인 성공 시 홈 페이지로 리다이렉트
+        window.location.href = "/home";
+      } else if (response.status === 401) {
+        // 잘못된 자격 증명일 경우
+        alert("사용자 정보를 확인해주세요");
+      } else {
+        // 기타 에러 처리
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    } else {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    } catch (error) {
+      console.error("로그인 중 오류 발생:", error);
+      alert("로그인에 실패했습니다. 다시 시도해주세요.");
     }
-  } catch (error) {
-    console.error("로그인 중 오류 발생:", error);
-    alert("로그인에 실패했습니다. 다시 시도해주세요.");
-  }
-};
+  };
 
   const handleForgotPassword = () => {
     // 새 창의 크기를 설정
@@ -343,11 +297,21 @@ function AuthContainer() {
             </button>
           </form>
         </div>
+        
         <div className="auth-form-container auth-sign-in-container">
+
           <form onSubmit={handleLogin} className="auth-form">
+            {/* <img
+              src={devBox}
+              alt="DevBox Logo"
+              className="logo-image"
+              onClick={handleLogoClick} // 클릭 시 /home으로 이동
+              style={{ cursor: "pointer" }} // 클릭 가능 커서 스타일 추가
+            /> */}
+
             <h1 id="customH1" className="auth-h1">
               Sign in
-            </h1>
+            </h1> 
             <div className="auth-social-container">
               <a href="#" className="auth-social" onClick={onNaverLogin}>
                 <img src={naver} alt="Naver Icon" />

@@ -3,9 +3,12 @@ import MsgBell from "../pages/message/MsgBell";
 import { useNavigate } from "react-router-dom";
 import { useUser } from '../components/context/UserContext';
 import './Header.css';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import devBoxCode from "../../src/assets/img/devBoxCode.png";
+import devBoxHeader from "../../src/assets/img/devBoxHeader.png";
 
 const Header = () => {
-  const { user, setUser } = useUser();
+  const { user, setUser , loading} = useUser();
   const navigate = useNavigate();
 
   const handleLogoutClick = async () => {
@@ -31,16 +34,48 @@ const Header = () => {
     }
   };
 
+  const renderTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props} className="custom-tooltip">
+      {user && (
+        <>
+          로그인 정보<br />
+          이메일: {user.email}<br />
+          닉네임: {user.nickname}
+        </>
+      )}
+    </Tooltip>
+  );
+
+  if (loading) {
+    return (
+      <nav id="main_nav" className="navbar navbar-expand-lg navbar-light bg-white shadow">
+        <div className="container d-flex justify-content-between align-items-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading</span>
+          </div>
+        </div>
+      </nav>
+    );
+  }
+
   return (
     <nav
       id="main_nav"
       className="navbar navbar-expand-lg navbar-light bg-white shadow"
     >
       <div className="container d-flex justify-content-between align-items-center">
-        <a className="navbar-brand h1" href="/home">
-          <i className="bx bx-buildings bx-sm text-dark"></i>
-          <span className="text-dark h4">Dev</span>
-          <span className="text-primary h4">Box</span>
+      <a className="navbar-brand h1" href="/home">
+{/* 
+      <div className="container d-flex justify-content-between align-items-center"style={{ padding: "0px 0px 0px" }}>
+      <a className="navbar-brand h1" href="/home" style={{ padding: "0px 0px 0px",margin:"0px 0px" }}> */}
+      <i className="bx bx-buildings bx-sm text-dark"></i>
+      <span className="text-dark h4">Dev</span>
+      <span className="text-primary h4">Box</span>
+          {/* <img src={devBoxCode} alt="DevBox Logo" className="logo-image" /> */}
+          {/* <img src={devBoxHeader} alt="DevBox Logo" className="header-logo-image" /> */}
+
+          {/* <span className="text-dark h4">Dev</span>
+          <span className="text-primary h4">Box</span> */}
         </a>
         <button
           className="navbar-toggler border-0"
@@ -105,16 +140,22 @@ const Header = () => {
             {user ? (
               <>
                 <MsgBell />
-                <a className="nav-link" href="/mypage">
-                  <i className="bx bx-user-circle bx-sm text-primary"></i>
-                </a>
-                <button 
-                  onClick={handleLogoutClick} 
-                  className="header-logout-button nav-link"
-                  aria-label="Logout"
-                >
-                  <i className='bx bx-log-out bx-sm text-primary'></i>
-                </button>
+              <OverlayTrigger
+              placement="bottom"
+              delay={{ show: 250, hide: 400 }}
+              overlay={renderTooltip}
+            >
+              <a className="nav-link" href="/mypage">
+                <i className="bx bx-user-circle bx-sm text-primary"></i>
+              </a>
+            </OverlayTrigger>
+            <button 
+              onClick={handleLogoutClick} 
+              className="header-logout-button nav-link"
+              aria-label="Logout"
+            >
+              <i className='bx bx-log-out bx-sm text-primary'></i>
+            </button>
               </>
             ) : (
               <a
