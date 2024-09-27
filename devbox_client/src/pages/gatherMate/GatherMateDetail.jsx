@@ -5,11 +5,11 @@ import GatherMateComments from "../../components/GatherMateComments";
 import profilePic from "../../assets/img/profilePic.png";
 import "./GatherMateDetail.css";
 import PostButton from "../../components/PostButton";
-import BoardComments from '../../components/BoardComments';
+import BoardComments from "../../components/BoardComments";
 
 const GatherMateDetail = () => {
   const { postId } = useParams();
-  const { user } = useUser(); 
+  const { user } = useUser();
   const [post, setPost] = useState(null);
 
   // const [likes, setLikes] = useState();
@@ -31,12 +31,13 @@ const GatherMateDetail = () => {
   const fetchPost = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/posts/${postId}`,{
+        `http://localhost:8080/gathermate/posts/${postId}`,
+        {
           method: "GET",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         }
       );
@@ -45,7 +46,7 @@ const GatherMateDetail = () => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      console.log("data 뽑기 " + data.isLiked)
+      console.log("data 뽑기 " + data.isLiked);
       setPost(data);
       // setLikes(data.likes || 0);
       setIsLiked(data.isLiked || false);
@@ -83,7 +84,7 @@ const GatherMateDetail = () => {
         {
           method: "DELETE", // 삭제 요청
           headers: {
-            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             "Content-Type": "application/json",
           },
         }
@@ -114,7 +115,7 @@ const GatherMateDetail = () => {
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         }
       );
@@ -145,7 +146,7 @@ const GatherMateDetail = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
           body: JSON.stringify({ isRecruiting: newRecruitingStatus }),
         }
@@ -157,11 +158,16 @@ const GatherMateDetail = () => {
         alert(data.message || "모집 상태가 성공적으로 변경되었습니다.");
       } else {
         const errorData = await response.json();
-        throw new Error(errorData.message || "모집 상태 업데이트에 실패했습니다.");
+        throw new Error(
+          errorData.message || "모집 상태 업데이트에 실패했습니다."
+        );
       }
     } catch (error) {
       console.error("모집 상태 업데이트 중 오류 발생:", error);
-      alert(error.message || "모집 상태를 변경하는 데 실패했습니다. 다시 시도해주세요.");
+      alert(
+        error.message ||
+          "모집 상태를 변경하는 데 실패했습니다. 다시 시도해주세요."
+      );
     }
   };
 
@@ -209,7 +215,8 @@ const GatherMateDetail = () => {
                 <div className="d-flex flex-column">
                   <span>작성자: {post.author}</span>
                   <span>
-                    작성일: {formatDateTime(post.createdAt)} 조회수: {post.views}
+                    작성일: {formatDateTime(post.createdAt)} 조회수:{" "}
+                    {post.views}
                   </span>
                 </div>
               </div>
@@ -221,7 +228,12 @@ const GatherMateDetail = () => {
             <div className="col-lg-8 ml-auto mr-auto pt-3 pb-4 border border-3">
               <div
                 className="text-muted light-300"
-                style={{ color: "black !important" }}
+                style={{
+                  color: "black !important",
+                  overflowWrap: "break-word",
+                  wordWrap: "break-word",
+                  whiteSpace: "pre-wrap",
+                }}
                 dangerouslySetInnerHTML={{ __html: post.content }} // HTML을 렌더링
               />
 
@@ -233,24 +245,24 @@ const GatherMateDetail = () => {
 
               <div className="d-flex justify-content-center">
                 <div className="d-flex">
-
                   {/* 좋아요 버튼 */}
                   {post.likeCount !== undefined && (
                     <PostButton
-                    icon={
-                      
-                      <ion-icon
-                        name={post.likeCount > 0 ? 'heart' : 'heart-outline'}
-                        style={{ color: post.likeCount > 0 ? 'red' : 'black', fontSize: '25px' }}
-                        // name={isLiked ? 'heart' : 'heart-outline'}
-                        // style={{ color: isLiked ? 'red' : 'black', fontSize: '25px' }}
-                      ></ion-icon>
-                    }
+                      icon={
+                        <ion-icon
+                          name={post.likeCount > 0 ? "heart" : "heart-outline"}
+                          style={{
+                            color: post.likeCount > 0 ? "red" : "black",
+                            fontSize: "25px",
+                          }}
+                          // name={isLiked ? 'heart' : 'heart-outline'}
+                          // style={{ color: isLiked ? 'red' : 'black', fontSize: '25px' }}
+                        ></ion-icon>
+                      }
                       text={post.likeCount}
                       onClick={handleLike}
                       disabled={!user}
                     />
-                    
                   )}
                   <PostButton
                     text={isRecruiting ? "모집중" : "모집완료"}
@@ -283,11 +295,15 @@ const GatherMateDetail = () => {
           </div>
 
           {/* 댓글 컴포넌트 */}
-          <div className="row justify-content-center"></div>
-{/* <GatherMateComments postId={postId} /> */}
+          <div className="row justify-content-center">
+          <div className="col-lg-8 ml-auto mr-auto pt-1 pb-2">
 
-<BoardComments postId={postId} boardType="gathermate" />
 
+          {/* <GatherMateComments postId={postId} /> */}
+
+          <BoardComments postId={postId} boardType="gathermate" />
+          </div>
+        </div>
         </>
       ) : (
         <div>Loading...</div> // post가 null일 경우 로딩 표시
