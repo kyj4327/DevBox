@@ -1,0 +1,102 @@
+.greeting-textarea-container {
+  position: relative;
+}
+
+.greeting-textarea-container textarea {
+  width: 100%;
+  height: 150px;
+  padding-right: 120px; 
+  box-sizing: border-box;
+  resize: none; 
+  padding: 10px; 
+  font-size: 1em;
+}
+
+.greeting-save-button {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+
+}
+@media (max-width: 576px) {
+  .greeting-save-button {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .greeting-textarea-container textarea {
+    height: 120px;
+    padding-right: 100px;
+  }
+}
+
+/* 버튼  */
+.greeting-post-actions {
+  display: flex;
+  gap: 1px; /* 버튼 사이의 간격 */
+}
+
+.greeting-edit-button,
+.greeting-delete-button {
+  padding: 4px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.greeting-edit-button {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.greeting-edit-button:hover {
+  background-color: #6c61c0;
+  color: white;
+}
+
+.greeting-delete-button {
+  background-color: #e0e0e0;
+  color: black;
+}
+
+.greeting-delete-button:hover {
+  background-color: #fc7878;
+  color: white;
+}
+
+
+.greeting-edit-edit-actions {
+  display: flex;
+  justify-content: right; 
+  padding: 0; 
+  margin: 5px; 
+}
+
+.greeting-edit-link,
+.greeting-delete-link {
+  cursor: pointer;
+  /* color: black; */
+  transition: all 0.3s ease;
+}
+
+.greeting-edit-link:hover,
+.greeting-delete-link:hover {
+  text-decoration: underline;
+}
+
+.action-separator {
+  color: #6c757d; /* 구분자 색상 */
+  margin: 0px 8p 0px 0px;
+}
+
+.comments-container {
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 10px;
+  width: 100%;
+
+}
