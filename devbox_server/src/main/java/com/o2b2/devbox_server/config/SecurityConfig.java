@@ -153,10 +153,32 @@ public class SecurityConfig {
                         // gatherMate 글 수정 페이지는 로그인 사용자
                         .requestMatchers("/gathermate/edit/**").authenticated()
 
+                        // 가입인사 greeting
+                        // greeting 리스트는 누구나
+                        .requestMatchers("/greeting/lists").permitAll()
+                        .requestMatchers("/greeting/lists**").permitAll()
+                        .requestMatchers("/greeting/lists/**").permitAll()
+
+                        // greeting댓글
+                        .requestMatchers("/greeting/*/comments").authenticated()
+                        .requestMatchers("/greeting/comments/*/edit").authenticated()
+                        .requestMatchers("/greeting/comments/*/delete").authenticated()
+                        .requestMatchers("/greeting/*/commentslist").permitAll()
+
+                        // greeting 상세는 누구나
+                        .requestMatchers("/greeting/detail/**").permitAll()
+                        .requestMatchers("/greeting/posts/**").permitAll()
+                        .requestMatchers("/greeting/posts").authenticated()
+
+
+                        // greeting 글 작성 페이지는 로그인 사용자
+                        .requestMatchers("/greeting/write").authenticated()
+                        .requestMatchers("/greeting/write").authenticated()
+                        // greeting 글 수정 페이지는 로그인 사용자
+                        .requestMatchers("/greeting/edit/**").authenticated()
+
 
 //                        공지사항
-//                        /notice/posts?page=0&size=10&sort=id,desc
-//                        /gathermate/posts?page=0&size=10&sort=id,desc
                         .requestMatchers("/notice/detail/**").permitAll()
                         .requestMatchers("/notice/posts/**").permitAll()
                         .requestMatchers("/notice/posts").authenticated()
@@ -180,7 +202,6 @@ public class SecurityConfig {
 
                         // 알림 기능은 로그인한 사용자만 접근 가능
                         .requestMatchers("/msg/bell").authenticated()
-
                         .requestMatchers("/edu/**").permitAll()
                         .requestMatchers("/project/**").permitAll()
                         .requestMatchers("/message/**").permitAll()
