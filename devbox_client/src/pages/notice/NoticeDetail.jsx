@@ -149,7 +149,12 @@ const NoticeDetail = () => {
             <div className="col-lg-8 ml-auto mr-auto pt-3 pb-4 border border-3">
               <div
                 className="text-muted light-300"
-                style={{ color: "black !important" }}
+                style={{
+                  color: "black !important",
+                  overflowWrap: "break-word",
+                  wordWrap: "break-word",
+                  whiteSpace: "pre-wrap",
+                }}
                 dangerouslySetInnerHTML={{ __html: post.content }} // HTML을 렌더링
               />
                 </div>
