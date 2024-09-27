@@ -14,6 +14,7 @@ public class PostDTO {
     private String content;       // Post 내용
     private Long userId;          // 작성자의 User ID
     private LocalDateTime createdAt;  // 작성 시간
+    private String author;
 
     
 }

@@ -29,6 +29,9 @@ public class Post {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+    
+    @Column(length = 500, nullable = false)
+    private String author;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -51,6 +54,14 @@ public class Post {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getContent() {
