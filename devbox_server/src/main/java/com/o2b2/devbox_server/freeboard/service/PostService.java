@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.o2b2.devbox_server.freeboard.entity.Post;
+import com.o2b2.devbox_server.freeboard.repository.CommentRepository;
 import com.o2b2.devbox_server.freeboard.repository.PostRepository;
 import com.o2b2.devbox_server.user.entity.UserEntity;
 import com.o2b2.devbox_server.user.repository.UserRepository;
@@ -23,14 +24,31 @@ public class PostService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<Post> getAllPosts() {
-        List<Post> posts = postRepository.findAll();
-        System.out.println("Fetched posts: " + posts); // 로깅 추가
-        return posts;
-    }
+    @Autowired
+    private CommentRepository commentRepository;
 
     public Post getPostById(Long id) {
-        return postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        // 조회수 증가
+        post.setViews(post.getViews() + 1);
+        postRepository.save(post);
+
+        // 댓글 수 계산
+        long commentCount = commentRepository.countByPostId(id);
+        post.setCommentCount(commentCount);
+
+        return post;
+    }
+
+    public List<Post> getAllPosts() {
+        List<Post> posts = postRepository.findAll();
+        for (Post post : posts) {
+            long commentCount = commentRepository.countByPostId(post.getId());
+            post.setCommentCount(commentCount);
+        }
+        return posts;
     }
 
     public Post createPost(Post post, Long userId) {

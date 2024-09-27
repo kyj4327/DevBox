@@ -7,7 +7,7 @@ import Button from "../../components/Button";
 import { useUser } from "../../components/context/UserContext";
 
 const FreeBoard = () => {
-  const { user } = useUser(); 
+  const { user } = useUser();
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -92,12 +92,14 @@ const FreeBoard = () => {
             >
               <div className="d-flex w-100 justify-content-between">
                 <h5 className="mb-1">{post.title}</h5>
-                <small>{new Date(post.createdAt).toLocaleDateString()}</small>
+                <small>{new Date(post.createdAt).toLocaleString()}</small>
               </div>
               <p className="mb-1">{getTrimmedContent(post.content)}</p>
-              <small>
-                작성자: {post.author}
-              </small>
+              <small>작성자: {post.author}</small>
+              <div className="post-meta">
+                <span>조회수: {post.views}</span> |
+                <span>댓글: {post.commentCount}</span> {/* 댓글 수 표시 */}
+              </div>  
             </Link>
           ))}
         </div>
