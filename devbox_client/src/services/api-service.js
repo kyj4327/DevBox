@@ -87,6 +87,18 @@ export const getCommentsByPostId = async (postId) => {
   }
 };
 
+// 좋아요 토글 기능
+export const toggleLike = async (postId) => {
+  try {
+    const response = await apiClient.post(`/posts/${postId}/like`);
+    return response.data;
+  } catch (error) {
+    console.error("Error toggling like:", error);
+    throw error;
+  }
+};
+
+
 // 댓글 생성
 export const createComment = async (postId, commentData) => {
   try {
