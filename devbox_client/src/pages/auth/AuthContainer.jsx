@@ -6,7 +6,6 @@ import naver from "../../assets/img/Oauth_Naver.png";
 import { useNavigate } from "react-router-dom"; 
 
 import { useUser } from "../../components/context/UserContext";
-import devBox from "../../assets/img/devBox.png";
 
 
 function AuthContainer() {

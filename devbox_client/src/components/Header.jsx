@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from '../components/context/UserContext';
 import './Header.css';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import devBoxCode from "../../src/assets/img/devBoxCode.png";
-import devBoxHeader from "../../src/assets/img/devBoxHeader.png";
 
 const Header = () => {
   const { user, setUser , loading} = useUser();
