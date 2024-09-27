@@ -1,101 +1,132 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080/api'; // 백엔드 서버 URL에 맞게 수정하세요
+const API_BASE_URL = 'http://localhost:8080/api';
 
-// 공통 설정: withCredentials와 Authorization 헤더를 axios 인스턴스에 추가
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  withCredentials: true, // 자격증명 포함
-  headers: {
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${localStorage.getItem('accessToken')}`, // Bearer 토큰 추가
-  },
+  withCredentials: true,
 });
 
-// 전체 게시글 가져오기
+// Request interceptor
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('accessToken');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
+// Response interceptor
+apiClient.interceptors.response.use((response) => {
+  return response;
+}, async (error) => {
+  const originalRequest = error.config;
+  if (error.response.status === 401 && !originalRequest._retry) {
+    originalRequest._retry = true;
+    try {
+      // Implement your token refresh logic here
+      const newToken = await refreshToken();
+      localStorage.setItem('accessToken', newToken);
+      originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+      return apiClient(originalRequest);
+    } catch (refreshError) {
+      // Handle refresh token error (e.g., redirect to login)
+      return Promise.reject(refreshError);
+    }
+  }
+  return Promise.reject(error);
+});
+
+// Helper function to handle errors
+const handleError = (error, customErrorMessage) => {
+  console.error(customErrorMessage, error);
+  if (error.response) {
+    throw new Error(error.response.data.message || 'An error occurred');
+  } else if (error.request) {
+    throw new Error('No response received from server');
+  } else {
+    throw error;
+  }
+};
+
+// API functions
 export const getAllPosts = async () => {
   try {
     const response = await apiClient.get('/posts');
     return response.data;
   } catch (error) {
-    console.error('Error fetching posts:', error);
-    throw error;
+    handleError(error, 'Error fetching posts:');
   }
 };
 
-// 특정 게시글 가져오기
 export const getPost = async (id) => {
   try {
     const response = await apiClient.get(`/posts/${id}`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching post:', error);
-    throw error;
+    handleError(error, 'Error fetching post:');
   }
 };
 
-// 게시글 생성
 export const createPost = async (postData) => {
   try {
     const response = await apiClient.post('/posts/write', postData);
     return response.data;
   } catch (error) {
-    console.error('Error creating post:', error);
-    throw error;
+    handleError(error, 'Error creating post:');
   }
 };
 
-// 게시글 업데이트
 export const updatePost = async (id, postData) => {
   try {
     const response = await apiClient.put(`/posts/${id}`, postData);
     return response.data;
   } catch (error) {
-    console.error('Error updating post:', error);
-    throw error;
+    handleError(error, 'Error updating post:');
   }
 };
 
-// 게시글 삭제
 export const deletePost = async (id) => {
   try {
     const response = await apiClient.delete(`/posts/${id}`);
     return response.data;
   } catch (error) {
-    console.error('Error deleting post:', error);
-    throw error;
+    handleError(error, 'Error deleting post:');
   }
 };
 
-// 특정 게시글에 해당하는 댓글 목록 가져오기
 export const getCommentsByPostId = async (postId) => {
   try {
     const response = await apiClient.get(`/comments/post/${postId}`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching comments:', error);
-    throw error;
+    handleError(error, 'Error fetching comments:');
   }
 };
 
-// 댓글 생성
 export const createComment = async (postId, commentData) => {
   try {
     const response = await apiClient.post(`/comments/post/write/${postId}`, commentData);
     return response.data;
   } catch (error) {
-    console.error('Error creating comment:', error);
-    throw error;
+    handleError(error, 'Error creating comment:');
   }
 };
 
-// 댓글 삭제
 export const deleteComment = async (id) => {
   try {
     const response = await apiClient.delete(`/comments/${id}`);
     return response.data;
   } catch (error) {
-    console.error('Error deleting comment:', error);
-    throw error;
+    handleError(error, 'Error deleting comment:');
   }
+};
+
+// Implement your token refresh logic
+const refreshToken = async () => {
+  // Implement your token refresh logic here
+  // This could involve making a request to your auth server to get a new token
+  // Return the new token
 };

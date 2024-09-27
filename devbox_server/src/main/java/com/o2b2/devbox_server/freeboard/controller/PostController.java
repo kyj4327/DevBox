@@ -17,11 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.o2b2.devbox_server.freeboard.entity.Post;
 import com.o2b2.devbox_server.freeboard.service.PostService;
 import com.o2b2.devbox_server.user.dto.CustomUserDetails;
-
 
 import jakarta.validation.Valid;
 
@@ -49,19 +47,36 @@ public class PostController {
             @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         // try {
-            Long userId = userDetails.getUserEntity().getId();
-            Post createdPost = postService.createPost(post, userId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
+        Long userId = userDetails.getUserEntity().getId();
+        Post createdPost = postService.createPost(post, userId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
         // } catch (RuntimeException e) {
-        //     logger.error("Error creating post: ", e);
-        //     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        // logger.error("Error creating post: ", e);
+        // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         // }
     }
 
     @PutMapping("/{postId}")
-    public ResponseEntity<Post> updatePost(@PathVariable Long postId, @RequestBody Post postDetails) {
-        Post updatedPost = postService.updatePost(postId, postDetails);
-        return ResponseEntity.ok(updatedPost);
+    public ResponseEntity<?> updatePost(@PathVariable Long postId, @RequestBody Post postDetails,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+        }
+
+        try {
+            Post existingPost = postService.getPostById(postId);
+
+            // 현재 로그인한 사용자가 게시글 작성자인지 확인
+            if (!existingPost.getUser().getId().equals(userDetails.getUserEntity().getId())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not authorized to edit this post");
+            }
+
+            Post updatedPost = postService.updatePost(postId, postDetails);
+            return ResponseEntity.ok(updatedPost);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error updating post: " + e.getMessage());
+        }
     }
 
     // 게시글 삭제

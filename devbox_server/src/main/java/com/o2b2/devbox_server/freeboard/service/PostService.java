@@ -45,10 +45,20 @@ public class PostService {
     }
 
     public Post updatePost(Long postId, Post postDetails) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
-        post.setTitle(postDetails.getTitle());
-        post.setContent(postDetails.getContent());
-        post.setUser(postDetails.getUser());
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        // 제목과 내용만 업데이트
+        if (postDetails.getTitle() != null) {
+            post.setTitle(postDetails.getTitle());
+        }
+        if (postDetails.getContent() != null) {
+            post.setContent(postDetails.getContent());
+        }
+
+        // 작성일 업데이트 (선택사항)
+        post.setCreatedAt(LocalDateTime.now());
+
         return postRepository.save(post);
     }
 

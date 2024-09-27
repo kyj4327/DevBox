@@ -25,13 +25,6 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    // @GetMapping("/post/{postId}")
-    // public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable Long
-    // postId) {
-    // List<Comment> comments = commentService.getCommentsByPostId(postId);
-    // return ResponseEntity.ok(comments);
-    // }
-
     @GetMapping("/post/{postId}")
     public ResponseEntity<List<CommentsDTO>> getCommentsByPostId(@PathVariable Long postId) {
         List<CommentsDTO> comments = commentService.getCommentsByPostId(postId);
@@ -39,11 +32,12 @@ public class CommentController {
     }
 
     @PostMapping("/post/write/{postId}")
-    public ResponseEntity<Comment> createComment(@PathVariable Long postId, @RequestBody Comment comment,
+    public ResponseEntity<CommentsDTO> createComment(@PathVariable Long postId, @RequestBody Comment comment,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getUserEntity().getId();
         Comment createdComment = commentService.createComment(postId, comment, userId);
-        return ResponseEntity.ok(createdComment);
+        CommentsDTO commentDTO = commentService.convertToDTO(createdComment);
+        return ResponseEntity.ok(commentDTO);
     }
 
     @DeleteMapping("/{id}")

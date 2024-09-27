@@ -38,7 +38,7 @@ public class CommentService {
         user.setId(userId);
         // Post와 User 설정
         comment.setPost(post);
-        comment.setUser(user); // 댓글 작성자 정보는 여전히 User와 연관
+        comment.setUser(user); // 댓글 작성자 정보는 여전히 User와 연관 // author 필드 설정
 
         comment.setCreatedAt(LocalDateTime.now());
 

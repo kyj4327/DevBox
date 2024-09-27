@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.o2b2.devbox_server.user.entity.UserEntity;
 
@@ -24,6 +25,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false) // nullable을 false로 설정
+    @JsonIgnoreProperties({"proEntitys", "MsgEntitys", "MsgSenderEntitys"})
     private UserEntity user; // UserEntity와의 관계를 정의
     
 
@@ -34,8 +36,9 @@ public class Post {
     private String author;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonIgnoreProperties({"post"})
     private List<Comment> comments = new ArrayList<>();
+    
 
     // Getters and Setters
 
