@@ -1,12 +1,10 @@
 package com.o2b2.devbox_server.gatherMate.comments.entity;
 
+import com.o2b2.devbox_server.gatherMate.comments.domain.GathermateCommentEditor;
 import com.o2b2.devbox_server.gatherMate.entity.GatherMate;
 import com.o2b2.devbox_server.user.entity.UserEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,8 +43,12 @@ public class GathermateComment {
     private GathermateComment parent;
 
     // 답글 리스트
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GathermateComment> replies = new ArrayList<>();
+
+    @Getter
+    @Setter
+    private boolean deleted = false;
 
 
     @Builder
@@ -57,6 +59,15 @@ public class GathermateComment {
         this.gatherMate = gatherMate;
         this.parent = parent;
         this.createdAt = createdAt != null ? createdAt : LocalDateTime.now();
-
     }
+
+    public GathermateCommentEditor.GathermateCommentEditorBuilder toEditor() {
+        return GathermateCommentEditor.builder()
+                .content(this.content);
+    }
+
+    public void edit(GathermateCommentEditor gathermateCommentEditor) {
+        this.content = gathermateCommentEditor.getContent();
+    }
+
 }

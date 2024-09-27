@@ -5,8 +5,12 @@ import WriteShort from "../../components/WriteShort";
 import Button from "../../components/Button";
 import DragDrop from "./DragDrop";
 import Swal from "sweetalert2";
+import { useUser } from "../../components/context/UserContext";
+import QuillEditor from "../../components/QuillEditor";
 
 const ProjectWrite = () => {
+    const { user, loading } = useUser();
+
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [name, setName] = useState('');
@@ -17,7 +21,7 @@ const ProjectWrite = () => {
     const [uploadImgs, setUploadImgs] = useState([]);
     const [delImgId, setDelImgId] = useState([]);
     const [savedImgs, setSavedImgs] = useState([]);
-
+    const domain = "http://localhost:8080";
     const [linkError, setLinkError] = useState('');
 
     const validateUrl = (link) => {
@@ -34,12 +38,14 @@ const ProjectWrite = () => {
         const inputLink = e.target.value;
         setLink(inputLink);
     
-        if (!validateUrl(inputLink)) {
-            setLinkError('유효한 링크를 입력해주세요!');
+        // 입력된 링크가 비어있거나 유효한 링크인지 확인
+        if (inputLink.trim() === '' || validateUrl(inputLink)) {
+            setLinkError(''); // 링크가 비어있거나 유효한 경우 오류 메시지 제거
         } else {
-            setLinkError(''); // 유효한 링크일 경우 오류 메시지 제거
+            setLinkError('유효한 링크를 입력해주세요!'); // 유효하지 않은 링크일 경우 오류 메시지
         }
     };
+    
 
     const onchangeImageUpload = (e) => {
 
@@ -64,8 +70,8 @@ const ProjectWrite = () => {
                 icon: "error",
                 title: "Oops...",
                 text: "이미지를 자랑해주세요!!"
-              });
-            return; 
+            });
+            return;
         }
 
         const modifiedLink = link.includes("watch?v=") ? link.replace("watch?v=", "embed/") : link;
@@ -81,9 +87,15 @@ const ProjectWrite = () => {
         formData.append("img", img);
         formData.append("coment", coment);
 
-        const url = 'http://localhost:8080/project/write';
+        const token = localStorage.getItem('accessToken');
+
+        const url = `${domain}/project/write`;
         const res = await fetch(url, {
-            method: 'post',
+            method: 'POST',
+            credentials: "include",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
             body: formData
 
         });
@@ -94,13 +106,13 @@ const ProjectWrite = () => {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "이미지를 자랑해주세요!!"
-              });
+                text: "글자수/이미지 확인!!!"
+            });
         }
 
     };
 
-    
+
     const addFiles = (files) => {
         console.log(files);
 
@@ -111,31 +123,52 @@ const ProjectWrite = () => {
     }
 
     useEffect(() => {
-    }, []);
+        if (!loading) {
+            if (user) {
+                setName(user.nickname || '');
+            } else {
+                Swal.fire({
+                    icon: "warning",
+                    title: "로그인 필요",
+                    text: "로그인이 필요합니다.",
+                }).then(() => {
+                    navigate('/auth');
+                });
+            }
+        }
+    }, [user, loading, navigate]);
 
     return (
         <div>
-            <section class="container py-5">
+            <section className="container py-5">
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2 pb-5 ">프로젝트 자랑</h1>
                     <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
                         <p className="text-center pb-5 light-300"></p>
                         <div className="contact-form row">
                             <WriteShort titleTag={'제목'} type={'text'} name={'title'} value={title} onChange={(e) => setTitle(e.target.value)} />
-                            <WriteShort titleTag={'이름'} type={'text'} name={'naem'} value={name} onChange={(e) => setName(e.target.value)} />
-
-                            <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">프젝 이미지</h2>
+                            <div className="col-lg-6 mb-4">
+                                <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">작성자</h2>
+                                <p className="worksingle-footer py-3 text-muted light-300">
+                                    <div className="form-floating">
+                                        <input type="text" className="form-control form-control-lg light-300" id={name} name={name} placeholder="작성자"
+                                            value={name} onChange={(e) => setName(e.target.value)} readOnly />
+                                        <label htmlFor="floatingsubject light-300">작성자</label>
+                                    </div>
+                                </p>
+                            </div>
+                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">자랑 이미지</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
-                                <div id="templatemo-slide-link-target" class="card mb-3">
+                                <div id="templatemo-slide-link-target" className="card mb-3">
                                     {uploadImgUrl && <img src={uploadImgUrl} alt="Uploaded" />}
 
                                     <DragDrop addFiles={addFiles} initialFiles={savedImgs}
                                         onDeleteImage={handleDeleteImage}
                                     />
-                                  
+
                                 </div>
                             </p>
-                            
+
                             <div>
                                 <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">시연 영상 링크</h2>
                                 <p className="worksingle-footer py-3 text-muted light-300">
@@ -153,16 +186,12 @@ const ProjectWrite = () => {
 
                             <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">내용</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
-                                <textarea
-                                    class="form-control form-control-lg light-300"
-                                    rows="8"
+                                <QuillEditor 
                                     placeholder="내용"
-                                    id="floatingtextarea"
-                                    name="coment"
                                     value={coment}
-                                    onChange={(e) => setComent(e.target.value)}
-                                    type="text"
-                                ></textarea>
+                                    onChange={setComent}
+                                    height="450px"
+                                />
                             </p>
                         </div>
                     </div>

@@ -1,0 +1,157 @@
+.notice-list {
+  width: 100%;
+  border-top: 2px solid #333;
+}
+
+.notice-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.notice-table th,
+.notice-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notice-table th {
+  background-color: #f8f8f8;
+  font-weight: bold;
+}
+
+.notice-table th:nth-child(1),
+.notice-table td:nth-child(1) {
+  width: 10%;
+}
+
+.notice-table th:nth-child(2),
+.notice-table td:nth-child(2) {
+  width: 50%;
+}
+
+.notice-table th:nth-child(3),
+.notice-table td:nth-child(3) {
+  width: 15%;
+}
+
+.notice-table th:nth-child(4),
+.notice-table td:nth-child(4) {
+  width: 15%;
+}
+
+.notice-table th:nth-child(5),
+.notice-table td:nth-child(5) {
+  width: 10%;
+}
+
+.notice-title {
+  text-align: left;
+}
+
+.notice-title a {
+  color: #333;
+  text-decoration: none;
+}
+
+.notice-title a:hover {
+  text-decoration: underline;
+}
+
+.notice-author,
+.notice-date,
+.notice-views {
+  font-size: 0.9em;
+  color: #666;
+}
+@media (max-width: 768px) {
+  .notice-table,
+  .notice-table tbody,
+  .notice-table tr,
+  .notice-table td {
+    display: block;
+  }
+  
+  .notice-table thead {
+    display: none;
+  }
+  
+  .notice-table tr {
+    margin-bottom: 10px;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  .notice-table td {
+    border: none;
+    position: relative;
+    padding-left: 50%;
+    text-align: left;
+    width: 100% !important;
+  }
+  
+  .notice-table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+    font-weight: bold;
+  }
+}
+
+.notice-search-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.notice-search-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 600px;
+  margin: 0 auto; /* 중앙 정렬 */
+}
+
+.notice-search-select-container {
+  display: flex;
+  align-items: center;
+}
+
+.notice-search-input {
+  flex-grow: 1;
+  margin-left: 10px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 500px;
+}
+
+.notice-search-button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #4232C2;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.notice-write-button {
+  background-color: #6a5acd;
+  padding: 10px 20px;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.notice-write-button:hover {
+  background-color: #483d8b;
+}

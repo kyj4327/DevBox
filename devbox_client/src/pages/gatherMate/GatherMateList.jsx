@@ -40,20 +40,28 @@ function GatherMateList() {
   }, [category, currentPage]);
 
   const fetchData = async () => {
-    let url = `http://127.0.0.1:8080/gathermate/posts?page=${
+    let url = `http://localhost:8080/gathermate/posts?page=${
       currentPage - 1
     }&size=10&sort=id,desc`;
+
     if (searchKeyword) {
-      url = `http://127.0.0.1:8080/gathermate/posts/search?keyword=${searchKeyword}&page=${
+    url = `http://localhost:8080/gathermate/posts/search?keyword=${encodeURIComponent(searchKeyword)}&searchType=${encodeURIComponent(searchType)}&page=${
         currentPage - 1
       }&size=10&sort=id,desc`;
     }
-    if (category !== "All") {
-      url += `&category=${category}`;
-    }
+
+    if (category !== "All" && !searchKeyword) {
+    url += `&category=${encodeURIComponent(category)}`;
+  }
+
 
     try {
-      const res = await fetch(url);
+      const res = await fetch(url,{
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      });
       const result = await res.json();
       setData(result.content || []);
       setTotalPages(result.totalPages || 0);
@@ -195,7 +203,15 @@ function GatherMateList() {
                       >
                         {post.recruiting ? "모집중" : "모집완료"}
                       </div>
-                      <h3 className="post-title">{post.title}</h3>
+                      <h3 className="post-title">
+                        {post.title}
+                        {post.commentCount > 0 && (
+                          <span className="comment-count">
+                            {" "}
+                            [{post.commentCount}]
+                          </span>
+                        )}
+                      </h3>
                     </div>
 
                     {/* 카테고리명 -> 해시태그 기능? */}
@@ -236,7 +252,7 @@ function GatherMateList() {
                             width="16"
                             height="16"
                           />
-                          {post.views} 
+                          {post.views}
                         </span>
                         <span className="post-likes">
                           <img
@@ -254,7 +270,7 @@ function GatherMateList() {
                             width="16"
                             height="16"
                           />
-                          {post.comments} 3
+                          {post.commentCount}
                         </span>
                       </div>
                     </div>

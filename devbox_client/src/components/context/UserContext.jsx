@@ -56,7 +56,7 @@ export const UserProvider = ({ children }) => {
       }
 
       try {
-        console.log("user/me");
+        // console.log("user/me");
         
         const response = await fetch("http://localhost:8080/api/user/me", {
           method: "GET",
@@ -67,12 +67,12 @@ export const UserProvider = ({ children }) => {
           },
         });
 
-        console.log(response);
+        // console.log(response);
         
         if (response.ok) {
           const userInfo = await response.json();
           // const userInfo = await response.json();
-          console.log("User Info:", userInfo);
+          // console.log("User Info:", userInfo);
           setUser(userInfo);
         } else if (response.status === 401) {
 
@@ -130,9 +130,9 @@ export const UserProvider = ({ children }) => {
   // 로그인 함수
   const login = async (credentials) => {
     try {
-      const response = await fetch("http://localhost:8080/login", { // 로그인 엔드포인트
+      const response = await fetch("http://localhost:8080/login", {
         method: "POST",
-        credentials: "include", // Refresh Token 포함
+        credentials: "include",
         headers: {
           'Content-Type': 'application/json',
         },
@@ -145,6 +145,19 @@ export const UserProvider = ({ children }) => {
           const token = authHeader.split(" ")[1];
           setAccessToken(token);
           localStorage.setItem('accessToken', token);
+          // 사용자 정보 가져오기
+          const userInfoResponse = await fetch("http://localhost:8080/api/user/me", {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+          });
+          if (userInfoResponse.ok) {
+            const userInfo = await userInfoResponse.json();
+            setUser(userInfo);
+          }
         }
         navigate('/home');
       } else {

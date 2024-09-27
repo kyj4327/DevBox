@@ -76,8 +76,9 @@ public class GatherMateController {
 
     @GetMapping("/posts/search")
     public ResponseEntity<Map<String, Object>> search(@RequestParam String keyword,
+                                                      @RequestParam String searchType,
                                                       @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<GatherMateResponse> page = gatherMateService.search(keyword, pageable);
+        Page<GatherMateResponse> page = gatherMateService.search(keyword, searchType, pageable);
         Map<String, Object> response = new HashMap<>();
         response.put("content", page.getContent());
         response.put("totalPages", page.getTotalPages());

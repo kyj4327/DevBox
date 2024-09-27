@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Category from "../../components/Category";
+import { useUser } from "../../components/context/UserContext";
 
 const EduInfo = (props) => {
+    const { user } = useUser();
     const navigate = useNavigate();
 
     const clickState = (e) => {
@@ -14,7 +16,6 @@ const EduInfo = (props) => {
 
     const progressMax = (recruit) => {
         const recruitDates = recruit.split(' ~ ');
-        console.log("추출된 끝 날짜:", recruitDates[1]);
         
         const startDate = new Date(recruitDates[0]);
         const end = new Date(recruitDates[1]);
@@ -22,7 +23,6 @@ const EduInfo = (props) => {
 
         const timeDiff = end - startDate;
         const daysEnd = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-        console.log(daysEnd);
         
         return daysEnd;
     };
@@ -31,34 +31,27 @@ const EduInfo = (props) => {
     const progressNow = (daysLeft, daysEnd) => {
         const percentageRemaining = (daysLeft / daysEnd) * 100; // 남은 일수의 백분율 계산
         const percentageCompleted = 100 - percentageRemaining;
-        console.log(percentageCompleted);
-        
         return percentageCompleted;
     };
 
     const calculateDaysLeft = (recruit) => {
         const recruitDates = recruit.split(' ~ ');
-        console.log("추출된 끝 날짜:", recruitDates[1]);
-        
-        
         const today = new Date();
         const end = new Date(recruitDates[1]);
-        
-
-       
-        console.log("endDate:", recruitDates[1]);
-        console.log("종료 날짜:", end);
-
         const timeDiff = end - today;
         const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-        console.log("남은 일수:", daysLeft);
         return daysLeft;
     };
 
     return (
-        <section className="container py-5">
             <div className="container py-5">
-                <h1 className="h2 semi-bold-600 text-center mt-2">개발 교육 정보</h1>
+                <h1 className="h2 semi-bold-600 text-center mt-2">교육 프로그램</h1>
+                <p
+                        className="text-center light-300"
+                        style={{ marginBottom: "0", padding: "0px" }}
+                    >
+                        멀 보고 있냐~ 신청해야지!!
+                    </p>
                 <div className="row justify-content-center my-5">
                     <div className="filter-btns shadow-md rounded-pill text-center col-auto">
                         <Category text={'모집중'} onClick={clickState} isActive={props.state} />
@@ -76,7 +69,7 @@ const EduInfo = (props) => {
                             <div key={edu.id} className="col-sm-6 col-lg-4">
                                 <Link to={`/edu/detail?id=${edu.id}`} className="text-decoration-none">
                                     <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
-                                        <img className="card-img-top" src={`${edu.logo}`} alt={edu.title} style={{ height: '130px', objectFit: 'contain' }} />
+                                        <img className="card-img-top" src={`${edu.logo}`} alt={edu.logo} style={{ height: '130px', objectFit: 'contain' }} />
                                         <div className="card-body">
                                             {props.state !== '모집완료' && (
                                                 <div style={{ display: 'flex'}}>
@@ -109,11 +102,14 @@ const EduInfo = (props) => {
                 </div>
                 <div className="form-row pt-2">
                     <div className="col-md-12 col-10 text-end">
-                        <Button text={'글쓰기'} onClick={() => { navigate('/edu/maneger') }} />
+                        { user && (
+                            <>
+                        <Button text={'글쓰기'} onClick={() => { navigate('/edu/write') }} />
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
-        </section>
     );
 };
 

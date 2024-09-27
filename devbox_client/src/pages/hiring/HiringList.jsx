@@ -3,12 +3,16 @@ import Pagination from '../../components/Pagination';
 import Button from '../../components/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useUser } from '../../components/context/UserContext';
 
 const HiringList = () => {
+    const { user } = useUser();
     const navigate = useNavigate();
     const toWrite = () => {
         navigate('/hiring/write');
     };
+
+    const userRole = user ? user.role : null;
 
     const [category, setCategory] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
@@ -16,7 +20,7 @@ const HiringList = () => {
     const [pageData, setPageData] = useState([]);
     useEffect(() => {
         async function get(page = 1) {
-            const url = `http://127.0.0.1:8080/hiring/list/${category}?page=${page}`;
+            const url = `http://localhost:8080/hiring/list/${category}?page=${page}`;
             const res = await fetch(url);
             const data = await res.json();
             const listData = data.slice(0, -1);
@@ -72,22 +76,40 @@ const HiringList = () => {
                                                             Read more <i className='bx bxs-hand-right ms-1'></i>
                                                         </span>
                                                         <span className="text-decoration-none text-primary light-300">
-                                                            <Link onClick={(e) => {
-                                                                e.preventDefault();
-                                                                navigate(`/hiring/update?hiringId=${v.id}`);
-                                                            }}>수정</Link>
-                                                            <Link onClick={(e) => {
-                                                                e.preventDefault();
-                                                                if (window.confirm("삭제하시겠습니까?")) {
-                                                                    async function send() {
-                                                                        const url = `http://127.0.0.1:8080/hiring/delete?hiringId=${v.id}`;
-                                                                        await fetch(url);
-                                                                        alert("삭제되었습니다.");
-                                                                        window.location.reload();
-                                                                    }
-                                                                    send();
-                                                                }
-                                                            }}>삭제</Link>
+                                                            {
+                                                                userRole === "ROLE_ADMIN"
+                                                                    ? <>
+                                                                        <Link style={{ marginRight: '0.5em', textDecoration: 'none' }}
+                                                                            onClick={(e) => {
+                                                                                e.preventDefault();
+                                                                                navigate(`/hiring/update?hiringId=${v.id}`);
+                                                                            }}>수정</Link>
+                                                                        <Link style={{ textDecoration: 'none' }}
+                                                                            onClick={(e) => {
+                                                                                e.preventDefault();
+                                                                                if (!user) {
+                                                                                    alert("로그인이 필요합니다.");
+                                                                                    return;
+                                                                                }
+                                                                                const token = localStorage.getItem('accessToken');
+                                                                                if (window.confirm("삭제하시겠습니까?")) {
+                                                                                    async function send() {
+                                                                                        const url = `http://localhost:8080/hiring/delete?hiringId=${v.id}`;
+                                                                                        await fetch(url, {
+                                                                                            credentials: 'include',
+                                                                                            headers: {
+                                                                                                'Authorization': `Bearer ${token}`
+                                                                                            }
+                                                                                        });
+                                                                                        alert("삭제되었습니다.");
+                                                                                        window.location.reload();
+                                                                                    }
+                                                                                    send();
+                                                                                }
+                                                                            }}>삭제</Link>
+                                                                    </>
+                                                                    : ''
+                                                            }
                                                         </span>
                                                     </div>
                                                 </div>
@@ -99,11 +121,15 @@ const HiringList = () => {
                         }
                     </div>
                 </div>
-                <div className="form-row pt-2">
-                    <div className="col-md-12 col-10 text-end">
-                        <Button text={'작성하기'} onClick={toWrite} />
-                    </div>
-                </div>
+                {
+                    userRole === "ROLE_ADMIN"
+                        ? <div className="form-row pt-2">
+                            <div className="col-md-12 col-10 text-end">
+                                <Button text={'작성하기'} onClick={toWrite} />
+                            </div>
+                        </div>
+                        : ''
+                }
             </section>
             <Pagination handlePageChange={handlePageChange} pageData={pageData} />
         </div>

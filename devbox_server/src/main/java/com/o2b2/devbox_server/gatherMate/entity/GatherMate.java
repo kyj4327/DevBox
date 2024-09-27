@@ -47,7 +47,7 @@ public class GatherMate {
     @OneToMany(mappedBy = "gatherMate", cascade = CascadeType.ALL)
     private List<Like> likes;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "gatherMate", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GathermateComment> gathermateComments;
 
     public void incrementViews() {

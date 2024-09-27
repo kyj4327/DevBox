@@ -6,6 +6,7 @@ import WriteLong from "../../components/WriteLong";
 import WriteShort from "../../components/WriteShort";
 import QuillEditor from "../../components/QuillEditor";
 import WriteSelect from "../../components/WriteSelect";
+import Swal from "sweetalert2";
 
 function GatherMateEdit() {
   const [intro, setIntro] = useState("");
@@ -20,7 +21,9 @@ function GatherMateEdit() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/gathermate/posts/${postId}`);
+        const response = await fetch(
+          `http://localhost:8080/gathermate/posts/${postId}`
+        );
         if (!response.ok) {
           throw new Error("네트워크 응답이 올바르지 않습니다.");
         }
@@ -32,7 +35,12 @@ function GatherMateEdit() {
         setIsRecruiting(data.isRecruiting);
       } catch (error) {
         console.error("글 불러오기 중 오류 발생:", error);
-        alert("글을 불러오는데 실패했습니다.");
+        Swal.fire({
+          title: "로드 실패",
+          text: "글을 불러오는데 실패했습니다.",
+          icon: "error",
+          confirmButtonText: "확인",
+        });
       }
     };
 
@@ -40,9 +48,9 @@ function GatherMateEdit() {
   }, [postId]);
 
   const toList = () => {
-    navigate("/gatherlist");
+    navigate("/gathermate/list");
   };
-  
+
   const updateData = async () => {
     const updatedGatherMate = {
       intro,
@@ -54,35 +62,54 @@ function GatherMateEdit() {
     };
 
     try {
-      const response = await fetch(`http://localhost:8080/gathermate/edit/${postId}`, {
-        method: "Put",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-        body: JSON.stringify(updatedGatherMate),
-      });
+      const response = await fetch(
+        `http://localhost:8080/gathermate/edit/${postId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          body: JSON.stringify(updatedGatherMate),
+        }
+      );
 
-      if (response.ok) {
-        const data = await response.json();
-        alert(data.message || "글이 성공적으로 수정되었습니다.");
-        navigate(`/gathermate/detail/${postId}`);
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "글 수정에 실패했습니다.");
+      if (!response.ok) {
+        if (response.status === 403) {
+          throw new Error("작성자가 아닙니다.");
+        }
+        throw new Error("글 수정에 실패했습니다.");
       }
+
+      const data = await response.text();
+      console.log("업데이트된 데이터:", data);
+
+      Swal.fire({
+        title: '수정 성공',
+        text: data.message || "글이 수정되었습니다.",
+        icon: 'success',
+        confirmButtonText: '확인'
+      }).then(() => {
+        navigate(`/gathermate/detail/${postId}`);
+      });
     } catch (error) {
       console.error("수정 실패:", error);
-      alert(error.message || "글 수정에 실패했습니다.");
+      Swal.fire({
+        title: '수정 실패',
+        text: error.message || "글 수정에 실패했습니다.",
+        icon: 'error',
+        confirmButtonText: '확인'
+      });
     }
   };
-
 
   return (
     <div>
       <section className="container py-5">
         <div className="container py-5">
-          <h1 className="h2 semi-bold-600 text-center mt-2">모여라 메이트 게시글 수정</h1>
+          <h1 className="h2 semi-bold-600 text-center mt-2">
+            모여라 메이트 게시글 수정
+          </h1>
           <p className="text-center pb-5 light-300">
             글을 수정하고 업데이트하세요!
           </p>
@@ -128,10 +155,9 @@ function GatherMateEdit() {
           </div>
         </div>
         <div className="form-row pt-2">
-
           <div className="col-md-12 col-10 text-end">
-          <Button text={"목록으로"} onClick={toList}/>
-          <Button text={"수정하기"} onClick={updateData} />
+            <Button text={"목록으로"} onClick={toList} />
+            <Button text={"수정하기"} onClick={updateData} />
           </div>
         </div>
       </section>

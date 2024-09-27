@@ -9,4 +9,8 @@ import java.util.List;
 public interface GathermateCommentRepository extends JpaRepository<GathermateComment, Long> {
 
     List<GathermateComment> findByGatherMateAndParentIsNull(GatherMate gatherMate);
+
+    List<GathermateComment> findByParent(GathermateComment parent);
+
+    int countByGatherMate(GatherMate gatherMate);
 }
