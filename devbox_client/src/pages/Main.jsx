@@ -90,91 +90,40 @@ const Main = () => {
                     </div>
                 </div>
             </div>
-            <section class="py-5 mb-5">
-                <div class="container">
-                    <div className="filter-btns shadow-md rounded-pill text-center col-auto justify-content-center" style={{ marginBottom: '3rem' }}>
-                        <Category text={'All'} isActive={category} onClick={clickCategory} />
-                        <Category text={'Busan'} isActive={category} onClick={clickCategory} />
-                        <Category text={'Others'} isActive={category} onClick={clickCategory} />
-                    </div>
-                    <div class="row gy-5 g-lg-5 mb-4">
-                        {
-                            data.map((v) => {
-                                return (
-                                    <div className="col-sm-6 col-lg-4" style={{ marginBottom: '3rem' }} key={v.id}>
-                                        <Link to={v.wantedUrl} className="text-decoration-none recent-work card border-0 shadow-lg overflow-hidden" target='_blank' >
-                                            <div className="overflow-hidden card mb-5 mx-5 m-sm-0 ">
-                                                <img className="card-img-top" src={v.imgUrl} alt="https://www.wanted.co.kr/" />
-                                                <div className="card-body">
-                                                    <h5 className="card-title light-300 text-dark">{v.job}</h5>
-                                                    <h5 className="card-title light-300 text-dark">{v.company}</h5>
-                                                    <p className="card-text light-300 text-dark">{v.area} / {v.career}</p>
-                                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                        <span className="text-decoration-none text-primary light-300">
-                                                            Read more <i className='bx bxs-hand-right ms-1'></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </Link>
-                                    </div>
-                                )
-                            })
-                        }
-                        {/* <div class="col-md-4 mb-3">
-                            <a href="#" class="recent-work card border-0 shadow-lg overflow-hidden">
-                                <img class="recent-work-img card-img" src="./assets/img/recent-work-01.jpg" alt="Card image" />
-                                <div class="recent-work-vertical card-img-overlay d-flex align-items-end">
-                                    <div class="recent-work-content text-start mb-3 ml-3 text-dark">
-                                        <h3 class="card-title light-300">Social Media</h3>
-                                        <p class="card-text">Ullamco laboris nisi ut aliquip ex</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div> */}
-                    </div>
-                </div>
-            </section>
-            <section class="bg-secondary">
+
+            {/* <section class="bg-secondary">
                 <div class="container py-5">
                     <div class="row d-flex justify-content-center text-center">
-                        {/* <div class="col-lg-2 col-12 text-light align-items-center"> */}
-                            {/* <i class='display-1 bx bxs-box bx-lg'></i> */}
-                        {/* </div> */}
-                        {/* <div class="col-lg-7 col-12 text-light pt-2"> */}
-                            <h4 class="h4 text-light light-300">채용 공고</h4>
-                            <p class="text-light light-300">더 많은 공고는 채용 공고 게시판에서 확인해주세요.</p>
-                        {/* </div> */}
-                        {/* <div class="col-lg-3 col-12 pt-4"> */}
-                            <Link to="/hiring/list" class="col-lg-3 btn btn-primary rounded-pill btn-block shadow px-4 py-2">채용 공고 게시판으로 이동</Link>
-                        {/* </div> */}
+                        <h5 className="h5 text-center text-light">
+                            더 많은 채용 정보는 <Link to="/hiring/list" className="text-light">채용 공고 게시판</Link>
+                            에서 확인해주세요.
+                        </h5>
                     </div>
                 </div>
-            </section>
-            <section class="py-5 mb-5">
-                <div class="container">
-                    <div className="filter-btns shadow-md rounded-pill text-center col-auto justify-content-center" style={{ marginBottom: '3rem' }}>
+            </section> */}
+
+            <section class="container overflow-hidden py-5">
+                <div class="row gx-5 gx-sm-3 gx-lg-5 gy-lg-5 gy-3 pb-3 projects justify-content-center">
+                    <h4 className="h4 semi-bold-600 text-center">
+                        더 많은 채용 정보는 <Link to="/hiring/list" className="semi-bold-600">채용 공고 게시판</Link>
+                        에서 확인해주세요.
+                    </h4>
+                    <div className="filter-btns shadow-md rounded-pill text-center col-auto justify-content-center">
                         <Category text={'All'} isActive={category} onClick={clickCategory} />
                         <Category text={'Busan'} isActive={category} onClick={clickCategory} />
                         <Category text={'Others'} isActive={category} onClick={clickCategory} />
                     </div>
-                    <div class="row gy-5 g-lg-5 mb-4">
+                    <div class="row gy-5 g-lg-5 mb-4" style={{ marginTop: '0' }}>
                         {
                             data.map((v) => {
                                 return (
-                                    <div className="col-sm-6 col-lg-4" style={{ marginBottom: '3rem' }} key={v.id}>
-                                        <Link to={v.wantedUrl} className="text-decoration-none recent-work card border-0 shadow-lg overflow-hidden" target='_blank' >
-                                            <div className="overflow-hidden card mb-5 mx-5 m-sm-0 ">
-                                                <img className="card-img-top" src={v.imgUrl} alt="https://www.wanted.co.kr/" />
-                                                <div className="card-body">
-                                                    <h5 className="card-title light-300 text-dark">{v.job}</h5>
-                                                    <h5 className="card-title light-300 text-dark">{v.company}</h5>
-                                                    <p className="card-text light-300 text-dark">{v.area} / {v.career}</p>
-                                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                        <span className="text-decoration-none text-primary light-300">
-                                                            Read more <i className='bx bxs-hand-right ms-1'></i>
-                                                        </span>
-                                                    </div>
+                                    <div class="col-sm-6 col-lg-4" key={v.id}>
+                                        <Link to={v.wantedUrl} class="service-work card border-0 text-white shadow-sm overflow-hidden mx-5 m-sm-0" target='_blank'>
+                                            <img class="service card-img" src={v.imgUrl} alt="https://www.wanted.co.kr/" />
+                                            <div class="service-work-vertical card-img-overlay d-flex align-items-end">
+                                                <div class="service-work-content text-left text-light">
+                                                    <span class="btn btn-outline-light rounded-pill mb-lg-3 px-lg-4 light-300">{v.company}</span>
+                                                    <p class="card-text">{v.job}</p>
                                                 </div>
                                             </div>
                                         </Link>
@@ -182,17 +131,6 @@ const Main = () => {
                                 )
                             })
                         }
-                        {/* <div class="col-md-4 mb-3">
-                            <a href="#" class="recent-work card border-0 shadow-lg overflow-hidden">
-                                <img class="recent-work-img card-img" src="./assets/img/recent-work-01.jpg" alt="Card image" />
-                                <div class="recent-work-vertical card-img-overlay d-flex align-items-end">
-                                    <div class="recent-work-content text-start mb-3 ml-3 text-dark">
-                                        <h3 class="card-title light-300">Social Media</h3>
-                                        <p class="card-text">Ullamco laboris nisi ut aliquip ex</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div> */}
                     </div>
                 </div>
             </section>
