@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.o2b2.devbox_server.project.dto.MultiImgDto;
 import com.o2b2.devbox_server.project.model.MultiImgEntity;
 import com.o2b2.devbox_server.project.model.ProEntity;
 import com.o2b2.devbox_server.project.model.ProLike;
@@ -38,6 +39,7 @@ import com.o2b2.devbox_server.project.repository.MultiImgRepository;
 import com.o2b2.devbox_server.project.repository.ProLikeRepository;
 import com.o2b2.devbox_server.project.repository.ProRepository;
 import com.o2b2.devbox_server.user.dto.CustomUserDetails;
+import com.o2b2.devbox_server.user.dto.UserDTO;
 import com.o2b2.devbox_server.user.entity.UserEntity;
 import com.o2b2.devbox_server.user.repository.UserRepository;
 
@@ -74,6 +76,52 @@ public class ProController {
 
     @Autowired
     ProLikeRepository proLikeRepository;
+
+
+    @GetMapping("project/mylist")
+    public Map<String, Object> promyList(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "6") int size,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+                
+        // likeCount는 내림차순(DESC), time은 오름차순(ASC)으로 정렬
+        Sort sort = Sort.by(Sort.Order.desc("likeCount"), Sort.Order.desc("time"));
+
+        Pageable pageable = PageRequest.of(page - 1, size, sort); // 페이지 요청 생성
+        
+         // 로그인한 유저의 닉네임 가져오기
+        String currentNickname = userDetails.getNickname();
+
+        Page<ProEntity> p = proRepository.findByUserEntityNickname(currentNickname, pageable);
+        List<ProEntity> list = p.getContent();
+
+        // 페이지네이션 관련 정보 계산
+        int totalPage = p.getTotalPages();
+        int startPage = (page - 1) / 10 * 10 + 1;
+        int endPage = Math.min(startPage + 9, totalPage);
+
+        // 반환할 데이터 구성
+        Map<String, Object> response = new HashMap<>();
+        response.put("list", list.stream().map(pro -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", pro.getId());
+            map.put("title", pro.getTitle());
+            map.put("link", pro.getLink());
+            map.put("coment", pro.getComent());
+            map.put("name", pro.getName());
+            map.put("time", pro.getTime());
+            map.put("likeCount", pro.getLikeCount());
+            map.put("mainImg", pro.getMultiImgEntitys().get(0).getId());
+            return map;
+        }).collect(Collectors.toList())); // proEntity를 Map으로 변환
+        response.put("currentPage", page); // 현재 페이지
+        response.put("startPage", startPage); // 시작 페이지
+        response.put("endPage", endPage); // 끝 페이지
+        response.put("totalPage", totalPage); // 전체 페이지 수
+
+        return response; // JSON 형태로 반환
+    }
 
     @GetMapping("/project/list")
     public Map<String, Object> proList(
@@ -370,8 +418,8 @@ public class ProController {
         map.put("link", pro.getLink());
         map.put("coment", pro.getComent());
         map.put("name", pro.getName());
-        map.put("imgs", pro.getMultiImgEntitys());
-        map.put("user", pro.getUserEntity());
+        map.put("imgs", pro.getMultiImgEntitys().stream().map(mie -> MultiImgDto.fromEntity(mie)));
+        map.put("user", UserDTO.fromEntity(pro.getUserEntity()));
         map.put("likeCount", pro.getLikeCount());
         map.put("time", pro.getTime());
 
@@ -401,7 +449,7 @@ public class ProController {
                 map.put("coment", pro.getComent());
                 map.put("name", pro.getName());
                 map.put("time", pro.getTime());
-                map.put("imgs", pro.getMultiImgEntitys());
+                map.put("imgs",  pro.getMultiImgEntitys().stream().map(mie -> MultiImgDto.fromEntity(mie)));
                 map.put("code", 200); // 성공 코드
             } else {
                 // 작성자가 일치하지 않을 경우 권한 없음

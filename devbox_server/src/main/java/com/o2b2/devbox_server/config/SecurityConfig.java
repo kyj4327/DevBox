@@ -190,6 +190,8 @@ public class SecurityConfig {
                         .requestMatchers("/project/detail/**").permitAll()
                         .requestMatchers("/project/write").authenticated()
                         .requestMatchers("/project/update/**").authenticated()
+                        .requestMatchers("/project/mylist/**").authenticated()
+                        .requestMatchers("/project/mylist**").authenticated()
                         .requestMatchers("/project/delete/**").authenticated()
                         .requestMatchers("/project/delete").authenticated()
 
