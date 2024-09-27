@@ -3,12 +3,10 @@
   margin: 0 auto;
   padding: 40px;
   font-family: 'Nanum Gothic', sans-serif;
-  background-color: #fff;
   border-radius: 8px;
 }
 
 .freeboard-post-header {
-  border-bottom: 1px solid #e5e5e5;
   padding-bottom: 20px;
   margin-bottom: 30px;
 }
@@ -83,7 +81,6 @@
 }
 
 .freeboard-comment {
-  border-bottom: 1px solid #e5e5e5;
   padding: 15px 0;
 }
 

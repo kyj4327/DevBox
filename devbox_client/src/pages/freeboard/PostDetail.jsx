@@ -5,6 +5,8 @@ import FreeBoardComments from "../../components/FreeBoardComments";
 import Button from "../../components/Button";
 import { useUser } from "../../components/context/UserContext";
 import "../../assets/css/freeboard.css";
+import profilePic from "../../assets/img/profilePic.png";
+import PostButton from "../../components/PostButton";
 
 const PostDetail = () => {
   const { id } = useParams();
@@ -68,55 +70,129 @@ const PostDetail = () => {
   if (!post) return <div className="not-found">게시글을 찾을 수 없습니다.</div>;
 
   return (
-    <div className="freeboard-post-detail">
-      <div className="freeboard-post-header">
-        <h1 className="freeboard-post-title">{post.title}</h1>
-        <div className="freeboard-post-meta">
-          <span className="post-author">{post.author}</span>
-          <span className="post-date">{new Date(post.createdAt).toLocaleString()}</span>
-        </div>
-      </div>
-      <div className="freeboard-post-content-wrapper">
-        <div
-          className="freeboard-post-content"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
-      </div>
-      <div className="freeboard-post-actions">
-        <div className="freeboard-button-group">
-          <Button
-            text="목록"
-            onClick={() => navigate("/freeboard/list")}
-            className="btn-freeboard-write"
-          />
-        </div>
-        {user && post.author === user.nickname && (
-          <div className="freeboard-button-group">
-            <Button
-              text="수정"
-              onClick={handleEditPost}
-              className="btn-freeboard-edit"
-            />
-            <Button
-              text="삭제"
-              onClick={handleDeletePost}
-              className="btn-freeboard-delete"
-            />
-          </div>
-        )}
-      </div>
-      {/* 좋아요 기능 추가 */}
-      <div className="freeboard-post-like">
-        <Button
-          text={isLiked ? "좋아요 취소" : "좋아요"}
-          onClick={handleToggleLike}
-          className="btn-freeboard-like"
-        />
-        <span>{likeCount}명이 이 게시글을 좋아합니다.</span>
-      </div>
-
-      <FreeBoardComments postId={id} />
+    <section className="container py-5" style={{ padding: "0px" }}>
+    <div className="container">
+      <h1 className="h2 semi-bold-600 text-center mt-2">자유게시판</h1>
+      <p
+        className="text-center light-300"
+        style={{ marginBottom: "0", padding: "0px" }}
+      >
+       어떤 이야기든!
+      </p>
     </div>
+
+    {post ? ( // post가 존재할 때 렌더링
+      <>
+        {/* 글 제목 */}
+        <div className="row pt-5">
+          <div className="worksingle-content col-lg-8 m-auto text-left justify-content-center">
+            <h2
+              className="worksingle-heading h3 pb-3 light-300 typo-space-line"
+              style={{ marginTop: "10px" }}
+            >
+              {post.title}
+            </h2>
+          </div>
+        </div>
+
+        {/* 작성자 정보 */}
+        <div className="row justify-content-center">
+          <div className="col-lg-8 ml-auto mr-auto pt-1 pb-2">
+            <div className="d-flex align-items-center text-muted light-300">
+              <img
+                src={profilePic}
+                alt="profile"
+                className="profile-image me-1"
+                style={{
+                  width: "50px",
+                  height: "50px",
+                  objectFit: "cover",
+                  borderRadius: "50%",
+                }}
+              />
+              <div className="d-flex flex-column">
+                <span>작성자: {post.author}</span>
+                <span>
+                  작성일:  {new Date(post.createdAt).toLocaleString()}
+                  조회수: {post.views}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 게시글 내용 */}
+        <div className="row justify-content-center">
+          <div className="col-lg-8 ml-auto mr-auto pt-3 pb-4 border border-3">
+            <div
+              className="text-muted light-300"
+              style={{ color: "black !important" }}
+              dangerouslySetInnerHTML={{ __html: post.content }} // HTML을 렌더링
+            />
+
+            {/* <div className="col-lg-8 ml-auto mr-auto pt-1 pb-2">
+              <div className="d-flex flex-column text-muted light-300">
+                <span>지원 방법: {apply}</span>
+              </div>
+            </div> */}
+
+            <div className="d-flex justify-content-center">
+              <div className="d-flex">
+
+                {/* 좋아요 버튼 */}
+                {post.likeCount !== undefined && (
+                  <PostButton
+                  icon={
+                    
+                    <ion-icon
+                      name={post.likeCount > 0 ? 'heart' : 'heart-outline'}
+                      style={{ color: post.likeCount > 0 ? 'red' : 'black', fontSize: '25px' }}
+                    ></ion-icon>
+                  }
+                    text={post.likeCount}
+                    onClick={handleToggleLike}
+                    disabled={!user}
+                  />
+                  
+                )}
+                {/* <PostButton
+                  text={isRecruiting ? "모집중" : "모집완료"}
+                  onClick={handleToggleRecruit}
+                /> */}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 버튼과 목록으로 */}
+        <div className="row justify-content-center">
+          <div
+            className="col-lg-8 d-flex justify-content-between"
+            style={{ padding: "10px 0px 0px" }}
+          >
+            <div className="d-flex">
+              {/* 작성자가 아닐 경우 수정/삭제 버튼을 숨김 */}
+              {user && post.author === user.nickname && (
+                <>
+                  <PostButton text="수정" onClick={handleEditPost} />
+                  <PostButton text="삭제" onClick={handleDeletePost} />
+                </>
+              )}
+            </div>
+            <div className="d-flex">
+              <PostButton text="목록으로" onClick={() => navigate("/freeboard/list")} />
+            </div>
+          </div>
+        </div>
+
+        {/* 댓글 컴포넌트 */}
+        <div className="row justify-content-center"></div>
+        <FreeBoardComments postId={id} />
+        </>
+    ) : (
+      <div>Loading...</div> // post가 null일 경우 로딩 표시
+    )}
+  </section>
   );
 };
 
