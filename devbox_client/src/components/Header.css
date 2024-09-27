@@ -23,7 +23,7 @@
   display: none;
   position: absolute;
   min-width: 200px;
-  z-index: 100;
+  z-index: 1000;
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
