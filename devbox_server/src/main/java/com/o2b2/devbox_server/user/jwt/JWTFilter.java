@@ -32,13 +32,12 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
+        System.out.println("========================================================");
         /** 특정 경로는 필터링 제외 (JWT 토큰 발급이 필요 없는 요청들)
          *  -> 서버에 요청시 토큰발급받아서 로그인 권한이 필요 없는 것들
          */
         String requestURI = request.getRequestURI();
-        log.error(requestURI);
-        log.error(requestURI.matches("/project/detail.*") + "");
+
 //        if (requestURI.equals("/join") || requestURI.equals("/login") || requestURI.matches("/password/.*")) {
 
         // 테스트용 로그인 없이 crud 열기
@@ -89,14 +88,15 @@ public class JWTFilter extends OncePerRequestFilter {
         || requestURI.matches("/api/contact/.*")
         || requestURI.matches("/send/.*")
         || requestURI.matches("/api/posts")
-        || requestURI.matches("/api/posts/.*")
-        || requestURI.matches("/api/comments/.*")
+        || requestURI.matches("/api/posts/[0-9]+")
+        || requestURI.matches("/api/comments/post/[0-9]+")
         || requestURI.matches("/posts/.*")
         || requestURI.matches("/comments/.*")
 
 //        || requestURI.matches("/msg/.*")
 
          ) {
+            System.out.println("doFilter");
             filterChain.doFilter(request, response);
             return;
         }

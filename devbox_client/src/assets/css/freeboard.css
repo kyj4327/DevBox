@@ -3,13 +3,10 @@
   margin: 0 auto;
   padding: 40px;
   font-family: 'Nanum Gothic', sans-serif;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
 
 .freeboard-post-header {
-  border-bottom: 1px solid #e5e5e5;
   padding-bottom: 20px;
   margin-bottom: 30px;
 }
@@ -84,7 +81,6 @@
 }
 
 .freeboard-comment {
-  border-bottom: 1px solid #e5e5e5;
   padding: 15px 0;
 }
 
@@ -103,6 +99,11 @@
   margin-bottom: 10px;
   padding: 10px;
   border: 1px solid #e5e5e5;
+}
+
+.btn-freeboard-edit {
+  color: #03c75a;
+
 }
 
 

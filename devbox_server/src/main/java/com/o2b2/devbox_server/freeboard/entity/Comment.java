@@ -3,6 +3,8 @@ package com.o2b2.devbox_server.freeboard.entity;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
 import com.o2b2.devbox_server.user.entity.UserEntity;
 
 import jakarta.persistence.Column;
@@ -27,17 +29,29 @@ public class Comment {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+    
+    @Column(length = 500, nullable = false)
+    private String author;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
-    @JsonBackReference // 댓글에서 Post 필드는 직렬화되지 않음
+    @JsonIgnoreProperties({"comments"})
     private Post post;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", nullable = false)
-    private UserEntity author;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties({"proEntitys", "MsgEntitys", "MsgSenderEntitys"})
+    private UserEntity user;
 
     // Getters and Setters
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public Long getId() {
         return id;
     }
@@ -70,11 +84,11 @@ public class Comment {
         this.post = post;
     }
 
-    public UserEntity getAuthor() {
-        return author;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setAuthor(UserEntity author) {
-        this.author = author;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 }
