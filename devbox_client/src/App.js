@@ -53,9 +53,7 @@ import GatherMateDetail from './pages/gatherMate/GatherMateDetail';
 import GatherMateEdit from './pages/gatherMate/GatherMateEdit';
 
 import GreetingList from './pages/greeting/GreetingList';
-import GreetingWrite from './pages/greeting/GreetingWrite';
-import GreetingDetail from './pages/greeting/GreetingDetail';
-import GreetingEdit from './pages/greeting/GreetingEdit';
+
 
 import NoticeList from './pages/notice/NoticeList';
 import NoticeWrite from './pages/notice/NoticeWrite';
@@ -109,10 +107,8 @@ function AppContent() {
           <Route path="/notice/edit/:postId" element={<NoticeEdit />} />
 
           {/* 가입인사 게시판 */}
-          {/* <Route path="/greeting/write" element={<GreetingWrite />} /> */}
           <Route path="/greeting/list" element={<GreetingList />} />
-          <Route path="/greeting/detail/:postId" element={<GreetingDetail />} />
-          <Route path="/greeting/edit/:postId" element={<GreetingEdit />} />
+ 
 
 
           <Route path='/edu/list' element={<EduMain />} />
