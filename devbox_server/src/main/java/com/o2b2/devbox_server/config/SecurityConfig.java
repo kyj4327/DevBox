@@ -80,15 +80,17 @@ public class SecurityConfig {
 
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                        
 
 
                         CorsConfiguration configuration = new CorsConfiguration();
-
+                        
                         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
                         configuration.setMaxAge(3600L);
+                     
 
 
                         configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
@@ -196,6 +198,13 @@ public class SecurityConfig {
                         .requestMatchers("/contest/write").hasRole("ADMIN")
                         // .requestMatchers("/hiring/write").hasRole("ADMIN")
 
+                        .requestMatchers("/reservation/write/**").permitAll()
+                        .requestMatchers("/reservation/check/**").authenticated()
+                        // .requestMatchers("/reservation/check/**").hasAnyRole("ADMIN", "STUDENT")
+                        // .requestMatchers("/reservation/write").hasAnyRole("ADMIN", "STUDENT")
+                        .requestMatchers("/contest/write").hasRole("ADMIN")
+                        // .requestMatchers("/hiring/write").hasRole("ADMIN")
+                        
                         /**
                          추천해요, 프로젝트 자랑 게시판
                          */
@@ -235,6 +244,12 @@ public class SecurityConfig {
                         .requestMatchers("/edu/**").permitAll()
                         .requestMatchers("/project/**").permitAll()
                         .requestMatchers("/message/**").permitAll()
+
+                        // .requestMatchers("/edu/**").permitAll()
+                        // .requestMatchers("/project/**").permitAll()
+                        .requestMatchers("/msg/**").authenticated()
+                        .requestMatchers("/msg/list**").authenticated()
+                        // .requestMatchers("/message/**").authenticated()
 
                         // .requestMatchers("/edu/**").permitAll()
                         // .requestMatchers("/project/**").permitAll()
