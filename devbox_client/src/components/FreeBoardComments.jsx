@@ -27,9 +27,13 @@ const FreeBoardComments = ({ postId }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!newComment.trim()) return;
-
+    
         try {
-            const createdComment = await createComment(postId, { content: newComment });
+            // 댓글 작성 시 author 정보 추가
+            const createdComment = await createComment(postId, { 
+                content: newComment, 
+                author: user.nickname // 현재 사용자의 닉네임을 author로 전송
+            });
             setComments(prevComments => [...prevComments, createdComment]);
             setNewComment('');
         } catch (err) {
@@ -37,7 +41,7 @@ const FreeBoardComments = ({ postId }) => {
             setError('댓글 작성에 실패했습니다. 다시 시도해 주세요.');
         }
     };
-
+    
     const handleDelete = async (commentId) => {
         if (window.confirm('이 댓글을 삭제하시겠습니까?')) {
             try {

@@ -77,7 +77,7 @@ const PostDetail = () => {
             className="btn-freeboard-write"
           />
         </div>
-        {user && (
+        {user && post.author === user.nickname && (
           <div className="freeboard-button-group">
             <Button
               text="수정"

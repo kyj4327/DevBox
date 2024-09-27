@@ -3,6 +3,7 @@ package com.o2b2.devbox_server.freeboard.entity;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
 import com.o2b2.devbox_server.user.entity.UserEntity;
 
 import jakarta.persistence.Column;
@@ -27,6 +28,9 @@ public class Comment {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+    
+    @Column(length = 500, nullable = false)
+    private String author;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
@@ -38,6 +42,14 @@ public class Comment {
     private UserEntity user;
 
     // Getters and Setters
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public Long getId() {
         return id;
     }

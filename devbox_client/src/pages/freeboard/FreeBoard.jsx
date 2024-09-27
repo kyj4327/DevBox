@@ -95,7 +95,9 @@ const FreeBoard = () => {
                 <small>{new Date(post.createdAt).toLocaleDateString()}</small>
               </div>
               <p className="mb-1">{getTrimmedContent(post.content)}</p>
-              <small>작성자: {post.author}</small>
+              <small>
+                작성자: {post.author}
+              </small>
             </Link>
           ))}
         </div>

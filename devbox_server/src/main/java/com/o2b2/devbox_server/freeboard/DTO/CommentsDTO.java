@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerators.StringIdGenerator;
 import com.o2b2.devbox_server.freeboard.entity.Comment;
 
 @Getter
@@ -18,4 +19,5 @@ public class CommentsDTO {
     private Long userId; // 작성자의 User ID
     private Long postId; // 댓글이 속한 게시글 ID
     private LocalDateTime createdAt; // 작성 시간
+    private String author;
 }
