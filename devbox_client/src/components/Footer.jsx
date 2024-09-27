@@ -27,12 +27,12 @@ const Footer = () => {
                                 <ul className="list-inline footer-icons light-300">
                                     <li className="list-inline-item m-0">
                                         <a className="text-light" target="_blank" href="깃주소">
-                                            <i className='bx bxl-facebook-square bx-md'></i>
+                                            <i class='bx bxl-github' style={{ fontSize: '36px' }}></i>
                                         </a>
                                     </li>
                                     <li className="list-inline-item m-0">
                                         <a className="text-light" target="_blank" href="구글시트">
-                                            <i className='bx bxl-linkedin-square bx-md'></i>
+                                            <i class='bx bxl-google' style={{ fontSize: '36px', marginLeft:'0.3rem' }}></i>
                                         </a>
                                     </li>
                                 </ul>
