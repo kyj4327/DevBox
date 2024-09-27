@@ -1,13 +1,11 @@
 package com.o2b2.devbox_server.greeting.request;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Setter
 @Getter
+@NoArgsConstructor
 @ToString
 public class GreetingPostEdit {
 
