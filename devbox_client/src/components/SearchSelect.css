@@ -14,6 +14,7 @@
   justify-content: space-between; /* 텍스트와 화살표를 양쪽 끝에 배치 */
   padding: 0 10px; /* 양쪽 여백 추가 */
   min-height: 27px;
+  font-size: 14px;
 }
 
 .custom-searchselect-options {
@@ -30,6 +31,7 @@
   max-height: 250px;
   overflow-y: auto;
   z-index: 1000;
+  font-size: 14px;
 }
 
 .custom-searchselect-options li {
