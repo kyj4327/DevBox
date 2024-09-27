@@ -3,8 +3,10 @@ import "./AuthContainer.css";
 import google from "../../assets/img/Oauth_Google.png";
 import kakao from "../../assets/img/Oauth_Kakao.webp";
 import naver from "../../assets/img/Oauth_Naver.png";
+import { useNavigate } from "react-router-dom"; 
 
 import { useUser } from "../../components/context/UserContext";
+import devBox from "../../assets/img/devBox.png";
 
 
 function AuthContainer() {
@@ -17,17 +19,20 @@ function AuthContainer() {
   const [field, setField] = useState(null); // 초기에는 null로 설정
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
   const [email, setEmail] = useState(""); // 이메일 상태 관리 추가
+  const navigate = useNavigate();
 
-  const { login, refreshAccessToken } = useUser(); // UserContext에서 login, refreshAccessToken 가져오기
+  const { login, refreshAccessToken } = useUser();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
     if (token) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
+      navigate("/home");
     }
-  }, []);
+  }, [navigate]);
+
+  const handleLogoClick = () => {
+    navigate("/home"); // /home 경로로 이동
+  };
 
   const onNaverLogin = () => {
     window.location.href = "http://localhost:8080/oauth2/authorization/naver";
@@ -292,11 +297,21 @@ function AuthContainer() {
             </button>
           </form>
         </div>
+        
         <div className="auth-form-container auth-sign-in-container">
+
           <form onSubmit={handleLogin} className="auth-form">
+            {/* <img
+              src={devBox}
+              alt="DevBox Logo"
+              className="logo-image"
+              onClick={handleLogoClick} // 클릭 시 /home으로 이동
+              style={{ cursor: "pointer" }} // 클릭 가능 커서 스타일 추가
+            /> */}
+
             <h1 id="customH1" className="auth-h1">
               Sign in
-            </h1>
+            </h1> 
             <div className="auth-social-container">
               <a href="#" className="auth-social" onClick={onNaverLogin}>
                 <img src={naver} alt="Naver Icon" />
