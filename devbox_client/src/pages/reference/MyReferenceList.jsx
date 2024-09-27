@@ -1,18 +1,19 @@
-import Category from '../../components/Category';
 import Pagination from '../../components/Pagination';
-import Button from '../../components/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
 
-const ReferenceList = () => {
+const MyReferenceList = () => {
     const { user } = useUser();
     const navigate = useNavigate();
-    const toWrite = () => {
-        navigate('/reference/write');
-    };
+    useEffect(() => {
+        if (!user) {
+            alert("로그인이 필요합니다.");
+            navigate('/auth');
+        }
+    }, [user, navigate]);
+    const token = localStorage.getItem('accessToken');
 
-    // user 객체에서 nickname 값 추출
     const userNickName = user ? user.nickname : null;
 
     const [selectJob, setSelectJob] = useState('All');
@@ -21,14 +22,18 @@ const ReferenceList = () => {
     const [pageData, setPageData] = useState([]);
     useEffect(() => {
         async function get(page = 1) {
-            const url = `http://localhost:8080/reference/list/${selectJob}?page=${page}`;
-            const res = await fetch(url);
+            const url = `http://localhost:8080/reference/mylist/${selectJob}?page=${page}`;
+            const res = await fetch(url, {
+                credentials: 'include',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             const data = await res.json();
-            // 페이지 데이터와 실제 데이터 분리
-            const listData = data.slice(0, -1);  // 마지막 페이지 정보 객체를 제외한 부분
-            const pageInfo = data[data.length - 1];  // 마지막 객체가 페이지 정보라고 가정
-            setData(listData);  // 실제 데이터 설정
-            setPageData(pageInfo);  // 페이지 정보 설정
+            const listData = data.slice(0, -1);
+            const pageInfo = data[data.length - 1];
+            setData(listData);
+            setPageData(pageInfo);
             setCurrentPage(page);
         }
         get(currentPage);
@@ -38,12 +43,6 @@ const ReferenceList = () => {
         window.scrollTo(0, 0);
     }, [data]);
 
-    const clickSelectJob = (e) => {
-        e.preventDefault();
-        setSelectJob(e.target.textContent);
-        setCurrentPage(1);
-    };
-
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
@@ -52,19 +51,7 @@ const ReferenceList = () => {
         <div>
             <section className="container py-5">
                 <div className="container py-5">
-                    <h1 className="h2 semi-bold-600 text-center mt-2">추천해요</h1>
-                    <p className="text-center pb-5 light-300">다른 사람에게 알려주고 싶은 나만의 꿀팁을 공유해요!</p>
-                    <div className="row justify-content-center my-5">
-                        <div className="filter-btns shadow-md rounded-pill text-center col-auto">
-                            <Category text={'All'} isActive={selectJob} onClick={clickSelectJob} />
-                            <Category text={'Web'} isActive={selectJob} onClick={clickSelectJob} />
-                            <Category text={'DevOps'} isActive={selectJob} onClick={clickSelectJob} />
-                            <Category text={'Cloud'} isActive={selectJob} onClick={clickSelectJob} />
-                            <Category text={'Data'} isActive={selectJob} onClick={clickSelectJob} />
-                            <Category text={'Mobile'} isActive={selectJob} onClick={clickSelectJob} />
-                            <Category text={'Others'} isActive={selectJob} onClick={clickSelectJob} />
-                        </div>
-                    </div>
+                    <h1 className="h2 semi-bold-600 text-center mt-2">추천해요 mylist</h1>
                     {
                         data.map((v) => {
                             return (
@@ -128,18 +115,10 @@ const ReferenceList = () => {
                         })
                     }
                 </div>
-                {
-                    !user ? ''
-                        : <div className="form-row pt-2">
-                            <div className="col-md-12 col-10 text-end">
-                                <Button text={'작성하기'} onClick={toWrite} />
-                            </div>
-                        </div>
-                }
             </section>
             <Pagination handlePageChange={handlePageChange} pageData={pageData} />
         </div>
     );
 };
 
-export default ReferenceList;
+export default MyReferenceList;

@@ -73,7 +73,7 @@ function MyPageSideBar() {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/mypage/reservations">
+              <NavLink to="/mypage/reservation/check">
                 <i className="fal fa-layer-group"></i> 회의실 예약내역
               </NavLink>
             </li>

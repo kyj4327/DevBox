@@ -204,6 +204,7 @@ public class SecurityConfig {
                         // .requestMatchers("/reservation/write").hasAnyRole("ADMIN", "STUDENT")
                         .requestMatchers("/contest/write").hasRole("ADMIN")
                         // .requestMatchers("/hiring/write").hasRole("ADMIN")
+                        .requestMatchers("/reference/mylist/**").authenticated()
                         
                         /**
                          추천해요, 프로젝트 자랑 게시판

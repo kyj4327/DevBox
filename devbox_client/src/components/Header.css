@@ -2,10 +2,63 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px 16px; 
+  padding: 8px 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+/* 메뉴 컨테이너 스타일 */
+.menu-container {
+  position: relative;
+}
+
+/* 상위 메뉴 항목 스타일 */
+.nav-item {
+  position: relative;
+}
+
+/* 기본적으로 dropdown-menu-container 숨기기 */
+.dropdown-menu-container {
+  display: none;
+  position: absolute;
+  min-width: 200px;
+  z-index: 1000;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* 네비게이션 항목에 호버했을 때 하위 메뉴 표시 */
+.nav-item:hover .dropdown-menu-container {
+  display: block;
+  opacity: 1;
+}
+
+/* 각 dropdown-section 스타일 */
+.dropdown-section {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  background-color: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 하위 항목 스타일 */
+.dropdown-section>* {
+  margin-bottom: 20px;
+  color: #333;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.dropdown-section>*:hover {
+  color: #007bff;
+  font-weight: bold;
 }
 
 .custom-tooltip .tooltip-inner {

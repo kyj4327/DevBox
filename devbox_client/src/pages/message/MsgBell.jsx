@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useUser } from '../../components/context/UserContext'
+import { Link } from "react-router-dom";
 
 const MsgBell = () => {
     const [nullReadTimeCount, setNullReadTimeCount] = useState(0);
@@ -7,7 +8,7 @@ const MsgBell = () => {
 
     useEffect(() => {
         console.log(user);
-        
+
         const getMessages = async () => {
             if (!user || !user.nickname) return; // 사용자가 로그인하지 않았거나 username이 없을 경우 fetch를 수행하지 않음
 
@@ -43,16 +44,16 @@ const MsgBell = () => {
     }, [user]);
 
     return (
-        <a className="nav-link" href="/message/list">
+        <Link to="/message/list" className="nav-link">
             <i className='bx bx-bell bx-sm bx-tada-hover text-primary' style={{ transform: 'translate(0%, 0%)' }}>
                 {nullReadTimeCount > 0 && (
                     <span className="badge rounded-pill bg-danger" style={{ position: 'absolute', top: '-10px', right: '-15px', fontSize: '12px' }}>
                         {nullReadTimeCount}
                     </span>
                 )}
-                
+
             </i>
-        </a>
+        </Link>
     );
 };
 
