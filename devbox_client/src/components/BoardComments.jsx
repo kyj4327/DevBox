@@ -491,9 +491,8 @@ const BoardComments = ({ postId, boardType }) => {
   }
 
   return (
-    <div className="container mt-5">
       <div className="row justify-content-center">
-        <div className="col-lg-8">
+        <div className="col-lg-8" style={{width:'100%'}}>
           <div id="comments-list">
             {comments
               .filter((comment) => comment !== null)
@@ -657,7 +656,6 @@ const BoardComments = ({ postId, boardType }) => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
