@@ -48,7 +48,7 @@ const Header = () => {
                   <div className="dropdown-section">
                     <Link to="/introduce">BDIA 소개</Link>
                     <Link to="/schedule">연간 교육 일정</Link>
-                    <Link to="/edu/list">교육 과정</Link>
+                    <Link to="/edu/list">교육 프로그램</Link>
                   </div>
                 </div>
               </li>

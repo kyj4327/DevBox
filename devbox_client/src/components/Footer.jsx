@@ -70,7 +70,7 @@ const Footer = () => {
                     <div className="col-lg-3 col-md-4 my-sm-0 mt-4">
                         <h2 className="h4 pb-lg-3 text-light light-300">김민준</h2>
                         <ul className="list-unstyled text-light light-300">
-                            <List link='/edu/list' text='교육 과정' />
+                            <List link='/edu/list' text='교육 프로그램' />
                             <List link='/project/list' text='프로젝트 자랑' />
                             <List link='/message/list' text='쪽지' />
                         </ul>
