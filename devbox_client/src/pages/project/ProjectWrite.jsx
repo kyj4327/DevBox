@@ -21,7 +21,7 @@ const ProjectWrite = () => {
     const [uploadImgs, setUploadImgs] = useState([]);
     const [delImgId, setDelImgId] = useState([]);
     const [savedImgs, setSavedImgs] = useState([]);
-
+    const domain = "http://localhost:8080";
     const [linkError, setLinkError] = useState('');
 
     const validateUrl = (link) => {
@@ -89,7 +89,7 @@ const ProjectWrite = () => {
 
         const token = localStorage.getItem('accessToken');
 
-        const url = 'http://localhost:8080/project/write';
+        const url = `${domain}/project/write`;
         const res = await fetch(url, {
             method: 'POST',
             credentials: "include",

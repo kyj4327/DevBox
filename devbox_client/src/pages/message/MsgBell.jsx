@@ -4,13 +4,13 @@ import { useUser } from '../../components/context/UserContext'
 const MsgBell = () => {
     const [nullReadTimeCount, setNullReadTimeCount] = useState(0);
     const { user } = useUser();
-
+    const domain = "http://localhost:8080";
     useEffect(() => {
         const getMessages = async () => {
             if (!user || !user.nickname) return; // 사용자가 로그인하지 않았거나 username이 없을 경우 fetch를 수행하지 않음
 
             try {
-                const res = await fetch(`http://localhost:8080/msg/bell?reciver=${user.nickname}`, {
+                const res = await fetch(`${domain}/msg/bell?reciver=${user.nickname}`, {
                     method: 'GET',
                     credentials: 'include',
                     headers: {

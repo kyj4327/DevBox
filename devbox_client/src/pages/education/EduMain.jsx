@@ -12,13 +12,14 @@ import EduInfo from './EduInfo';
 import { useEffect, useState } from 'react';
 
 const EduMain = () => {
+    const domain = "http://localhost:8080"; 
     const [pageData, setPageData] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const [state, setState] = useState('모집중');
     const [endDate, setEndDate] = useState('');
 
     async function get(page = 1) {
-        const res = await fetch(`http://localhost:8080/edu/list/${state}?page=${page}`);
+        const res = await fetch(`${domain}/edu/list/${state}?page=${page}`);
         const data = await res.json();
         setPageData(data);
         setCurrentPage(page);  // 페이지 데이터 불러온 후, 현재 페이지 업데이트

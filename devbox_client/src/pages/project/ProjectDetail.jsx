@@ -22,7 +22,7 @@ const ProjectDetail = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
-
+    const domain = "http://localhost:8080";
     const formatDateTime = (dateString) => {
         const date = new Date(dateString);
         const year = date.getFullYear();
@@ -35,14 +35,14 @@ const ProjectDetail = () => {
       };
 
     async function getProjectDetail() {
-        const res = await fetch(`http://localhost:8080/project/detail?id=${id}`);
+        const res = await fetch(`${domain}/project/detail?id=${id}`);
         const data = await res.json();
         setProData(data);
     }
 
     const fetchUserLikeStatus = async () => {
         const token = localStorage.getItem('accessToken');
-        const url = `http://localhost:8080/project/like/status`;
+        const url = `${domain}/project/like/status`;
         const res = await fetch(url, {
             method: 'GET',
             credentials: 'include',
@@ -67,7 +67,7 @@ const ProjectDetail = () => {
 
     const likeCount = async (proId) => {
         const token = localStorage.getItem('accessToken');
-        const url = `http://localhost:8080/project/like?id=${proId}`;
+        const url = `${domain}/project/like?id=${proId}`;
         const res = await fetch(url, {
             method: 'GET',
             credentials: "include",
@@ -145,7 +145,7 @@ const ProjectDetail = () => {
                                 <SwiperSlide key={img.id}>
                                     <img
                                         className="img-fluid border rounded"
-                                        src={`http://localhost:8080/project/download?id=${img.id}`}
+                                        src={`${domain}/project/download?id=${img.id}`}
                                         alt={`Slide ${index + 1}`}
                                         style={{ width: '100%', height: '500px' }}
                                     />
@@ -267,7 +267,7 @@ const ProjectDetail = () => {
                                                     const token = localStorage.getItem('accessToken');
                                                     if (result.isConfirmed) {
                                                         try {
-                                                            const url = `http://localhost:8080/project/delete?Id=${proData.id}`;
+                                                            const url = `${domain}/project/delete?Id=${proData.id}`;
                                                             const res = await fetch(url, {
                                                                 method: 'DELETE',
                                                                 credentials: 'include',

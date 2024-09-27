@@ -14,7 +14,7 @@ const MesWrite = () => {
     const [reciver, setReciver] = useState('');
     const [content, setContent] = useState('');
     const [nickNameError, setNickNameError] = useState('');
-
+    const domain = "http://localhost:8080";
     useEffect(() => {
         if (!loading) {
             if (user) {
@@ -36,7 +36,7 @@ const MesWrite = () => {
     const checkNicknames = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            const res = await fetch(`http://localhost:8080/api/user/nicknames`, {
+            const res = await fetch(`${domain}/api/user/nicknames`, {
                 method: 'GET',
                 credentials: "include",
                 headers: {
@@ -101,7 +101,7 @@ const MesWrite = () => {
         console.log(sender);
 
         const token = localStorage.getItem('accessToken');
-        const url = 'http://localhost:8080/msg/write';
+        const url = `${domain}/msg/write`;
         const res = await fetch(url, {
             method: 'POST',
             credentials: "include",

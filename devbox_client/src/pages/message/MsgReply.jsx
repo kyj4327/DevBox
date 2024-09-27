@@ -12,7 +12,7 @@ const MesReply = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
-
+    const domain = "http://localhost:8080";
     const [title, setTitle] = useState('');
     const [sender, setSender] = useState(user.nickname);
     const [reciver, setReciver] = useState('');
@@ -30,7 +30,7 @@ const MesReply = () => {
         formData.append("reciver", reciver);
 
         const token = localStorage.getItem('accessToken');
-        const url = 'http://localhost:8080/msg/write';
+        const url = `${domain}/msg/write`;
         const res = await fetch(url, {
             method: 'POST',
             credentials: "include",
@@ -55,7 +55,7 @@ const MesReply = () => {
 
     async function get() {
         const token = localStorage.getItem('accessToken');
-        const res = await fetch(`http://localhost:8080/msg/reply?id=${id}`, {
+        const res = await fetch(`${domain}/msg/reply?id=${id}`, {
             method: 'GET',
             credentials: "include",
             headers: {
@@ -119,17 +119,6 @@ const MesReply = () => {
                                         onChange={setContent}
                                         height="450px"
                                     />
-                                    {/* <textarea
-                                        className="form-control form-control-lg light-300"
-                                        rows="8"
-                                        placeholder="Message"
-                                        id="floatingtextarea"
-                                        name="content"
-                                        value={content}
-                                        type="text"
-                                        onChange={(e) => { setContent(e.target.value) }}
-                                    ></textarea>
-                                    <label htmlFor="floatingsubject light-300">작성 내용</label> */}
                                 </div>
                             </p>
                         </div>

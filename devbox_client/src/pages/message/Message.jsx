@@ -5,14 +5,14 @@ import Pagination from "../../components/Pagination";
 const Message = () => {
     const [pageData, setPageData] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
-    
+    const domain = "http://localhost:8080"; 
     const [refresh, setRefresh] = useState(false);
     // 상태 변경 초기값 false
     const [category, setCategory] = useState('받은쪽지');
 
     async function get(page = 1) {
         const token = localStorage.getItem('accessToken');
-        const res = await fetch(`http://localhost:8080/msg/box?page=${page}&category=${category}`,{
+        const res = await fetch(`${domain}/msg/box?page=${page}&category=${category}`,{
             method: 'GET',
             credentials: "include",
             headers: {

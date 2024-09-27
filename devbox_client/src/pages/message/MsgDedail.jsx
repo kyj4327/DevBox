@@ -9,7 +9,7 @@ const MesDetail = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
-
+    const domain = "http://localhost:8080";
     const [title, setTitle] = useState('');
     const [sender, setSender] = useState('');
     const [reciver, setReciver] = useState('');
@@ -17,7 +17,7 @@ const MesDetail = () => {
 
     async function get() {
         const token = localStorage.getItem('accessToken');
-        const res = await fetch(`http://localhost:8080/msg/detail?id=${id}`, {
+        const res = await fetch(`${domain}/msg/detail?id=${id}`, {
             method: 'GET',
             credentials: "include",
             headers: {
@@ -90,14 +90,6 @@ const MesDetail = () => {
                                     <p className="form-control form-control-lg light-300"
                                         dangerouslySetInnerHTML={{ __html: content }}
                                     >
-
-                                        {/* <textarea
-                                        className="form-control form-control-lg light-300"
-                                        rows="6"
-                                        id="floatingtextarea"
-                                        type="text"
-                                        value={content}
-                                        ></textarea> */}
                                     </p>
                                 </div>
                             </div>
@@ -132,7 +124,7 @@ const MesDetail = () => {
 
                                         if (result.isConfirmed) {
                                             try {
-                                                const url = `http://localhost:8080/msg/delete?id=${msgData.id}`;
+                                                const url = `${domain}/msg/delete?id=${msgData.id}`;
                                                 const res = await fetch(url, {
                                                     method: 'DELETE',
                                                     credentials: 'include',

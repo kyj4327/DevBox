@@ -11,7 +11,7 @@ import QuillEditor from "../../components/QuillEditor";
 
 const ProjectUpdate = () => {
     const navigate = useNavigate();
-
+    const domain = "http://localhost:8080";
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
@@ -75,7 +75,7 @@ const ProjectUpdate = () => {
 
         const token = localStorage.getItem('accessToken');
 
-        const url = 'http://localhost:8080/project/update';
+        const url = `${domain}/project/update`;
         const res = await fetch(url, {
             method: 'post',
             credentials: 'include',
@@ -100,7 +100,7 @@ const ProjectUpdate = () => {
     async function get() {
         const token = localStorage.getItem('accessToken');
 
-        const res = await fetch(`http://localhost:8080/project/update?id=${id}`, {
+        const res = await fetch(`${domain}/project/update?id=${id}`, {
             method: 'GET',
             credentials: "include",
             headers: {
@@ -200,16 +200,6 @@ const ProjectUpdate = () => {
                                         onChange={setComent}
                                         height="450px"
                                     />
-                                    {/* <textarea
-                                    className="form-control form-control-lg light-300"
-                                    rows="8"
-                                    placeholder="내용"
-                                    id="floatingtextarea"
-                                    name="coment"
-                                    value={coment}
-                                    onChange={(e) => setComent(e.target.value)}
-                                    type="text"
-                                ></textarea> */}
                                 </div>
                             </p>
                         </div>

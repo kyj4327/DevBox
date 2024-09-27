@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { useUser } from "../../components/context/UserContext";
 
 const EduDetail = () => {
+    const domain = "http://localhost:8080";    
     const { user } = useUser();
     const navigate = useNavigate();
     const [eduData, setEduData] = useState({});
@@ -14,7 +15,7 @@ const EduDetail = () => {
 
 
     async function get() {
-        const res = await fetch(`http://localhost:8080/edu/detail?id=${id}`);
+        const res = await fetch(`${domain}/edu/detail?id=${id}`);
         const data = await res.json();
         setEduData(data);
     }
@@ -47,7 +48,7 @@ const EduDetail = () => {
                 <div className="row justify-content-center pb-4">
                     <div className="col-lg-8">
                         <div id="templatemo-slide-link-target" className="card mb-3">
-                            <img className="img-fluid border rounded" src={`http://localhost:8080/edu/download?id=${eduData.id}`} alt="Card image cap" />
+                            <img className="img-fluid border rounded" src={`${domain}/edu/download?id=${eduData.id}`} alt="Card image cap" />
                         </div>
                     </div>
                 </div>
@@ -90,7 +91,7 @@ const EduDetail = () => {
                                                 const token = localStorage.getItem('accessToken');
                                                 // 사용자가 '삭제' 버튼을 눌렀을 때만 삭제 요청 보내기
                                                 if (result.isConfirmed) {
-                                                    const url = `http://localhost:8080/edu/delete?Id=${eduData.id}`;
+                                                    const url = `${domain}/edu/delete?Id=${eduData.id}`;
                                                     const res = await fetch(url, {
                                                         method: 'DELETE',
                                                         credentials: 'include',

@@ -9,7 +9,7 @@ import { useUser } from "../../components/context/UserContext";
 
 const EduWrite = () => {
     const { user,loading } = useUser();
-
+    const domain = "http://localhost:8080"; 
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [subtitle, setSubtitle] = useState('');
@@ -95,7 +95,7 @@ const EduWrite = () => {
         const token = localStorage.getItem('accessToken');
 
         try {
-            const res = await fetch('http://localhost:8080/edu/write', {
+            const res = await fetch(`${domain}/edu/write`, {
                 method: 'POST',
                 credentials: "include",
                 headers: {

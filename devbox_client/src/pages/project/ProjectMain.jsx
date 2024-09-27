@@ -7,10 +7,10 @@ const ProjectMain = (props) => {
     const { user } = useUser();
     const navigate = useNavigate();
     const [likeStatus, setLikeStatus] = useState({});
-
+    const domain = "http://localhost:8080";
     const fetchUserLikeStatus = async () => {
         const token = localStorage.getItem('accessToken');
-        const url = `http://localhost:8080/project/like/status`;
+        const url = `${domain}/project/like/status`;
         const res = await fetch(url, {
             method: 'GET',
             credentials: 'include',
@@ -35,7 +35,7 @@ const ProjectMain = (props) => {
 
     const likeCount = async (proId) => {
         const token = localStorage.getItem('accessToken');
-        const url = `http://localhost:8080/project/like?id=${proId}`;
+        const url = `${domain}/project/like?id=${proId}`;
         const res = await fetch(url, {
             method: 'GET',
             credentials: "include",
@@ -89,7 +89,7 @@ const ProjectMain = (props) => {
                                 <img
                                     style={{ height: '400px' }}
                                     className="card-img-top"
-                                    src={`http://localhost:8080/project/download?id=${pro.mainImg}`}
+                                    src={`${domain}/project/download?id=${pro.mainImg}`}
                                     alt={`Project ${pro.id}`}
                                 />
                                 <div className="card-body">
