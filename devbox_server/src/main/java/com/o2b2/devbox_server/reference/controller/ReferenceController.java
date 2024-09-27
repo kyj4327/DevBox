@@ -153,15 +153,13 @@ public class ReferenceController {
     @GetMapping("/reference/mylist/{selectJob}")
     public List<Map<String, Object>> myReferenceList(
             @PathVariable("selectJob") String selectJob,
-            @RequestParam(value = "page", defaultValue = "1") int page) {
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        UserEntity userEntity = userDetails.getUserEntity();
+
         Sort sort = Sort.by(Order.desc("id"));
         Pageable pageable = PageRequest.of(page - 1, 8, sort);
-        Page<Reference> p = null;
-        if (selectJob.equals("All")) {
-            p = referenceRepository.findAll(pageable);
-        } else {
-            p = referenceRepository.findBySelectJob(selectJob, pageable);
-        }
+        Page<Reference> p = referenceRepository.findByUserEntity(userEntity, pageable);
         List<Reference> list = p.getContent();
         List<Map<String, Object>> response = new ArrayList<>();
         for (Reference r : list) {
