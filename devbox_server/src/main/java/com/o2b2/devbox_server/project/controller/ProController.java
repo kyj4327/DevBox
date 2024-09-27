@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.o2b2.devbox_server.project.dto.MultiImgDto;
 import com.o2b2.devbox_server.project.model.MultiImgEntity;
 import com.o2b2.devbox_server.project.model.ProEntity;
 import com.o2b2.devbox_server.project.model.ProLike;
@@ -38,6 +39,7 @@ import com.o2b2.devbox_server.project.repository.MultiImgRepository;
 import com.o2b2.devbox_server.project.repository.ProLikeRepository;
 import com.o2b2.devbox_server.project.repository.ProRepository;
 import com.o2b2.devbox_server.user.dto.CustomUserDetails;
+import com.o2b2.devbox_server.user.dto.UserDTO;
 import com.o2b2.devbox_server.user.entity.UserEntity;
 import com.o2b2.devbox_server.user.repository.UserRepository;
 
@@ -51,6 +53,18 @@ public class ProController {
 
     private final Path fileStorageLocation = Paths.get("c:/images"); // 파일 저장 경로
 
+    // 고유한 파일명을 생성하는 메서드
+    private String generateUniqueFilename(String originalFilename) {
+        String fileExtension = "";
+        int dotIndex = originalFilename.lastIndexOf('.');
+        if (dotIndex > 0) {
+            fileExtension = originalFilename.substring(dotIndex); // 확장자 추출
+            originalFilename = originalFilename.substring(0, dotIndex); // 확장자를 제외한 파일명
+        }
+        String uniqueFilename = originalFilename + "_" + System.currentTimeMillis() + fileExtension; // 타임스탬프 추가
+        return uniqueFilename;
+    }
+
     @Autowired
     ProRepository proRepository;
 
@@ -63,12 +77,60 @@ public class ProController {
     @Autowired
     ProLikeRepository proLikeRepository;
 
+
+    @GetMapping("project/mylist")
+    public Map<String, Object> promyList(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "6") int size,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+                
+        // likeCount는 내림차순(DESC), time은 오름차순(ASC)으로 정렬
+        Sort sort = Sort.by(Sort.Order.desc("likeCount"), Sort.Order.desc("time"));
+
+        Pageable pageable = PageRequest.of(page - 1, size, sort); // 페이지 요청 생성
+        
+         // 로그인한 유저의 닉네임 가져오기
+        String currentNickname = userDetails.getNickname();
+
+        Page<ProEntity> p = proRepository.findByUserEntityNickname(currentNickname, pageable);
+        List<ProEntity> list = p.getContent();
+
+        // 페이지네이션 관련 정보 계산
+        int totalPage = p.getTotalPages();
+        int startPage = (page - 1) / 10 * 10 + 1;
+        int endPage = Math.min(startPage + 9, totalPage);
+
+        // 반환할 데이터 구성
+        Map<String, Object> response = new HashMap<>();
+        response.put("list", list.stream().map(pro -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", pro.getId());
+            map.put("title", pro.getTitle());
+            map.put("link", pro.getLink());
+            map.put("coment", pro.getComent());
+            map.put("name", pro.getName());
+            map.put("time", pro.getTime());
+            map.put("likeCount", pro.getLikeCount());
+            map.put("mainImg", pro.getMultiImgEntitys().get(0).getId());
+            return map;
+        }).collect(Collectors.toList())); // proEntity를 Map으로 변환
+        response.put("currentPage", page); // 현재 페이지
+        response.put("startPage", startPage); // 시작 페이지
+        response.put("endPage", endPage); // 끝 페이지
+        response.put("totalPage", totalPage); // 전체 페이지 수
+
+        return response; // JSON 형태로 반환
+    }
+
     @GetMapping("/project/list")
     public Map<String, Object> proList(
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "6") int size) {
 
-        Sort sort = Sort.by(Sort.Direction.DESC, "likeCount");
+        // likeCount는 내림차순(DESC), time은 오름차순(ASC)으로 정렬
+        Sort sort = Sort.by(Sort.Order.desc("likeCount"), Sort.Order.desc("time"));
+
         Pageable pageable = PageRequest.of(page - 1, size, sort); // 페이지 요청 생성
 
         Page<ProEntity> p = proRepository.findAll(pageable);
@@ -88,6 +150,7 @@ public class ProController {
             map.put("link", pro.getLink());
             map.put("coment", pro.getComent());
             map.put("name", pro.getName());
+            map.put("time", pro.getTime());
             map.put("likeCount", pro.getLikeCount());
             map.put("mainImg", pro.getMultiImgEntitys().get(0).getId());
             return map;
@@ -143,6 +206,29 @@ public class ProController {
         return map;
     }
 
+    @GetMapping("/project/like/status")
+    @ResponseBody
+    public Map<String, Object> getUserLikeStatus(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Map<String, Object> map = new HashMap<>();
+
+        // 로그인한 유저 정보 가져오기
+        UserEntity user = userDetails.getUserEntity();
+
+        // 사용자가 좋아요한 게시물 목록 가져오기
+        List<ProLike> likes = proLikeRepository.findByUser(user);
+
+        // 사용자가 좋아요한 게시물 ID와 좋아요 수를 응답으로 반환
+        List<Map<String, Object>> likedProjects = likes.stream().map(like -> {
+            Map<String, Object> likeInfo = new HashMap<>();
+            likeInfo.put("proId", like.getProEntity().getId());
+            likeInfo.put("likeCount", like.getProEntity().getLikeCount());
+            return likeInfo;
+        }).collect(Collectors.toList());
+
+        map.put("likedProjects", likedProjects);
+        return map;
+    }
+
     @PostMapping("/project/write")
     @ResponseBody
     public Map<String, Object> pro(
@@ -157,7 +243,7 @@ public class ProController {
         // 로그인한 유저 정보에서 UserEntity를 가져옴
         UserEntity user = userDetails.getUserEntity();
 
-        // EduEntity에 UserEntity 설정
+        // ProEntity에 UserEntity 설정
         pro.setUserEntity(user);
 
         // 파일이 첨부되지 않았을 경우 처리
@@ -171,9 +257,13 @@ public class ProController {
 
         // 각 파일을 처리하는 반복문
         for (MultipartFile mFile : files) {
+            // 파일명 중복 방지를 위해 고유한 이름 생성
+            String originalFilename = mFile.getOriginalFilename();
+            String uniqueFilename = generateUniqueFilename(originalFilename);
+
             // ProEntity 객체에 이미지 파일 이름 설정
             MultiImgEntity img = new MultiImgEntity();
-            img.setImg(mFile.getOriginalFilename());
+            img.setImg(uniqueFilename); // 고유한 파일명 설정
             img.setProEntity(result);
 
             // ProEntity 저장
@@ -181,7 +271,7 @@ public class ProController {
 
             try {
                 // 파일을 지정된 경로에 저장
-                mFile.transferTo(new File("c:/images/" + mFile.getOriginalFilename()));
+                mFile.transferTo(new File("c:/images/" + uniqueFilename));
             } catch (IllegalStateException | IOException e) {
                 e.printStackTrace();
 
@@ -211,17 +301,17 @@ public class ProController {
         // 로그인한 유저 정보에서 UserEntity를 가져옴
         UserEntity user = userDetails.getUserEntity();
 
-        // EduEntity에 UserEntity 설정
+        // ProEntity에 UserEntity 설정
         pro.setUserEntity(user);
 
-        // 데이터베이스에서 기존의 ProEntity를 가져옵니다.
+        // 데이터베이스에서 기존의 ProEntity를 가져옴
         ProEntity existingpro = proRepository.findById(pro.getId()).orElse(null);
 
         if (existingpro != null) {
             // 삭제할 이미지 ID 배열이 제공된 경우
             if (imgIds != null && imgIds.length > 0) {
                 for (Long imgId : imgIds) {
-                    // 데이터베이스에서 해당 이미지를 삭제합니다.
+                    // 데이터베이스에서 해당 이미지를 삭제
                     MultiImgEntity imgEntity = multiImgRepository.findById(imgId).orElse(null);
                     if (imgEntity != null) {
                         // 파일 시스템에서 이미지 파일 삭제
@@ -236,47 +326,51 @@ public class ProController {
                 }
             }
 
-            // 파일이 업로드된 경우에 대한 처리
+            // 파일이 업로드된 경우 처리
             if (files != null && files.length > 0) {
                 for (MultipartFile mFile : files) {
-                    // 새로운 MultiImgEntity 객체를 생성하여 파일 정보를 저장합니다.
+                    // 고유한 파일명 생성
+                    String originalFilename = mFile.getOriginalFilename();
+                    String uniqueFilename = generateUniqueFilename(originalFilename); // 고유한 파일명 생성
+
+                    // 새로운 MultiImgEntity 객체를 생성하여 파일 정보를 저장
                     MultiImgEntity img = new MultiImgEntity();
-                    img.setImg(mFile.getOriginalFilename());
+                    img.setImg(uniqueFilename); // 고유한 파일명 설정
                     img.setProEntity(existingpro);
 
-                    // MultiImgEntity를 데이터베이스에 저장합니다.
+                    // MultiImgEntity를 데이터베이스에 저장
                     MultiImgEntity mResult = multiImgRepository.save(img);
 
                     try {
-                        // 파일을 지정된 경로에 저장합니다.
-                        mFile.transferTo(new File("c:/images/" + mFile.getOriginalFilename()));
+                        // 파일을 지정된 경로에 저장
+                        mFile.transferTo(new File("c:/images/" + uniqueFilename));
                     } catch (IllegalStateException | IOException e) {
                         e.printStackTrace();
-                        // 파일 저장 중 오류 발생 시 에러 메시지를 맵에 추가합니다.
+                        // 파일 저장 중 오류 발생 시 에러 메시지를 맵에 추가
                         map.put("code", 500);
                         map.put("pro", "파일 업로드 중 오류 발생: " + e.getMessage());
-                        return map; // 에러 발생 시 바로 반환합니다.
+                        return map; // 에러 발생 시 바로 반환
                     }
                 }
             } else {
-                // 업로드된 파일이 없는 경우 기존의 이미지 목록을 유지합니다.
+                // 업로드된 파일이 없는 경우 기존 이미지 목록을 유지
                 pro.setMultiImgEntitys(existingpro.getMultiImgEntitys());
             }
 
-            // 수정된 ProEntity 객체를 데이터베이스에 저장합니다.
+            // 수정된 ProEntity 객체를 데이터베이스에 저장
             proRepository.save(pro);
 
-            // 성공 응답을 맵에 추가합니다.
+            // 성공 응답을 맵에 추가
             map.put("code", 200);
             map.put("pro", "수정 완료");
 
         } else {
-            // 기존 ProEntity가 없는 경우의 처리
+            // 기존 ProEntity가 없는 경우 처리
             map.put("code", 404);
             map.put("pro", "존재하지 않는 데이터입니다.");
         }
 
-        return map; // 수정 완료 응답을 반환합니다.
+        return map; // 수정 완료 응답 반환
     }
 
     @DeleteMapping("/project/delete")
@@ -324,8 +418,10 @@ public class ProController {
         map.put("link", pro.getLink());
         map.put("coment", pro.getComent());
         map.put("name", pro.getName());
-        map.put("imgs", pro.getMultiImgEntitys());
-        map.put("user", pro.getUserEntity());
+        map.put("imgs", pro.getMultiImgEntitys().stream().map(mie -> MultiImgDto.fromEntity(mie)));
+        map.put("user", UserDTO.fromEntity(pro.getUserEntity()));
+        map.put("likeCount", pro.getLikeCount());
+        map.put("time", pro.getTime());
 
         return map;
 
@@ -352,7 +448,8 @@ public class ProController {
                 map.put("link", pro.getLink());
                 map.put("coment", pro.getComent());
                 map.put("name", pro.getName());
-                map.put("imgs", pro.getMultiImgEntitys());
+                map.put("time", pro.getTime());
+                map.put("imgs",  pro.getMultiImgEntitys().stream().map(mie -> MultiImgDto.fromEntity(mie)));
                 map.put("code", 200); // 성공 코드
             } else {
                 // 작성자가 일치하지 않을 경우 권한 없음
@@ -371,14 +468,22 @@ public class ProController {
     @GetMapping("/project/download")
     public ResponseEntity<Resource> downloadFile(@RequestParam Long id) {
         try {
-            Optional<MultiImgEntity> img = multiImgRepository.findById(id);
-            String filename = img.get().getImg();
+            Optional<MultiImgEntity> imgOptional = multiImgRepository.findById(id);
+
+            // 파일이 존재하지 않으면 404 반환
+            if (!imgOptional.isPresent()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            MultiImgEntity img = imgOptional.get();
+            String filename = img.getImg();
+
             // 파일 경로 생성
             Path filePath = fileStorageLocation.resolve(filename).normalize();
             Resource resource = new UrlResource(filePath.toUri());
 
-            // 파일이 존재하지 않을 경우 예외 처리
-            if (!resource.exists()) {
+            // 파일이 존재하지 않을 경우 404 반환
+            if (!resource.exists() || !resource.isReadable()) {
                 return ResponseEntity.notFound().build();
             }
 
@@ -388,6 +493,7 @@ public class ProController {
                     .contentType(org.springframework.http.MediaType.parseMediaType(contentType))
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                     .body(resource);
+
         } catch (IOException ex) {
             // 파일 읽기 오류 처리
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

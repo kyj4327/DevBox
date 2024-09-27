@@ -71,6 +71,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         //
         || requestURI.matches("/.*/list")
+
         // || requestURI.matches("/.*/detail/.*")
         || requestURI.matches("/.*/list.*")
         || requestURI.matches("/.*/list/.*")
@@ -78,7 +79,6 @@ public class JWTFilter extends OncePerRequestFilter {
         || requestURI.matches("/.*/download/.*") 
         || requestURI.matches("/.*/download.*")
 
-                
 
         // || requestURI.matches("/edu/.*")
         // || requestURI.matches("/project/.*")

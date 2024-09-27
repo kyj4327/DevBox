@@ -12,7 +12,7 @@ const EduUpdate = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
-
+    const domain = "http://localhost:8080"; 
     const { user } = useUser();
 
     const [title, setTitle] = useState('');
@@ -49,6 +49,16 @@ const EduUpdate = () => {
     }
 
     const handleDetail = async () => {
+
+        if (new Date(start) > new Date(end)) {
+            Swal.fire({
+                icon: "error",
+                title: "날짜 오류",
+                text: "종료일은 시작일보다 이후여야 합니다."
+            });
+            return;
+        }
+        
         const formData = new FormData();
         formData.append("id", id);
         if (uploadImg) {
@@ -66,7 +76,7 @@ const EduUpdate = () => {
 
         const token = localStorage.getItem('accessToken');
 
-        const url = 'http://localhost:8080/edu/update';
+        const url = `${domain}/edu/update`;
         const res = await fetch(url, {
             method: 'post',
             credentials: 'include',
@@ -79,7 +89,11 @@ const EduUpdate = () => {
         if (data.code == 200) {
             navigate('/edu/list');
         } else {
-            alert(data.msg);
+            Swal.fire({
+                icon: "error",
+                title: "Opps..",
+                text: data.msg
+            });
         }
 
     };
@@ -87,7 +101,7 @@ const EduUpdate = () => {
     async function get() {
         const token = localStorage.getItem('accessToken');
 
-        const res = await fetch(`http://localhost:8080/edu/update?id=${id}`,{
+        const res = await fetch(`${domain}/edu/update?id=${id}`,{
             method: 'GET',
             credentials: "include",
             headers: {
@@ -150,7 +164,7 @@ const EduUpdate = () => {
                                     <img src={uploadImgUrl} alt="Uploaded" />
                                 )}
                                 {!isImageUploaded && (
-                                    <img src={`http://localhost:8080/edu/download?id=${id}`} alt="Original" />
+                                    <img src={`${domain}/edu/download?id=${id}`} alt="Original" />
                                 )}
                                 <input
                                     className="form-control form-control-lg light-300"

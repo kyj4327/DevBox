@@ -8,8 +8,8 @@ import Swal from "sweetalert2";
 import { useUser } from "../../components/context/UserContext";
 
 const EduWrite = () => {
-    const { user } = useUser();
-
+    const { user,loading } = useUser();
+    const domain = "http://localhost:8080"; 
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [subtitle, setSubtitle] = useState('');
@@ -38,9 +38,8 @@ const EduWrite = () => {
         }
     }
 
-
     useEffect(() => {
-        if (!user) {
+        if (!loading &&!user) {
             Swal.fire({
                 icon: "error",
                 title: "로그인 필요",
@@ -48,11 +47,29 @@ const EduWrite = () => {
             });
             navigate('/auth');
         }
-    }, [user, navigate]);
+    }, [user,loading, navigate]);
 
 
     const handleDetail = async (e) => {
         e.preventDefault();
+
+        if (!state || (state !== '모집중' && state !== '모집완료')) {
+            Swal.fire({
+                icon: "error",
+                title: "상태 오류",
+                text: "모집중 또는 모집완료 상태를 선택해주세요."
+            });
+            return;
+        }
+
+        if (new Date(start) > new Date(end)) {
+            Swal.fire({
+                icon: "error",
+                title: "날짜 오류",
+                text: "종료일은 시작일보다 이후여야 합니다."
+            });
+            return;
+        }
 
         if (uploadImg.length === 0) {
             Swal.fire({
@@ -78,7 +95,7 @@ const EduWrite = () => {
         const token = localStorage.getItem('accessToken');
 
         try {
-            const res = await fetch('http://localhost:8080/edu/write', {
+            const res = await fetch(`${domain}/edu/write`, {
                 method: 'POST',
                 credentials: "include",
                 headers: {
@@ -103,8 +120,11 @@ const EduWrite = () => {
                 });
             }
         } catch (error) {
-            console.error('저장 중 오류 발생:', error);
-            alert('저장 중 오류가 발생했습니다. 다시 시도해주세요.');
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "저장 중 오류가 발생했습니다. 다시 시도해주세요."
+            });
         }
             
     };

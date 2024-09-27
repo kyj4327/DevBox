@@ -46,8 +46,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Transactional
 public class EduController {
 
-
     private final Path fileStorageLocation = Paths.get("c:/images"); // 파일 저장 경로
+
+    // 고유한 파일명을 생성하는 메서드
+    private String generateUniqueFilename(String originalFilename) {
+        String fileExtension = "";
+        int dotIndex = originalFilename.lastIndexOf('.');
+        if (dotIndex > 0) {
+            fileExtension = originalFilename.substring(dotIndex); // 확장자 추출
+            originalFilename = originalFilename.substring(0, dotIndex); // 확장자를 제외한 파일명
+        }
+        String uniqueFilename = originalFilename + "_" + System.currentTimeMillis() + fileExtension; // 타임스탬프 추가
+        return uniqueFilename;
+    }
 
     @Autowired
     EduRepository eduRepository;
@@ -107,17 +118,24 @@ public class EduController {
 
         Map<String, Object> map = new HashMap<>();
 
+        // 파일이 첨부되지 않았을 경우 처리
         if (file == null || file.isEmpty()) {
             map.put("code", 400);
             map.put("msg", "포스터를 첨부해주세요.");
             return map;
         }
 
-        edu.setImg(file.getOriginalFilename());
+        // 고유한 파일명 생성
+        String originalFilename = file.getOriginalFilename();
+        String uniqueFilename = generateUniqueFilename(originalFilename); // 고유한 파일명 생성
+
+        // EduEntity에 고유한 파일명 설정
+        edu.setImg(uniqueFilename);
         EduEntity result = eduRepository.save(edu);
 
         try {
-            file.transferTo(new File("c:/images/" + file.getOriginalFilename()));
+            // 파일을 지정된 경로에 고유한 파일명으로 저장
+            file.transferTo(new File("c:/images/" + uniqueFilename));
         } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
             map.put("code", 500);
@@ -126,7 +144,7 @@ public class EduController {
         }
 
         map.put("code", 200);
-        map.put("msg", "업로드완료");
+        map.put("msg", "업로드 완료");
 
         return map;
     }
@@ -140,40 +158,46 @@ public class EduController {
 
         Map<String, Object> map = new HashMap<>();
 
-        // 데이터베이스에서 기존의 EduEntity를 가져옵니다.
+        // 데이터베이스에서 기존의 EduEntity를 가져옴
         EduEntity existingEdu = eduRepository.findById(edu.getId()).orElse(null);
 
         if (existingEdu != null) {
-            // 파일이 새로 업로드되지 않은 경우 기존의 파일 이름을 유지합니다.
+            // 파일이 새로 업로드되지 않은 경우 기존 파일 이름 유지
             if (file != null && !file.isEmpty()) {
-                // 파일이 새로 업로드된 경우 새로운 파일 이름을 설정합니다.
-                edu.setImg(file.getOriginalFilename());
+                // 고유한 파일명을 생성하여 파일 이름 설정
+                String originalFilename = file.getOriginalFilename();
+                String uniqueFilename = generateUniqueFilename(originalFilename); // 고유한 파일명 생성
+
+                edu.setImg(uniqueFilename);
 
                 try {
-                    // 새 파일을 지정된 경로에 저장합니다.
-                    file.transferTo(new File("c:/images/" + file.getOriginalFilename()));
+                    // 새로운 파일을 지정된 경로에 저장 (고유한 파일명으로)
+                    file.transferTo(new File("c:/images/" + uniqueFilename));
                 } catch (IllegalStateException | IOException e) {
-                    e.printStackTrace(); // 파일 저장 중 오류가 발생하면 스택 트레이스를 출력합니다.
+                    e.printStackTrace(); // 파일 저장 중 오류 발생 시 스택 트레이스 출력
+                    map.put("code", 500);
+                    map.put("msg", "파일 업로드 중 오류 발생: " + e.getMessage());
+                    return map; // 오류 발생 시 바로 반환
                 }
             } else {
-                // 파일이 없으면 기존의 파일 이름을 유지합니다.
+                // 파일이 없으면 기존의 파일 이름 유지
                 edu.setImg(existingEdu.getImg());
             }
 
-            // EduEntity 객체를 데이터베이스에 저장합니다.
+            // EduEntity 객체를 데이터베이스에 저장
             eduRepository.save(edu);
+
+            // 응답 맵에 성공 코드와 메시지 추가
+            map.put("code", 200);
+            map.put("msg", "수정 완료");
+
         } else {
-            // 기존 EduEntity가 없는 경우의 처리 (일반적으로 여기까지 도달하지 않아야 합니다).
+            // 기존 EduEntity가 없는 경우 처리
             map.put("code", 404);
             map.put("msg", "존재하지 않는 데이터입니다.");
-            return map;
         }
 
-        // 응답 맵에 성공 코드와 메시지를 추가합니다.
-        map.put("code", 200);
-        map.put("msg", "수정완료");
-
-        return map; // 수정 완료 응답을 반환합니다.
+        return map; // 수정 완료 응답 반환
     }
 
     @DeleteMapping("/edu/delete")

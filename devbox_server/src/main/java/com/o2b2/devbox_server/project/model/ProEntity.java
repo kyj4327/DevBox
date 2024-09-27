@@ -1,5 +1,6 @@
 package com.o2b2.devbox_server.project.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import com.o2b2.devbox_server.message.model.MsgReciverEntity;
 import com.o2b2.devbox_server.user.entity.UserEntity;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,7 +32,11 @@ public class ProEntity {
 
     String link;
 
+    @Column(length = 500, nullable = false)
     String coment;
+
+    LocalDateTime time = LocalDateTime.now();
+
 
     @OneToMany(mappedBy = "proEntity", cascade = CascadeType.REMOVE)
     List<MultiImgEntity> multiImgEntitys = new ArrayList<>();

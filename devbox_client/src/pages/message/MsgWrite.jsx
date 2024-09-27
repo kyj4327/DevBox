@@ -1,33 +1,85 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import WriteShort from "../../components/WriteShort";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useUser } from "../../components/context/UserContext";
+import QuillEditor from "../../components/QuillEditor";
 
 const MesWrite = () => {
-    const { user } = useUser();
+    const { user,loading } = useUser();
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
-    const [sender, setSender] = useState(user.nickname);
+    const [sender, setSender] = useState('');
     const [reciver, setReciver] = useState('');
     const [content, setContent] = useState('');
     const [nickNameError, setNickNameError] = useState('');
+    const domain = "http://localhost:8080";
+    useEffect(() => {
+        if (!loading) {
+            if (user) {
+                setSender(user.nickname || '');
+            } else {
+                Swal.fire({
+                    icon: "warning",
+                    title: "로그인 필요",
+                    text: "로그인이 필요합니다.",
+                }).then(() => {
+                    navigate('/auth');
+                });
+            }
+        }
+    }, [user, loading, navigate]);
 
-    const UnReciver = (reciver) => {
+    
+    // 닉네임 목록을 가져오는 함수
+    const checkNicknames = async () => {
+        try {
+            const token = localStorage.getItem('accessToken');
+            const res = await fetch(`${domain}/api/user/nicknames`, {
+                method: 'GET',
+                credentials: "include",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+            });
 
-    }
+            if (!res.ok) {
+                throw new Error('닉네임 가져오기 실패');
+            }
 
-    const handleNickNameChange = (e) => {
-        const inputLink = e.target.value;
-        setReciver(inputLink);
-
-        if (!UnReciver(inputLink)) {
-            setNickNameError('존재하지 않는 닉네임 입니다.');
-        } else {
-            setNickNameError(''); // 유효한 링크일 경우 오류 메시지 제거
+            const data = await res.json();
+            return data; // 닉네임 배열 반환
+        } catch (error) {
+            console.error('Failed to fetch nicknames:', error);
+            return []; // 실패 시 빈 배열 반환
         }
     };
+
+    // 닉네임을 검증하는 함수
+    const validateNickname = async (nickname) => {
+        if (!nickname.trim()) {
+            setNickNameError('받는 사람의 닉네임을 입력해주세요.'); // 빈 입력 시 오류 메시지
+            return;
+        }
+
+        const nicknames = await checkNicknames(); // 닉네임 목록 가져오기
+        const nicknameExists = nicknames.includes(nickname); // 입력된 닉네임이 목록에 있는지 확인
+
+        if (!nicknameExists) {
+            setNickNameError('존재하지 않는 닉네임입니다.'); // 존재하지 않을 때 오류 메시지
+        } else {
+            setNickNameError(''); // 존재하면 오류 메시지 제거
+        }
+    };
+
+    // 닉네임 입력 핸들러
+    const handleNickNameChange = (e) => {
+        const inputNickname = e.target.value;
+        setReciver(inputNickname);
+        validateNickname(inputNickname); // 입력된 닉네임 검증
+    };
+
 
     const handleDetail = async () => {
         if (nickNameError) {
@@ -47,18 +99,18 @@ const MesWrite = () => {
 
         console.log(reciver);
         console.log(sender);
-        
+
         const token = localStorage.getItem('accessToken');
-        const url = 'http://localhost:8080/msg/write';
+        const url = `${domain}/msg/write`;
         const res = await fetch(url, {
             method: 'POST',
             credentials: "include",
             headers: {
                 "Authorization": `Bearer ${token}`,
-            }, 
+            },
             body: formData
         });
-        
+
         const data = await res.json();
         if (data.code == 200) {
             navigate('/message/list');
@@ -85,7 +137,7 @@ const MesWrite = () => {
                                 <p className="worksingle-footer py-3 text-muted light-300">
                                     <div className="form-floating">
                                         <input type='text' className="form-control form-control-lg light-300" id='sender' name='sender' placeholder='보낼분'
-                                            value={sender} onChange={(e) => { setSender(e.target.value) }} readOnly/>
+                                            value={sender} onChange={(e) => { setSender(e.target.value) }} readOnly />
                                         <label htmlFor="floatingsubject light-300">보낼분</label>
                                     </div>
                                 </p>
@@ -100,24 +152,19 @@ const MesWrite = () => {
                                         <label htmlFor="floatingsubject light-300">받을분</label>
                                     </div>
                                 </p>
-                                    {nickNameError && <p style={{ color: 'red' }}>{nickNameError}</p>}
+                                {nickNameError && <p style={{ color: 'red' }}>{nickNameError}</p>}
                             </div>
                             <WriteShort titleTag={'제목'} type={'text'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} />
 
                             <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">작성 내용</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
                                 <div className=" form-floating">
-                                    <textarea
-                                        className="form-control form-control-lg light-300"
-                                        rows="8"
-                                        placeholder="Message"
-                                        id="floatingtextarea"
-                                        name="content"
+                                    <QuillEditor 
+                                        placeholder="내용"
                                         value={content}
-                                        type="text"
-                                        onChange={(e) => { setContent(e.target.value) }}
-                                    ></textarea>
-                                    <label htmlFor="floatingsubject light-300">작성 내용</label>
+                                        onChange={setContent}
+                                        height="450px"
+                                    />
                                 </div>
                             </p>
                         </div>

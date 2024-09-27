@@ -8,11 +8,10 @@ const Project = () => {
     const [pageData, setPageData] = useState({});
     const [refresh, setRefresh] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    
+    const domain = "http://localhost:8080";
     async function get(page = 1) {
-        const res = await fetch(`http://localhost:8080/project/list?page=${page}`);
+        const res = await fetch(`${domain}/project/list?page=${page}`);
         const data = await res.json();
-        console.log(data);
         
         setPageData(data);
         setCurrentPage(page);  // 페이지 데이터 불러온 후, 현재 페이지 업데이트

@@ -130,6 +130,7 @@ public class SecurityConfig {
                         .requestMatchers("/*/detail/**").permitAll()
                         .requestMatchers("/*/download/**").permitAll()
                         .requestMatchers("/api/user/delete").authenticated() // <- 회원 탈퇴
+                        .requestMatchers("/api/user/nicknames").authenticated() // <- 회원 탈퇴
 
 
 
@@ -231,12 +232,14 @@ public class SecurityConfig {
                         .requestMatchers("/edu/delete").authenticated()
 
                         // 프로젝트 자랑
-                        .requestMatchers("/project/list").permitAll()
-                        .requestMatchers("/project/detail").permitAll()
+                        .requestMatchers("/project/list/").permitAll()
+                        .requestMatchers("/project/detail/").permitAll()
                         .requestMatchers("/project/list/**").permitAll()
                         .requestMatchers("/project/detail/**").permitAll()
                         .requestMatchers("/project/write").authenticated()
                         .requestMatchers("/project/update/**").authenticated()
+                        .requestMatchers("/project/mylist/**").authenticated()
+                        .requestMatchers("/project/mylist**").authenticated()
                         .requestMatchers("/project/delete/**").authenticated()
                         .requestMatchers("/project/delete").authenticated()
 
@@ -252,14 +255,9 @@ public class SecurityConfig {
                         .requestMatchers("/msg/list**").authenticated()
                         // .requestMatchers("/message/**").authenticated()
 
-                        // .requestMatchers("/edu/**").permitAll()
-                        // .requestMatchers("/project/**").permitAll()
                         .requestMatchers("/msg/**").authenticated()
                         .requestMatchers("/msg/list**").authenticated()
-                        // .requestMatchers("/message/**").authenticated()
 
-//                        .requestMatchers("/msg/**").permitAll()
-                        // .requestMatchers("/msg/bell").authenticated()
 
 
 //                        자유게시판, faq
