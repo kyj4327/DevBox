@@ -4,6 +4,8 @@ import lombok.Data;
 
 @Data
 public class ReferenceDTO {
+    Long id;
+
     String title;
 
     String selectJob;
