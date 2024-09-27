@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllPosts } from '../../services/api-service';
 import Pagination from '../../components/Pagination';
+import '../../assets/css/freeboard.css';
 
 const FreeBoard = () => {
   const [posts, setPosts] = useState([]);
@@ -22,12 +23,12 @@ const FreeBoard = () => {
         setPosts(sortedPosts);
       } catch (error) {
         console.error('Error fetching posts:', error);
-        setError('게시글을 불러오는 데 실패했습니다.');
+        setError('게시글을 불러오는 데 실패했습니다. 다시 시도해주세요.');
       } finally {
         setIsLoading(false);
       }
     };
-
+  
     fetchPosts();
   }, []);
 
@@ -56,7 +57,7 @@ const FreeBoard = () => {
   return (
     <div className="container mt-5">
       <h2 className="mb-4">자유게시판</h2>
-      <Link to="/community/freeboard/new" className="btn btn-primary mb-3">
+      <Link to="/freeboard/write" className="btn-freeboard-write mb-3">
         새 글 작성
       </Link>
       {posts.length === 0 ? (
@@ -66,7 +67,7 @@ const FreeBoard = () => {
           {currentPosts.map((post) => (
             <Link
               key={post.id}
-              to={`/community/freeboard/post/${post.id}`}
+              to={`/freeboard/detail/${post.id}`}
               className="list-group-item list-group-item-action"
             >
               <div className="d-flex w-100 justify-content-between">

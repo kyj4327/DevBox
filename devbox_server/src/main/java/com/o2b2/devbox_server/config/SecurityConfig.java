@@ -81,6 +81,7 @@ public class SecurityConfig {
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 
+
                         CorsConfiguration configuration = new CorsConfiguration();
 
                         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
@@ -88,6 +89,7 @@ public class SecurityConfig {
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
                         configuration.setMaxAge(3600L);
+
 
                         configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
                         configuration.setExposedHeaders(Collections.singletonList("Authorization"));
@@ -122,6 +124,9 @@ public class SecurityConfig {
 
                         .requestMatchers("/password/**").permitAll() // 비밀번호 재설정 관련 경로에 접근 허용
                         .requestMatchers("/api/user/me").authenticated() // <- 인증된 사용자만 접근 가능하도록 설정
+                        .requestMatchers("/*/list/**").permitAll()
+                        .requestMatchers("/*/detail/**").permitAll()
+                        .requestMatchers("/*/download/**").permitAll()
                         .requestMatchers("/api/user/delete").authenticated() // <- 회원 탈퇴
 
 
@@ -184,6 +189,13 @@ public class SecurityConfig {
                         .requestMatchers("/notice/posts").authenticated()
                         .requestMatchers("/notice/posts**").authenticated()
 
+                        .requestMatchers("/reservation/write/**").permitAll()
+                        .requestMatchers("/reservation/check/**").authenticated()
+                        // .requestMatchers("/reservation/check/**").hasAnyRole("ADMIN", "STUDENT")
+                        // .requestMatchers("/reservation/write").hasAnyRole("ADMIN", "STUDENT")
+                        .requestMatchers("/contest/write").hasRole("ADMIN")
+                        // .requestMatchers("/hiring/write").hasRole("ADMIN")
+
                         /**
                          추천해요, 프로젝트 자랑 게시판
                          */
@@ -198,7 +210,25 @@ public class SecurityConfig {
 
                         .requestMatchers("/*/list/**").permitAll()
 
+                        // 교육 정보
+                        .requestMatchers("/edu/list/").permitAll()
+                        .requestMatchers("/edu/detail/").permitAll()
+                        .requestMatchers("/edu/list/**").permitAll()
+                        .requestMatchers("/edu/detail/**").permitAll()
+                        .requestMatchers("/edu/write").authenticated()
+                        .requestMatchers("/edu/update/**").authenticated()
+                        .requestMatchers("/edu/delete/**").authenticated()
+                        .requestMatchers("/edu/delete").authenticated()
 
+                        // 프로젝트 자랑
+                        .requestMatchers("/project/list").permitAll()
+                        .requestMatchers("/project/detail").permitAll()
+                        .requestMatchers("/project/list/**").permitAll()
+                        .requestMatchers("/project/detail/**").permitAll()
+                        .requestMatchers("/project/write").authenticated()
+                        .requestMatchers("/project/update/**").authenticated()
+                        .requestMatchers("/project/delete/**").authenticated()
+                        .requestMatchers("/project/delete").authenticated()
 
                         // 알림 기능은 로그인한 사용자만 접근 가능
                         .requestMatchers("/msg/bell").authenticated()
@@ -206,7 +236,27 @@ public class SecurityConfig {
                         .requestMatchers("/project/**").permitAll()
                         .requestMatchers("/message/**").permitAll()
 
+                        // .requestMatchers("/edu/**").permitAll()
+                        // .requestMatchers("/project/**").permitAll()
+                        .requestMatchers("/msg/**").authenticated()
+                        .requestMatchers("/msg/list**").authenticated()
+                        // .requestMatchers("/message/**").authenticated()
+
 //                        .requestMatchers("/msg/**").permitAll()
+                        // .requestMatchers("/msg/bell").authenticated()
+
+
+//                        자유게시판, faq
+                        .requestMatchers("/send/**").permitAll()
+                        .requestMatchers("/api/contact/**").permitAll()
+                        .requestMatchers("/api/posts/**").permitAll()
+                        .requestMatchers("/api/comments/**").permitAll()
+                        .requestMatchers("/posts/**").permitAll()
+                        .requestMatchers("/comments/**").permitAll()
+
+                        .requestMatchers("/freeboard/list/**").permitAll()
+
+
 
                         .anyRequest().authenticated());
 

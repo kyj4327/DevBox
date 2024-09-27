@@ -1,11 +1,14 @@
-const Pagination = (props) => {
-    const pageData = props.pageData;
+import React from 'react';
 
-    const handlePageChange = (pageNumber) => {
-        if (pageNumber >= 1 && pageNumber <= pageData.totalPage) {
-            props.handlePageChange(pageNumber);
-        }
-    };
+const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+    if (!currentPage || !totalPages || typeof onPageChange !== 'function') {
+        return null; // 필요한 props가 없으면 아무것도 렌더링하지 않음
+    }
+
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+    }
 
     return (
         <div>
@@ -14,22 +17,22 @@ const Pagination = (props) => {
                     <button
                         type="button"
                         className="btn btn-secondary text-white"
-                        onClick={() => handlePageChange(pageData.currentPage - 1)}
-                        disabled={pageData.currentPage === 1}
+                        onClick={() => onPageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
                     >
                         Previous
                     </button>
                 </div>
 
                 <div className="btn-group me-2" role="group" aria-label="Second group">
-                    {Array.from({ length: pageData.endPage - pageData.startPage + 1 }, (_, index) => (
+                    {pageNumbers.map((number) => (
                         <button
-                            key={pageData.startPage + index}
+                            key={number}
                             type="button"
-                            className={`btn ${pageData.currentPage === pageData.startPage + index ? 'btn-primary' : 'btn-light'}`}
-                            onClick={() => handlePageChange(pageData.startPage + index)}
+                            className={`btn ${currentPage === number ? 'btn-primary' : 'btn-light'}`}
+                            onClick={() => onPageChange(number)}
                         >
-                            {pageData.startPage + index}
+                            {number}
                         </button>
                     ))}
                 </div>
@@ -38,8 +41,8 @@ const Pagination = (props) => {
                     <button
                         type="button"
                         className="btn btn-secondary text-white"
-                        onClick={() => handlePageChange(pageData.currentPage + 1)}
-                        disabled={pageData.currentPage === pageData.totalPage}
+                        onClick={() => onPageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
                     >
                         Next
                     </button>

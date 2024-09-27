@@ -1,0 +1,156 @@
+@font-face {
+    font-family: 'PTAnboR';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTAnboR.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PTBandocheB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/PTBandocheB.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MinSans-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.roadExplain {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas: 
+        "left right"
+        "infoSub infoSub";
+    gap: 20px;
+    height: 100vh;
+    padding: 20px;
+}
+
+.roadExplain__left {
+    grid-area: left;
+}
+
+.roadExplain__right {
+    grid-area: right;
+}
+
+.roadExplain__infoSub {
+    grid-area: infoSub;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.roadExplain__infoCons {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.roadExplain__infoList, .roadExplain__infoTable {
+    flex: 1;
+}
+
+.roadExplain__heading {
+    font-family: "PTBandocheB", sans-serif;
+    margin-bottom: 12px;
+    font-size: 2.0rem;
+    color: #570ae3;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.roadExplain__icon {
+    width: 2.8rem;
+    height: 2.8rem;
+    margin-right: 10px;
+}
+
+.roadExplain__text, .roadExplain__list, .roadExplain__table {
+    margin: 0 0 12px 0;
+    padding: 0;
+    font-family: "MinSans-Regular", sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: left;
+}
+
+.roadExplain__transport .roadExplain__list,
+.roadExplain__transport .roadExplain__listItem {
+    text-align: left;
+}
+
+.roadExplain__infoList .roadExplain__list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    text-align: left;
+}
+.roadExplain__infoList .roadExplain__heading {
+    margin-bottom: 20px;
+}
+
+.roadExplain__infoTitle {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #0a0a5c;
+    font-size: 1.6rem;
+    font-family: "MinSans-Regular", sans-serif;
+    font-weight: bold;
+    padding-left: 10px;
+    text-align: left;
+}
+
+.roadExplain__table {
+    width: 100%;
+    max-width: 600px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 0 auto;
+}
+
+.roadExplain__table thead tr {
+    height: 40px;
+}
+
+.roadExplain__table th,
+.roadExplain__table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.roadExplain__table thead th {
+    color: #ffffff;
+    font-size: 1.4rem;
+    background: #2f1a66;
+    padding: 12px 8px;
+}
+
+.roadExplain__table th:first-child {
+    border-radius: 4px 0 0 4px;
+}
+
+.roadExplain__table th:last-child {
+    border-radius: 0 4px 4px 0;
+}
+
+.roadExplain__table td {
+    padding: 10px 6px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.roadExplain__table tbody tr:last-child td {
+    border-bottom: none;
+}

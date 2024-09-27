@@ -56,7 +56,7 @@ export const UserProvider = ({ children }) => {
       }
 
       try {
-        console.log("user/me");
+        // console.log("user/me");
         
         const response = await fetch("http://localhost:8080/api/user/me", {
           method: "GET",
@@ -67,12 +67,12 @@ export const UserProvider = ({ children }) => {
           },
         });
 
-        console.log(response);
+        // console.log(response);
         
         if (response.ok) {
           const userInfo = await response.json();
           // const userInfo = await response.json();
-          console.log("User Info:", userInfo);
+          // console.log("User Info:", userInfo);
           setUser(userInfo);
         } else if (response.status === 401) {
 

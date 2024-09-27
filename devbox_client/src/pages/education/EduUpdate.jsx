@@ -4,12 +4,16 @@ import WriteShort from "../../components/WriteShort";
 import WriteLong from "../../components/WriteLong";
 import Button from "../../components/Button";
 import WriteSelect from "../../components/WriteSelect";
+import { useUser } from "../../components/context/UserContext";
+import Swal from "sweetalert2";
 
 const EduUpdate = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
+
+    const { user } = useUser();
 
     const [title, setTitle] = useState('');
     const [subtitle, setSubtitle] = useState('');
@@ -60,9 +64,15 @@ const EduUpdate = () => {
         formData.append("logo", logo);
         formData.append("state", state);
 
+        const token = localStorage.getItem('accessToken');
+
         const url = 'http://localhost:8080/edu/update';
         const res = await fetch(url, {
             method: 'post',
+            credentials: 'include',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
             body: formData
         });
         const data = await res.json();
@@ -75,7 +85,15 @@ const EduUpdate = () => {
     };
 
     async function get() {
-        const res = await fetch(`http://localhost:8080/edu/update?id=${id}`);
+        const token = localStorage.getItem('accessToken');
+
+        const res = await fetch(`http://localhost:8080/edu/update?id=${id}`,{
+            method: 'GET',
+            credentials: "include",
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+        });
         const data = await res.json();
         setEduData(data);
 
@@ -103,11 +121,19 @@ const EduUpdate = () => {
 
     useEffect(() => {
         get();
-    }, [isImageUploaded]);
+        if (!user) {
+            Swal.fire({
+                icon: "error",
+                title: "로그인 필요",
+                text: "로그인이 필요합니다."
+            });
+            navigate('/auth');
+        }
+    }, [isImageUploaded,user, navigate]);
 
     return (
         <div>
-            <section class="container py-5">
+            <section className="container py-5">
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2 pb-5 ">교육 정보 수정</h1>
                     <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
@@ -117,7 +143,7 @@ const EduUpdate = () => {
                             <WriteShort type={'text'} titleTag={'제목'} name={'title'} value={title} onChange={(e) => setTitle(e.target.value)} />
                             <WriteShort type={'text'} titleTag={'소제목'} name={'subtitle'} value={subtitle} onChange={(e) => setSubtitle(e.target.value)} />
 
-                            <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">교육 포스터</h2>
+                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">교육 포스터</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
 
                                 {isImageUploaded && uploadImgUrl && (
@@ -134,7 +160,7 @@ const EduUpdate = () => {
                             </p>
 
 
-                            <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">모집기간</h2>
+                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">모집기간</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
                                 <div style={{ display: 'flex' }}>
                                     <input
@@ -154,7 +180,7 @@ const EduUpdate = () => {
                                 </div>
                             </p>
 
-                            <h2 class="worksingle-heading h3 pb-3 light-300 typo-space-line">교육기간</h2>
+                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">교육기간</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
 
                                 <div style={{ display: 'flex' }}>

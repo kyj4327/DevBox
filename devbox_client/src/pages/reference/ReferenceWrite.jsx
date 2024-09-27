@@ -3,11 +3,12 @@ import WriteShort from '../../components/WriteShort';
 import WriteSelect from '../../components/WriteSelect';
 import Button from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
 
 const ReferenceWrite = () => {
-    const { user } = useUser();  // Context에서 유저 정보가져오기
+    const { user } = useUser(); // Context에서 유저 정보 가져오기
+    const navigate = useNavigate();
 
     const [title, setTitle] = useState('');
     const [selectJob, setSelectJob] = useState('');
@@ -18,56 +19,74 @@ const ReferenceWrite = () => {
     const [content4, setContent4] = useState('');
     const [content5, setContent5] = useState('');
 
-    const navigate = useNavigate();
-
-
-  // 로그인 상태 확인
-  useEffect(() => {
-    if (!user) {
-        alert("로그인이 필요합니다.");
-        navigate('/auth');
-    }
-}, [user, navigate]);
-
-const saveData = async (e) => {
-    e.preventDefault();
-    if (!user) {
-        alert("로그인이 필요합니다.");
-        return;
-    }
-
-    const token = localStorage.getItem('accessToken');
-    
-    try {
-        const response = await fetch('http://localhost:8080/reference/write', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                title, selectJob, link, content1, content2, content3, content4, content5
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error("서버에서 오류가 발생했습니다.");
+    // 로그인 상태 확인
+    useEffect(() => {
+        if (!user) {
+            alert("로그인이 필요합니다.");
+            navigate('/auth');
         }
+    }, [user, navigate]);
 
-        const data = await response.json();
-        if (data.code === 200) {
-            alert('저장되었습니다.');
-            navigate('/reference/list');
+    const inputFocus = (name) => {
+        // alert(message); // alert 표시
+        const element = document.getElementById(name); // id로 요소를 찾음
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' }); // 스크롤 이동
+            element.focus(); // 해당 input에 focus
+        }
+    };
+
+    const saveData = async (e) => {
+        e.preventDefault();
+        if (!user) {
+            alert("로그인이 필요합니다.");
+            return;
+        } else if (title.trim() === '') {
+            inputFocus("title", "제목을 입력해주세요.");
+            setTitle('');
+        } else if (selectJob === '') {
+            window.scrollTo(0, 0);
+        } else if (link.trim() === '') {
+            inputFocus("link", "사이트 주소를 입력해주세요.");
+            setLink('');
+        } else if (content1.trim() === '') {
+            inputFocus("content1", "내용1을 입력해주세요.");
+            setContent1('');
+        } else if (content2.trim() === '') {
+            inputFocus("content2", "내용2를 입력해주세요.");
+            setContent2('');
         } else {
-            alert('저장에 실패했습니다. 다시 시도해주세요.');
+            const token = localStorage.getItem('accessToken');
+            try {
+                const url = 'http://localhost:8080/reference/write';
+                const response = await fetch(url, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        title: title, selectJob: selectJob, link: link,
+                        content1: content1, content2: content2, content3: content3.trim(), content4: content4.trim(), content5: content5.trim()
+                    })
+                });
+                if (!response.ok) {
+                    throw new Error("서버에서 오류가 발생했습니다.");
+                }
+                const data = await response.json();
+                if (data.code === 200) {
+                    alert('저장되었습니다.');
+                    navigate('/reference/list');
+                } else {
+                    alert('다시 입력해주세요.');
+                }
+            } catch (error) {
+                console.error("저장 중 오류 발생 : ", error);
+                alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
+            }
         }
-    } catch (error) {
-        console.error('저장 중 오류 발생:', error);
-        alert('저장 중 오류가 발생했습니다. 다시 시도해주세요.');
-    }
-};
-
+    };
 
     return (
         <section className="container py-5">
@@ -88,7 +107,7 @@ const saveData = async (e) => {
                             <li>내용5 (선택)</li>
                         </div>
                         <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
-                            <span className="btn rounded-pill px-4 btn-primary light-300" target='_blank'>Link</span>
+                            <span className="btn rounded-pill px-4 btn-primary light-300" style={{ cursor: 'default' }}>Link</span>
                         </div>
                     </div>
                 </div>

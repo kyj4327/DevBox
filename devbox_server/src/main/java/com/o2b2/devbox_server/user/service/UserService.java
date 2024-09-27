@@ -29,6 +29,7 @@ public class UserService {
                 UserEntity userEntity = userDetails.getUserEntity();
 
                 if (userEntity != null) {
+                    userInfo.put("id", userEntity.getId());
                     userInfo.put("email", userEntity.getEmail());
                     userInfo.put("nickname", userEntity.getNickname());
                     userInfo.put("name", userEntity.getName());

@@ -1,6 +1,5 @@
 package com.o2b2.devbox_server.project.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -14,7 +13,7 @@ import lombok.Data;
 @Data
 public class MultiImgEntity {
     @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     String img;

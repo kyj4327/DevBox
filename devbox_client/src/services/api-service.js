@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3000/api'; // 백엔드 서버 URL에 맞게 수정하세요
+const API_BASE_URL = 'http://localhost:8080/api'; // 백엔드 서버 URL에 맞게 수정하세요
 
 export const getAllPosts = async () => {
   try {
