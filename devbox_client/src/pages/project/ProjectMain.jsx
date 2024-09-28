@@ -2,12 +2,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import Button from '../../components/Button';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
+import UserContact from '../../components/UserContact';
 
 const ProjectMain = (props) => {
     const { user } = useUser();
     const navigate = useNavigate();
     const [likeStatus, setLikeStatus] = useState({});
     const domain = "http://localhost:8080";
+
     const fetchUserLikeStatus = async () => {
         const token = localStorage.getItem('accessToken');
         const url = `${domain}/project/like/status`;
@@ -60,7 +62,6 @@ const ProjectMain = (props) => {
 
     useEffect(() => {
         fetchUserLikeStatus(); // 컴포넌트가 마운트될 때 사용자 좋아요 상태를 가져옴
-
         if (props.list) {
             const initialLikeStatus = {};
             props.list.forEach(pro => {
@@ -94,7 +95,10 @@ const ProjectMain = (props) => {
                                 />
                                 <div className="card-body">
                                     <h5 className="card-title h6 m-0 semi-bold-600 text-dark">{pro.title}</h5>
-                                    <p className="card-text pt-2 mb-1 light-300 text-dark">{pro.name}</p>
+                                    <p className="card-text pt-2 mb-1 light-300 text-dark">  
+
+                                        <UserContact nickname={pro.name} />
+                                        </p>
                                     <div className='d-flex justify-content-end'>
                                         <svg
                                             onClick={(e) => {
@@ -123,7 +127,6 @@ const ProjectMain = (props) => {
                                         </svg>
                                         <span>{pro.likeCount}</span>
                                     </div>
-
                                 </div>
                             </div>
                         </Link>
