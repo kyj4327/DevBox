@@ -5,6 +5,8 @@ import Button from '../../components/Button';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
+import Swal from 'sweetalert2';
+import InputScrollAndFocus from '../../components/InputScrollAndFocus';
 
 const ReferenceWrite = () => {
     const domain = "http://localhost:8080";
@@ -24,38 +26,45 @@ const ReferenceWrite = () => {
     // 로그인 상태 확인
     useEffect(() => {
         if (!user) {
-            alert("로그인이 필요합니다.");
-            navigate('/auth');
+            // Swal.fire({
+            //     icon: "error",
+            //     title: "로그인이 필요합니다."
+            // });
+            // navigate('/auth');
+            Swal.fire({
+                icon: "error",
+                title: "로그인이 필요합니다."
+            }).then(() => {
+                navigate('/auth');
+            });
         }
     }, [user, navigate]);
-
-    const inputFocus = (name) => {
-        // alert(message); // alert 표시
-        const element = document.getElementById(name); // id로 요소를 찾음
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' }); // 스크롤 이동
-            element.focus(); // 해당 input에 focus
-        }
-    };
 
     const saveData = async (e) => {
         e.preventDefault();
         if (!user) {
-            alert("로그인이 필요합니다.");
+            Swal.fire({
+                icon: "error",
+                title: "로그인이 필요합니다."
+            });
             return;
         } else if (title.trim() === '') {
-            inputFocus("title", "제목을 입력해주세요.");
+            InputScrollAndFocus("title", "제목을 입력해주세요.");
             setTitle('');
         } else if (selectJob === '') {
+            Swal.fire({
+                icon: "warning",
+                title: "카테고리를 선택해주세요.",
+            });
             window.scrollTo(0, 0);
         } else if (link.trim() === '') {
-            inputFocus("link", "사이트 주소를 입력해주세요.");
+            InputScrollAndFocus("link", "사이트 주소를 입력해주세요.");
             setLink('');
         } else if (content1.trim() === '') {
-            inputFocus("content1", "내용1을 입력해주세요.");
+            InputScrollAndFocus("content1", "내용1을 입력해주세요.");
             setContent1('');
         } else if (content2.trim() === '') {
-            inputFocus("content2", "내용2를 입력해주세요.");
+            InputScrollAndFocus("content2", "내용2를 입력해주세요.");
             setContent2('');
         } else {
             const token = localStorage.getItem('accessToken');
@@ -78,14 +87,23 @@ const ReferenceWrite = () => {
                 }
                 const data = await response.json();
                 if (data.code === 200) {
-                    alert('저장되었습니다.');
-                    navigate('/reference/list');
+                    Swal.fire({
+                        icon: "success",
+                        title: "저장되었습니다."
+                    }).then(() => {
+                        navigate('/reference/list');
+                    });
                 } else {
-                    alert('다시 입력해주세요.');
+                    Swal.fire({
+                        icon: "error",
+                        title: "다시 입력해주세요."
+                    });
                 }
             } catch (error) {
-                console.error("저장 중 오류 발생 : ", error);
-                alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
+                Swal.fire({
+                    icon: "error",
+                    title: "저장 중 오류가 발생했습니다. 다시 시도해주세요."
+                });
             }
         }
     };
@@ -93,7 +111,7 @@ const ReferenceWrite = () => {
     return (
         <section className="container py-5">
             <div className="container py-5">
-                <h1 className="h2 semi-bold-600 text-center mt-2">추천해요 Write</h1>
+                <h1 className="h2 semi-bold-600 text-center mt-2">추천해요</h1>
                 <p className="text-center pb-5 light-300">아래와 같은 형식으로 게시됩니다. 참고해주세요!</p>
                 <div className="pricing-list shadow-sm rounded-top rounded-3 py-sm-0 py-5" style={{ marginBottom: '3rem' }}>
                     <div className="row p-2">
