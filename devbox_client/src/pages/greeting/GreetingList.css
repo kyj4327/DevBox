@@ -89,7 +89,7 @@
 
 .action-separator {
   color: #6c757d; /* 구분자 색상 */
-  margin: 0px 8p 0px 0px;
+  margin: 0px 8px 0px 0px;
 }
 
 .comments-container {
@@ -98,5 +98,4 @@
   padding: 10px;
   margin-top: 10px;
   width: 100%;
-
 }
