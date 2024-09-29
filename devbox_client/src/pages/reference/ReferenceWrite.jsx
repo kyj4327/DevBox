@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
 
 const ReferenceWrite = () => {
+    const domain = "http://localhost:8080";
+
     const { user } = useUser(); // Context에서 유저 정보 가져오기
     const navigate = useNavigate();
 
@@ -58,7 +60,7 @@ const ReferenceWrite = () => {
         } else {
             const token = localStorage.getItem('accessToken');
             try {
-                const url = 'http://localhost:8080/reference/write';
+                const url = `${domain}/reference/write`;
                 const response = await fetch(url, {
                     method: 'POST',
                     credentials: 'include',

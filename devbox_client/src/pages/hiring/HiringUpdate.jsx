@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
 
 const HiringUpdate = () => {
+    const domain = "http://localhost:8080";
+
     const { user } = useUser();
     const navigate = useNavigate();
 
@@ -32,7 +34,7 @@ const HiringUpdate = () => {
     const hiringId = search.get('hiringId');
     useEffect(() => {
         async function get() {
-            const url = `http://localhost:8080/hiring/update?hiringId=${hiringId}`;
+            const url = `${domain}/hiring/update?hiringId=${hiringId}`;
             const res = await fetch(url, {
                 credentials: 'include',
                 headers: {
@@ -83,7 +85,7 @@ const HiringUpdate = () => {
             setWantedUrl('');
         } else {
             try {
-                const url = 'http://localhost:8080/hiring/update';
+                const url = `${domain}/hiring/update`;
                 const response = await fetch(url, {
                     method: 'POST',
                     credentials: 'include',

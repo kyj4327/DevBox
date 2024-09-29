@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
 
 const ReferenceList = () => {
+    const domain = "http://localhost:8080";
+
     const { user } = useUser();
     const navigate = useNavigate();
     const toWrite = () => {
@@ -21,7 +23,7 @@ const ReferenceList = () => {
     const [pageData, setPageData] = useState([]);
     useEffect(() => {
         async function get(page = 1) {
-            const url = `http://localhost:8080/reference/list/${selectJob}?page=${page}`;
+            const url = `${domain}/reference/list/${selectJob}?page=${page}`;
             const res = await fetch(url);
             const data = await res.json();
             // 페이지 데이터와 실제 데이터 분리
@@ -102,7 +104,7 @@ const ReferenceList = () => {
                                                                 const token = localStorage.getItem('accessToken');
                                                                 if (window.confirm("삭제하시겠습니까?")) {
                                                                     async function send() {
-                                                                        const url = `http://localhost:8080/reference/delete?referenceId=${v.id}`;
+                                                                        const url = `${domain}/reference/delete?referenceId=${v.id}`;
                                                                         await fetch(url, {
                                                                             credentials: 'include',
                                                                             headers: {

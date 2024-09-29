@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
 
 const ContestUpdate = () => {
+    const domain = "http://localhost:8080";
+
     const { user } = useUser();
     const navigate = useNavigate();
 
@@ -33,7 +35,7 @@ const ContestUpdate = () => {
     const contestId = search.get('contestId');
     useEffect(() => {
         async function get() {
-            const url = `http://localhost:8080/contest/update?contestId=${contestId}`;
+            const url = `${domain}/contest/update?contestId=${contestId}`;
             const res = await fetch(url, {
                 credentials: 'include',
                 headers: {
@@ -89,7 +91,7 @@ const ContestUpdate = () => {
             setImgUrl('');
         } else {
             try {
-                const url = 'http://localhost:8080/contest/update';
+                const url = `${domain}/contest/update`;
                 const response = await fetch(url, {
                     method: 'POST',
                     credentials: 'include',

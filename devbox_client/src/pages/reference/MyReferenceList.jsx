@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
 
 const MyReferenceList = () => {
+    const domain = "http://localhost:8080";
+
     const { user } = useUser();
     const navigate = useNavigate();
     useEffect(() => {
@@ -22,7 +24,7 @@ const MyReferenceList = () => {
     const [pageData, setPageData] = useState([]);
     useEffect(() => {
         async function get(page = 1) {
-            const url = `http://localhost:8080/reference/mylist/${selectJob}?page=${page}`;
+            const url = `${domain}/reference/mylist/${selectJob}?page=${page}`;
             const res = await fetch(url, {
                 credentials: 'include',
                 headers: {
@@ -89,7 +91,7 @@ const MyReferenceList = () => {
                                                                 const token = localStorage.getItem('accessToken');
                                                                 if (window.confirm("삭제하시겠습니까?")) {
                                                                     async function send() {
-                                                                        const url = `http://localhost:8080/reference/delete?referenceId=${v.id}`;
+                                                                        const url = `${domain}/reference/delete?referenceId=${v.id}`;
                                                                         await fetch(url, {
                                                                             credentials: 'include',
                                                                             headers: {

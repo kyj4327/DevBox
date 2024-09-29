@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
 
 const ReferenceUpdate = () => {
+    const domain = "http://localhost:8080";
+
     const { user } = useUser();
     const navigate = useNavigate();
 
@@ -32,7 +34,7 @@ const ReferenceUpdate = () => {
     const referenceId = search.get('referenceId');
     useEffect(() => {
         async function get() {
-            const url = `http://localhost:8080/reference/update?referenceId=${referenceId}`;
+            const url = `${domain}/reference/update?referenceId=${referenceId}`;
             const res = await fetch(url, {
                 credentials: 'include',
                 headers: {
@@ -81,7 +83,7 @@ const ReferenceUpdate = () => {
             setContent2('');
         } else {
             try {
-                const url = 'http://localhost:8080/reference/update';
+                const url = `${domain}/reference/update`;
                 const response = await fetch(url, {
                     method: 'POST',
                     credentials: 'include',

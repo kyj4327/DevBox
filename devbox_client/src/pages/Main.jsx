@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import Category from "../components/Category";
 
 const Main = () => {
+    const domain = "http://localhost:8080";
+
     const [currentPage, setCurrentPage] = useState(1);
     const [state, setState] = useState('모집중');
     const [eduData, setEduData] = useState([]);
@@ -11,7 +13,7 @@ const Main = () => {
 
     useEffect(() => {
         async function get(page = 1) {
-            const res = await fetch(`http://localhost:8080/edu/list/${state}?page=${page}`);
+            const res = await fetch(`${domain}/edu/list/${state}?page=${page}`);
             const data = await res.json();
             setEduData(data.list);
             setCurrentPage(page);
@@ -21,7 +23,7 @@ const Main = () => {
 
     useEffect(() => {
         async function get(page = 1) {
-            const url = `http://localhost:8080/hiring/list/${category}?page=${page}`;
+            const url = `${domain}/hiring/list/${category}?page=${page}`;
             const res = await fetch(url);
             const data = await res.json();
             const listData = data.slice(0, -1);

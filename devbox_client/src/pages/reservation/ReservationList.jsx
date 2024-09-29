@@ -12,6 +12,8 @@ import { useUser } from '../../components/context/UserContext';
 import { useNavigate } from 'react-router-dom';
 
 const ReservationList = () => {
+    const domain = "http://localhost:8080";
+
     const { user } = useUser();
     const navigate = useNavigate();
     useEffect(() => {
@@ -29,7 +31,7 @@ const ReservationList = () => {
     const [pageData, setPageData] = useState([]);
     useEffect(() => {
         async function get(page = 1) {
-            const url = `http://localhost:8080/reservation/check/${category}/${date}?page=${page}`;
+            const url = `${domain}/reservation/check/${category}/${date}?page=${page}`;
             const res = await fetch(url, {
                 credentials: 'include',
                 headers: {
@@ -135,7 +137,7 @@ const ReservationList = () => {
                                                             e.preventDefault();
                                                             if (window.confirm(`${v.date} ${v.time} 예약취소하시겠습니까?`)) {
                                                                 async function send() {
-                                                                    const url = `http://localhost:8080/reservation/delete?reservationId=${v.id}`;
+                                                                    const url = `${domain}/reservation/delete?reservationId=${v.id}`;
                                                                     await fetch(url);
                                                                     alert(`${v.date} ${v.time} 예약취소되었습니다.`);
                                                                     window.location.reload();

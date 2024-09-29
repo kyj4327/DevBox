@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
 
 const HiringList = () => {
+    const domain = "http://localhost:8080";
+
     const { user } = useUser();
     const navigate = useNavigate();
     const toWrite = () => {
@@ -20,7 +22,7 @@ const HiringList = () => {
     const [pageData, setPageData] = useState([]);
     useEffect(() => {
         async function get(page = 1) {
-            const url = `http://localhost:8080/hiring/list/${category}?page=${page}`;
+            const url = `${domain}/hiring/list/${category}?page=${page}`;
             const res = await fetch(url);
             const data = await res.json();
             const listData = data.slice(0, -1);
@@ -94,7 +96,7 @@ const HiringList = () => {
                                                                                 const token = localStorage.getItem('accessToken');
                                                                                 if (window.confirm("삭제하시겠습니까?")) {
                                                                                     async function send() {
-                                                                                        const url = `http://localhost:8080/hiring/delete?hiringId=${v.id}`;
+                                                                                        const url = `${domain}/hiring/delete?hiringId=${v.id}`;
                                                                                         await fetch(url, {
                                                                                             credentials: 'include',
                                                                                             headers: {

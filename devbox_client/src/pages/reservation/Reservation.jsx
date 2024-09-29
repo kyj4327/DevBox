@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../components/context/UserContext';
 
 const Reservation = () => {
+    const domain = "http://localhost:8080";
+
     const { user } = useUser();
     const navigate = useNavigate();
 
@@ -64,7 +66,7 @@ const Reservation = () => {
             const token = localStorage.getItem('accessToken');
             if (window.confirm(`${date} ${time} 예약하시겠습니까?`)) {
                 try {
-                    const url = 'http://localhost:8080/reservation/write';
+                    const url = `${domain}/reservation/write`;
                     const response = await fetch(url, {
                         method: 'post',
                         credentials: 'include',
@@ -94,7 +96,7 @@ const Reservation = () => {
 
     useEffect(() => {
         async function get() {
-            const url = `http://localhost:8080/reservation/write/${date}`;
+            const url = `${domain}/reservation/write/${date}`;
             const res = await fetch(url);
             const data = await res.json();
             setTimeData(data);

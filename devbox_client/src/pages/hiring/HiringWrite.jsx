@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
 
 const HiringWrite = () => {
+    const domain = "http://localhost:8080";
+
     const { user } = useUser();
     const navigate = useNavigate();
 
@@ -61,7 +63,7 @@ const HiringWrite = () => {
         } else {
             const token = localStorage.getItem('accessToken');
             try {
-                const url = 'http://localhost:8080/hiring/write';
+                const url = `${domain}/hiring/write`;
                 const response = await fetch(url, {
                     method: 'POST',
                     credentials: 'include',
