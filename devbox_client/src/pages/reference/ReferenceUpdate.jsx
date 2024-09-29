@@ -5,6 +5,8 @@ import Button from '../../components/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
+import Swal from 'sweetalert2';
+import InputScrollAndFocus from '../../components/InputScrollAndFocus';
 
 const ReferenceUpdate = () => {
     const domain = "http://localhost:8080";
@@ -23,8 +25,12 @@ const ReferenceUpdate = () => {
 
     useEffect(() => {
         if (!user) {
-            alert("로그인이 필요합니다.");
-            navigate('/auth');
+            Swal.fire({
+                icon: "error",
+                title: "로그인이 필요합니다."
+            }).then(() => {
+                navigate('/auth');
+            });
         }
     }, [user, navigate]);
     const token = localStorage.getItem('accessToken');
@@ -54,61 +60,94 @@ const ReferenceUpdate = () => {
         get();
     }, []);
 
-    const inputFocus = (name) => {
-        const element = document.getElementById(name);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            element.focus();
+    const validateFields = () => {
+        if (!user) {
+            Swal.fire({
+                icon: "error",
+                title: "로그인이 필요합니다."
+            });
+            return false;
+        } else if (title.trim() === '') {
+            InputScrollAndFocus("title", "제목을 입력해주세요.");
+            setTitle('');
+            return false;
+        } else if (selectJob === '') {
+            Swal.fire({
+                icon: "warning",
+                title: "카테고리를 선택해주세요.",
+            });
+            window.scrollTo(0, 0);
+            return false;
+        } else if (link.trim() === '') {
+            InputScrollAndFocus("link", "사이트 주소를 입력해주세요.");
+            setLink('');
+            return false;
+        } else if (content1.trim() === '') {
+            InputScrollAndFocus("content1", "내용1을 입력해주세요.");
+            setContent1('');
+            return false;
+        } else if (content2.trim() === '') {
+            InputScrollAndFocus("content2", "내용2를 입력해주세요.");
+            setContent2('');
+            return false;
+        }
+        return true;
+    };
+
+    const updateData = async () => {
+        try {
+            const url = `${domain}/reference/update`;
+            const response = await fetch(url, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    id: referenceId, title: title, selectJob: selectJob, link: link,
+                    content1: content1, content2: content2, content3: content3.trim(), content4: content4.trim(), content5: content5.trim()
+                })
+            });
+            if (!response.ok) {
+                throw new Error("서버에서 오류가 발생했습니다.");
+            }
+            const data = await response.json();
+            if (data.code === 200) {
+                Swal.fire({
+                    icon: "success",
+                    title: "수정되었습니다."
+                }).then(() => {
+                    navigate('/reference/list');
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "다시 입력해주세요."
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "수정 중 오류가 발생했습니다. 다시 시도해주세요."
+            });
         }
     };
 
-    const updateData = async (e) => {
+    const handleUpdate = async (e) => {
         e.preventDefault();
-        if (!user) {
-            alert("로그인이 필요합니다.");
-            return;
-        } else if (title.trim() === '') {
-            inputFocus("title", "제목을 입력해주세요.");
-            setTitle('');
-        } else if (selectJob === '') {
-            window.scrollTo(0, 0);
-        } else if (link.trim() === '') {
-            inputFocus("link", "사이트 주소를 입력해주세요.");
-            setLink('');
-        } else if (content1.trim() === '') {
-            inputFocus("content1", "내용1을 입력해주세요.");
-            setContent1('');
-        } else if (content2.trim() === '') {
-            inputFocus("content2", "내용2를 입력해주세요.");
-            setContent2('');
-        } else {
-            try {
-                const url = `${domain}/reference/update`;
-                const response = await fetch(url, {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        id: referenceId, title: title, selectJob: selectJob, link: link,
-                        content1: content1, content2: content2, content3: content3.trim(), content4: content4.trim(), content5: content5.trim()
-                    })
-                });
-                if (!response.ok) {
-                    throw new Error("서버에서 오류가 발생했습니다.");
-                }
-                const data = await response.json();
-                if (data.code === 200) {
-                    alert('수정되었습니다.');
-                    navigate('/reference/list');
-                } else {
-                    alert('다시 입력해주세요.');
-                }
-            } catch (error) {
-                console.error("저장 중 오류 발생 : ", error);
-                alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
+        if (validateFields()) {
+            const result = await Swal.fire({
+                title: "수정하시겠습니까?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "수정",
+                confirmButtonColor: "#3085d6",
+                cancelButtonText: "취소",
+                cancelButtonColor: "#d33",
+            });
+            if (result.isConfirmed) {
+                updateData();
             }
         }
     };
@@ -116,7 +155,7 @@ const ReferenceUpdate = () => {
     return (
         <section className="container py-5">
             <div className="container py-5">
-                <h1 className="h2 semi-bold-600 text-center mt-2">추천해요 Update</h1>
+                <h1 className="h2 semi-bold-600 text-center mt-2">추천해요</h1>
                 <p className="text-center pb-5 light-300">다른 사람에게 알려주고 싶은 나만의 꿀팁을 공유해요!</p>
                 <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
                     <div className="contact-form row">
@@ -135,7 +174,7 @@ const ReferenceUpdate = () => {
             </div>
             <div className="form-row pt-2">
                 <div className="col-md-12 col-10 text-end">
-                    <Button text={'수정하기'} onClick={updateData} />
+                    <Button text={'수정하기'} onClick={handleUpdate} />
                 </div>
             </div>
         </section>
