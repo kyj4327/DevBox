@@ -10,6 +10,7 @@ import { ko } from 'date-fns/locale';
 import { format } from 'date-fns';
 import { useUser } from '../../components/context/UserContext';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const ReservationList = () => {
     const domain = "http://localhost:8080";
@@ -18,8 +19,12 @@ const ReservationList = () => {
     const navigate = useNavigate();
     useEffect(() => {
         if (!user) {
-            alert("로그인이 필요합니다.");
-            navigate('/auth');
+            Swal.fire({
+                icon: "error",
+                title: "로그인이 필요합니다."
+            }).then(() => {
+                navigate('/auth');
+            });
         }
     }, [user, navigate]);
     const token = localStorage.getItem('accessToken');
@@ -135,15 +140,51 @@ const ReservationList = () => {
                                                     <button className="btn rounded-pill px-4 btn-primary light-300"
                                                         onClick={(e) => {
                                                             e.preventDefault();
-                                                            if (window.confirm(`${v.date} ${v.time} 예약취소하시겠습니까?`)) {
-                                                                async function send() {
-                                                                    const url = `${domain}/reservation/delete?reservationId=${v.id}`;
-                                                                    await fetch(url);
-                                                                    alert(`${v.date} ${v.time} 예약취소되었습니다.`);
-                                                                    window.location.reload();
-                                                                }
-                                                                send();
+                                                            if (!user) {
+                                                                Swal.fire({
+                                                                    icon: "error",
+                                                                    title: "로그인이 필요합니다."
+                                                                });
+                                                                return;
                                                             }
+                                                            Swal.fire({
+                                                                title: "취소하시겠습니까?",
+                                                                text: `${v.date} ${v.time}`,
+                                                                icon: "warning",
+                                                                showCancelButton: true,
+                                                                confirmButtonText: "예",
+                                                                confirmButtonColor: "#3085d6",
+                                                                cancelButtonText: "아니오",
+                                                                cancelButtonColor: "#d33",
+                                                            }).then((result) => {
+                                                                if (result.isConfirmed) {
+                                                                    async function send() {
+                                                                        const url = `${domain}/reservation/delete?reservationId=${v.id}`;
+                                                                        await fetch(url, {
+                                                                            credentials: 'include',
+                                                                            headers: {
+                                                                                'Authorization': `Bearer ${token}`
+                                                                            }
+                                                                        });
+                                                                        Swal.fire({
+                                                                            title: "취소되었습니다.",
+                                                                            icon: "success"
+                                                                        }).then(() => {
+                                                                            window.location.reload();
+                                                                        });
+                                                                    }
+                                                                    send();
+                                                                }
+                                                            });
+                                                            // if (window.confirm(`${v.date} ${v.time} 예약취소하시겠습니까?`)) {
+                                                            //     async function send() {
+                                                            //         const url = `${domain}/reservation/delete?reservationId=${v.id}`;
+                                                            //         await fetch(url);
+                                                            //         alert(`${v.date} ${v.time} 예약취소되었습니다.`);
+                                                            //         window.location.reload();
+                                                            //     }
+                                                            //     send();
+                                                            // }
                                                         }}>예약취소</button>
                                                     : ""
                                             }
