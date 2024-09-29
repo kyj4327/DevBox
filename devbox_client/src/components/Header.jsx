@@ -4,9 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useUser } from '../components/context/UserContext';
 import './Header.css';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import DevBox from "./DevBox";
 
 const Header = () => {
-  const { user, setUser , loading} = useUser();
+  const { user, setUser, loading } = useUser();
   const navigate = useNavigate();
 
   const handleLogoutClick = async () => {
@@ -60,9 +61,10 @@ const Header = () => {
     <nav id="main_nav" className="navbar navbar-expand-lg navbar-light bg-white shadow">
       <div className="container d-flex justify-content-between align-items-center">
         <Link to="/" className="navbar-brand h1">
-          <i className="bx bx-buildings bx-sm text-dark"></i>
+          {/* <i className="bx bx-buildings bx-sm text-dark"></i>
           <span className="text-dark h4">Dev</span>
-          <span className="text-primary h4">Box</span>
+          <span className="text-primary h4">Box</span> */}
+          <DevBox />
         </Link>
         <div className="align-self-center collapse navbar-collapse flex-fill d-lg-flex justify-content-lg-between" id="navbar-toggler-success">
           <div className="flex-fill mx-xl-5 mb-2 menu-container">
@@ -118,9 +120,9 @@ const Header = () => {
                     delay={{ show: 250, hide: 400 }}
                     overlay={renderTooltip}
                   >
-                  <Link to="/mypage" className="nav-link">
-                    <i className="bx bx-user-circle bx-sm text-primary"></i>
-                  </Link>
+                    <Link to="/mypage" className="nav-link">
+                      <i className="bx bx-user-circle bx-sm text-primary"></i>
+                    </Link>
                   </OverlayTrigger>
                   <button onClick={handleLogoutClick} className="header-logout-button nav-link" aria-label="Logout">
                     <i className='bx bx-log-out bx-sm text-primary'></i>
