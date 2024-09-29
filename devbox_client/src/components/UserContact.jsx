@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useUser } from './context/UserContext';
-import WriteShort from './WriteShort';
 
 const UserContact = ({ nickname }) => {
     const [showModal, setShowModal] = useState(false);
-    const { user } = useUser();
-    const navigate = useNavigate();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
@@ -18,14 +15,14 @@ const UserContact = ({ nickname }) => {
     const [content, setContent] = useState('');
 
     const handleDetail = async () => {
+
         const formData = new FormData();
 
-
+        console.log("Reciver 값: ", reciver);
         formData.append("title", title);
         formData.append("content", content);
         formData.append("reciver", reciver);
-        console.log(reciver);
-        
+
         const token = localStorage.getItem('accessToken');
         const url = `${domain}/msg/write`;
         const res = await fetch(url, {
@@ -39,7 +36,12 @@ const UserContact = ({ nickname }) => {
         });
         const data = await res.json();
         if (data.code == 200) {
-            navigate('/project/list');
+            Swal.fire({
+                icon: "success",
+                title: "전송 완료!!",
+                text: "메시지가 성공적으로 발송되었습니다."
+            });
+
         } else {
             Swal.fire({
                 icon: "error",
@@ -51,6 +53,10 @@ const UserContact = ({ nickname }) => {
     };
 
     const handleClose = (e) => {
+        if (e) {
+            e.preventDefault(); // 기본 동작을 방지합니다.
+            e.stopPropagation(); // 이벤트 전파를 중지합니다.
+        }
         setShowModal(false);
     }
     const handleShow = (e) => {
@@ -61,8 +67,8 @@ const UserContact = ({ nickname }) => {
 
     return (
         <>
-            <div class="dropdown ">
-                <button className="btn  dropdown" data-bs-toggle="dropdown" aria-expanded="true">
+            <div className="dropdown ">
+                <button className="btn dropdown " data-bs-toggle="dropdown" aria-expanded="true">
                     {nickname}
                 </button>
                 <ul class="dropdown-menu">
@@ -72,35 +78,37 @@ const UserContact = ({ nickname }) => {
 
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <div value ={reciver} onChange={(e) => { setReciver(e.target.value) }} >
-                    <Modal.Title>받는 사람: {nickname} </Modal.Title>
+                    <div value={reciver} onChange={(e) => { setReciver(e.target.value) }} >
+                        <Modal.Title>받는 사람: {nickname} </Modal.Title>
                     </div>
                 </Modal.Header>
                 <Modal.Body>
                     <form>
                         <div className="mb-3">
-                            {/* <div className="form-group d-flex align-items-center">
-                                <label htmlFor="title" className="form-label d-flex align-items-center mb-2 me-4">제목</label>
-                                <textarea
+                            <div className="form-group align-items-center">
+                                <label htmlFor="title" className="form-label">제목</label>
+                                <input
                                     id="title"
                                     className="form-control"
-                                    rows="1"
+                                    type="text"
                                     value={title}
-                                    style={{ }}
-                                    onChange={(e) => setTitle(e.target.value)} // onChange 핸들러 수정
-                                ></textarea>
-                            </div> */}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                    }}
+                                    onChange={(e) => setTitle(e.target.value)} 
+                                />
+                            </div>
 
-                            <label htmlFor="message" className="form-label">메시지</label>
+                            <label htmlFor="message" className="form-label pt-3">메시지</label>
                             <textarea
                                 id="message"
                                 className="form-control"
                                 rows="6"
                                 value={content}
-                                onClick={(e) =>{
+                                onClick={(e) => {
                                     e.preventDefault();
                                 }}
-                                onChange={(e) => 
+                                onChange={(e) =>
                                     setContent(e.target.value)} // onChange 핸들러 수정
                             ></textarea>
                         </div>
@@ -112,9 +120,15 @@ const UserContact = ({ nickname }) => {
                         닫기
                     </Button>
                     <Button variant="outline-primary" onClick={() => {
+                        if (!title || !content) {
+                            Swal.fire({
+                                icon: "warning",
+                                title: "입력 오류",
+                                text: "제목, 메시지 입력해주세요."
+                            });
+                            return;
+                        }
                         handleDetail();
-                        // 여기서 쪽지 전송 로직 추가
-                        alert('쪽지가 전송되었습니다!');
                         handleClose();
                     }}>
                         전송
