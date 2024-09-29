@@ -40,70 +40,95 @@ const ReferenceWrite = () => {
         }
     }, [user, navigate]);
 
-    const saveData = async (e) => {
-        e.preventDefault();
+    const validateFields = () => {
         if (!user) {
             Swal.fire({
                 icon: "error",
                 title: "로그인이 필요합니다."
             });
-            return;
+            return false;
         } else if (title.trim() === '') {
             InputScrollAndFocus("title", "제목을 입력해주세요.");
             setTitle('');
+            return false;
         } else if (selectJob === '') {
             Swal.fire({
                 icon: "warning",
                 title: "카테고리를 선택해주세요.",
             });
             window.scrollTo(0, 0);
+            return false;
         } else if (link.trim() === '') {
             InputScrollAndFocus("link", "사이트 주소를 입력해주세요.");
             setLink('');
+            return false;
         } else if (content1.trim() === '') {
             InputScrollAndFocus("content1", "내용1을 입력해주세요.");
             setContent1('');
+            return false;
         } else if (content2.trim() === '') {
             InputScrollAndFocus("content2", "내용2를 입력해주세요.");
             setContent2('');
-        } else {
-            const token = localStorage.getItem('accessToken');
-            try {
-                const url = `${domain}/reference/write`;
-                const response = await fetch(url, {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        title: title, selectJob: selectJob, link: link,
-                        content1: content1, content2: content2, content3: content3.trim(), content4: content4.trim(), content5: content5.trim()
-                    })
+            return false;
+        }
+        return true; // 모든 조건을 만족할 경우
+    };
+
+    const saveData = async () => {
+        const token = localStorage.getItem('accessToken');
+        try {
+            const url = `${domain}/reference/write`;
+            const response = await fetch(url, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    title: title, selectJob: selectJob, link: link,
+                    content1: content1, content2: content2, content3: content3.trim(), content4: content4.trim(), content5: content5.trim()
+                })
+            });
+            if (!response.ok) {
+                throw new Error("서버에서 오류가 발생했습니다.");
+            }
+            const data = await response.json();
+            if (data.code === 200) {
+                Swal.fire({
+                    icon: "success",
+                    title: "저장되었습니다."
+                }).then(() => {
+                    navigate('/reference/list');
                 });
-                if (!response.ok) {
-                    throw new Error("서버에서 오류가 발생했습니다.");
-                }
-                const data = await response.json();
-                if (data.code === 200) {
-                    Swal.fire({
-                        icon: "success",
-                        title: "저장되었습니다."
-                    }).then(() => {
-                        navigate('/reference/list');
-                    });
-                } else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "다시 입력해주세요."
-                    });
-                }
-            } catch (error) {
+            } else {
                 Swal.fire({
                     icon: "error",
-                    title: "저장 중 오류가 발생했습니다. 다시 시도해주세요."
+                    title: "다시 입력해주세요."
                 });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "저장 중 오류가 발생했습니다. 다시 시도해주세요."
+            });
+        }
+    };
+
+    const handleSave = async (e) => {
+        e.preventDefault();
+        if (validateFields()) { // 유효성 검사 실행
+            const result = await Swal.fire({
+                title: "저장하시겠습니까?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "저장",
+                confirmButtonColor: "#3085d6",
+                cancelButtonText: "취소",
+                cancelButtonColor: "#d33",
+            });
+            if (result.isConfirmed) {
+                saveData(); // 데이터 저장
             }
         }
     };
@@ -148,7 +173,7 @@ const ReferenceWrite = () => {
             </div>
             <div className="form-row pt-2">
                 <div className="col-md-12 col-10 text-end">
-                    <Button text={'저장하기'} onClick={saveData} />
+                    <Button text={'저장하기'} onClick={handleSave} />
                 </div>
             </div>
         </section>
