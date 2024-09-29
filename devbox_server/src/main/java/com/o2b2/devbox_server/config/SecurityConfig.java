@@ -157,7 +157,6 @@ public class SecurityConfig {
 
                         // gatherMate 글 작성 페이지는 로그인 사용자
                         .requestMatchers("/gathermate/write").authenticated()
-                        .requestMatchers("/reference/write").authenticated()
                         // gatherMate 글 수정 페이지는 로그인 사용자
                         .requestMatchers("/gathermate/edit/**").authenticated()
 
@@ -192,20 +191,22 @@ public class SecurityConfig {
                         .requestMatchers("/notice/posts").authenticated()
                         .requestMatchers("/notice/posts**").authenticated()
 
-                        .requestMatchers("/reservation/write/**").permitAll()
-                        .requestMatchers("/reservation/check/**").authenticated()
-                        // .requestMatchers("/reservation/check/**").hasAnyRole("ADMIN", "STUDENT")
-                        // .requestMatchers("/reservation/write").hasAnyRole("ADMIN", "STUDENT")
+                        // 공모전 공고
                         .requestMatchers("/contest/write").hasRole("ADMIN")
+
+                        // 채용 공고
                         // .requestMatchers("/hiring/write").hasRole("ADMIN")
 
+                        // 추천해요
+                        .requestMatchers("/reference/write").authenticated()
+                        .requestMatchers("/reference/mylist/**").authenticated()
+
+                        // 6층 회의실 예약
                         .requestMatchers("/reservation/write/**").permitAll()
                         .requestMatchers("/reservation/check/**").authenticated()
+                        .requestMatchers("/reservation/delete").authenticated()
                         // .requestMatchers("/reservation/check/**").hasAnyRole("ADMIN", "STUDENT")
                         // .requestMatchers("/reservation/write").hasAnyRole("ADMIN", "STUDENT")
-                        .requestMatchers("/contest/write").hasRole("ADMIN")
-                        // .requestMatchers("/hiring/write").hasRole("ADMIN")
-                        .requestMatchers("/reference/mylist/**").authenticated()
                         
                         /**
                          추천해요, 프로젝트 자랑 게시판
