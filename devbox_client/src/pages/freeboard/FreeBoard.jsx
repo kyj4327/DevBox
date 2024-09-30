@@ -76,14 +76,14 @@ const FreeBoard = () => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
       hour12: false, // 24시간 형식
     };
-    return date.toLocaleString('ko-KR', options).replace(',', ''); // 한국어 형식으로 포맷
+    return date.toLocaleString("ko-KR", options).replace(",", ""); // 한국어 형식으로 포맷
   };
 
   // if (isLoading) return <div>로딩 중...</div>;
@@ -127,7 +127,7 @@ const FreeBoard = () => {
                         {post.author}
                       </td>
                       <td data-label="작성일" className="notice-date">
-                      {formatDate(post.createdAt)}
+                        {formatDate(post.createdAt)}
                       </td>
                       <td data-label="조회수" className="notice-views">
                         {post.views}
