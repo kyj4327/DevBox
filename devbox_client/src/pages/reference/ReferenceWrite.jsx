@@ -23,6 +23,23 @@ const ReferenceWrite = () => {
     const [content4, setContent4] = useState('');
     const [content5, setContent5] = useState('');
 
+    const [visibleContents, setVisibleContents] = useState(0); // 현재 추가된 내용의 수를 관리하는 상태
+    // 내용 추가 버튼을 클릭했을 때 호출되는 함수
+    const handleAddContent = () => {
+        setVisibleContents(visibleContents + 1); // 누를 때마다 visibleContents 값을 증가시켜 표시할 내용의 수를 늘림
+    };
+    // 내용 삭제 버튼을 클릭했을 때 호출되는 함수
+    const handleRemoveContent = (contentNumber) => {
+        if (contentNumber === 3) {
+            setContent3('');
+        } else if (contentNumber === 4) {
+            setContent4('');
+        } else if (contentNumber === 5) {
+            setContent5('');
+        }
+        setVisibleContents(visibleContents - 1); // visibleContents 값을 줄여서 내용 필드를 숨김
+    };
+
     // 로그인 상태 확인
     useEffect(() => {
         if (!user) {
@@ -47,7 +64,7 @@ const ReferenceWrite = () => {
             InputScrollAndFocus("title", "제목을 입력해주세요.");
             setTitle('');
         } else if (selectJob === '') {
-            document.activeElement.blur(); // 현재 포커스된 요소의 포커스를 해제
+            document.activeElement.blur(); // 현재 포커스된 요소(저장하기 버튼)의 포커스를 해제
             InputScrollAndFocus("intro", "카테고리를 선택해주세요.");
         } else if (link.trim() === '') {
             InputScrollAndFocus("link", "사이트 주소를 입력해주세요.");
@@ -112,11 +129,11 @@ const ReferenceWrite = () => {
                         </div>
                         <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                             <li style={{ listStyle: 'none' }}>카테고리</li>
-                            <li>내용1 (필수)</li>
-                            <li>내용2 (필수)</li>
-                            <li>내용3 (선택)</li>
-                            <li>내용4 (선택)</li>
-                            <li>내용5 (선택)</li>
+                            <li>(필수) 내용1 (65자 이내)</li>
+                            <li>(필수) 내용2 (65자 이내)</li>
+                            <li>(선택) 내용1 (65자 이내)</li>
+                            <li>(선택) 내용2 (65자 이내)</li>
+                            <li>(선택) 내용3 (65자 이내)</li>
                         </div>
                         <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
                             <span className="btn rounded-pill px-4 btn-primary light-300" style={{ cursor: 'default' }}>Link</span>
@@ -130,11 +147,33 @@ const ReferenceWrite = () => {
                             value={selectJob || "카테고리를 선택해주세요."} onChange={(e) => setSelectJob(e.target.value)}
                             options={["Web", "DevOps", "Cloud", "Data", "Mobile", "Others"]} />
                         <WriteLong titleTag={'사이트 주소'} name={'link'} value={link} onChange={(e) => { setLink(e.target.value) }} />
-                        <WriteLong titleTag={'내용1 (필수)'} name={'content1'} value={content1} onChange={(e) => { setContent1(e.target.value) }} />
-                        <WriteLong titleTag={'내용2 (필수)'} name={'content2'} value={content2} onChange={(e) => { setContent2(e.target.value) }} />
-                        <WriteLong titleTag={'내용3 (선택)'} name={'content3'} value={content3} onChange={(e) => { setContent3(e.target.value) }} />
-                        <WriteLong titleTag={'내용4 (선택)'} name={'content4'} value={content4} onChange={(e) => { setContent4(e.target.value) }} />
-                        <WriteLong titleTag={'내용5 (선택)'} name={'content5'} value={content5} onChange={(e) => { setContent5(e.target.value) }} />
+                        <WriteLong titleTag={'(필수) 내용1 (65자 이내)'} name={'content1'} value={content1} onChange={(e) => { setContent1(e.target.value) }} />
+                        <WriteLong titleTag={'(필수) 내용2 (65자 이내)'} name={'content2'} value={content2} onChange={(e) => { setContent2(e.target.value) }} />
+                        {/* 내용3, 내용4, 내용5는 visibleContents 값에 따라 조건부로 표시 */}
+                        {visibleContents >= 1 && (
+                            <WriteLong titleTag={'(선택) 내용1 (65자 이내)'} name={'content3'} value={content3} onChange={(e) => { setContent3(e.target.value) }}
+                                contentDelete={visibleContents === 1} // 삭제 버튼 표시 여부
+                                onDelete={() => handleRemoveContent(3)} // 삭제 버튼 클릭 시 함수 호출
+                            />
+                        )}
+                        {visibleContents >= 2 && (
+                            <WriteLong titleTag={'(선택) 내용2 (65자 이내)'} name={'content4'} value={content4} onChange={(e) => { setContent4(e.target.value) }}
+                                contentDelete={visibleContents === 2} onDelete={() => handleRemoveContent(4)} />
+                        )}
+                        {visibleContents >= 3 && (
+                            <WriteLong titleTag={'(선택) 내용3 (65자 이내)'} name={'content5'} value={content5} onChange={(e) => { setContent5(e.target.value) }}
+                                contentDelete={visibleContents === 3} onDelete={() => handleRemoveContent(5)} />
+                        )}
+                        {/* 내용 추가 버튼은 visibleContents가 3 미만일 때만 표시 */}
+                        {visibleContents < 3 && (
+                            <div className="form-row pt-2 py-2">
+                                <div className="col-md-12 col-10">
+                                    <button type="button" className="btn btn-secondary text-white px-md-4 px-2 py-md-3 py-1 radius-0 light-300" onClick={handleAddContent}>
+                                        내용 추가
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
