@@ -46,7 +46,10 @@ public class GatherMateController {
     @GetMapping("/posts/{postId}")
     public GatherMateResponse get(@PathVariable Long postId,
                                   @AuthenticationPrincipal CustomUserDetails userDetails) {
-        Long userId = (userDetails != null) ? userDetails.getUserEntity().getId() : null;
+        Long userId = null;
+        if (userDetails != null) {
+            userId = userDetails.getUserEntity().getId();
+        }
 
         return gatherMateService.get(postId, userId);
     }

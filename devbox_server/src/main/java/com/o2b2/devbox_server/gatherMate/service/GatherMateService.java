@@ -46,6 +46,8 @@ public class GatherMateService {
                 .isRecruiting(gatherMatePostCreate.isRecruiting())
                 .user(user)
                 .author(user.getNickname())
+                .likeCount(0)
+                .views(0)
                 .build();
 
         GatherMate saveGatherMate = gatherMateRepository.save(gatherMate);
@@ -58,8 +60,7 @@ public class GatherMateService {
         GatherMate gatherMate = gatherMateRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
 
-
-            gatherMate.incrementViews();
+        gatherMate.incrementViews();
 
 
         boolean isLiked = false;
@@ -92,7 +93,7 @@ public class GatherMateService {
                     int commentCount = gathermateCommentRepository.countByGatherMate(post);
                     boolean isLiked = false; // 필요한 경우 사용자에 따라 설정
 
-                    return new GatherMateResponse(post, commentCount,isLiked);
+                    return new GatherMateResponse(post, isLiked, commentCount);
                 })
                 .collect(Collectors.toList());
 
@@ -106,20 +107,13 @@ public class GatherMateService {
                 .map(post -> {
                     int commentCount = gathermateCommentRepository.countByGatherMate(post);
                     boolean isLiked = false; // 필요한 경우 사용자에 따라 설정
-                    return new GatherMateResponse(post, commentCount,isLiked);
+                    return new GatherMateResponse(post, isLiked,commentCount);
                 })
                 .collect(Collectors.toList());
 
         return new PageImpl<>(responses, pageable, posts.getTotalElements());
     }
 
-    // 검색
-//    public List<GatherMateResponse> search(String keyword, Pageable pageable) {
-//        return gatherMateRepository.findByTitleContainingOrContentContaining(keyword, keyword, pageable)
-//                .stream()
-//                .map(GatherMateResponse::new)
-//                .collect(Collectors.toList());
-//    }
     public Page<GatherMateResponse> search(String keyword, String searchType, Pageable pageable) {
         Page<GatherMate> posts;
 
@@ -135,7 +129,7 @@ public class GatherMateService {
                 .map(post -> {
                     int commentCount = gathermateCommentRepository.countByGatherMate(post);
                     boolean isLiked = false; // 필요한 경우 사용자에 따라 설정
-                    return new GatherMateResponse(post, commentCount, isLiked);
+                    return new GatherMateResponse(post, isLiked,commentCount);
                 })
                 .collect(Collectors.toList());
 

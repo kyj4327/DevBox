@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useUser } from "../../components/context/UserContext";
-import GatherMateComments from "../../components/GatherMateComments";
 import profilePic from "../../assets/img/profilePic.png";
 import "./GatherMateDetail.css";
 import PostButton from "../../components/PostButton";
 import BoardComments from "../../components/BoardComments";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 const GatherMateDetail = () => {
   const { postId } = useParams();
-  const { user } = useUser();
+  const { user, loading } = useUser();
   const [post, setPost] = useState(null);
 
-  // const [likes, setLikes] = useState();
   const [isLiked, setIsLiked] = useState(false);
 
-  const [isRecruiting, setIsRecruiting] = useState("");
+  const [isRecruiting, setIsRecruiting] = useState(false);
   const [apply, setApply] = useState("");
 
   const navigate = useNavigate();
@@ -24,8 +23,10 @@ const GatherMateDetail = () => {
   };
 
   useEffect(() => {
-    fetchPost();
-  }, [postId]);
+    if (!loading) {
+      fetchPost();
+    }
+  }, [postId, loading]);
 
   // 게시글 백엔드에서 가져오기
   const fetchPost = async () => {
@@ -37,20 +38,22 @@ const GatherMateDetail = () => {
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            // Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
           },
         }
       );
 
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error("네트워크 응답이 올바르지 않습니다.");
       }
       const data = await response.json();
+      console.log("Fetched post data:", data); // 전체 데이터 로그
       console.log("data 뽑기 " + data.isLiked);
       setPost(data);
       // setLikes(data.likes || 0);
       setIsLiked(data.isLiked || false);
-      setIsRecruiting(data.recruiting);
+      setIsRecruiting(data.isRecruiting);
       setApply(data.apply);
     } catch (error) {
       console.error("Error fetching post:", error);
@@ -75,8 +78,17 @@ const GatherMateDetail = () => {
 
   // 게시글 삭제
   const deletePost = async () => {
-    const confirmed = window.confirm("정말로 이 게시글을 삭제하시겠습니까?");
-    if (!confirmed) return;
+    const confirmed = await Swal.fire({
+      title: "게시글 삭제",
+      text: "정말로 이 게시글을 삭제하시겠습니까?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+    });
+    if (!confirmed.isConfirmed) return;
 
     try {
       const response = await fetch(
@@ -97,16 +109,34 @@ const GatherMateDetail = () => {
         throw new Error("네트워크 응답이 올바르지 않습니다.");
       }
 
-      alert("게시글이 성공적으로 삭제되었습니다.");
+      await Swal.fire({
+        icon: "success",
+        title: "삭제 완료",
+        text: "게시글이 성공적으로 삭제되었습니다.",
+        confirmButtonText: "확인",
+      });
       navigate("/gathermate/list"); // 삭제 후 목록 페이지로 이동
     } catch (error) {
       console.error("삭제 중 오류 발생:", error);
-      alert(error.message || "글 삭제에 실패했습니다. 다시 시도해주세요.");
+      await Swal.fire({
+        icon: "error",
+        title: "삭제 실패",
+        text: error.message || "글 삭제에 실패했습니다. 다시 시도해주세요.",
+      });
     }
   };
 
   // 좋아요
   const handleLike = async () => {
+    if (!user) {
+      await Swal.fire({
+        icon: "info",
+        title: "로그인 필요",
+        text: "로그인이 필요합니다.",
+      });
+      return;
+    }
+
     try {
       const response = await fetch(
         `http://localhost:8080/gathermate/likes/${postId}`,
@@ -125,6 +155,7 @@ const GatherMateDetail = () => {
       }
 
       const data = await response.json();
+      console.log("Like toggled:", data);
       setPost((prevPost) => ({
         ...prevPost,
         likeCount: data.likeCount,
@@ -132,7 +163,11 @@ const GatherMateDetail = () => {
       setIsLiked(data.isLiked);
     } catch (error) {
       console.error("Error toggling like status:", error);
-      alert("로그인을 해야지 좋아요를 실행할 수 있습니다.");
+      await Swal.fire({
+        icon: "error",
+        title: "좋아요 실패",
+        text: "로그인 후 좋아요를 실행할 수 있습니다.",
+      });
     }
   };
 
@@ -155,7 +190,12 @@ const GatherMateDetail = () => {
       if (response.ok) {
         const data = await response.json();
         setIsRecruiting(newRecruitingStatus);
-        alert(data.message || "모집 상태가 성공적으로 변경되었습니다.");
+        await Swal.fire({
+          icon: "success",
+          title: "모집 상태 변경",
+          text: data.message || "모집 상태가 성공적으로 변경되었습니다.",
+          confirmButtonText: "확인",
+        });
       } else {
         const errorData = await response.json();
         throw new Error(
@@ -164,10 +204,13 @@ const GatherMateDetail = () => {
       }
     } catch (error) {
       console.error("모집 상태 업데이트 중 오류 발생:", error);
-      alert(
-        error.message ||
-          "모집 상태를 변경하는 데 실패했습니다. 다시 시도해주세요."
-      );
+      await Swal.fire({
+        icon: "error",
+        title: "모집 상태 변경 실패",
+        text:
+          error.message ||
+          "모집 상태를 변경하는 데 실패했습니다. 다시 시도해주세요.",
+      });
     }
   };
 
@@ -246,7 +289,7 @@ const GatherMateDetail = () => {
               <div className="d-flex justify-content-center">
                 <div className="d-flex">
                   {/* 좋아요 버튼 */}
-                  {post.likeCount !== undefined && (
+                  {/* {post.likeCount !== undefined && (
                     <PostButton
                       icon={
                         <ion-icon
@@ -263,10 +306,29 @@ const GatherMateDetail = () => {
                       onClick={handleLike}
                       disabled={!user}
                     />
+                  )} */}
+
+                  {/* 좋아요 버튼 */}
+                  {post.likeCount !== undefined && (
+                    <PostButton
+                      icon={
+                        <ion-icon
+                          name={isLiked ? "heart" : "heart-outline"}
+                          style={{
+                            color: isLiked ? "red" : "black",
+                            fontSize: "25px",
+                          }}
+                        ></ion-icon>
+                      }
+                      text={post.likeCount}
+                      onClick={handleLike}
+                      disabled={!user}
+                    />
                   )}
                   <PostButton
                     text={isRecruiting ? "모집중" : "모집완료"}
                     onClick={handleToggleRecruit}
+                    disabled={!user}
                   />
                 </div>
               </div>
@@ -296,14 +358,12 @@ const GatherMateDetail = () => {
 
           {/* 댓글 컴포넌트 */}
           <div className="row justify-content-center">
-          <div className="col-lg-8 ml-auto mr-auto pt-1 pb-2">
+            <div className="col-lg-8 ml-auto mr-auto pt-1 pb-2">
+              {/* <GatherMateComments postId={postId} /> */}
 
-
-          {/* <GatherMateComments postId={postId} /> */}
-
-          <BoardComments postId={postId} boardType="gathermate" />
+              <BoardComments postId={postId} boardType="gathermate" />
+            </div>
           </div>
-        </div>
         </>
       ) : (
         <div>Loading...</div> // post가 null일 경우 로딩 표시

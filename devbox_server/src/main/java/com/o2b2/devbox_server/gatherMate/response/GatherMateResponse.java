@@ -1,5 +1,6 @@
 package com.o2b2.devbox_server.gatherMate.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.o2b2.devbox_server.gatherMate.entity.GatherMate;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,14 +24,18 @@ public class GatherMateResponse {
     private final String author;
 
     private int likeCount;
+
+    @JsonProperty("isLiked")
     private boolean isLiked;
+
     private int views;
 
     // 댓글의 수
     private int commentCount;
 
+
     // 생성자 오버로딩
-    public GatherMateResponse(GatherMate gatherMate, int commentCount, boolean isLiked) {
+    public GatherMateResponse(GatherMate gatherMate, boolean isLiked, int commentCount) {
         this.id = gatherMate.getId();
         this.intro = gatherMate.getIntro();
         this.apply = gatherMate.getApply();
@@ -41,14 +46,14 @@ public class GatherMateResponse {
         this.author = gatherMate.getUser().getNickname();
         this.likeCount = gatherMate.getLikeCount();
         this.views = gatherMate.getViews();
-        this.commentCount = commentCount;
         this.isLiked = isLiked;
+        this.commentCount = commentCount;
     }
 
     @Builder
     public GatherMateResponse(Long id, String intro, String apply, String title, String content,
                               LocalDateTime createdAt, boolean isRecruiting, String author,
-                              int likeCount, boolean isLiked, int views, int commentCount) {
+                              int likeCount, int views, boolean isLiked, int commentCount) {
         this.id = id;
         this.intro = intro;
         this.apply = apply;
@@ -58,8 +63,8 @@ public class GatherMateResponse {
         this.isRecruiting = isRecruiting;
         this.author = author;
         this.likeCount = likeCount;
-        this.isLiked = isLiked;
         this.views = views;
+        this.isLiked = isLiked;
         this.commentCount = commentCount;
     }
 }
