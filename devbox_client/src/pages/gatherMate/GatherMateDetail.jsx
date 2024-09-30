@@ -25,8 +25,11 @@ const GatherMateDetail = () => {
   useEffect(() => {
     if (!loading) {
       fetchPost();
+      if (user) {
+        fetchIsLiked();
+      } // 사용자 정보가 있을 때만 isLiked 조회
     }
-  }, [postId, loading]);
+  }, [postId, loading, user]);
 
   // 게시글 백엔드에서 가져오기
   const fetchPost = async () => {
@@ -39,7 +42,7 @@ const GatherMateDetail = () => {
           headers: {
             "Content-Type": "application/json",
             // Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         }
       );
@@ -51,8 +54,8 @@ const GatherMateDetail = () => {
       console.log("Fetched post data:", data); // 전체 데이터 로그
       console.log("data 뽑기 " + data.isLiked);
       setPost(data);
-      // setLikes(data.likes || 0);
-      setIsLiked(data.isLiked || false);
+      // // setLikes(data.likes || 0);
+      // setIsLiked(data.isLiked || false);
       setIsRecruiting(data.isRecruiting);
       setApply(data.apply);
     } catch (error) {
@@ -214,6 +217,40 @@ const GatherMateDetail = () => {
     }
   };
 
+  // 새로운 함수: isLiked 상태를 별도로 조회
+  const fetchIsLiked = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    try {
+      const response = await fetch(
+        `http://localhost:8080/gathermate/isLiked/posts/${postId}`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
+          },
+        }
+      );
+
+      if (response.status === 401) {
+        setIsLiked(false);
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error("네트워크 응답이 올바르지 않습니다.");
+      }
+
+      const data = await response.json();
+      console.log("Fetched isLiked data:", data);
+      setIsLiked(data.isLiked);
+    } catch (error) {
+      console.error("isLiked 조회 오류:", error);
+      setIsLiked(false); // 오류 발생 시 기본값 설정
+    }
+  };
+
   return (
     <section className="container py-5" style={{ padding: "0px" }}>
       <div className="container">
@@ -258,8 +295,7 @@ const GatherMateDetail = () => {
                 <div className="d-flex flex-column">
                   <span>작성자: {post.author}</span>
                   <span>
-                    작성일: {formatDateTime(post.createdAt)} 조회수:{" "}
-                    {post.views}
+                    작성일: {formatDateTime(post.createdAt)} 조회수:{post.views}
                   </span>
                 </div>
               </div>
