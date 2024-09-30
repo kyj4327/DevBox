@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,7 +64,6 @@ public class GatherMateService {
 
         gatherMate.incrementViews();
 
-
         boolean isLiked = false;
         if (userId != null) {
             UserEntity user = userRepository.findById(userId)
@@ -84,6 +85,19 @@ public class GatherMateService {
                 .views(gatherMate.getViews())
                 .build();
     }
+
+    // 새로운 isLiked 조회 메서드 추가
+    @Transactional(readOnly = true)
+    public boolean isPostLikedByUser(Long postId, Long userId) {
+        GatherMate post = gatherMateRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
+        return likeRepository.findByUserAndGatherMate(user, post).isPresent();
+    }
+
 
     public Page<GatherMateResponse> getList(Pageable pageable) {
         Page<GatherMate> posts = gatherMateRepository.findAll(pageable);
@@ -134,6 +148,67 @@ public class GatherMateService {
                 .collect(Collectors.toList());
 
         return new PageImpl<>(responses, pageable, posts.getTotalElements());
+    }
+
+    // 사용자가 작성한 게시글 조회 및 총 개수 반환
+    @Transactional(readOnly = true)
+    public Map<String, Object> getMyPosts(Long userId,String category, Pageable pageable) {
+        Page<GatherMate> postsPage;
+
+        if (category != null && !category.equalsIgnoreCase("All")) {
+            // 카테고리가 지정된 경우, 사용자 ID와 카테고리로 필터링
+            postsPage = gatherMateRepository.findByUserIdAndIntro(userId, category, pageable);
+        } else {
+            // 카테고리가 없거나 "All"인 경우, 사용자 ID로 모든 게시글 조회
+            postsPage = gatherMateRepository.findByUserId(userId, pageable);
+        }
+        List<GatherMateResponse> responses = postsPage.stream()
+                .map(post -> {
+                    int commentCount = gathermateCommentRepository.countByGatherMate(post);
+                    boolean isLiked = likeRepository.findByUserAndGatherMate(userRepository.findById(userId).orElseThrow(), post).isPresent();
+                    return new GatherMateResponse(post, isLiked, commentCount);
+                })
+                .collect(Collectors.toList());
+
+        long totalCount = gatherMateRepository.countByUserId(userId);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("content", responses);
+        response.put("totalPosts", totalCount);
+        response.put("totalPages", postsPage.getTotalPages());
+
+        return response;
+    }
+
+    // 사용자가 작성한 게시글 검색
+    @Transactional(readOnly = true)
+    public Map<String, Object> searchMyPosts(Long userId, String keyword, String searchType, Pageable pageable) {
+        Page<GatherMate> posts;
+
+        if ("작성자".equals(searchType)) {
+            // 작성자명으로 검색 (내 글이므로 작성자는 자신)
+            posts = gatherMateRepository.findByUserIdAndAuthorContaining(userId, keyword, pageable);
+        } else {
+            // 제목과 내용으로 검색
+            posts = gatherMateRepository.findByUserIdAndTitleContainingOrUserIdAndContentContaining(userId, keyword, userId, keyword, pageable);
+        }
+
+        List<GatherMateResponse> responses = posts.stream()
+                .map(post -> {
+                    int commentCount = gathermateCommentRepository.countByGatherMate(post);
+                    boolean isLiked = likeRepository.findByUserAndGatherMate(userRepository.findById(userId).orElseThrow(), post).isPresent();
+                    return new GatherMateResponse(post, isLiked, commentCount);
+                })
+                .collect(Collectors.toList());
+
+        long totalCount = gatherMateRepository.countByUserId(userId);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("content", responses);
+        response.put("totalPosts", totalCount);
+        response.put("totalPages", posts.getTotalPages());
+
+        return response;
     }
 
     // 수정하기
