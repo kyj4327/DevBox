@@ -14,14 +14,17 @@ const UserContact = ({ nickname }) => {
     const [reciver, setReciver] = useState(nickname);
     const [content, setContent] = useState('');
 
+    console.log("@@@@" + reciver);
+    
+
     const handleDetail = async () => {
 
         const formData = new FormData();
 
-        console.log("Reciver 값: ", reciver);
+        console.log("Reciver 값: ", nickname);
         formData.append("title", title);
         formData.append("content", content);
-        formData.append("reciver", reciver);
+        formData.append("reciver", nickname);
 
         const token = localStorage.getItem('accessToken');
         const url = `${domain}/msg/write`;
@@ -67,8 +70,8 @@ const UserContact = ({ nickname }) => {
 
     return (
         <>
-            <div className="dropdown ">
-                <button className="btn dropdown " data-bs-toggle="dropdown" aria-expanded="true">
+            <div className="dropdown " style={{display:'inline'}}>
+                <button className="btn dropdown " data-bs-toggle="dropdown" aria-expanded="true" style={{padding:0}}>
                     {nickname}
                 </button>
                 <ul class="dropdown-menu">
@@ -76,9 +79,9 @@ const UserContact = ({ nickname }) => {
                 </ul>
             </div>
 
-            <Modal show={showModal} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <div value={reciver} onChange={(e) => { setReciver(e.target.value) }} >
+            <Modal show={showModal} backdrop={'static'} keyboard={false}>
+                <Modal.Header>
+                    <div>
                         <Modal.Title>받는 사람: {nickname} </Modal.Title>
                     </div>
                 </Modal.Header>
