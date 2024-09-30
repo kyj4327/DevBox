@@ -51,6 +51,12 @@ const ReferenceList = () => {
         setCurrentPage(pageNumber);
     };
 
+    const ContentList = ({ content }) => {
+        return (
+            <li style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{content}</li>
+        );
+    };
+
     return (
         <div>
             <section className="container py-5">
@@ -79,11 +85,11 @@ const ReferenceList = () => {
                                         </div>
                                         <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                                             <li style={{ listStyle: 'none' }}>{v.selectJob}</li>
-                                            <li>{v.content1}</li>
-                                            <li>{v.content2}</li>
-                                            {v.content3 === '' ? '' : <li>{v.content3}</li>}
-                                            {v.content4 === '' ? '' : <li>{v.content4}</li>}
-                                            {v.content5 === '' ? '' : <li>{v.content5}</li>}
+                                            <ContentList content={v.content1} />
+                                            <ContentList content={v.content2} />
+                                            {v.content3 === '' ? '' : <ContentList content={v.content3} />}
+                                            {v.content4 === '' ? '' : <ContentList content={v.content4} />}
+                                            {v.content5 === '' ? '' : <ContentList content={v.content5} />}
                                         </div>
                                         <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
                                             <Link to={v.link} className="btn rounded-pill px-4 btn-primary light-300" target='_blank' style={{ marginRight: '1rem' }}>Link</Link>
