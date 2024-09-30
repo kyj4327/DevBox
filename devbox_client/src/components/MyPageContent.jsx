@@ -86,6 +86,7 @@ function MyPageContent() {
         <div className="mypage-content__col">
           <MyPageBox icon="fal fa-file-alt" title="모여라 메이트 : 3" />
         </div>
+
       </div>
     </div>
   );
