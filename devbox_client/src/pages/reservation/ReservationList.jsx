@@ -15,10 +15,10 @@ import Swal from 'sweetalert2';
 const ReservationList = () => {
     const domain = "http://localhost:8080";
 
-    const { user } = useUser();
+    const { user, loading } = useUser();
     const navigate = useNavigate();
     useEffect(() => {
-        if (!user) {
+        if (!loading && !user) {
             Swal.fire({
                 icon: "error",
                 title: "로그인이 필요합니다."
@@ -26,7 +26,7 @@ const ReservationList = () => {
                 navigate('/auth');
             });
         }
-    }, [user, navigate]);
+    }, [user, loading, navigate]);
     const token = localStorage.getItem('accessToken');
 
     const [category, setCategory] = useState('예약완료');

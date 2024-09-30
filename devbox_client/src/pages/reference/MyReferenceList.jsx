@@ -8,10 +8,10 @@ import Category from '../../components/Category';
 const MyReferenceList = () => {
     const domain = "http://localhost:8080";
 
-    const { user } = useUser();
+    const { user, loading } = useUser();
     const navigate = useNavigate();
     useEffect(() => {
-        if (!user) {
+        if (!loading && !user) {
             Swal.fire({
                 icon: "error",
                 title: "로그인이 필요합니다."
@@ -19,7 +19,7 @@ const MyReferenceList = () => {
                 navigate('/auth');
             });
         }
-    }, [user, navigate]);
+    }, [user, loading, navigate]);
     const token = localStorage.getItem('accessToken');
 
     const userNickName = user ? user.nickname : null;
