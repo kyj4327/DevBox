@@ -279,7 +279,7 @@ function GatherMateList() {
               ))}
             </div>
           ) : (
-            <p>데이터가 없습니다.</p>
+            <p></p>
           )}
         </div>
         <div className="form-row pt-2">
