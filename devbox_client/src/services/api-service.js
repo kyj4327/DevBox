@@ -123,3 +123,18 @@ export const deleteComment = async (id) => {
     throw error;
   }
 };
+
+// 댓글 수정
+export const editComment = async (id, commentData) => {
+  try {
+    const response = await apiClient.patch(`/comments/${id}`, commentData);
+    return response.data;
+  } catch (error) {
+    console.error("Error editing comment:", error);
+    throw error;
+  }
+};
+
+
+
+
