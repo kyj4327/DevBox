@@ -47,11 +47,8 @@ const ReferenceWrite = () => {
             InputScrollAndFocus("title", "제목을 입력해주세요.");
             setTitle('');
         } else if (selectJob === '') {
-            Swal.fire({
-                icon: "warning",
-                title: "카테고리를 선택해주세요.",
-            });
-            window.scrollTo(0, 0);
+            document.activeElement.blur(); // 현재 포커스된 요소의 포커스를 해제
+            InputScrollAndFocus("intro", "카테고리를 선택해주세요.");
         } else if (link.trim() === '') {
             InputScrollAndFocus("link", "사이트 주소를 입력해주세요.");
             setLink('');
