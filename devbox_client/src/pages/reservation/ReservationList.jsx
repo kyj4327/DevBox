@@ -176,15 +176,6 @@ const ReservationList = () => {
                                                                     send();
                                                                 }
                                                             });
-                                                            // if (window.confirm(`${v.date} ${v.time} 예약취소하시겠습니까?`)) {
-                                                            //     async function send() {
-                                                            //         const url = `${domain}/reservation/delete?reservationId=${v.id}`;
-                                                            //         await fetch(url);
-                                                            //         alert(`${v.date} ${v.time} 예약취소되었습니다.`);
-                                                            //         window.location.reload();
-                                                            //     }
-                                                            //     send();
-                                                            // }
                                                         }}>예약취소</button>
                                                     : ""
                                             }
