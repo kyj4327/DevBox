@@ -357,7 +357,10 @@ public class ProController {
                 pro.setMultiImgEntitys(existingpro.getMultiImgEntitys());
             }
 
+            int likeCount = existingpro.getLikeCount();
             // 수정된 ProEntity 객체를 데이터베이스에 저장
+            pro.setLikeCount(likeCount);
+            
             proRepository.save(pro);
 
             // 성공 응답을 맵에 추가
