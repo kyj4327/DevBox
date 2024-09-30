@@ -60,94 +60,70 @@ const ReferenceUpdate = () => {
         get();
     }, []);
 
-    const validateFields = () => {
+    const updateData = async (e) => {
+        e.preventDefault();
         if (!user) {
             Swal.fire({
                 icon: "error",
                 title: "로그인이 필요합니다."
             });
-            return false;
+            return;
         } else if (title.trim() === '') {
             InputScrollAndFocus("title", "제목을 입력해주세요.");
             setTitle('');
-            return false;
         } else if (selectJob === '') {
             Swal.fire({
                 icon: "warning",
                 title: "카테고리를 선택해주세요.",
             });
             window.scrollTo(0, 0);
-            return false;
         } else if (link.trim() === '') {
             InputScrollAndFocus("link", "사이트 주소를 입력해주세요.");
             setLink('');
-            return false;
         } else if (content1.trim() === '') {
             InputScrollAndFocus("content1", "내용1을 입력해주세요.");
             setContent1('');
-            return false;
         } else if (content2.trim() === '') {
             InputScrollAndFocus("content2", "내용2를 입력해주세요.");
             setContent2('');
-            return false;
-        }
-        return true;
-    };
-
-    const updateData = async () => {
-        try {
-            const url = `${domain}/reference/update`;
-            const response = await fetch(url, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    id: referenceId, title: title, selectJob: selectJob, link: link,
-                    content1: content1, content2: content2, content3: content3.trim(), content4: content4.trim(), content5: content5.trim()
-                })
-            });
-            if (!response.ok) {
-                throw new Error("서버에서 오류가 발생했습니다.");
-            }
-            const data = await response.json();
-            if (data.code === 200) {
-                Swal.fire({
-                    icon: "success",
-                    title: "수정되었습니다."
-                }).then(() => {
-                    navigate('/reference/list');
+        } else {
+            const token = localStorage.getItem('accessToken');
+            try {
+                const url = `${domain}/reference/write`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        id: referenceId, title: title, selectJob: selectJob, link: link,
+                        content1: content1, content2: content2, content3: content3.trim(), content4: content4.trim(), content5: content5.trim()
+                    })
                 });
-            } else {
+                if (!response.ok) {
+                    throw new Error("서버에서 오류가 발생했습니다.");
+                }
+                const data = await response.json();
+                if (data.code === 200) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "수정되었습니다."
+                    }).then(() => {
+                        navigate('/reference/list');
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "다시 입력해주세요."
+                    });
+                }
+            } catch (error) {
                 Swal.fire({
                     icon: "error",
-                    title: "다시 입력해주세요."
+                    title: "수정 중 오류가 발생했습니다. 다시 시도해주세요."
                 });
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: "error",
-                title: "수정 중 오류가 발생했습니다. 다시 시도해주세요."
-            });
-        }
-    };
-
-    const handleUpdate = async (e) => {
-        e.preventDefault();
-        if (validateFields()) {
-            const result = await Swal.fire({
-                title: "수정하시겠습니까?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "수정",
-                confirmButtonColor: "#3085d6",
-                cancelButtonText: "취소",
-                cancelButtonColor: "#d33",
-            });
-            if (result.isConfirmed) {
-                updateData();
             }
         }
     };
@@ -174,7 +150,7 @@ const ReferenceUpdate = () => {
             </div>
             <div className="form-row pt-2">
                 <div className="col-md-12 col-10 text-end">
-                    <Button text={'수정하기'} onClick={handleUpdate} />
+                    <Button text={'수정하기'} onClick={updateData} />
                 </div>
             </div>
         </section>

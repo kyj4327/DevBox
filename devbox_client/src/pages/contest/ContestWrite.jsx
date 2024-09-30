@@ -39,103 +39,74 @@ const ContestWrite = () => {
         }
     }, [user, navigate]);
 
-    const validateFields = () => {
+    const saveData = async (e) => {
+        e.preventDefault();
         if (!user) {
             Swal.fire({
                 icon: "error",
                 title: "로그인이 필요합니다."
             });
-            return false;
+            return;
         } else if (title.trim() === '') {
             InputScrollAndFocus("title", "공모명을 입력해주세요.");
             setTitle('');
-            return false;
         } else if (host.trim() === '') {
             InputScrollAndFocus("host", "주최/주관을 입력해주세요.");
             setHost('');
-            return false;
         } else if (target.trim() === '') {
             InputScrollAndFocus("target", "참가대상을 입력해주세요.");
             setTarget('');
-            return false;
         } else if (regStart === '') {
             InputScrollAndFocus("regStart", "접수시작 날짜를 입력해주세요.");
-            return false;
         } else if (regEnd === '') {
             InputScrollAndFocus("regEnd", "접수마감 날짜를 입력해주세요.");
-            return false;
         } else if (regEnd < regStart) {
             InputScrollAndFocus("regEnd", "마감일이 시작일보다 빠릅니다.");
-            // InputScrollAndFocus("regEnd", "접수마감 날짜가 접수시작 날짜보다 이후여야 합니다.");
             setRegEnd('');
-            return false;
         } else if (officialUrl.trim() === '') {
             InputScrollAndFocus("officialUrl", "홈페이지 주소를 입력해주세요.");
             setOfficialUrl('');
-            return false;
         } else if (imgUrl.trim() === '') {
             InputScrollAndFocus("imgUrl", "이미지 주소를 입력해주세요.");
             setImgUrl('');
-            return false;
-        }
-        return true;
-    };
-
-    const saveData = async () => {
-        const token = localStorage.getItem('accessToken');
-        try {
-            const url = `${domain}/contest/write`;
-            const response = await fetch(url, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    title: title, officialUrl: officialUrl, imgUrl: imgUrl,
-                    host: host, target: target, regStart: regStart, regEnd: regEnd
-                })
-            });
-            if (!response.ok) {
-                throw new Error("서버에서 오류가 발생했습니다.");
-            }
-            const data = await response.json();
-            if (data.code === 200) {
-                Swal.fire({
-                    icon: "success",
-                    title: "저장되었습니다."
-                }).then(() => {
-                    navigate('/contest/list');
+        } else {
+            const token = localStorage.getItem('accessToken');
+            try {
+                const url = `${domain}/contest/write`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        title: title, officialUrl: officialUrl, imgUrl: imgUrl,
+                        host: host, target: target, regStart: regStart, regEnd: regEnd
+                    })
                 });
-            } else {
+                if (!response.ok) {
+                    throw new Error("서버에서 오류가 발생했습니다.");
+                }
+                const data = await response.json();
+                if (data.code === 200) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "저장되었습니다."
+                    }).then(() => {
+                        navigate('/contest/list');
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "다시 입력해주세요."
+                    });
+                }
+            } catch (error) {
                 Swal.fire({
                     icon: "error",
-                    title: "다시 입력해주세요."
+                    title: "저장 중 오류가 발생했습니다. 다시 시도해주세요."
                 });
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: "error",
-                title: "저장 중 오류가 발생했습니다. 다시 시도해주세요."
-            });
-        }
-    };
-
-    const handleSave = async (e) => {
-        e.preventDefault();
-        if (validateFields()) {
-            const result = await Swal.fire({
-                title: "저장하시겠습니까?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "저장",
-                confirmButtonColor: "#3085d6",
-                cancelButtonText: "취소",
-                cancelButtonColor: "#d33",
-            });
-            if (result.isConfirmed) {
-                saveData();
             }
         }
     };
@@ -159,7 +130,7 @@ const ContestWrite = () => {
             </div>
             <div className="form-row pt-2">
                 <div className="col-md-12 col-10 text-end">
-                    <Button text={'저장하기'} onClick={handleSave} />
+                    <Button text={'저장하기'} onClick={saveData} />
                 </div>
             </div>
         </section >

@@ -38,95 +38,69 @@ const HiringWrite = () => {
         }
     }, [user, navigate]);
 
-    const validateFields = () => {
+    const saveData = async (e) => {
+        e.preventDefault();
         if (!user) {
             Swal.fire({
                 icon: "error",
                 title: "로그인이 필요합니다."
             });
-            return false;
+            return;
         } else if (company.trim() === '') {
             InputScrollAndFocus("company", "회사명을 입력해주세요.");
             setCompany('');
-            return false;
         } else if (area.trim() === '') {
             InputScrollAndFocus("area", "지역을 입력해주세요.");
             setArea('');
-            return false;
         } else if (job.trim() === '') {
             InputScrollAndFocus("job", "직군/직무를 입력해주세요.");
             setJob('');
-            return false;
         } else if (career.trim() === '') {
             InputScrollAndFocus("career", "경력을 입력해주세요.");
             setCareer('');
-            return false;
         } else if (imgUrl.trim() === '') {
             InputScrollAndFocus("imgUrl", "이미지 주소를 입력해주세요.");
             setImgUrl('');
-            return false;
         } else if (wantedUrl.trim() === '') {
             InputScrollAndFocus("wantedUrl", "원티드 주소를 입력해주세요.");
             setWantedUrl('');
-            return false;
-        }
-        return true;
-    };
-
-    const saveData = async () => {
-        const token = localStorage.getItem('accessToken');
-        try {
-            const url = `${domain}/hiring/write`;
-            const response = await fetch(url, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    company: company, area: area, job: job, career: career, imgUrl: imgUrl, wantedUrl: wantedUrl
-                })
-            });
-            if (!response.ok) {
-                throw new Error("서버에서 오류가 발생했습니다.");
-            }
-            const data = await response.json();
-            if (data.code === 200) {
-                Swal.fire({
-                    icon: "success",
-                    title: "저장되었습니다."
-                }).then(() => {
-                    navigate('/hiring/list');
+        } else {
+            const token = localStorage.getItem('accessToken');
+            try {
+                const url = `${domain}/hiring/write`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        company: company, area: area, job: job, career: career, imgUrl: imgUrl, wantedUrl: wantedUrl
+                    })
                 });
-            } else {
+                if (!response.ok) {
+                    throw new Error("서버에서 오류가 발생했습니다.");
+                }
+                const data = await response.json();
+                if (data.code === 200) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "저장되었습니다."
+                    }).then(() => {
+                        navigate('/hiring/list');
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "다시 입력해주세요."
+                    });
+                }
+            } catch (error) {
                 Swal.fire({
                     icon: "error",
-                    title: "다시 입력해주세요."
+                    title: "저장 중 오류가 발생했습니다. 다시 시도해주세요."
                 });
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: "error",
-                title: "저장 중 오류가 발생했습니다. 다시 시도해주세요."
-            });
-        }
-    };
-
-    const handleSave = async (e) => {
-        e.preventDefault();
-        if (validateFields()) {
-            const result = await Swal.fire({
-                title: "저장하시겠습니까?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "저장",
-                confirmButtonColor: "#3085d6",
-                cancelButtonText: "취소",
-                cancelButtonColor: "#d33",
-            });
-            if (result.isConfirmed) {
-                saveData();
             }
         }
     };
@@ -149,7 +123,7 @@ const HiringWrite = () => {
             </div>
             <div className="form-row pt-2">
                 <div className="col-md-12 col-10 text-end">
-                    <Button text={'저장하기'} onClick={handleSave} />
+                    <Button text={'저장하기'} onClick={saveData} />
                 </div>
             </div>
         </section>
