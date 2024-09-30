@@ -76,7 +76,7 @@ function MyPageContent() {
           <p>로그인 정보가 없습니다.</p>
         </div>
       )}
-      <div className="mypage-content__row">
+      {/* <div className="mypage-content__row">
         <div className="mypage-content__col">
           <MyPageBox icon="fal fa-file-alt" title="자유 게시판 : 3" />
         </div>
@@ -86,7 +86,7 @@ function MyPageContent() {
         <div className="mypage-content__col">
           <MyPageBox icon="fal fa-file-alt" title="모여라 메이트 : 3" />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

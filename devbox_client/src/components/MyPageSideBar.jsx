@@ -78,6 +78,11 @@ function MyPageSideBar() {
               </NavLink>
             </li>
             <li>
+              <NavLink to="/mypage/project/mylist">
+                <i className="fal fa-layer-group"></i> 프로젝트 자랑 게시판
+              </NavLink>
+            </li>
+            <li>
               <NavLink to="/mypage/posts">
                 <i className="fal fa-envelope"></i> 내가쓴 글
               </NavLink>

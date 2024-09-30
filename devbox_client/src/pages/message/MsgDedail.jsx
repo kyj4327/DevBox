@@ -124,10 +124,14 @@ const MesDetail = () => {
 
                                         if (result.isConfirmed) {
                                             try {
+                                                const token = localStorage.getItem('accessToken');
                                                 const url = `${domain}/msg/delete?id=${msgData.id}`;
                                                 const res = await fetch(url, {
                                                     method: 'DELETE',
                                                     credentials: 'include',
+                                                    headers: {
+                                                        "Authorization": `Bearer ${token}`,
+                                                    },
                                                 });
 
                                                 if (res.ok) {

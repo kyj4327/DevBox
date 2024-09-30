@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { useUser } from './context/UserContext';
 
 const UserContact = ({ nickname }) => {
     const [showModal, setShowModal] = useState(false);
@@ -14,7 +13,6 @@ const UserContact = ({ nickname }) => {
     const [reciver, setReciver] = useState(nickname);
     const [content, setContent] = useState('');
 
-    console.log("@@@@" + reciver);
     
 
     const handleDetail = async () => {
