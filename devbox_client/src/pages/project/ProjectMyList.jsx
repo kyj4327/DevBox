@@ -3,6 +3,7 @@ import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import ProjectMain from "./ProjectMain";
 import Pagination from "../../components/Pagination";
+import ProjectMyMain from "./ProjectMyMain";
 
 const ProjectMyList = () => {
     const [pageData, setPageData] = useState({});
@@ -35,7 +36,7 @@ const ProjectMyList = () => {
 
     return(
         <div className="mypage-content__wrapper">
-            <ProjectMain setRefresh={() => setRefresh(prev => !prev)} list={pageData.list} />
+            <ProjectMyMain setRefresh={() => setRefresh(prev => !prev)} list={pageData.list} />
             <Pagination
              handlePageChange={handlePageChange} 
              pageData={
