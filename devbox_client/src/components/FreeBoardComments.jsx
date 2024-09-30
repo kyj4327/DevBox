@@ -4,8 +4,7 @@ import { useUser } from '../components/context/UserContext';
 import Button from '../components/Button';
 import profilePic from "../assets/img/profilePic.png";
 import Swal from "sweetalert2";
-import '../components/BoardComments.css';  // CSS 파일 이름 변경
-
+import '../components/BoardComments.css';
 
 const FreeBoardComments = ({ postId }) => {
     const [comments, setComments] = useState([]);
@@ -152,94 +151,94 @@ const FreeBoardComments = ({ postId }) => {
 
     return (
         <div className="container mt-5">
-        <div className="row justify-content-center">
-            <div className="col-lg-8">
-                <div id="comments-list">
-                    {comments.length === 0 ? (
-                        <p className="no-comments">첫 번째 댓글을 남겨보세요.</p>
-                    ) : (
-                        comments.filter((comment) => comment !== null).map((comment) => (
-                            <div className="comment" key={comment.id}>
-                                <div className="d-flex justify-content-between align-items-start">
-                                    <div className="d-flex align-items-center">
-                                        <img src={profilePic} alt="profile" className="profile-image me-3" />
-                                        <div>
-                                            <span className="comment-author d-block">{comment.author}</span>
-                                            <span className="comment-time">
-                                                {new Date(comment.createdAt).toLocaleString()}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    {user && comment.author === user.nickname && (
-                                        <div className="menu-icon-container">
-                                            <div className="menu-icon" onClick={() => toggleDropdown(comment.id)}>
-                                                ...
-                                            </div>
-                                            <div className={`dropdown-menu ${dropdownOpen.id === comment.id ? "show" : ""}`}>
-                                                <button className="dropdown-item" onClick={() => handleEditClick(comment.id, comment.content)}>
-                                                    수정
-                                                </button>
-                                                <button className="dropdown-item" onClick={() => handleDelete(comment.id)}>
-                                                    삭제
-                                                </button>
+            <div className="row justify-content-center">
+                <div className="col-lg-8">
+                    <div id="comments-list">
+                        {comments.length === 0 ? (
+                            <p className="no-comments">첫 번째 댓글을 남겨보세요.</p>
+                        ) : (
+                            comments.filter((comment) => comment !== null).map((comment) => (
+                                <div className="comment" key={comment.id}>
+                                    <div className="d-flex justify-content-between align-items-start">
+                                        <div className="d-flex align-items-center">
+                                            <img src={profilePic} alt="profile" className="profile-image me-3" />
+                                            <div>
+                                                <span className="comment-author d-block">{comment.author}</span>
+                                                <span className="comment-time">
+                                                    {new Date(comment.createdAt).toLocaleString()}
+                                                </span>
                                             </div>
                                         </div>
-                                    )}
-                                </div>
-                                <div className="comment-content mt-2">
-                                    {editingCommentId === comment.id ? (
-                                        <div className="edit-form">
-                                            <div className="textarea-container">
-                                                <textarea
-                                                    className="form-control mb-2"
-                                                    value={editCommentContent}
-                                                    onChange={(e) => setEditCommentContent(e.target.value)}
-                                                    rows="3"
-                                                />
-                                                <div className="edit-buttons">
-                                                    <button className="btn btn-secondary" onClick={handleCancelEdit}>
-                                                        취소
+                                        {user && comment.author === user.nickname && (
+                                            <div className="menu-icon-container">
+                                                <div className="menu-icon" onClick={() => toggleDropdown(comment.id)}>
+                                                    ...
+                                                </div>
+                                                <div className={`dropdown-menu ${dropdownOpen.id === comment.id ? "show" : ""}`}>
+                                                    <button className="dropdown-item" onClick={() => handleEditClick(comment.id, comment.content)}>
+                                                        수정
                                                     </button>
-                                                    <button className="btn btn-primary me-2" onClick={() => handleEditSubmit(comment.id)}>
-                                                        등록
+                                                    <button className="dropdown-item" onClick={() => handleDelete(comment.id)}>
+                                                        삭제
                                                     </button>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ) : (
-                                        comment.content
-                                    )}
+                                        )}
+                                    </div>
+                                    <div className="comment-content mt-2">
+                                        {editingCommentId === comment.id ? (
+                                            <div className="edit-form">
+                                                <div className="textarea-container">
+                                                    <textarea
+                                                        className="form-control mb-2"
+                                                        value={editCommentContent}
+                                                        onChange={(e) => setEditCommentContent(e.target.value)}
+                                                        rows="3"
+                                                    />
+                                                    <div className="edit-buttons">
+                                                        <button className="btn btn-secondary" onClick={handleCancelEdit}>
+                                                            취소
+                                                        </button>
+                                                        <button className="btn btn-primary me-2" onClick={() => handleEditSubmit(comment.id)}>
+                                                            등록
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            comment.content
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        ))
-                    )}
-                </div>
+                            ))
+                        )}
+                    </div>
 
-                <div className="leave-comment mt-5">
-                    {user ? (
-                        <form onSubmit={handleSubmit}>
-                            <div className="mb-3">
-                                <textarea
-                                    className="form-control"
-                                    id="message"
-                                    name="message"
-                                    value={newComment}
-                                    onChange={(e) => setNewComment(e.target.value)}
-                                    rows="4"
-                                    placeholder="댓글을 작성해보세요"
-                                    required
-                                ></textarea>
-                                <button type="submit" className="btn btn-primary">
-                                    등록
-                                </button>
-                            </div>
-                        </form>
-                    ) : (
-                        <p>댓글을 작성하려면 로그인이 필요합니다.</p>
-                    )}
+                    <div className="leave-comment mt-5">
+                        {user ? (
+                            <form onSubmit={handleSubmit}>
+                                <div className="mb-3 position-relative">
+                                    <textarea
+                                        className="form-control"
+                                        id="message"
+                                        name="message"
+                                        value={newComment}
+                                        onChange={(e) => setNewComment(e.target.value)}
+                                        rows="4"
+                                        placeholder="댓글을 작성해보세요"
+                                        required
+                                    ></textarea>
+                                    <button type="submit" className="btn btn-primary position-absolute bottom-0 end-0 m-2">
+                                        등록
+                                    </button>
+                                </div>
+                            </form>
+                        ) : (
+                            <p>댓글을 작성하려면 로그인이 필요합니다.</p>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
     );
 };
