@@ -2,6 +2,7 @@ import Pagination from '../../components/Pagination';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
+import Swal from 'sweetalert2';
 
 const MyReferenceList = () => {
     const domain = "http://localhost:8080";
@@ -10,8 +11,12 @@ const MyReferenceList = () => {
     const navigate = useNavigate();
     useEffect(() => {
         if (!user) {
-            alert("로그인이 필요합니다.");
-            navigate('/auth');
+            Swal.fire({
+                icon: "error",
+                title: "로그인이 필요합니다."
+            }).then(() => {
+                navigate('/auth');
+            });
         }
     }, [user, navigate]);
     const token = localStorage.getItem('accessToken');
@@ -50,10 +55,12 @@ const MyReferenceList = () => {
     };
 
     return (
-        <div>
-            <section className="container py-5">
-                <div className="container py-5">
-                    <h1 className="h2 semi-bold-600 text-center mt-2">추천해요 mylist</h1>
+        <div className="mypage-content__wrapper">
+            <div className="mypage-content__title-wrapper">
+                <h5 className="mypage-content__title">추천해요 내가 쓴 글</h5>
+            </div>
+            <div className="mypage-content__user-info">
+                <section className="container py-5">
                     {
                         data.map((v) => {
                             return (
@@ -85,24 +92,42 @@ const MyReferenceList = () => {
                                                             onClick={(e) => {
                                                                 e.preventDefault();
                                                                 if (!user) {
-                                                                    alert("로그인이 필요합니다.");
+                                                                    Swal.fire({
+                                                                        icon: "error",
+                                                                        title: "로그인이 필요합니다."
+                                                                    });
                                                                     return;
                                                                 }
                                                                 const token = localStorage.getItem('accessToken');
-                                                                if (window.confirm("삭제하시겠습니까?")) {
-                                                                    async function send() {
-                                                                        const url = `${domain}/reference/delete?referenceId=${v.id}`;
-                                                                        await fetch(url, {
-                                                                            credentials: 'include',
-                                                                            headers: {
-                                                                                'Authorization': `Bearer ${token}`
-                                                                            }
-                                                                        });
-                                                                        alert("삭제되었습니다.");
-                                                                        window.location.reload();
+                                                                Swal.fire({
+                                                                    title: "삭제하시겠습니까?",
+                                                                    text: "삭제 후에는 되돌릴 수 없습니다.",
+                                                                    icon: "warning",
+                                                                    showCancelButton: true,
+                                                                    confirmButtonText: "삭제",
+                                                                    confirmButtonColor: "#d33",
+                                                                    cancelButtonText: "취소",
+                                                                    cancelButtonColor: "#3085d6",
+                                                                }).then((result) => {
+                                                                    if (result.isConfirmed) {
+                                                                        async function send() {
+                                                                            const url = `${domain}/reference/delete?referenceId=${v.id}`;
+                                                                            await fetch(url, {
+                                                                                credentials: 'include',
+                                                                                headers: {
+                                                                                    'Authorization': `Bearer ${token}`
+                                                                                }
+                                                                            });
+                                                                            Swal.fire({
+                                                                                title: "삭제되었습니다.",
+                                                                                icon: "success"
+                                                                            }).then(() => {
+                                                                                window.location.reload();
+                                                                            });
+                                                                        }
+                                                                        send();
                                                                     }
-                                                                    send();
-                                                                }
+                                                                });
                                                             }}>삭제</Link>
                                                     </>
                                                     : <>
@@ -116,8 +141,8 @@ const MyReferenceList = () => {
                             )
                         })
                     }
-                </div>
-            </section>
+                </section>
+            </div>
             <Pagination handlePageChange={handlePageChange} pageData={pageData} />
         </div>
     );
