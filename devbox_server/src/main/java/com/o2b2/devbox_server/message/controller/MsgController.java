@@ -71,9 +71,6 @@ public class MsgController {
             p = msgSenderRepository.findBySender(userDetails.getUserEntity(), pageable);
         }
 
-        // 카테고리가 보낸쪽지이면
-        // sender(로그인한사람)로 DB의 sender 데이터 조회
-
         List<MsgEntity> list = (List<MsgEntity>) p.getContent();
 
         // 페이지네이션 관련 정보 계산
@@ -88,14 +85,29 @@ public class MsgController {
             map.put("id", msg.getId());
             map.put("title", msg.getTitle());
             map.put("content", msg.getContent());
-            map.put("sender", msg.getSender().getNickname());
+
+            // sender가 null일 경우 처리
+            if (msg.getSender() != null) {
+                map.put("sender", msg.getSender().getNickname());
+            } else {
+                map.put("sender", "Unknown Sender"); // 대체 값
+            }
+
             map.put("sendTime", msg.getSendTime());
             map.put("readTime", msg.getReadTime());
-            map.put("reciver", msg.getReceiver().getNickname());
+
+            // receiver가 null일 경우 처리
+            if (msg.getReceiver() != null) {
+                map.put("reciver", msg.getReceiver().getNickname());
+            } else {
+                map.put("reciver", "Unknown Receiver"); // 대체 값
+            }
+
             map.put("like", msg.getLike());
             map.put("order", msg.getOrder());
             return map;
         }).collect(Collectors.toList())); // MsgEntity를 Map으로 변환
+
         response.put("currentPage", page); // 현재 페이지
         response.put("startPage", startPage); // 시작 페이지
         response.put("endPage", endPage); // 끝 페이지
@@ -308,7 +320,7 @@ public class MsgController {
 
     @DeleteMapping("/msg/delete")
     public Map<String, Object> deleteMessage(
-            @RequestParam Long id, 
+            @RequestParam Long id,
             @AuthenticationPrincipal CustomUserDetails userDetails) { // 현재 로그인된 사용자 정보
 
         System.out.println("/msg/delete 요청");
