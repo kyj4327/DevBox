@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
 import Swal from 'sweetalert2';
+import Category from '../../components/Category';
 
 const MyReferenceList = () => {
     const domain = "http://localhost:8080";
@@ -50,6 +51,12 @@ const MyReferenceList = () => {
         window.scrollTo(0, 0);
     }, [data]);
 
+    const clickSelectJob = (e) => {
+        e.preventDefault();
+        setSelectJob(e.target.textContent);
+        setCurrentPage(1);
+    };
+
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
@@ -60,7 +67,16 @@ const MyReferenceList = () => {
                 <h5 className="mypage-content__title">추천해요 내가 쓴 글</h5>
             </div>
             <div className="mypage-content__user-info">
-                <section className="container py-5">
+                <div className="filter-btns shadow-md rounded-pill text-center col-auto">
+                    <Category text={'All'} isActive={selectJob} onClick={clickSelectJob} />
+                    <Category text={'Web'} isActive={selectJob} onClick={clickSelectJob} />
+                    <Category text={'DevOps'} isActive={selectJob} onClick={clickSelectJob} />
+                    <Category text={'Cloud'} isActive={selectJob} onClick={clickSelectJob} />
+                    <Category text={'Data'} isActive={selectJob} onClick={clickSelectJob} />
+                    <Category text={'Mobile'} isActive={selectJob} onClick={clickSelectJob} />
+                    <Category text={'Others'} isActive={selectJob} onClick={clickSelectJob} />
+                </div>
+                <div className="row d-flex align-items-center pb-5">
                     {
                         data.map((v) => {
                             return (
@@ -141,7 +157,7 @@ const MyReferenceList = () => {
                             )
                         })
                     }
-                </section>
+                </div>
             </div>
             <Pagination handlePageChange={handlePageChange} pageData={pageData} />
         </div>
