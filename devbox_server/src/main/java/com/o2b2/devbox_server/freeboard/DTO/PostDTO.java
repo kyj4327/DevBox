@@ -17,6 +17,7 @@
         private String author;
         private int views; // 조회수 필드 추가
         private long commentCount; // 댓글 수 필드 추가
+        private long postCount; // 사용자가 작성한 게시글 개수
 
         
     }

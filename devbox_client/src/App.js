@@ -77,6 +77,7 @@ import PostDetail from "./pages/freeboard/PostDetail";
 import Contact from "./pages/contact/Contact";
 import EduWrite from './pages/education/EduWrite';
 import Main from './pages/Main';
+import MyFreeboard from './pages/freeboard/MyFreeBoard';
 
 function AppContent() {
   const location = useLocation();
@@ -162,6 +163,8 @@ function AppContent() {
           {/* 6층 회의실 대여 서비스 */}
           <Route path='/reservation/write' element={<Reservation />} />
 
+
+          <Route path="/mypage/myfreeboard" element={<MyFreeboard />} />
           <Route path="/introduce" element={<BDIAIntroduction />} />
           <Route path="/schedule" element={<BDIASchedule />} />
           <Route path="/freeboard/list" element={<FreeBoard />} />

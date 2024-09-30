@@ -135,6 +135,16 @@ export const editComment = async (id, commentData) => {
   }
 };
 
+export const getUserPosts = async (userId) => {
+  try {
+    const response = await apiClient.get(`/posts/user/${userId}`); // 사용자 ID에 따른 게시글 요청
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user posts:", error);
+    throw error;
+  }
+};
+
 
 
 

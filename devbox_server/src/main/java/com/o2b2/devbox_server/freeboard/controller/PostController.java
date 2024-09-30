@@ -17,11 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.o2b2.devbox_server.freeboard.DTO.PostDTO;
 import com.o2b2.devbox_server.freeboard.entity.Post;
 import com.o2b2.devbox_server.freeboard.service.PostService;
 import com.o2b2.devbox_server.user.dto.CustomUserDetails;
-
 
 import jakarta.validation.Valid;
 
@@ -49,12 +48,12 @@ public class PostController {
             @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         // try {
-            Long userId = userDetails.getUserEntity().getId();
-            Post createdPost = postService.createPost(post, userId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
+        Long userId = userDetails.getUserEntity().getId();
+        Post createdPost = postService.createPost(post, userId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
         // } catch (RuntimeException e) {
-        //     logger.error("Error creating post: ", e);
-        //     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        // logger.error("Error creating post: ", e);
+        // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         // }
     }
 
@@ -69,5 +68,16 @@ public class PostController {
     public ResponseEntity<?> deletePost(@PathVariable Long postId) {
         postService.deletePost(postId);
         return ResponseEntity.ok().build();
+    }
+
+    // 사용자가 작성한 게시글 가져오기
+    @GetMapping("/user/{userId}")
+    public List<PostDTO> getUserPosts(@PathVariable Long userId) {
+        return postService.getPostsByUserId(userId);
+    }
+
+    @GetMapping("/user/{userId}/count")
+    public long getUserPostCount(@PathVariable Long userId) {
+        return postService.getUserPostCount(userId);
     }
 }
