@@ -6,13 +6,13 @@ import Button from "../../components/Button";
 import WriteLong from "../../components/WriteLong";
 import WriteShort from "../../components/WriteShort";
 import QuillEditor from "../../components/QuillEditor";
+import Swal from 'sweetalert2';
 import "../../assets/css/freeboard.css";
-import profilePic from "../../assets/img/profilePic.png";
 
 const FreeBoardDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user, loading } = useUser(); // 유저 정보 가져오기
+  const { user, loading } = useUser();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -20,9 +20,13 @@ const FreeBoardDetail = () => {
 
   useEffect(() => {
     if (!loading && !user) {
-      // user가 없으면 로그인 페이지로 리다이렉트
-      alert("로그인이 필요합니다.");
-      navigate("/auth");
+      Swal.fire({
+        icon: "warning",
+        title: "로그인 필요",
+        text: "로그인이 필요합니다.",
+      }).then(() => {
+        navigate("/auth");
+      });
     }
   }, [user, loading, navigate]);
 
@@ -36,7 +40,11 @@ const FreeBoardDetail = () => {
           setContent(data.content);
         } catch (error) {
           console.error("게시글을 불러오는 데 실패했습니다.", error);
-          setError("게시글을 불러오는 데 실패했습니다.");
+          Swal.fire({
+            icon: "error",
+            title: "오류",
+            text: "게시글을 불러오는 데 실패했습니다.",
+          });
         } finally {
           setIsLoading(false);
         }
@@ -45,8 +53,37 @@ const FreeBoardDetail = () => {
     }
   }, [id]);
 
+  const stripHtml = (html) => {
+    const tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+  };
+
+  const validateForm = () => {
+    if (!title.trim()) {
+      Swal.fire({
+        icon: "warning",
+        title: "제목 필요",
+        text: "제목을 입력해주십시오.",
+      });
+      return false;
+    }
+    const strippedContent = stripHtml(content).trim();
+    if (strippedContent.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "내용 필요",
+        text: "내용을 작성해주십시오.",
+      });
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     setIsLoading(true);
     setError(null);
     try {
@@ -59,12 +96,21 @@ const FreeBoardDetail = () => {
       } else {
         await createPost(postData);
       }
-      navigate("/freeboard/list");
+      Swal.fire({
+        icon: "success",
+        title: "성공",
+        text: id ? "게시글이 성공적으로 수정되었습니다." : "게시글이 성공적으로 작성되었습니다.",
+      }).then(() => {
+        navigate("/freeboard/list");
+      });
     } catch (error) {
       console.error("게시글 저장에 실패했습니다.", error);
-      setError(error.message || "게시글 저장에 실패했습니다.");
+      Swal.fire({
+        icon: "error",
+        title: "오류",
+        text: "게시글 저장에 실패했습니다.",
+      });
       if (error.message === "User not authenticated") {
-        // 사용자 재인증 로직 (예: 로그인 페이지로 리다이렉트)
         navigate("/auth");
       }
     } finally {
@@ -91,7 +137,7 @@ const FreeBoardDetail = () => {
                 type="text"
                 titleTag="작성자"
                 name="author"
-                value={user ? user.nickname : ""} // 현재 로그인한 사용자의 닉네임
+                value={user ? user.nickname : ""}
                 readOnly
               />
               <WriteLong
