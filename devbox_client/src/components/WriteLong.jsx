@@ -1,4 +1,4 @@
-const WriteLong = ({ titleTag, name, value, onChange, contentDelete, onDelete }) => {
+const WriteLong = ({ titleTag, name, value, onChange, contentDelete, onDelete, wordCount }) => {
     return (
         <div>
             <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">
@@ -19,6 +19,10 @@ const WriteLong = ({ titleTag, name, value, onChange, contentDelete, onDelete })
                             value={value} onChange={onChange} />
                         <label htmlFor="floatingsubject light-300">{titleTag}</label>
                     </div>
+                    {/* wordCount가 초과되었을 때만 p 태그 출력 */}
+                    {value.length > wordCount && (
+                        <p className="text-danger">최대 {wordCount}자까지 작성 가능합니다.</p>
+                    )}
                 </div>
             </p>
         </div>
