@@ -23,6 +23,19 @@ const ReferenceUpdate = () => {
     const [content4, setContent4] = useState('');
     const [content5, setContent5] = useState('');
 
+    const [visibleContents, setVisibleContents] = useState(0);
+    const handleAddContent = () => { setVisibleContents(visibleContents + 1); };
+    const handleRemoveContent = (contentNumber) => {
+        if (contentNumber === 3) {
+            setContent3('');
+        } else if (contentNumber === 4) {
+            setContent4('');
+        } else if (contentNumber === 5) {
+            setContent5('');
+        }
+        setVisibleContents(visibleContents - 1);
+    };
+
     useEffect(() => {
         if (!user) {
             Swal.fire({
@@ -56,12 +69,42 @@ const ReferenceUpdate = () => {
             setContent3(data.content3);
             setContent4(data.content4);
             setContent5(data.content5);
+
+            // content3, content4, content5 중 하나라도 값이 있으면 3, 4, 5 모두 추가된 상태로 출력
+            let contentCount = 0;
+            if (data.content3 || data.content4 || data.content5) {
+                contentCount = 3;
+            } else if (!data.content3 || !data.content4 || !data.content5) {
+                contentCount = 0;
+            }
+            setVisibleContents(contentCount);
         }
         get();
     }, []);
 
     const updateData = async (e) => {
         e.preventDefault();
+
+        if (title.trim().length > 10) {
+            InputScrollAndFocus("title", "글자수를 확인해주세요!");
+            return;
+        } else if (content1.trim().length > 65) {
+            InputScrollAndFocus("content1", "글자수를 확인해주세요!");
+            return;
+        } else if (content2.trim().length > 65) {
+            InputScrollAndFocus("content2", "글자수를 확인해주세요!");
+            return;
+        } else if (content3.trim().length > 65) {
+            InputScrollAndFocus("content3", "글자수를 확인해주세요!");
+            return;
+        } else if (content4.trim().length > 65) {
+            InputScrollAndFocus("content4", "글자수를 확인해주세요!");
+            return;
+        } else if (content5.trim().length > 65) {
+            InputScrollAndFocus("content5", "글자수를 확인해주세요!");
+            return;
+        }
+
         if (!user) {
             Swal.fire({
                 icon: "error",
@@ -132,16 +175,34 @@ const ReferenceUpdate = () => {
                 <p className="text-center pb-5 light-300">다른 사람에게 알려주고 싶은 나만의 꿀팁을 공유해요!</p>
                 <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
                     <div className="contact-form row">
-                        <WriteShort type={'text'} titleTag={'제목'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} />
+                        <WriteShort type={'text'} titleTag={'제목'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} wordCount={10} />
                         <WriteSelect titleTag="카테고리" name="intro"
                             value={selectJob || "카테고리를 선택해주세요."} onChange={(e) => setSelectJob(e.target.value)}
                             options={["Web", "DevOps", "Cloud", "Data", "Mobile", "Others"]} />
                         <WriteLong titleTag={'사이트 주소'} name={'link'} value={link} onChange={(e) => { setLink(e.target.value) }} />
-                        <WriteLong titleTag={'내용1 (필수)'} name={'content1'} value={content1} onChange={(e) => { setContent1(e.target.value) }} />
-                        <WriteLong titleTag={'내용2 (필수)'} name={'content2'} value={content2} onChange={(e) => { setContent2(e.target.value) }} />
-                        <WriteLong titleTag={'내용3 (선택)'} name={'content3'} value={content3} onChange={(e) => { setContent3(e.target.value) }} />
-                        <WriteLong titleTag={'내용4 (선택)'} name={'content4'} value={content4} onChange={(e) => { setContent4(e.target.value) }} />
-                        <WriteLong titleTag={'내용5 (선택)'} name={'content5'} value={content5} onChange={(e) => { setContent5(e.target.value) }} />
+                        <WriteLong titleTag={'(필수) 내용1 (최대 65자)'} name={'content1'} value={content1} onChange={(e) => { setContent1(e.target.value) }} wordCount={65} />
+                        <WriteLong titleTag={'(필수) 내용2 (최대 65자)'} name={'content2'} value={content2} onChange={(e) => { setContent2(e.target.value) }} wordCount={65} />
+                        {visibleContents >= 1 && (
+                            <WriteLong titleTag={'(선택) 내용1 (최대 65자)'} name={'content3'} value={content3} onChange={(e) => { setContent3(e.target.value) }}
+                                wordCount={65} contentDelete={visibleContents === 1} onDelete={() => handleRemoveContent(3)} />
+                        )}
+                        {visibleContents >= 2 && (
+                            <WriteLong titleTag={'(선택) 내용2 (최대 65자)'} name={'content4'} value={content4} onChange={(e) => { setContent4(e.target.value) }}
+                                wordCount={65} contentDelete={visibleContents === 2} onDelete={() => handleRemoveContent(4)} />
+                        )}
+                        {visibleContents >= 3 && (
+                            <WriteLong titleTag={'(선택) 내용3 (최대 65자)'} name={'content5'} value={content5} onChange={(e) => { setContent5(e.target.value) }}
+                                wordCount={65} contentDelete={visibleContents === 3} onDelete={() => handleRemoveContent(5)} />
+                        )}
+                        {visibleContents < 3 && (
+                            <div className="form-row pt-2 py-2">
+                                <div className="col-md-12 col-10">
+                                    <button type="button" className="btn btn-secondary text-white px-md-4 px-2 py-md-3 py-1 radius-0 light-300" onClick={handleAddContent}>
+                                        내용 추가
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
