@@ -82,6 +82,11 @@ function MyPageSideBar() {
                 <i className="fal fa-envelope"></i> 내가쓴 글
               </NavLink>
             </li>
+            <li>
+              <NavLink to="/mypage/myfreeboard">
+                <i className="fal fa-envelope"></i> 자유게시판
+              </NavLink>
+            </li>
           </ul>
         </div>
       </div>

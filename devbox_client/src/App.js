@@ -164,7 +164,7 @@ function AppContent() {
           <Route path='/reservation/write' element={<Reservation />} />
 
 
-          <Route path="/mypage/myfreeboard" element={<MyFreeboard />} />
+          
           <Route path="/introduce" element={<BDIAIntroduction />} />
           <Route path="/schedule" element={<BDIASchedule />} />
           <Route path="/freeboard/list" element={<FreeBoard />} />

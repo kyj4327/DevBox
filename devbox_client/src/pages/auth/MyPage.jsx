@@ -5,6 +5,7 @@ import MyPageContent from "../../components/MyPageContent";
 import MyPageProfileEdit from "../../components/MyPageProfileEdit";
 import "./MyPage.css";
 import ReservationList from "../reservation/ReservationList";
+import MyFreeboard from "../freeboard/MyFreeBoard";
 
 
 function MyPage() {
@@ -20,8 +21,11 @@ function MyPage() {
           {/* <Route path="content" element={<MyPageContent />} />  */}
           <Route path="edit" element={<MyPageProfileEdit />} />
           <Route path='/reservation/check' element={<ReservationList />} />
+          <Route path='/myfreeboard' element={<MyFreeboard />} />
             <Route path="*" element={<Navigate to="/mypage" replace />} />
           </Routes>
+
+        
         </div>
       </div>
     </section>
