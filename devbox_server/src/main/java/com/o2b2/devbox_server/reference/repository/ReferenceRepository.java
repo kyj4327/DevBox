@@ -14,4 +14,6 @@ public interface ReferenceRepository extends JpaRepository<Reference, Long> {
 
     Page<Reference> findByUserEntity(UserEntity userEntity, Pageable pageable);
 
+    Page<Reference> findByUserEntityAndSelectJob(UserEntity userEntity, String selectJob, Pageable pageable);
+
 }
