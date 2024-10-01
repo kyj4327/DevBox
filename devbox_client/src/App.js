@@ -9,15 +9,8 @@ import ProjectWrite from './pages/project/ProjectWrite';
 import MsgWrite from './pages/message/MsgWrite';
 import Message from './pages/message/Message';
 import MsgReply from './pages/message/MsgReply';
-import './assets/img/apple-icon.png';
-import './assets/img/favicon.ico';
-import './assets/css/bootstrap.min.css';
-import './assets/css/boxicon.min.css';
-import './assets/css/templatemo.css';
-import './assets/css/custom.css';
 
 import ScrollToTop from './components/ScrollToTop';
-
 
 import JobInfoList from './pages/jobInfo/JobInfoList';
 import JobInfoBack from './pages/jobInfo/JobInfoBack';
@@ -26,12 +19,9 @@ import JobInfoDevOps from './pages/jobInfo/JobInfoDevOps';
 import JobInfoCloud from './pages/jobInfo/JobInfoCloud';
 import JobInfoData from './pages/jobInfo/JobInfoData';
 import JobInfoMobile from './pages/jobInfo/JobInfoMobile';
-
 import ReferenceList from './pages/reference/ReferenceList';
 import ReferenceWrite from './pages/reference/ReferenceWrite';
 import ReferenceUpdate from './pages/reference/ReferenceUpdate';
-
-
 import HiringList from './pages/hiring/HiringList';
 import HiringWrite from './pages/hiring/HiringWrite';
 import HiringUpdate from './pages/hiring/HiringUpdate';
@@ -43,7 +33,6 @@ import Reservation from './pages/reservation/Reservation';
 import AuthContainer from './pages/auth/AuthContainer';
 // import { UserProvider } from './components/context/UserContext';
 
-import HomePage from './pages/HomePage';
 import MyPage from './pages/auth/MyPage';
 import PasswordReset from './pages/auth/PasswordReset';
 import Header from './components/Header';
@@ -53,16 +42,12 @@ import GatherMateList from './pages/gatherMate/GatherMateList';
 import GatherMateWrite from './pages/gatherMate/GatherMateWrite';
 import GatherMateDetail from './pages/gatherMate/GatherMateDetail';
 import GatherMateEdit from './pages/gatherMate/GatherMateEdit';
-import GatherMateMyList from './pages/gatherMate/GatherMateMyList';
-
 import GreetingList from './pages/greeting/GreetingList';
-
 
 import NoticeList from './pages/notice/NoticeList';
 import NoticeWrite from './pages/notice/NoticeWrite';
 import NoticeDetail from './pages/notice/NoticeDetail';
 import NoticeEdit from './pages/notice/NoticeEdit';
-
 
 import ProjectDetail from './pages/project/ProjectDetail';
 import ProjectUpdate from './pages/project/ProjectUpdate';
@@ -76,7 +61,6 @@ import PostDetail from "./pages/freeboard/PostDetail";
 import Contact from "./pages/contact/Contact";
 import EduWrite from './pages/education/EduWrite';
 import Main from './pages/Main';
-import MyFreeboard from './pages/freeboard/MyFreeBoard';
 import MsgDetail from './pages/message/MsgDetail';
 
 function AppContent() {
@@ -104,17 +88,11 @@ function AppContent() {
           {/* MyPage */}
           <Route path="/mypage/*" element={<MyPage />} />
 
-          {/* 임시 메인 페이지 */}
-          <Route path="/home" element={<HomePage />} />
-
           {/* 모여라 메이트 */}
           <Route path="/gathermate/write" element={<GatherMateWrite />} />
           <Route path="/gathermate/list" element={<GatherMateList />} />
           <Route path="/gathermate/detail/:postId" element={<GatherMateDetail />} />
           <Route path="/gathermate/edit/:postId" element={<GatherMateEdit />} />
-
-          <Route path="/gathermate/mylist" element={<GatherMateMyList />} />
-
 
           {/* 공지사항 게시판 */}
           <Route path="/notice/write" element={<NoticeWrite />} />
@@ -124,19 +102,20 @@ function AppContent() {
 
           {/* 가입인사 게시판 */}
           <Route path="/greeting/list" element={<GreetingList />} />
- 
 
-
+          {/* 교육 프로그램 */}
           <Route path='/edu/list' element={<EduMain />} />
           <Route path='/edu/detail' element={<EduDetail />} />
           <Route path='/edu/write' element={<EduWrite />} />
           <Route path='/edu/update' element={<EduUpdate />} />
 
+          {/* 프로젝트 자랑 */}
           <Route path='/project/list' element={<Project />} />
           <Route path='/project/write' element={<ProjectWrite />} />
           <Route path='/project/detail' element={<ProjectDetail />} />
           <Route path='/project/update' element={<ProjectUpdate />} />
 
+          {/* 쪽지 */}
           <Route path='/message/list' element={<Message />} />
           <Route path='/message/write' element={<MsgWrite />} />
           <Route path='/message/detail' element={<MsgDetail />} />
@@ -169,15 +148,20 @@ function AppContent() {
           {/* 6층 회의실 대여 서비스 */}
           <Route path='/reservation/write' element={<Reservation />} />
 
-
-          
+          {/* BDIA 소개 */}
           <Route path="/introduce" element={<BDIAIntroduction />} />
+
+          {/* 연간 교육 일정 */}
           <Route path="/schedule" element={<BDIASchedule />} />
+
+          {/* 자유게시판 */}
           <Route path="/freeboard/list" element={<FreeBoard />} />
           <Route path="/freeboard/write" element={<FreeBoardDetail />} />
           <Route path="/freeboard/:id" element={<FreeBoardDetail />} />
           <Route path="/freeboard/update/:id" element={<FreeBoardDetail />} />
           <Route path="/freeboard/detail/:id" element={<PostDetail />} />
+
+          {/* FAQ */}
           <Route path="/faq" element={<Contact />} />
 
         </Routes>

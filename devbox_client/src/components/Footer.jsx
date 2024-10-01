@@ -26,14 +26,14 @@ const Footer = () => {
                             <p className="text-lg-end text-center text-light light-300">
                                 <ul className="list-inline footer-icons light-300">
                                     <li className="list-inline-item m-0">
-                                        <a className="text-light" target="_blank" href="깃주소">
-                                            <i class='bx bxl-github' style={{ fontSize: '36px' }}></i>
-                                        </a>
+                                        <Link to="깃주소" className="text-light" target="_blank">
+                                            <i className='bx bxl-github' style={{ fontSize: '36px' }}></i>
+                                        </Link>
                                     </li>
                                     <li className="list-inline-item m-0">
-                                        <a className="text-light" target="_blank" href="구글시트">
-                                            <i class='bx bxl-google' style={{ fontSize: '36px', marginLeft:'0.3rem' }}></i>
-                                        </a>
+                                        <Link to="구글시트" className="text-light" target="_blank">
+                                            <i className='bx bxl-google' style={{ fontSize: '36px', marginLeft: '0.3rem' }}></i>
+                                        </Link>
                                     </li>
                                 </ul>
                             </p>
@@ -98,7 +98,7 @@ const Footer = () => {
                         </div>
                         <div className="col-lg-6 col-sm-12">
                             <p className="text-lg-end text-center text-light light-300">
-                                Designed by <a rel="sponsored" className="text-decoration-none text-light" href="https://templatemo.com/" target="_blank"><strong>TemplateMo</strong></a>
+                                Designed by <Link rel="sponsored" className="text-decoration-none text-light" to="https://templatemo.com/" target="_blank"><strong>TemplateMo</strong></Link>
                             </p>
                         </div>
                     </div>

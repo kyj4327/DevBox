@@ -3,7 +3,7 @@ import "./AuthContainer.css";
 import google from "../../assets/img/Oauth_Google.png";
 import kakao from "../../assets/img/Oauth_Kakao.webp";
 import naver from "../../assets/img/Oauth_Naver.png";
-import { useNavigate } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom"; 
 
 import { useUser } from "../../components/context/UserContext";
 
@@ -25,13 +25,9 @@ function AuthContainer() {
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
-      navigate("/home");
+      navigate("/");
     }
   }, [navigate]);
-
-  const handleLogoClick = () => {
-    navigate("/home"); // /home 경로로 이동
-  };
 
   const onNaverLogin = () => {
     window.location.href = "http://localhost:8080/oauth2/authorization/naver";
@@ -164,7 +160,7 @@ function AuthContainer() {
           localStorage.setItem("accessToken", accessToken);
         }
         // 로그인 성공 시 홈 페이지로 리다이렉트
-        window.location.href = "/home";
+        window.location.href = "/";
       } else if (response.status === 401) {
         // 잘못된 자격 증명일 경우
         alert("사용자 정보를 확인해주세요");
@@ -206,15 +202,15 @@ function AuthContainer() {
           <form onSubmit={handleSubmit} className="auth-form">
             <h1 className="auth-h1">Create Account</h1>
             <div className="auth-social-container">
-              <a href="#" className="auth-social" onClick={onNaverLogin}>
+              <Link className="auth-social" onClick={onNaverLogin}>
                 <img src={naver} alt="Naver Icon" />
-              </a>
-              <a href="#" className="auth-social" onClick={onGoogleLogin}>
+              </Link>
+              <Link className="auth-social" onClick={onGoogleLogin}>
                 <img src={google} alt="Google Icon" />
-              </a>
-              <a href="#" className="auth-social" onClick={onKakaoLogin}>
+              </Link>
+              <Link className="auth-social" onClick={onKakaoLogin}>
                 <img src={kakao} alt="Kakao Icon" />
-              </a>
+              </Link>
             </div>
             <span className="auth-span">
               or use your email for registration
@@ -300,27 +296,19 @@ function AuthContainer() {
         <div className="auth-form-container auth-sign-in-container">
 
           <form onSubmit={handleLogin} className="auth-form">
-            {/* <img
-              src={devBox}
-              alt="DevBox Logo"
-              className="logo-image"
-              onClick={handleLogoClick} // 클릭 시 /home으로 이동
-              style={{ cursor: "pointer" }} // 클릭 가능 커서 스타일 추가
-            /> */}
-
             <h1 id="customH1" className="auth-h1">
               Sign in
             </h1> 
             <div className="auth-social-container">
-              <a href="#" className="auth-social" onClick={onNaverLogin}>
+              <Link href="#" className="auth-social" onClick={onNaverLogin}>
                 <img src={naver} alt="Naver Icon" />
-              </a>
-              <a href="#" className="auth-social" onClick={onGoogleLogin}>
+              </Link>
+              <Link href="#" className="auth-social" onClick={onGoogleLogin}>
                 <img src={google} alt="Google Icon" />
-              </a>
-              <a href="#" className="auth-social" onClick={onKakaoLogin}>
+              </Link>
+              <Link href="#" className="auth-social" onClick={onKakaoLogin}>
                 <img src={kakao} alt="Kakao Icon" />
-              </a>
+              </Link>
             </div>
             <span className="auth-span">or use your account</span>
             <input
@@ -337,7 +325,7 @@ function AuthContainer() {
               required
               className="auth-input"
             />
-            <a
+            <Link
               href="#"
               onClick={(e) => {
                 e.preventDefault();
@@ -346,7 +334,7 @@ function AuthContainer() {
               className="auth-a"
             >
               Forgot your password?
-            </a>
+            </Link>
             <button type="submit" className="auth-button">
               Sign In
             </button>

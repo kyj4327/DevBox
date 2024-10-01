@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Button from "../../components/Button";
 import Swal from "sweetalert2";
@@ -60,7 +60,7 @@ const EduDetail = () => {
                             <li>교육기간: {eduData.eduterm}</li>
                             <li>모집인원: {eduData.people}</li>
                             <li>모집상태: {eduData.state}</li>
-                            <li>신청 ▶ <a href={eduData.link} target="_blank">{eduData.link}</a></li>
+                            <li>신청 ▶ <Link to={eduData.link} target="_blank">{eduData.link}</Link></li>
                         </p>
                         <div className="row">
                             <div className="col text-start">

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { useLocation} from 'react-router-dom';
+import { Link, useLocation} from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const UserContact = ({ nickname }) => {
@@ -72,8 +72,8 @@ const UserContact = ({ nickname }) => {
                 <button className="btn dropdown " data-bs-toggle="dropdown" aria-expanded="true" style={{padding:0}}>
                     {nickname}
                 </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" onClick={handleShow}>쪽지 보내기</a></li>
+                <ul className="dropdown-menu">
+                    <li><Link className="dropdown-item" onClick={handleShow}>쪽지 보내기</Link></li>
                 </ul>
             </div>
 

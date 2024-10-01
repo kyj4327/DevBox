@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./MyPageContent.css";
-import MyPageBox from "./MyPageBox";
 import { useNavigate } from "react-router-dom";
 
 function MyPageContent() {

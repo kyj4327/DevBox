@@ -25,84 +25,82 @@ public class JWTFilter extends OncePerRequestFilter {
     private final UserRepository userRepository;
 
     public JWTFilter(JWTUtil jwtUtil,
-                     UserRepository userRepository) {
+            UserRepository userRepository) {
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         System.out.println("========================================================");
-        /** 특정 경로는 필터링 제외 (JWT 토큰 발급이 필요 없는 요청들)
-         *  -> 서버에 요청시 토큰발급받아서 로그인 권한이 필요 없는 것들
+        /**
+         * 특정 경로는 필터링 제외 (JWT 토큰 발급이 필요 없는 요청들)
+         * -> 서버에 요청시 토큰발급받아서 로그인 권한이 필요 없는 것들
          */
         String requestURI = request.getRequestURI();
 
-//        if (requestURI.equals("/join") || requestURI.equals("/login") || requestURI.matches("/password/.*")) {
-
         // 테스트용 로그인 없이 crud 열기
         if (requestURI.equals("/join") || requestURI.equals("/login") || requestURI.matches("/password/.*")
-        || requestURI.equals("/reissue")
+                || requestURI.equals("/reissue")
 
-        // 모여라메이트 게시글 리스트, 상세페이지는 토큰 발급 제외
-        || requestURI.equals("/gathermate/list")
-//        || requestURI.matches("/gathermate/posts/.*") // 게시글 상세는 제외
-//        || requestURI.matches("/gathermate/posts.*") // 게시글 상세는 제외
-        || requestURI.matches("/gathermate/.*/commentslist") // 게시글 상세는 제외
+                // 모여라메이트 게시글 리스트, 상세페이지는 토큰 발급 제외
+                || requestURI.equals("/gathermate/list")
+                || requestURI.matches("/gathermate/.*/commentslist") // 게시글 상세는 제외
+                || requestURI.matches("/gathermate/posts/.*") // 게시글 상세는 제외
 
-        // 이예림 - 시작
-        // 메인페이지
-        || requestURI.matches("/")
-        // 공모전 공고
-        || requestURI.matches("/contest/list")
-        // 채용 공고
-        || requestURI.matches("/hiring/list/.*")
-        // 추천해요
-        || requestURI.matches("/reference/list/.*")
-        // 6층 회의실 예약 write
-        || requestURI.matches("/reservation/write/.*")
-        // 이예림 - 끝
+                // 메인페이지
+                || requestURI.matches("/")
 
-        || requestURI.matches("/notice/posts/.*") // 게시글 상세는 제외
-        || requestURI.matches("/notice/posts.*") // 게시글 상세는 제외
+                // 공모전 공고
+                || requestURI.matches("/contest/list")
 
+                // 채용 공고
+                || requestURI.matches("/hiring/list/.*")
+
+                // 추천해요
+                || requestURI.matches("/reference/list/.*")
+
+                // 6층 회의실 예약 write
+                || requestURI.matches("/reservation/write/.*")
+
+                // 공지사항
+                || requestURI.matches("/notice/posts/.*") // 게시글 상세는 제외
+                || requestURI.matches("/notice/posts.*") // 게시글 상세는 제외
+
+                // 가입인사
                 || requestURI.equals("/greeting/list")
-        || requestURI.matches("/gathermate/posts/.*") // 게시글 상세는 제외
                 || requestURI.matches("/greeting/posts.*") // 게시글 상세는 제외
                 || requestURI.matches("/greeting/.*/commentslist") // 게시글 상세는 제외
 
-        || requestURI.matches("/gatherlist.*") // 게시글 상세는 제외
+                // 교육 프로그램
+                || requestURI.matches("/edu/detail/.*")
+                || requestURI.matches("/edu/detail.*")
+                || requestURI.matches("/edu/list.*")
+                || requestURI.matches("/edu/list/.*")
+                || requestURI.matches("/edu/list/.*.*")
 
-        // 교육 프로그램
-        || requestURI.matches("/edu/detail/.*")
-        || requestURI.matches("/edu/detail.*")
-        || requestURI.matches("/edu/list.*")
-        || requestURI.matches("/edu/list/.*")
-        || requestURI.matches("/edu/list/.*.*")
-        
-        // 프로젝트
-        || requestURI.matches("/project/list.*")
-        || requestURI.matches("/project/list/.*")
-        || requestURI.matches("/project/list/.*.*")
-        || requestURI.matches("/project/detail/.*")
-        || requestURI.matches("/project/detail.*")
-        || requestURI.matches("/.*/download/.*") 
-        || requestURI.matches("/.*/download.*")
+                // 프로젝트 자랑
+                || requestURI.matches("/project/list.*")
+                || requestURI.matches("/project/list/.*")
+                || requestURI.matches("/project/list/.*.*")
+                || requestURI.matches("/project/detail/.*")
+                || requestURI.matches("/project/detail.*")
+                || requestURI.matches("/.*/download/.*")
+                || requestURI.matches("/.*/download.*")
 
-        // faq, 문의사항
-        || requestURI.matches("/api/contact/.*")
-        || requestURI.matches("/send/.*")
+                // FAQ
+                || requestURI.matches("/api/contact/.*")
+                || requestURI.matches("/send/.*")
 
-        //자유게시판
-        || requestURI.matches("/api/posts")
-        || requestURI.matches("/api/posts/[0-9]+")
-        || requestURI.matches("/api/comments/post/[0-9]+")
-        || requestURI.matches("/posts/.*")
-        || requestURI.matches("/comments/.*")
+                // 자유게시판
+                || requestURI.matches("/api/posts")
+                || requestURI.matches("/api/posts/[0-9]+")
+                || requestURI.matches("/api/comments/post/[0-9]+")
+                || requestURI.matches("/posts/.*")
+                || requestURI.matches("/comments/.*")
 
-//        || requestURI.matches("/msg/.*")
-
-         ) {
+        ) {
             System.out.println("doFilter");
             filterChain.doFilter(request, response);
             return;
@@ -144,7 +142,7 @@ public class JWTFilter extends OncePerRequestFilter {
         } catch (io.jsonwebtoken.MalformedJwtException e) {
             e.printStackTrace();
             System.out.println("Invalid token");
-//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+            // response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
             response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().print("{\"msg\":\"Invalid token\"}");
@@ -152,7 +150,7 @@ public class JWTFilter extends OncePerRequestFilter {
         } catch (io.jsonwebtoken.ExpiredJwtException e) {
             e.printStackTrace();
             System.out.println("Expired token");
-//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Expired token");
+            // response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Expired token");
             response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().print("{\"msg\":\"Expired token\"}");
@@ -181,7 +179,8 @@ public class JWTFilter extends OncePerRequestFilter {
 
         CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
 
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
+        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null,
+                customUserDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
         System.out.println("Authentication 출력 : " + SecurityContextHolder.getContext().getAuthentication());
