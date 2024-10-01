@@ -230,6 +230,7 @@ public class SecurityConfig {
                         .requestMatchers("/edu/update/**").authenticated()
                         .requestMatchers("/edu/delete/**").authenticated()
                         .requestMatchers("/edu/delete").authenticated()
+                        .requestMatchers("/edu/**").permitAll()
 
                         // 프로젝트 자랑
                         .requestMatchers("/project/list/").permitAll()
@@ -242,19 +243,13 @@ public class SecurityConfig {
                         .requestMatchers("/project/mylist**").authenticated()
                         .requestMatchers("/project/delete/**").authenticated()
                         .requestMatchers("/project/delete").authenticated()
-
-                        // 알림 기능은 로그인한 사용자만 접근 가능
-                        .requestMatchers("/msg/bell").authenticated()
-                        .requestMatchers("/edu/**").permitAll()
                         .requestMatchers("/project/**").permitAll()
-                        .requestMatchers("/message/**").permitAll()
 
-                        // .requestMatchers("/edu/**").permitAll()
-                        // .requestMatchers("/project/**").permitAll()
+                        // 메시지
+                        .requestMatchers("/msg/bell").authenticated()
+                        .requestMatchers("/message/**").permitAll()
                         .requestMatchers("/msg/**").authenticated()
                         .requestMatchers("/msg/list**").authenticated()
-                        // .requestMatchers("/message/**").authenticated()
-
                         .requestMatchers("/msg/**").authenticated()
                         .requestMatchers("/msg/list**").authenticated()
 
