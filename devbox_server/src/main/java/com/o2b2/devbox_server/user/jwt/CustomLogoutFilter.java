@@ -99,6 +99,12 @@ import java.io.IOException;
 
             response.addCookie(cookie);
 
+            // JSESSIONID 쿠키 삭제
+            Cookie jsessionidCookie = new Cookie("JSESSIONID", null);
+            jsessionidCookie.setMaxAge(0);  // 만료 시간 설정
+            jsessionidCookie.setPath("/");  // 경로 설정
+            response.addCookie(jsessionidCookie);  // 쿠키 삭제
+
             // 세션 무효화
             HttpSession session = request.getSession(false);
             if (session != null) {
