@@ -153,7 +153,8 @@ public class SecurityConfig {
                         .requestMatchers("/gathermate/posts").authenticated()
                         .requestMatchers("/gathermate/likes/**").authenticated()
                         .requestMatchers("/gathermate/likes").authenticated()
-
+//                        좋아요 했는지 확인 유무.
+                        .requestMatchers("/gathermate/isLiked/posts/*").authenticated()
 
                         // gatherMate 글 작성 페이지는 로그인 사용자
                         .requestMatchers("/gathermate/write").authenticated()

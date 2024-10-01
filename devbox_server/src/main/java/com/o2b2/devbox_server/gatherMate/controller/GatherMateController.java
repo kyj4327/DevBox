@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -46,9 +47,27 @@ public class GatherMateController {
     @GetMapping("/posts/{postId}")
     public GatherMateResponse get(@PathVariable Long postId,
                                   @AuthenticationPrincipal CustomUserDetails userDetails) {
-        Long userId = (userDetails != null) ? userDetails.getUserEntity().getId() : null;
+        Long userId = null;
+        if (userDetails != null) {
+            userId = userDetails.getUserEntity().getId();
+        }
 
         return gatherMateService.get(postId, userId);
+    }
+
+    // isLiked 조회
+    @GetMapping("/isLiked/posts/{postId}")
+    public ResponseEntity<Map<String, Boolean>> isPostLiked(@PathVariable Long postId,
+                                                            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("isLiked", false));
+        }
+
+        Long userId = userDetails.getUserEntity().getId();
+        boolean isLiked = gatherMateService.isPostLikedByUser(postId, userId);
+
+        return ResponseEntity.ok(Map.of("isLiked", isLiked));
     }
 
     // 게시글 리스트
@@ -82,6 +101,33 @@ public class GatherMateController {
         Map<String, Object> response = new HashMap<>();
         response.put("content", page.getContent());
         response.put("totalPages", page.getTotalPages());
+
+        return ResponseEntity.ok(response);
+    }
+
+    // 로그인한 회원작성글
+    @GetMapping("/myposts")
+    public ResponseEntity<Map<String, Object>> getMyPosts(
+            @RequestParam(required = false) String category,
+            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        Long userId = userDetails.getUserEntity().getId();
+        Map<String, Object> response = gatherMateService.getMyPosts(userId,category, pageable);
+
+        return ResponseEntity.ok(response);
+    }
+
+    // 로그인한 회원작성글 검색
+    @GetMapping("/myposts/search")
+    public ResponseEntity<Map<String, Object>> searchMyPosts(
+            @RequestParam String keyword,
+            @RequestParam String searchType,
+            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        Long userId = userDetails.getUserEntity().getId();
+        Map<String, Object> response = gatherMateService.searchMyPosts(userId, keyword, searchType, pageable);
 
         return ResponseEntity.ok(response);
     }

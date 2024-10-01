@@ -133,6 +133,8 @@ function GreetingList() {
       showCancelButton: true,
       confirmButtonText: "삭제",
       cancelButtonText: "취소",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
     });
 
     if (!confirmed.isConfirmed) return;
