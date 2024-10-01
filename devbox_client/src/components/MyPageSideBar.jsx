@@ -103,6 +103,11 @@ function MyPageSideBar() {
                 </li>
               </ul>
             </li>
+            <li>
+              <NavLink to="/mypage/reference/mylist">
+                <i className="fal fa-envelope"></i> 추천해요 내가 쓴 글
+              </NavLink>
+            </li>
           </ul>
         </div>
       </div>

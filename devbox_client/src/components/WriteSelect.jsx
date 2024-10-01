@@ -37,7 +37,7 @@ const WriteSelect = ({ titleTag, name, value, onChange, options }) => {
       <p className="worksingle-footer py-3 text-muted light-300">
         <div className="custom-select-container" ref={dropdownRef}>
           <div className="form-floating">
-            <div className="custom-select-header" onClick={toggleDropdown}>
+            <div className="custom-select-header" onClick={toggleDropdown} id={name}>
               {value}
               <span className={`arrow ${isOpen ? 'open' : ''}`}></span>
             </div>

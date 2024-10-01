@@ -158,8 +158,13 @@ public class ReferenceController {
         UserEntity userEntity = userDetails.getUserEntity();
 
         Sort sort = Sort.by(Order.desc("id"));
-        Pageable pageable = PageRequest.of(page - 1, 8, sort);
-        Page<Reference> p = referenceRepository.findByUserEntity(userEntity, pageable);
+        Pageable pageable = PageRequest.of(page - 1, 5, sort);
+        Page<Reference> p = null;
+        if (selectJob.equals("All")) {
+            p = referenceRepository.findByUserEntity(userEntity, pageable);
+        } else {
+            p = referenceRepository.findByUserEntityAndSelectJob(userEntity, selectJob, pageable);
+        }
         List<Reference> list = p.getContent();
         List<Map<String, Object>> response = new ArrayList<>();
         for (Reference r : list) {

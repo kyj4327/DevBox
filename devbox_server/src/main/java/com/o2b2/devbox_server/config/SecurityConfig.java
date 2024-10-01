@@ -126,8 +126,8 @@ public class SecurityConfig {
 
                         .requestMatchers("/password/**").permitAll() // 비밀번호 재설정 관련 경로에 접근 허용
                         .requestMatchers("/api/user/me").authenticated() // <- 인증된 사용자만 접근 가능하도록 설정
-                        .requestMatchers("/*/list/**").permitAll()
-                        .requestMatchers("/*/detail/**").permitAll()
+                        // .requestMatchers("/*/list/**").permitAll()
+                        // .requestMatchers("/*/detail/**").permitAll()
                         .requestMatchers("/*/download/**").permitAll()
                         .requestMatchers("/api/user/delete").authenticated() // <- 회원 탈퇴
                         .requestMatchers("/api/user/nicknames").authenticated() // <- 회원 탈퇴
@@ -158,7 +158,6 @@ public class SecurityConfig {
 
                         // gatherMate 글 작성 페이지는 로그인 사용자
                         .requestMatchers("/gathermate/write").authenticated()
-                        .requestMatchers("/reference/write").authenticated()
                         // gatherMate 글 수정 페이지는 로그인 사용자
                         .requestMatchers("/gathermate/edit/**").authenticated()
 
@@ -193,34 +192,50 @@ public class SecurityConfig {
                         .requestMatchers("/notice/posts").authenticated()
                         .requestMatchers("/notice/posts**").authenticated()
 
-                        .requestMatchers("/reservation/write/**").permitAll()
-                        .requestMatchers("/reservation/check/**").authenticated()
-                        // .requestMatchers("/reservation/check/**").hasAnyRole("ADMIN", "STUDENT")
-                        // .requestMatchers("/reservation/write").hasAnyRole("ADMIN", "STUDENT")
+                        // 이예림 - 시작
+                        // 공모전 공고
+                        .requestMatchers("/contest/list*").permitAll()
+                        .requestMatchers("/contest/write").authenticated()
                         .requestMatchers("/contest/write").hasRole("ADMIN")
-                        // .requestMatchers("/hiring/write").hasRole("ADMIN")
-
-                        .requestMatchers("/reservation/write/**").permitAll()
-                        .requestMatchers("/reservation/check/**").authenticated()
-                        // .requestMatchers("/reservation/check/**").hasAnyRole("ADMIN", "STUDENT")
-                        // .requestMatchers("/reservation/write").hasAnyRole("ADMIN", "STUDENT")
-                        .requestMatchers("/contest/write").hasRole("ADMIN")
-                        // .requestMatchers("/hiring/write").hasRole("ADMIN")
+                        .requestMatchers("/contest/update**").authenticated()
+                        .requestMatchers("/contest/update**").hasRole("ADMIN")
+                        .requestMatchers("/contest/delete**").authenticated()
+                        .requestMatchers("/contest/delete**").hasRole("ADMIN")
+                        // 채용 공고
+                        .requestMatchers("/hiring/list/**").permitAll()
+                        .requestMatchers("/hiring/write").authenticated()
+                        .requestMatchers("/hiring/write").hasRole("ADMIN")
+                        .requestMatchers("/hiring/update**").authenticated()
+                        .requestMatchers("/hiring/update**").hasRole("ADMIN")
+                        .requestMatchers("/hiring/delete**").authenticated()
+                        .requestMatchers("/hiring/delete**").hasRole("ADMIN")
+                        // 추천해요
+                        .requestMatchers("/reference/list/**").permitAll()
                         .requestMatchers("/reference/mylist/**").authenticated()
+                        .requestMatchers("/reference/write").authenticated()
+                        .requestMatchers("/reference/update**").authenticated()
+                        .requestMatchers("/reference/delete**").authenticated()
+                        // 6층 회의실 예약
+                        .requestMatchers("/reservation/write/**").permitAll()
+                        .requestMatchers("/reservation/write").hasAnyRole("ADMIN", "STUDENT")
+                        .requestMatchers("/reservation/check/**").authenticated()
+                        .requestMatchers("/reservation/delete**").authenticated()
+                        .requestMatchers("/reservation/delete**").hasAnyRole("ADMIN", "STUDENT")
+                        // 이예림 - 끝
                         
                         /**
                          추천해요, 프로젝트 자랑 게시판
                          */
                         // 글쓰기
-                        .requestMatchers("/*/write").authenticated()
-                        .requestMatchers("/*/write/**").authenticated()
+                        // .requestMatchers("/*/write").authenticated()
+                        // .requestMatchers("/*/write/**").authenticated()
 
-                        .requestMatchers("/*/update").authenticated()
-                        .requestMatchers("/*/update/**").authenticated()
-                        .requestMatchers("/*/delete").authenticated()
-                        .requestMatchers("/*/delete/**").authenticated()
+                        // .requestMatchers("/*/update").authenticated()
+                        // .requestMatchers("/*/update/**").authenticated()
+                        // .requestMatchers("/*/delete").authenticated()
+                        // .requestMatchers("/*/delete/**").authenticated()
 
-                        .requestMatchers("/*/list/**").permitAll()
+                        // .requestMatchers("/*/list/**").permitAll()
 
                         // 교육 정보
                         .requestMatchers("/edu/list/").permitAll()
