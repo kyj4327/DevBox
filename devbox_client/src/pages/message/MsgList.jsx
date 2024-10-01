@@ -19,8 +19,6 @@ const MsgList = (props) => {
             }, 
         });
         const data = await res.json();
-        console.log(data);
-        
         props.setRefresh(); // 부모 컴포넌트 refresh상태 반전
 
     };
@@ -70,7 +68,7 @@ const MsgList = (props) => {
                                     <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                                         <ul className="list-unstyled text-center light-300">
                                             <li className="h5 semi-bold-600 mb-0 mt-3">{msg.title}</li>
-                                            <li>{msg.sender}</li>
+                                            <li>보낸 사람: {msg.sender}</li>
                                             <li>{formatDateTime(msg.sendTime)}</li>
                                         </ul>
                                     </div>

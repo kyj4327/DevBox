@@ -90,7 +90,7 @@ public class MsgController {
             if (msg.getSender() != null) {
                 map.put("sender", msg.getSender().getNickname());
             } else {
-                map.put("sender", "Unknown Sender"); // 대체 값
+                map.put("sender", "탈퇴한 회원"); // 대체 값
             }
 
             map.put("sendTime", msg.getSendTime());
@@ -100,7 +100,7 @@ public class MsgController {
             if (msg.getReceiver() != null) {
                 map.put("reciver", msg.getReceiver().getNickname());
             } else {
-                map.put("reciver", "Unknown Receiver"); // 대체 값
+                map.put("reciver", "탈퇴한 회원"); // 대체 값
             }
 
             map.put("like", msg.getLike());
@@ -289,9 +289,13 @@ public class MsgController {
             map.put("id", reciverMsg.getId());
             map.put("title", reciverMsg.getTitle());
             map.put("content", reciverMsg.getContent());
-            map.put("sender", reciverMsg.getSender().getNickname());
+            
+
+            map.put("sender", reciverMsg.getSender() != null ? reciverMsg.getSender().getNickname() : null);
+
+
             map.put("sendTime", reciverMsg.getSendTime());
-            map.put("reciver", reciverMsg.getReceiver().getNickname());
+            map.put("reciver", reciverMsg.getReceiver() != null ? reciverMsg.getReceiver().getNickname() : null);
             map.put("readTime", reciverMsg.getReadTime()); // 읽은 시간도 응답에 포함
         } else {
             // Reciver 쪽지가 없을 경우 에러 메시지 추가
@@ -307,9 +311,10 @@ public class MsgController {
             map.put("id", senderMsg.getId());
             map.put("title", senderMsg.getTitle());
             map.put("content", senderMsg.getContent());
-            map.put("sender", senderMsg.getSender().getNickname());
+            map.put("sender", senderMsg.getSender() != null ? senderMsg.getSender().getNickname() : null);
             map.put("sendTime", senderMsg.getSendTime());
-            map.put("reciver", senderMsg.getReceiver().getNickname());
+            map.put("reciver", senderMsg.getReceiver() != null ? senderMsg.getReceiver().getNickname() : null);
+            
         } else {
             // Sender 쪽지가 없을 경우 에러 메시지 추가
             map.put("senderError", "Sender message not found");

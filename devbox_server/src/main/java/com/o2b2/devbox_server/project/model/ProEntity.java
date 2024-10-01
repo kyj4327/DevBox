@@ -41,7 +41,7 @@ public class ProEntity {
     @OneToMany(mappedBy = "proEntity", cascade = CascadeType.REMOVE)
     List<MultiImgEntity> multiImgEntitys = new ArrayList<>();
 
-    @OneToMany(mappedBy = "proEntity")
+    @OneToMany(mappedBy = "proEntity", cascade = CascadeType.REMOVE)
     List<ProLike> proLikes = new ArrayList<>();
     
     @ManyToOne
