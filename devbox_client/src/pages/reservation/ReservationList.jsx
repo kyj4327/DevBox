@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 
 const ReservationList = () => {
     const domain = "http://localhost:8080";
+    const [state, setState] = useState(false);
 
     const { user, loading } = useUser();
     const navigate = useNavigate();
@@ -26,6 +27,7 @@ const ReservationList = () => {
                 navigate('/auth');
             });
         }
+        setState(p => !p)
     }, [user, loading, navigate]);
     const token = localStorage.getItem('accessToken');
 
@@ -34,8 +36,9 @@ const ReservationList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState([]);
     const [pageData, setPageData] = useState([]);
+
     useEffect(() => {
-        if (user.role === "ROLE_ADMIN" || user.role === "ROLE_STUDENT") {
+        if (user && (user.role === "ROLE_ADMIN" || user.role === "ROLE_STUDENT")) {
             async function get(page = 1) {
                 const url = `${domain}/reservation/check/${category}/${date}?page=${page}`;
                 const res = await fetch(url, {
@@ -53,7 +56,7 @@ const ReservationList = () => {
             }
             get(currentPage);
         }
-    }, [category, date, currentPage]);
+    }, [category, date, currentPage, state]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -85,7 +88,7 @@ const ReservationList = () => {
                 <h5 className="mypage-content__title">회의실 예약내역</h5>
             </div>
             {
-                user.role === "ROLE_USER" ?
+                user && user.role === "ROLE_USER" ?
                     <div className="mypage-content__user-info">
                         <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
                             권한이 없습니다.
