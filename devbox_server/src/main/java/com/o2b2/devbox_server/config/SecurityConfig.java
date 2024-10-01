@@ -260,14 +260,15 @@ public class SecurityConfig {
 
 
 
-//                        자유게시판, faq
+                        //faq, 문의사항
                         .requestMatchers("/send/**").permitAll()
                         .requestMatchers("/api/contact/**").permitAll()
+
+                        //자유게시판
                         .requestMatchers("/api/posts/**").permitAll()
                         .requestMatchers("/api/comments/**").permitAll()
                         .requestMatchers("/posts/**").permitAll()
                         .requestMatchers("/comments/**").permitAll()
-
                         .requestMatchers("/freeboard/list/**").permitAll()
 
 

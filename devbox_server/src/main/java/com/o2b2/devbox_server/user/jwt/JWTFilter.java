@@ -84,9 +84,11 @@ public class JWTFilter extends OncePerRequestFilter {
         // || requestURI.matches("/msg/.*")
 
 
-//            자유게시판, faq
+        // faq, 문의사항
         || requestURI.matches("/api/contact/.*")
         || requestURI.matches("/send/.*")
+
+        //자유게시판
         || requestURI.matches("/api/posts")
         || requestURI.matches("/api/posts/[0-9]+")
         || requestURI.matches("/api/comments/post/[0-9]+")
