@@ -1,20 +1,18 @@
 package com.o2b2.devbox_server.user.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.o2b2.devbox_server.eduInfo.model.EduEntity;
+import com.o2b2.devbox_server.gatherMate.entity.GatherMate;
+import com.o2b2.devbox_server.gatherMate.like.entity.Like;
+import com.o2b2.devbox_server.greeting.entity.Greeting;
 import com.o2b2.devbox_server.message.model.MsgReciverEntity;
 import com.o2b2.devbox_server.message.model.MsgSenderEntity;
 import com.o2b2.devbox_server.project.model.ProEntity;
 import com.o2b2.devbox_server.project.model.ProLike;
 import com.o2b2.devbox_server.reference.model.Reference;
 import com.o2b2.devbox_server.reservation.model.Reservation;
-
 import jakarta.persistence.*;
 import lombok.Data;
-import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,10 +44,11 @@ public class UserEntity {
 
     private String field;
 
-    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     List<ProEntity> proEntitys = new ArrayList<>();
-    
+
+
     // @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
     // List<EduEntity> eduEntitys = new ArrayList<>();
     
@@ -60,17 +59,28 @@ public class UserEntity {
     @OneToMany(mappedBy = "sender")
     @JsonIgnore
     List<MsgSenderEntity> MsgSenderEntitys = new ArrayList<>();
-    
-    @OneToMany(mappedBy = "user")
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     List<ProLike> proLikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     List<Reference> ReferenceLists = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     List<Reservation> ReservationLists = new ArrayList<>();
 
+    // 모여라메이트 좋아요
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes = new ArrayList<>();
+
+    // 모여라메이트
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GatherMate> gatherMates = new ArrayList<>();
+
+    // 모여라메이트
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Greeting> greetings = new ArrayList<>();
 }
