@@ -80,6 +80,7 @@ function MyPageSideBar() {
                 <i className="fal fa-layer-group"></i> 회의실 예약내역
               </NavLink>
             </li>
+
             <li className={`has-submenu ${isSubmenuOpen ? "open" : ""}`}>
               <button
                 type="button"
@@ -97,16 +98,16 @@ function MyPageSideBar() {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/mypage/gathermate/mylists">
+                  <NavLink to="/mypage/reference/mylist">
                     <i className="fal fa-envelope"></i> - 추천해요
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink to="/mypage/project/mylist">
+                    <i className="fal fa-envelope"></i> - 프로젝트 자랑
+                  </NavLink>
+                </li>
               </ul>
-            </li>
-            <li>
-              <NavLink to="/mypage/reference/mylist">
-                <i className="fal fa-envelope"></i> 추천해요 내가 쓴 글
-              </NavLink>
             </li>
           </ul>
         </div>

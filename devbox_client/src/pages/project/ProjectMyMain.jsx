@@ -5,7 +5,7 @@ import { useUser } from '../../components/context/UserContext';
 import UserContact from '../../components/UserContact';
 import './ProjectMain.css';
 
-const ProjectMain = (props) => {
+const ProjectMyMain = (props) => {
     const { user } = useUser();
     const navigate = useNavigate();
     const [isHovered, setIsHovered] = useState(false); // 마우스 호버 상태 관리
@@ -80,22 +80,18 @@ const ProjectMain = (props) => {
     }, [props.list]);
 
     return (
-        <div className="container py-5">
-            <h1 className="h2 semi-bold-600 text-center mt-2">프로젝트 자랑 게시판</h1>
-            <p
-                className="text-center light-300"
-                style={{ marginBottom: "0", padding: "0px" }}
-            >
-                맘껏 자랑해봐!
-            </p>
-            <section className="container py-5">
+        <>
+             <div className="mypage-content__title-wrapper">
+                <h5 className="mypage-content__title">프로젝트 자랑 게시판</h5>
+            </div>
+            <section className="container py-4">
                 <div className="row projects gx-lg-5">
                     {props.list && props.list.map((pro) => (
-                        <div className="service-work overflow-hidden card mb-3 mx-2 col-sm-6 col-lg-4 pt-4 project marketing social business " key={pro.id}>
-                            <Link to={`/project/detail?id=${pro.id}`} className="overflow-hidden card mb-2 mx-1 text-decoration-none .border-1">
+                        <div className="service-work overflow-hidden card mb-3 mx-2 col-sm-6 col-lg-4 pt-4 project marketing social business" key={pro.id}>
+                            <Link to={`/project/detail?id=${pro.id}`} className="overflow-hidden card mb-2 mx-1 text-decoration-none">
                                 <img
-                                    style={{ height: '400px' }}
-                                    className="card-img-top "
+                                    style={{ height: '300px' }}
+                                    className="card-img-top"
                                     src={`${domain}/project/download?id=${pro.mainImg}`}
                                     alt={`Project ${pro.id}`}
                                 />
@@ -118,17 +114,11 @@ const ProjectMain = (props) => {
                             </div>
                         </div>
                     ))}
-                    <div className="form-row pt-5">
-                        <div className="col-md-12 col-10 text-end">
-                            {user && (
-                                <Button text={'글쓰기'} onClick={() => navigate('/project/write')} />
-                            )}
-                        </div>
-                    </div>
+                    
                 </div>
             </section>
-        </div>
+        </>
     );
 };
 
-export default ProjectMain;
+export default ProjectMyMain;

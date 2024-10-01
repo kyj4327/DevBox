@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Swal from "sweetalert2";
 
-const MesDetail = () => {
+const MsgDetail = () => {
     const navigate = useNavigate();
     const [msgData, setMsgData] = useState({});
     const location = useLocation();
@@ -124,10 +124,14 @@ const MesDetail = () => {
 
                                         if (result.isConfirmed) {
                                             try {
+                                                const token = localStorage.getItem('accessToken');
                                                 const url = `${domain}/msg/delete?id=${msgData.id}`;
                                                 const res = await fetch(url, {
                                                     method: 'DELETE',
                                                     credentials: 'include',
+                                                    headers: {
+                                                        "Authorization": `Bearer ${token}`,
+                                                    },
                                                 });
 
                                                 if (res.ok) {
@@ -156,4 +160,4 @@ const MesDetail = () => {
     );
 };
 
-export default MesDetail;
+export default MsgDetail;

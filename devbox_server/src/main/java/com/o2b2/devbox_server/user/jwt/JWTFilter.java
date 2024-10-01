@@ -72,25 +72,22 @@ public class JWTFilter extends OncePerRequestFilter {
                 || requestURI.matches("/greeting/.*/commentslist") // 게시글 상세는 제외
 
         || requestURI.matches("/gatherlist.*") // 게시글 상세는 제외
+
+        // 교육 프로그램
         || requestURI.matches("/edu/detail/.*")
-        || requestURI.matches("/project/detail/.*")
         || requestURI.matches("/edu/detail.*")
+        || requestURI.matches("/edu/list.*")
+        || requestURI.matches("/edu/list/.*")
+        || requestURI.matches("/edu/list/.*.*")
+        
+        // 프로젝트
+        || requestURI.matches("/project/list.*")
+        || requestURI.matches("/project/list/.*")
+        || requestURI.matches("/project/list/.*.*")
+        || requestURI.matches("/project/detail/.*")
         || requestURI.matches("/project/detail.*")
-
-        //
-        // || requestURI.matches("/.*/list")
-
-        // // || requestURI.matches("/.*/detail/.*")
-        // || requestURI.matches("/.*/list.*")
-        // || requestURI.matches("/.*/list/.*")
-        // || requestURI.matches("/.*/list/.*.*")
-        // || requestURI.matches("/.*/download/.*") 
-        // || requestURI.matches("/.*/download.*")
-
-
-        // || requestURI.matches("/edu/.*")
-        // || requestURI.matches("/project/.*")
-        // || requestURI.matches("/msg/.*")
+        || requestURI.matches("/.*/download/.*") 
+        || requestURI.matches("/.*/download.*")
 
 
 //            자유게시판, faq

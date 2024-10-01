@@ -5,6 +5,7 @@ import MyPageContent from "../../components/MyPageContent";
 import MyPageProfileEdit from "../../components/MyPageProfileEdit";
 import "./MyPage.css";
 import ReservationList from "../reservation/ReservationList";
+import ProjectMyList from "../project/ProjectMyList";
 import MyReferenceList from "../reference/MyReferenceList";
 
 import GatherMateMyList from '../gatherMate/GatherMateMyList';
@@ -22,6 +23,7 @@ function MyPage() {
           {/* <Route path="content" element={<MyPageContent />} />  */}
           <Route path="edit" element={<MyPageProfileEdit />} />
           <Route path='/reservation/check' element={<ReservationList />} />
+          <Route path='/project/mylist' element={<ProjectMyList />} />
           <Route path='/reference/mylist' element={<MyReferenceList />} />
           <Route path="/gathermate/mylist" element={<GatherMateMyList />} />
             <Route path="*" element={<Navigate to="/mypage" replace />} />

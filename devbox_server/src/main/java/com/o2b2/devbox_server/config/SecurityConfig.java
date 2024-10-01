@@ -126,8 +126,7 @@ public class SecurityConfig {
 
                         .requestMatchers("/password/**").permitAll() // 비밀번호 재설정 관련 경로에 접근 허용
                         .requestMatchers("/api/user/me").authenticated() // <- 인증된 사용자만 접근 가능하도록 설정
-                        // .requestMatchers("/*/list/**").permitAll()
-                        // .requestMatchers("/*/detail/**").permitAll()
+
                         .requestMatchers("/*/download/**").permitAll()
                         .requestMatchers("/api/user/delete").authenticated() // <- 회원 탈퇴
                         .requestMatchers("/api/user/nicknames").authenticated() // <- 회원 탈퇴
@@ -222,20 +221,6 @@ public class SecurityConfig {
                         .requestMatchers("/reservation/delete**").authenticated()
                         .requestMatchers("/reservation/delete**").hasAnyRole("ADMIN", "STUDENT")
                         // 이예림 - 끝
-                        
-                        /**
-                         추천해요, 프로젝트 자랑 게시판
-                         */
-                        // 글쓰기
-                        // .requestMatchers("/*/write").authenticated()
-                        // .requestMatchers("/*/write/**").authenticated()
-
-                        // .requestMatchers("/*/update").authenticated()
-                        // .requestMatchers("/*/update/**").authenticated()
-                        // .requestMatchers("/*/delete").authenticated()
-                        // .requestMatchers("/*/delete/**").authenticated()
-
-                        // .requestMatchers("/*/list/**").permitAll()
 
                         // 교육 정보
                         .requestMatchers("/edu/list/").permitAll()
@@ -246,6 +231,7 @@ public class SecurityConfig {
                         .requestMatchers("/edu/update/**").authenticated()
                         .requestMatchers("/edu/delete/**").authenticated()
                         .requestMatchers("/edu/delete").authenticated()
+                        .requestMatchers("/edu/**").permitAll()
 
                         // 프로젝트 자랑
                         .requestMatchers("/project/list/").permitAll()
@@ -258,19 +244,13 @@ public class SecurityConfig {
                         .requestMatchers("/project/mylist**").authenticated()
                         .requestMatchers("/project/delete/**").authenticated()
                         .requestMatchers("/project/delete").authenticated()
-
-                        // 알림 기능은 로그인한 사용자만 접근 가능
-                        .requestMatchers("/msg/bell").authenticated()
-                        .requestMatchers("/edu/**").permitAll()
                         .requestMatchers("/project/**").permitAll()
-                        .requestMatchers("/message/**").permitAll()
 
-                        // .requestMatchers("/edu/**").permitAll()
-                        // .requestMatchers("/project/**").permitAll()
+                        // 메시지
+                        .requestMatchers("/msg/bell").authenticated()
+                        .requestMatchers("/message/**").permitAll()
                         .requestMatchers("/msg/**").authenticated()
                         .requestMatchers("/msg/list**").authenticated()
-                        // .requestMatchers("/message/**").authenticated()
-
                         .requestMatchers("/msg/**").authenticated()
                         .requestMatchers("/msg/list**").authenticated()
 

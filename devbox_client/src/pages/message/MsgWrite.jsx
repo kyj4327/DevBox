@@ -58,7 +58,8 @@ const MesWrite = () => {
 
     // 닉네임을 검증하는 함수
     const validateNickname = async (nickname) => {
-        if (!nickname.trim()) {
+        
+        if (!nickname.trim() || nickname.trim().length === 0) {
             setNickNameError('받는 사람의 닉네임을 입력해주세요.'); // 빈 입력 시 오류 메시지
             return;
         }
@@ -77,11 +78,23 @@ const MesWrite = () => {
     const handleNickNameChange = (e) => {
         const inputNickname = e.target.value;
         setReciver(inputNickname);
-        validateNickname(inputNickname); // 입력된 닉네임 검증
+        if (inputNickname.trim()) {
+            validateNickname(inputNickname); // 입력된 닉네임 검증
+        } else {
+            setNickNameError('받는 사람의 닉네임을 입력해주세요.'); // 비어있을 때 오류 메시지
+        }
     };
 
 
     const handleDetail = async () => {
+        if (!reciver.trim()) {
+            Swal.fire({
+                icon: "error",
+                title: "받을 분 입력 오류",
+                text: "받을 분을 입력해주세요." // 받을 분 비어있을 때 경고 메시지
+            });
+            return;
+        }
         if (nickNameError) {
             Swal.fire({
                 icon: "error",
@@ -90,6 +103,7 @@ const MesWrite = () => {
             });
             return;
         }
+
 
         const formData = new FormData();
 
