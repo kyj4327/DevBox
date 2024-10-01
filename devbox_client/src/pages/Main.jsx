@@ -51,7 +51,6 @@ const Main = () => {
     return (
         <>
             <div class="banner-wrapper bg-light">
-                {/* <div id="index_banner" class="banner-vertical-center-index container-fluid pt-5"> */}
                 <div class="banner-vertical-center-index container-fluid pt-5">
                     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-wrap="true">
                         <div class="carousel-inner">
