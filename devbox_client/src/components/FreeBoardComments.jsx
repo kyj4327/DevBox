@@ -4,7 +4,9 @@ import { useUser } from '../components/context/UserContext';
 import Button from '../components/Button';
 import profilePic from "../assets/img/profilePic.png";
 import Swal from "sweetalert2";
-import '../components/BoardComments.css';
+// import '../components/BoardComments.css';
+import "./GatherMateComments.css";
+import UserContact from './UserContact';
 
 const FreeBoardComments = ({ postId }) => {
     const [comments, setComments] = useState([]);
@@ -163,7 +165,7 @@ const FreeBoardComments = ({ postId }) => {
                                         <div className="d-flex align-items-center">
                                             <img src={profilePic} alt="profile" className="profile-image me-3" />
                                             <div>
-                                                <span className="comment-author d-block">{comment.author}</span>
+                                            <UserContact nickname={comment.author} />
                                                 <span className="comment-time">
                                                     {new Date(comment.createdAt).toLocaleString()}
                                                 </span>
@@ -196,10 +198,10 @@ const FreeBoardComments = ({ postId }) => {
                                                         rows="3"
                                                     />
                                                     <div className="edit-buttons">
-                                                        <button className="btn btn-secondary" onClick={handleCancelEdit}>
+                                                        <button className="btn btn-link" onClick={handleCancelEdit}>
                                                             취소
                                                         </button>
-                                                        <button className="btn btn-primary me-2" onClick={() => handleEditSubmit(comment.id)}>
+                                                        <button className="btn btn-link" onClick={() => handleEditSubmit(comment.id)}>
                                                             등록
                                                         </button>
                                                     </div>

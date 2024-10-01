@@ -14,6 +14,7 @@ import profilePic from "../../assets/img/profilePic.png";
 import PostButton from "../../components/PostButton";
 
 import Swal from "sweetalert2";
+import UserContact from "../../components/UserContact";
 
 const FreeBoardDetail = () => {
   const { id } = useParams();
@@ -148,7 +149,7 @@ const FreeBoardDetail = () => {
                   }}
                 />
                 <div className="d-flex flex-column">
-                  <span>작성자: {post.author}</span>
+                <UserContact nickname={post.author} />
                   <span>
                     작성일: {new Date(post.createdAt).toLocaleString()}
                     조회수: {post.views}

@@ -5,6 +5,7 @@ import Pagination from "../../components/Pagination";
 import { getAllPosts } from "../../services/api-service";
 import Button from "../../components/Button";
 import { useUser } from "../../components/context/UserContext";
+import UserContact from "../../components/UserContact";
 
 const FreeBoardList = () => {
   const { user } = useUser();
@@ -124,7 +125,7 @@ const FreeBoardList = () => {
                         </Link>
                       </td>
                       <td data-label="작성자" className="notice-author">
-                        {post.author}
+                      <UserContact nickname={post.author} />
                       </td>
                       <td data-label="작성일" className="notice-date">
                         {formatDate(post.createdAt)}
