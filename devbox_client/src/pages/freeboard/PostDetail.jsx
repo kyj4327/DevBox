@@ -12,7 +12,7 @@ import { useUser } from "../../components/context/UserContext";
 import "../../assets/css/freeboard.css";
 import profilePic from "../../assets/img/profilePic.png";
 import PostButton from "../../components/PostButton";
-import TextButton from "../../components/TextButton";
+
 import Swal from "sweetalert2";
 
 const PostDetail = () => {
@@ -214,13 +214,13 @@ const PostDetail = () => {
                 {/* 작성자가 아닐 경우 수정/삭제 버튼을 숨김 */}
                 {user && post.author === user.nickname && (
                   <>
-                    <TextButton text="수정" onClick={handleEditPost} />
-                    <TextButton text="삭제" onClick={handleDeletePost} />
+                    <Button text="수정" onClick={handleEditPost} />
+                    <Button text="삭제" onClick={handleDeletePost} />
                   </>
                 )}
               </div>
               <div className="d-flex">
-                <TextButton
+                <Button
                   text="목록으로"
                   onClick={() => navigate("/freeboard/list")}
                 />
