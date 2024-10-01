@@ -14,12 +14,13 @@ import modeCommentIcon from "../../assets/img/icons/modeComment.svg";
 import modeFavoriteIcon from "../../assets/img/icons/modeFavorite.svg";
 import modevisibilityIcon from "../../assets/img/icons/modevisibility.svg";
 
-function GatherMateList() {
+function GatherMateMyList() {
   const { user } = useUser(); // UserContext -> user 가져오기
   const [category, setCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
+  const [totalPosts, setTotalPosts] = useState(0); // 총 게시글 개수 추가
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchType, setSearchType] = useState("제목 & 내용");
   const [startPage, setStartPage] = useState(0);
@@ -37,34 +38,41 @@ function GatherMateList() {
 
   useEffect(() => {
     fetchData();
-  }, [category, currentPage]);
+  }, [category, currentPage]); // searchKeyword와 searchType 추가
 
   const fetchData = async () => {
-    let url = `http://localhost:8080/gathermate/posts?page=${
+    let url = `http://localhost:8080/gathermate/myposts?page=${
       currentPage - 1
-    }&size=10&sort=id,desc`;
+    }&size=5&sort=id,desc`;
 
     if (searchKeyword) {
-    url = `http://localhost:8080/gathermate/posts/search?keyword=${encodeURIComponent(searchKeyword)}&searchType=${encodeURIComponent(searchType)}&page=${
+      url = `http://localhost:8080/gathermate/myposts/search?keyword=${encodeURIComponent(
+        searchKeyword
+      )}&searchType=${encodeURIComponent(searchType)}&page=${
         currentPage - 1
       }&size=10&sort=id,desc`;
     }
 
     if (category !== "All" && !searchKeyword) {
-    url += `&category=${encodeURIComponent(category)}`;
-  }
-
+      url += `&category=${encodeURIComponent(category)}`;
+    }
 
     try {
-      const res = await fetch(url,{
+      const res = await fetch(url, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
       const result = await res.json();
       setData(result.content || []);
       setTotalPages(result.totalPages || 0);
+      setTotalPosts(result.totalPosts || 0); // 총 게시글 개수 설정
 
       // 페이지 그룹 계산
       const pageGroupSize = 10;
@@ -81,6 +89,7 @@ function GatherMateList() {
       console.error("Error fetching data:", error);
       setData([]);
       setTotalPages(0);
+      setTotalPosts(0); // 에러 시 총 게시글 개수도 초기화
     }
   };
 
@@ -121,15 +130,13 @@ function GatherMateList() {
   };
 
   return (
-    <div>
-      <section className="container py-5">
-        <div className="container py-5">
-          <h1 className="h2 semi-bold-600 text-center mt-2">모여라 메이트</h1>
-          <p className="text-center pb-5 light-300">
-            너! 나의 동료가 돼라!
-            <br />
-            BDIA에서 다양한 모임을 주최해보세요!
-          </p>
+    <div className="mypage-content__wrapper">
+      {/* <section className="container py-5"> */}
+        {/* <div className="container py-5"> */}
+          <div className="mypage-content__title-wrapper">
+            <h5 className="mypage-content__title">모여라 메이트_내가 쓴 글</h5>
+          </div>
+
           <div className="row justify-content-center my-5">
             <div className="filter-btns shadow-md rounded-pill text-center col-auto">
               <Category
@@ -196,12 +203,12 @@ function GatherMateList() {
                     <div className="post-header">
                       <div
                         className={`post-status ${
-                          post.recruiting
+                          post.isRecruiting
                             ? "post-status-recruiting"
                             : "post-status-completed"
                         }`}
                       >
-                        {post.recruiting ? "모집중" : "모집완료"}
+                        {post.isRecruiting ? "모집중" : "모집완료"}
                       </div>
                       <h3 className="post-title">
                         {post.title}
@@ -279,15 +286,15 @@ function GatherMateList() {
               ))}
             </div>
           ) : (
-            <p></p>
+            <p>작성한 글이 없습니다.</p> // 메시지 수정
           )}
-        </div>
-        <div className="form-row pt-2">
+        {/* </div> */}
+        {/* <div className="form-row pt-2">
           <div className="col-md-12 col-10 text-end">
             <Button text={"작성하기"} onClick={toWrite} />
           </div>
-        </div>
-      </section>
+        </div> */}
+      {/* </section> */}
       <Pagination
         pageData={{
           currentPage: currentPage,
@@ -300,5 +307,4 @@ function GatherMateList() {
     </div>
   );
 }
-
-export default GatherMateList;
+export default GatherMateMyList;

@@ -7,6 +7,7 @@ import "./MyPage.css";
 import ReservationList from "../reservation/ReservationList";
 import MyReferenceList from "../reference/MyReferenceList";
 
+import GatherMateMyList from '../gatherMate/GatherMateMyList';
 
 function MyPage() {
   return (
@@ -22,8 +23,11 @@ function MyPage() {
           <Route path="edit" element={<MyPageProfileEdit />} />
           <Route path='/reservation/check' element={<ReservationList />} />
           <Route path='/reference/mylist' element={<MyReferenceList />} />
+          <Route path="/gathermate/mylist" element={<GatherMateMyList />} />
             <Route path="*" element={<Navigate to="/mypage" replace />} />
           </Routes>
+
+
         </div>
       </div>
     </section>
