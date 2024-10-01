@@ -6,7 +6,7 @@ import { getAllPosts } from "../../services/api-service";
 import Button from "../../components/Button";
 import { useUser } from "../../components/context/UserContext";
 
-const FreeBoard = () => {
+const FreeBoardList = () => {
   const { user } = useUser();
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -158,4 +158,4 @@ const FreeBoard = () => {
   );
 };
 
-export default FreeBoard;
+export default FreeBoardList;
