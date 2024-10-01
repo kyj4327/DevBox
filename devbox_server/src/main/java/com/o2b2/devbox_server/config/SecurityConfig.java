@@ -219,6 +219,7 @@ public class SecurityConfig {
                         .requestMatchers("/reservation/write").hasAnyRole("ADMIN", "STUDENT")
                         .requestMatchers("/reservation/check/**").authenticated()
                         .requestMatchers("/reservation/delete**").authenticated()
+                        .requestMatchers("/reservation/delete**").hasAnyRole("ADMIN", "STUDENT")
                         // 이예림 - 끝
                         
                         /**
