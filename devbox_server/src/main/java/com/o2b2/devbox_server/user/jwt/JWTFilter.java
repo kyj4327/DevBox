@@ -49,40 +49,45 @@ public class JWTFilter extends OncePerRequestFilter {
 //        || requestURI.matches("/gathermate/posts/.*") // 게시글 상세는 제외
 //        || requestURI.matches("/gathermate/posts.*") // 게시글 상세는 제외
         || requestURI.matches("/gathermate/.*/commentslist") // 게시글 상세는 제외
-            
-        || requestURI.matches("/reservation/write/.*")
 
+        // 이예림 - 시작
+        // 메인페이지
+        || requestURI.matches("/")
+        // 공모전 공고
+        || requestURI.matches("/contest/list")
+        // 채용 공고
+        || requestURI.matches("/hiring/list/.*")
+        // 추천해요
+        || requestURI.matches("/reference/list/.*")
+        // 6층 회의실 예약 write
         || requestURI.matches("/reservation/write/.*")
+        // 이예림 - 끝
 
         || requestURI.matches("/notice/posts/.*") // 게시글 상세는 제외
         || requestURI.matches("/notice/posts.*") // 게시글 상세는 제외
 
                 || requestURI.equals("/greeting/list")
-//        || requestURI.matches("/gathermate/posts/.*") // 게시글 상세는 제외
+        || requestURI.matches("/gathermate/posts/.*") // 게시글 상세는 제외
                 || requestURI.matches("/greeting/posts.*") // 게시글 상세는 제외
                 || requestURI.matches("/greeting/.*/commentslist") // 게시글 상세는 제외
 
         || requestURI.matches("/gatherlist.*") // 게시글 상세는 제외
+
+        // 교육 프로그램
         || requestURI.matches("/edu/detail/.*")
-        || requestURI.matches("/project/detail/.*")
         || requestURI.matches("/edu/detail.*")
+        || requestURI.matches("/edu/list.*")
+        || requestURI.matches("/edu/list/.*")
+        || requestURI.matches("/edu/list/.*.*")
+        
+        // 프로젝트
+        || requestURI.matches("/project/list.*")
+        || requestURI.matches("/project/list/.*")
+        || requestURI.matches("/project/list/.*.*")
+        || requestURI.matches("/project/detail/.*")
         || requestURI.matches("/project/detail.*")
-
-        //
-        || requestURI.matches("/.*/list")
-
-        // || requestURI.matches("/.*/detail/.*")
-        || requestURI.matches("/.*/list.*")
-        || requestURI.matches("/.*/list/.*")
-        || requestURI.matches("/.*/list/.*.*")
         || requestURI.matches("/.*/download/.*") 
         || requestURI.matches("/.*/download.*")
-
-
-        // || requestURI.matches("/edu/.*")
-        // || requestURI.matches("/project/.*")
-        // || requestURI.matches("/msg/.*")
-
 
         // faq, 문의사항
         || requestURI.matches("/api/contact/.*")

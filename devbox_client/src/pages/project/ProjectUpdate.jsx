@@ -19,6 +19,7 @@ const ProjectUpdate = () => {
     const { user, loading } = useUser();
 
     const [title, setTitle] = useState('');
+    const [likecount, setLikecount] = useState('');
     const [name, setName] = useState('');
     const [img, setImg] = useState('');
     const [link, setLink] = useState('');
@@ -44,6 +45,34 @@ const ProjectUpdate = () => {
         setUploadImgs(Array.from(files));
     }
 
+    async function get() {
+        const token = localStorage.getItem('accessToken');
+
+        const res = await fetch(`${domain}/project/update?id=${id}`, {
+            method: 'GET',
+            credentials: "include",
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+        });
+        const data = await res.json();
+        setProData(data);
+
+
+        setLikecount(data.likecount);
+        setTitle(data.title);
+        setComent(data.coment);
+        setName(data.name);
+        setLink(data.link);
+
+        const imageFiles = data.imgs.map((img) => ({
+            id: img.id, // img 객체에 id가 있어야 함
+            object: img.img // img 객체를 파일 객체로 사용
+        }));
+        setSavedImgs(imageFiles);
+
+    }
+
     const handleDetail = async (e) => {
         e.preventDefault();
 
@@ -67,11 +96,11 @@ const ProjectUpdate = () => {
         formData.append("name", name);
         formData.append("link", modifiedLink);
         formData.append("coment", coment);
+        formData.append("likecount", likecount);
 
         delImgId.forEach((v) => {
             formData.append("delImgId", v);
         });
-        console.log(delImgId);
 
         const token = localStorage.getItem('accessToken');
 
@@ -97,33 +126,7 @@ const ProjectUpdate = () => {
 
     };
 
-    async function get() {
-        const token = localStorage.getItem('accessToken');
-
-        const res = await fetch(`${domain}/project/update?id=${id}`, {
-            method: 'GET',
-            credentials: "include",
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-        });
-        const data = await res.json();
-        setProData(data);
-
-
-
-        setTitle(data.title);
-        setComent(data.coment);
-        setName(data.name);
-        setLink(data.link);
-
-        const imageFiles = data.imgs.map((img) => ({
-            id: img.id, // img 객체에 id가 있어야 함
-            object: img.img // img 객체를 파일 객체로 사용
-        }));
-        setSavedImgs(imageFiles);
-
-    }
+    
 
 
     const addFiles = (files) => {

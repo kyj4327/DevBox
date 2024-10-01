@@ -1,0 +1,90 @@
+div.devbox_center {
+    margin-top: 8px;
+}
+
+div#devbox {
+    font-family: verdana;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 25px;
+}
+
+div#devbox span {
+    padding: 10px;
+    transition: .5s;
+    position: relative;
+}
+
+div#devbox span:nth-child(1) {
+    color: #fff;
+    background: #262626;
+}
+
+div#devbox span:nth-child(2) {
+    color: #fff;
+    background: #6266EA;
+}
+
+div#devbox span:nth-child(1):before {
+    content: attr(data-attr);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #6266EA;
+    padding: 10px;
+    transition: 0.5S;
+    transform-origin: top;
+    transform: rotateX(90deg) translateY(-50%);
+}
+
+div#devbox:hover span:nth-child(1):before {
+    transform: rotateX(0deg) translateY(0%);
+}
+
+div#devbox span:nth-child(2):before {
+    content: attr(data-attr);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #262626;
+    padding: 10px;
+    transition: 0.5S;
+    transform-origin: bottom;
+    transform: rotateX(90deg) translateY(50%);
+}
+
+div#devbox:hover span:nth-child(2):before {
+    transform: rotateX(0deg) translateY(0%);
+}
+
+div#devbox span:nth-child(1):after {
+    content: attr(data-attr);
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #262626;
+    transform-origin: bottom;
+    transform: rotateX(0deg) translateY(0%);
+    transition: 0.5s;
+}
+
+div#devbox:hover span:nth-child(1):after {
+    transform: rotateX(90deg) translateY(50%);
+}
+
+div#devbox span:nth-child(2):after {
+    content: attr(data-attr);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #6266EA;
+    padding: 10px;
+    transition: 0.5S;
+    transform-origin: top;
+    transform: rotateX(0deg) translateY(0%);
+}
+
+div#devbox:hover span:nth-child(2):after {
+    transform: rotateX(90deg) translateY(-50%);
+}

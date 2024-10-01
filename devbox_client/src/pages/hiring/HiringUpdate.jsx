@@ -4,8 +4,12 @@ import Button from '../../components/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
+import Swal from 'sweetalert2';
+import InputScrollAndFocus from '../../components/InputScrollAndFocus';
 
 const HiringUpdate = () => {
+    const domain = "http://localhost:8080";
+
     const { user } = useUser();
     const navigate = useNavigate();
 
@@ -18,11 +22,19 @@ const HiringUpdate = () => {
 
     useEffect(() => {
         if (!user) {
-            alert("로그인이 필요합니다.");
-            navigate('/auth');
+            Swal.fire({
+                icon: "error",
+                title: "로그인이 필요합니다."
+            }).then(() => {
+                navigate('/auth');
+            });
         } else if (user.role != "ROLE_ADMIN") {
-            alert("권한이 없습니다.");
-            navigate('/contest/list');
+            Swal.fire({
+                icon: "error",
+                title: "권한이 없습니다."
+            }).then(() => {
+                navigate('/hiring/list');
+            });
         }
     }, [user, navigate]);
     const token = localStorage.getItem('accessToken');
@@ -32,7 +44,7 @@ const HiringUpdate = () => {
     const hiringId = search.get('hiringId');
     useEffect(() => {
         async function get() {
-            const url = `http://localhost:8080/hiring/update?hiringId=${hiringId}`;
+            const url = `${domain}/hiring/update?hiringId=${hiringId}`;
             const res = await fetch(url, {
                 credentials: 'include',
                 headers: {
@@ -50,40 +62,36 @@ const HiringUpdate = () => {
         get();
     }, []);
 
-    const inputFocus = (name) => {
-        const element = document.getElementById(name);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            element.focus();
-        }
-    };
-
     const updateData = async (e) => {
         e.preventDefault();
         if (!user) {
-            alert("로그인이 필요합니다.");
+            Swal.fire({
+                icon: "error",
+                title: "로그인이 필요합니다."
+            });
             return;
         } else if (company.trim() === '') {
-            inputFocus("company", "회사명을 입력해주세요.");
+            InputScrollAndFocus("company", "회사명을 입력해주세요.");
             setCompany('');
         } else if (area.trim() === '') {
-            inputFocus("area", "지역을 입력해주세요.");
+            InputScrollAndFocus("area", "지역을 입력해주세요.");
             setArea('');
         } else if (job.trim() === '') {
-            inputFocus("job", "직군/직무를 입력해주세요.");
+            InputScrollAndFocus("job", "직군/직무를 입력해주세요.");
             setJob('');
         } else if (career.trim() === '') {
-            inputFocus("career", "경력을 입력해주세요.");
+            InputScrollAndFocus("career", "경력을 입력해주세요.");
             setCareer('');
         } else if (imgUrl.trim() === '') {
-            inputFocus("imgUrl", "이미지 주소를 입력해주세요.");
+            InputScrollAndFocus("imgUrl", "이미지 주소를 입력해주세요.");
             setImgUrl('');
         } else if (wantedUrl.trim() === '') {
-            inputFocus("wantedUrl", "원티드 주소를 입력해주세요.");
+            InputScrollAndFocus("wantedUrl", "원티드 주소를 입력해주세요.");
             setWantedUrl('');
         } else {
+            const token = localStorage.getItem('accessToken');
             try {
-                const url = 'http://localhost:8080/hiring/update';
+                const url = `${domain}/hiring/update`;
                 const response = await fetch(url, {
                     method: 'POST',
                     credentials: 'include',
@@ -100,14 +108,23 @@ const HiringUpdate = () => {
                 }
                 const data = await response.json();
                 if (data.code === 200) {
-                    alert('수정되었습니다.');
-                    navigate('/hiring/list');
+                    Swal.fire({
+                        icon: "success",
+                        title: "수정되었습니다."
+                    }).then(() => {
+                        navigate('/hiring/list');
+                    });
                 } else {
-                    alert('다시 입력해주세요.');
+                    Swal.fire({
+                        icon: "error",
+                        title: "다시 입력해주세요."
+                    });
                 }
             } catch (error) {
-                console.error("저장 중 오류 발생 : ", error);
-                alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
+                Swal.fire({
+                    icon: "error",
+                    title: "수정 중 오류가 발생했습니다. 다시 시도해주세요."
+                });
             }
         }
     };
@@ -115,7 +132,7 @@ const HiringUpdate = () => {
     return (
         <section className="container py-5">
             <div className="container py-5">
-                <h1 className="h2 semi-bold-600 text-center mt-2">채용 공고 Update</h1>
+                <h1 className="h2 semi-bold-600 text-center mt-2">채용 공고</h1>
                 <p className="text-center pb-5 light-300">더 다양한 채용 정보를 알고 싶다면 5층 취업 상담실을 방문해주세요.</p>
                 <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
                     <div className="contact-form row">

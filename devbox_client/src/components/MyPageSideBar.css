@@ -4,8 +4,8 @@
   padding: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-top: 50px;
-  width: 250px;
-  height: 400px;
+  width: 260px;
+  height: 700px;
 }
 
 .profile_user .user_author {
@@ -43,26 +43,82 @@
 .user_list ul {
   padding-left: 0;
   list-style: none;
+  margin: 0;
 }
 
-.user_list ul li a {
+.user_list ul li {
+  position: relative;
+}
+
+.user_list ul li a,
+.user_list ul li button {
   display: flex;
   align-items: center;
   padding: 10px 20px;
   margin: 10px 0;
   color: #333;
   font-weight: 600;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
   border-radius: 5px;
+  text-decoration: none;
   transition: background-color 0.3s;
 }
 
 .user_list ul li a.active,
-.user_list ul li a:hover {
+.user_list ul li a:hover,
+.user_list ul li button:hover {
   background-color: #4232C2;
   color: #fff;
 }
 
-.user_list ul li a i {
+.user_list ul li a i,
+.user_list ul li button i {
   margin-right: 10px;
   font-size: 18px;
+}
+
+.has-submenu .submenu {
+  display: none;
+  list-style: none;
+  padding-left: 20px; /* 서브 메뉴 들여쓰기 */
+  margin: 0;
+}
+
+.has-submenu.open .submenu {
+  display: block;
+}
+
+.submenu li a {
+  padding: 8px 15px;
+  color: #2d2c2c;
+  background-color: #fafafa;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.submenu li a:hover {
+  background-color: #eaeaea;
+}
+
+.submenu li a i {
+  margin-right: 8px;
+  /* text-decoration: none; */
+}
+
+.submenu-toggle {
+  width: 100%;
+  text-align: left;
+}
+.submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.has-submenu.open .submenu {
+  max-height: 500px;
 }
