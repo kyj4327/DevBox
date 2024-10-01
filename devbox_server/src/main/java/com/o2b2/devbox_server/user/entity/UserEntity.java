@@ -74,13 +74,16 @@ public class UserEntity {
 
     // 모여라메이트 좋아요
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Like> likes = new ArrayList<>();
 
     // 모여라메이트
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<GatherMate> gatherMates = new ArrayList<>();
 
     // 모여라메이트
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Greeting> greetings = new ArrayList<>();
 }
