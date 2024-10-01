@@ -6,8 +6,11 @@ import moment from "moment";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../components/context/UserContext';
+import Swal from 'sweetalert2';
 
 const Reservation = () => {
+    const domain = "http://localhost:8080";
+
     const { user } = useUser();
     const navigate = useNavigate();
 
@@ -50,51 +53,94 @@ const Reservation = () => {
         setTime(e.target.innerText);
     };
 
-    const saveData = async (e) => {
-        e.preventDefault();
+    const validateFields = () => {
         if (!user) {
-            alert("로그인이 필요합니다.");
-            return;
+            Swal.fire({
+                icon: "error",
+                title: "로그인이 필요합니다."
+            }).then(() => {
+                navigate('/auth');
+            });
+            return false;
         } else if (user.role === "ROLE_USER") {
-            alert("권한이 없습니다.");
-            navigate("/reservation/write");
+            Swal.fire({
+                icon: "error",
+                title: "권한이 없습니다."
+            }).then(() => {
+                navigate('/reservation/write');
+            });
+            return false;
         } else if (time === '') {
-            alert("예약 시간을 선택해주세요.");
-        } else {
-            const token = localStorage.getItem('accessToken');
-            if (window.confirm(`${date} ${time} 예약하시겠습니까?`)) {
-                try {
-                    const url = 'http://localhost:8080/reservation/write';
-                    const response = await fetch(url, {
-                        method: 'post',
-                        credentials: 'include',
-                        headers: {
-                            'content-type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        },
-                        body: JSON.stringify({ date: date, time: time, condition: condition })
-                    });
-                    if (!response.ok) {
-                        throw new Error("서버에서 오류가 발생했습니다.");
-                    }
-                    const data = await response.json();
-                    if (data.code === 200) {
-                        alert(`${date} ${time} 예약되었습니다.`);
-                        navigate('/mypage/reservation/check');
-                    } else {
-                        alert('다시 입력해주세요.');
-                    }
-                } catch (error) {
-                    console.error("저장 중 오류 발생 : ", error);
-                    alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.");
-                }
+            Swal.fire({
+                icon: "warning",
+                title: "예약 시간을 선택해주세요."
+            });
+            return false;
+        }
+        return true;
+    };
+
+    const saveData = async () => {
+        const token = localStorage.getItem('accessToken');
+        try {
+            const url = `${domain}/reservation/write`;
+            const response = await fetch(url, {
+                method: 'post',
+                credentials: 'include',
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ date: date, time: time, condition: condition })
+            });
+            if (!response.ok) {
+                throw new Error("서버에서 오류가 발생했습니다.");
+            }
+            const data = await response.json();
+            if (data.code === 200) {
+                Swal.fire({
+                    icon: "success",
+                    title: "예약되었습니다.",
+                    text: `${date} ${time}`
+                }).then(() => {
+                    navigate('/mypage/reservation/check');
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "다시 입력해주세요."
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "예약 중 오류가 발생했습니다. 다시 시도해주세요."
+            });
+        }
+    };
+
+    const handleSave = async (e) => {
+        e.preventDefault();
+        if (validateFields()) {
+            const result = await Swal.fire({
+                title: "예약하시겠습니까?",
+                text: `${date} ${time}`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "예약",
+                confirmButtonColor: "#3085d6",
+                cancelButtonText: "취소",
+                cancelButtonColor: "#d33",
+            });
+            if (result.isConfirmed) {
+                saveData();
             }
         }
     };
 
     useEffect(() => {
         async function get() {
-            const url = `http://localhost:8080/reservation/write/${date}`;
+            const url = `${domain}/reservation/write/${date}`;
             const res = await fetch(url);
             const data = await res.json();
             setTimeData(data);
@@ -180,12 +226,7 @@ const Reservation = () => {
                                     <h5><li>{time}</li></h5>
                                 </div>
                                 <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
-                                    <button className="btn rounded-pill px-4 btn-primary light-300" onClick={saveData}>예약하기</button>
-                                    <button className="btn rounded-pill px-4 btn-primary light-300"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            navigate('/mypage/reservation/check');
-                                        }}>예약내역</button>
+                                    <button className="btn rounded-pill px-4 btn-primary light-300" onClick={handleSave}>예약하기</button>
                                 </div>
                             </div>
                         </div>

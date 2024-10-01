@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import './MyPageContent.css';
-import MyPageBox from './MyPageBox';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import "./MyPageContent.css";
+import MyPageBox from "./MyPageBox";
+import { useNavigate } from "react-router-dom";
 
 function MyPageContent() {
   const [user, setUser] = useState(null);
@@ -16,12 +16,12 @@ function MyPageContent() {
   const fetchUserData = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8080/api/user/me', {
-        method: 'GET',
-        credentials: 'include', // 쿠키를 포함하여 요청 보내기
+      const response = await fetch("http://localhost:8080/api/user/me", {
+        method: "GET",
+        credentials: "include", // 쿠키를 포함하여 요청 보내기
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`, // 필요하다면 JWT 토큰 추가
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // 필요하다면 JWT 토큰 추가
         },
       });
 
@@ -31,32 +31,52 @@ function MyPageContent() {
 
         setUser(data);
       } else {
-        if (response.status === 401) { // Unauthorized (인증되지 않음)
-          navigate('/auth'); 
+        if (response.status === 401) {
+          // Unauthorized (인증되지 않음)
+          navigate("/auth");
         } else {
-          throw new Error('Failed to fetch user data');
+          throw new Error("Failed to fetch user data");
         }
       }
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error("Error fetching user data:", error);
       setError(error.message);
     } finally {
       setLoading(false);
     }
   };
 
-  // role -> 프런트용 단어로 변환
+  // role -> 프런트 표시용 단어로 변환
   const getRoleDisplayName = (role) => {
     switch (role) {
-      case 'ROLE_USER':
-        return '일반회원';
-      case 'ROLE_STUDENT':
-        return '수강생';
+      case "ROLE_USER":
+        return "일반인";
+      case "ROLE_STUDENT":
+        return "수강생";
+      case "ROLE_ADMIN":
+        return "관리자";
       default:
-        return ' ';
+        return "알 수 없음";
     }
   };
-
+  // field -> 프런트 표시용 단어로 변환
+  const getFieldDisplayName = (field) => {
+    if (field === null) return "";
+    switch (field) {
+      case "web-dev":
+        return "웹 개발자(Frontend & Backend Developer)";
+      case "devops":
+        return "데브옵스 엔지니어 (DevOps Engineer)";
+      case "cloud":
+        return "클라우드 엔지니어 (Cloud Engineer)";
+      case "data-engineer":
+        return "데이터 엔지니어 (Data Engineer)";
+      case "mobile":
+        return "모바일 개발자 (Mobile Developer)";
+      default:
+        return field;
+    }
+  };
 
   return (
     <div className="mypage-content__wrapper">
@@ -65,28 +85,78 @@ function MyPageContent() {
       </div>
       {user ? (
         <div className="mypage-content__user-info">
-          <p><strong>이메일:</strong> {user.email}</p>
-          <p><strong>닉네임:</strong> {user.nickname}</p>
-          <p><strong>이름:</strong> {user.name}</p>
-          <p><strong>회원 유형:</strong> {getRoleDisplayName(user.role)}</p>
-          <p><strong>분야:</strong> {user.field}</p>
+          <div className="mypage-profile-edit__form-group">
+            <label htmlFor="email">이메일 :</label>
+            <input
+              className="edit-input"
+              type="email"
+              id="email"
+              name="email"
+              value={user.email}
+              readOnly
+            />
+          </div>
+
+          <div className="mypage-profile-edit__form-group">
+            <label htmlFor="name">이름 :</label>
+            <input
+              className="edit-input"
+              type="text"
+              id="name"
+              name="name"
+              value={user.name}
+              readOnly
+            />
+          </div>
+          <div className="mypage-profile-edit__form-group">
+            <label htmlFor="nickname">닉네임 :</label>
+            <input
+              className="edit-input"
+              type="text"
+              id="nickname"
+              name="nickname"
+              value={user.nickname}
+              readOnly
+            />
+          </div>
+
+          <div className="mypage-profile-edit__form-group">
+            <label>회원 유형 :</label>
+            <input
+              className="edit-input"
+              type="text"
+              id="nickname"
+              name="nickname"
+              value={getRoleDisplayName(user.role)}
+              readOnly
+            />
+          </div>
+          <div className="mypage-profile-edit__form-group">
+            <label htmlFor="field">분야 :</label>
+            <input
+              className="edit-input"
+              type="text"
+              id="nickname"
+              name="nickname"
+              value={getFieldDisplayName(user.field)}
+              readOnly
+            />
+          </div>
+          <div className="mypage-profile-nav" >
+          <button
+              type="submit"
+              className="mypage-profile-edit__btn-save"
+              onClick={() => navigate("/mypage/edit")}
+            >
+              회원정보 수정
+            </button>
+          </div>
         </div>
       ) : (
         <div>
           <p>로그인 정보가 없습니다.</p>
         </div>
       )}
-      {/* <div className="mypage-content__row">
-        <div className="mypage-content__col">
-          <MyPageBox icon="fal fa-file-alt" title="자유 게시판 : 3" />
-        </div>
-        <div className="mypage-content__col">
-          <MyPageBox icon="fal fa-file-alt" title="프로젝트 자랑 : 3" />
-        </div>
-        <div className="mypage-content__col">
-          <MyPageBox icon="fal fa-file-alt" title="모여라 메이트 : 3" />
-        </div>
-      </div> */}
     </div>
   );
 }

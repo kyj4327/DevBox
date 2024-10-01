@@ -25,7 +25,8 @@ public class GatherMate {
 
     private String title;
 
-    @Column(length = 500, nullable = false)
+    @Lob
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String content;
 
     private LocalDateTime createdAt;

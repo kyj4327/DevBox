@@ -41,7 +41,6 @@ import ContestUpdate from './pages/contest/ContestUpdate';
 import Reservation from './pages/reservation/Reservation';
 
 import AuthContainer from './pages/auth/AuthContainer';
-// import { Naver } from './components/Naver';
 // import { UserProvider } from './components/context/UserContext';
 
 import HomePage from './pages/HomePage';
@@ -54,6 +53,7 @@ import GatherMateList from './pages/gatherMate/GatherMateList';
 import GatherMateWrite from './pages/gatherMate/GatherMateWrite';
 import GatherMateDetail from './pages/gatherMate/GatherMateDetail';
 import GatherMateEdit from './pages/gatherMate/GatherMateEdit';
+import GatherMateMyList from './pages/gatherMate/GatherMateMyList';
 
 import GreetingList from './pages/greeting/GreetingList';
 
@@ -80,11 +80,14 @@ import MsgDetail from './pages/message/MsgDetail';
 
 function AppContent() {
   const location = useLocation();
-  const hideFooter = ['/auth', '/password'].includes(location.pathname);
+  const currentPath = location.pathname;
 
+  // Header와 Footer를 숨길 경로 정의
+  const hideHeader = currentPath === '/password';
+  const hideFooter = currentPath === '/password' || currentPath === '/auth';
   return (
     <div className="app-wrapper">
-      <Header />
+      {!hideHeader && <Header />} {/* Header 조건부 렌더링 */}
       <main className="main-content">
         <ScrollToTop />
         <Routes>
@@ -108,6 +111,9 @@ function AppContent() {
           <Route path="/gathermate/list" element={<GatherMateList />} />
           <Route path="/gathermate/detail/:postId" element={<GatherMateDetail />} />
           <Route path="/gathermate/edit/:postId" element={<GatherMateEdit />} />
+
+          <Route path="/gathermate/mylist" element={<GatherMateMyList />} />
+
 
           {/* 공지사항 게시판 */}
           <Route path="/notice/write" element={<NoticeWrite />} />
@@ -173,7 +179,7 @@ function AppContent() {
 
         </Routes>
       </main>
-      {!hideFooter && <Footer />} {/* Footer 추가 */}
+      {!hideFooter && <Footer />} {/* Footer 조건부 렌더링 */}
     </div>
   );
 }

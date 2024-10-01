@@ -4,8 +4,11 @@ import Button from '../../components/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
+import Swal from 'sweetalert2';
 
 const ReferenceList = () => {
+    const domain = "http://localhost:8080";
+
     const { user } = useUser();
     const navigate = useNavigate();
     const toWrite = () => {
@@ -21,7 +24,7 @@ const ReferenceList = () => {
     const [pageData, setPageData] = useState([]);
     useEffect(() => {
         async function get(page = 1) {
-            const url = `http://localhost:8080/reference/list/${selectJob}?page=${page}`;
+            const url = `${domain}/reference/list/${selectJob}?page=${page}`;
             const res = await fetch(url);
             const data = await res.json();
             // 페이지 데이터와 실제 데이터 분리
@@ -46,6 +49,12 @@ const ReferenceList = () => {
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
+    };
+
+    const ContentList = ({ content }) => {
+        return (
+            <li style={{ overflowWrap: 'break-word', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{content}</li>
+        );
     };
 
     return (
@@ -76,11 +85,11 @@ const ReferenceList = () => {
                                         </div>
                                         <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                                             <li style={{ listStyle: 'none' }}>{v.selectJob}</li>
-                                            <li>{v.content1}</li>
-                                            <li>{v.content2}</li>
-                                            {v.content3 === '' ? '' : <li>{v.content3}</li>}
-                                            {v.content4 === '' ? '' : <li>{v.content4}</li>}
-                                            {v.content5 === '' ? '' : <li>{v.content5}</li>}
+                                            <ContentList content={v.content1} />
+                                            <ContentList content={v.content2} />
+                                            {v.content3 === '' ? '' : <ContentList content={v.content3} />}
+                                            {v.content4 === '' ? '' : <ContentList content={v.content4} />}
+                                            {v.content5 === '' ? '' : <ContentList content={v.content5} />}
                                         </div>
                                         <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
                                             <Link to={v.link} className="btn rounded-pill px-4 btn-primary light-300" target='_blank' style={{ marginRight: '1rem' }}>Link</Link>
@@ -96,24 +105,42 @@ const ReferenceList = () => {
                                                             onClick={(e) => {
                                                                 e.preventDefault();
                                                                 if (!user) {
-                                                                    alert("로그인이 필요합니다.");
+                                                                    Swal.fire({
+                                                                        icon: "error",
+                                                                        title: "로그인이 필요합니다."
+                                                                    });
                                                                     return;
                                                                 }
                                                                 const token = localStorage.getItem('accessToken');
-                                                                if (window.confirm("삭제하시겠습니까?")) {
-                                                                    async function send() {
-                                                                        const url = `http://localhost:8080/reference/delete?referenceId=${v.id}`;
-                                                                        await fetch(url, {
-                                                                            credentials: 'include',
-                                                                            headers: {
-                                                                                'Authorization': `Bearer ${token}`
-                                                                            }
-                                                                        });
-                                                                        alert("삭제되었습니다.");
-                                                                        window.location.reload();
+                                                                Swal.fire({
+                                                                    title: "삭제하시겠습니까?",
+                                                                    text: "삭제 후에는 되돌릴 수 없습니다.",
+                                                                    icon: "warning",
+                                                                    showCancelButton: true,
+                                                                    confirmButtonText: "삭제",
+                                                                    confirmButtonColor: "#d33",
+                                                                    cancelButtonText: "취소",
+                                                                    cancelButtonColor: "#3085d6",
+                                                                }).then((result) => {
+                                                                    if (result.isConfirmed) {
+                                                                        async function send() {
+                                                                            const url = `${domain}/reference/delete?referenceId=${v.id}`;
+                                                                            await fetch(url, {
+                                                                                credentials: 'include',
+                                                                                headers: {
+                                                                                    'Authorization': `Bearer ${token}`
+                                                                                }
+                                                                            });
+                                                                            Swal.fire({
+                                                                                title: "삭제되었습니다.",
+                                                                                icon: "success"
+                                                                            }).then(() => {
+                                                                                window.location.reload();
+                                                                            });
+                                                                        }
+                                                                        send();
                                                                     }
-                                                                    send();
-                                                                }
+                                                                });
                                                             }}>삭제</Link>
                                                     </>
                                                     : <>

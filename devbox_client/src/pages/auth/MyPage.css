@@ -14,13 +14,12 @@
   display: flex;
   background-color: white;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   overflow: hidden;
 }
 
 .mypage-sidebar {
   flex: 1;
-  border-right: 1px solid #e9ecef;
+  /* border-right: 1px solid #e9ecef; */
 }
 
 .mypage-content {
