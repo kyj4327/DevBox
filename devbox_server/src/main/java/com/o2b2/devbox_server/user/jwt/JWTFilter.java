@@ -80,20 +80,6 @@ public class JWTFilter extends OncePerRequestFilter {
         || requestURI.matches("/.*/download/.*") 
         || requestURI.matches("/.*/download.*")
 
-        //
-        || requestURI.matches("/.*/list")
-
-        // || requestURI.matches("/.*/detail/.*")
-        || requestURI.matches("/.*/list.*")
-        || requestURI.matches("/.*/list/.*")
-        || requestURI.matches("/.*/list/.*.*")
-
-
-        // || requestURI.matches("/edu/.*")
-        // || requestURI.matches("/project/.*")
-        // || requestURI.matches("/msg/.*")
-
-
 //            자유게시판, faq
         || requestURI.matches("/api/contact/.*")
         || requestURI.matches("/send/.*")

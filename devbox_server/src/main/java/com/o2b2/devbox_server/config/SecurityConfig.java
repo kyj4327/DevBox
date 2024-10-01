@@ -126,8 +126,6 @@ public class SecurityConfig {
 
                         .requestMatchers("/password/**").permitAll() // 비밀번호 재설정 관련 경로에 접근 허용
                         .requestMatchers("/api/user/me").authenticated() // <- 인증된 사용자만 접근 가능하도록 설정
-                        .requestMatchers("/*/list/**").permitAll()
-                        .requestMatchers("/*/detail/**").permitAll()
                         .requestMatchers("/*/download/**").permitAll()
                         .requestMatchers("/api/user/delete").authenticated() // <- 회원 탈퇴
                         .requestMatchers("/api/user/nicknames").authenticated() // <- 회원 탈퇴
@@ -207,20 +205,6 @@ public class SecurityConfig {
                         // .requestMatchers("/hiring/write").hasRole("ADMIN")
                         .requestMatchers("/reference/mylist/**").authenticated()
                         
-                        /**
-                         추천해요, 프로젝트 자랑 게시판
-                         */
-                        // 글쓰기
-                        .requestMatchers("/*/write").authenticated()
-                        .requestMatchers("/*/write/**").authenticated()
-
-                        .requestMatchers("/*/update").authenticated()
-                        .requestMatchers("/*/update/**").authenticated()
-                        .requestMatchers("/*/delete").authenticated()
-                        .requestMatchers("/*/delete/**").authenticated()
-
-                        .requestMatchers("/*/list/**").permitAll()
-
                         // 교육 정보
                         .requestMatchers("/edu/list/").permitAll()
                         .requestMatchers("/edu/detail/").permitAll()
