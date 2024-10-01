@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Swal from "sweetalert2";
 
-const MesDetail = () => {
+const MsgDetail = () => {
     const navigate = useNavigate();
     const [msgData, setMsgData] = useState({});
     const location = useLocation();
@@ -160,4 +160,4 @@ const MesDetail = () => {
     );
 };
 
-export default MesDetail;
+export default MsgDetail;

@@ -91,11 +91,11 @@ const ProjectMain = (props) => {
             <section className="container py-5">
                 <div className="row projects gx-lg-5">
                     {props.list && props.list.map((pro) => (
-                        <div className="service-work overflow-hidden card mb-3 mx-2 col-sm-6 col-lg-4 pt-4 project marketing social business" key={pro.id}>
-                            <Link to={`/project/detail?id=${pro.id}`} className="overflow-hidden card mb-2 mx-1 text-decoration-none">
+                        <div className="service-work overflow-hidden card mb-3 mx-2 col-sm-6 col-lg-4 pt-4 project marketing social business " key={pro.id}>
+                            <Link to={`/project/detail?id=${pro.id}`} className="overflow-hidden card mb-2 mx-1 text-decoration-none .border-1">
                                 <img
                                     style={{ height: '400px' }}
-                                    className="card-img-top"
+                                    className="card-img-top "
                                     src={`${domain}/project/download?id=${pro.mainImg}`}
                                     alt={`Project ${pro.id}`}
                                 />

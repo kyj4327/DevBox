@@ -7,7 +7,6 @@ import EduUpdate from './pages/education/EduUpdate';
 import Project from './pages/project/Project';
 import ProjectWrite from './pages/project/ProjectWrite';
 import MsgWrite from './pages/message/MsgWrite';
-import MsgDetail from './pages/message/MsgDedail';
 import Message from './pages/message/Message';
 import MsgReply from './pages/message/MsgReply';
 import './assets/img/apple-icon.png';
@@ -77,6 +76,7 @@ import PostDetail from "./pages/freeboard/PostDetail";
 import Contact from "./pages/contact/Contact";
 import EduWrite from './pages/education/EduWrite';
 import Main from './pages/Main';
+import MsgDetail from './pages/message/MsgDetail';
 
 function AppContent() {
   const location = useLocation();

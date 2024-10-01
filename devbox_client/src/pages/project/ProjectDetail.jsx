@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide, useSwiper, useSwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-coverflow';
@@ -13,9 +13,28 @@ import { useUser } from "../../components/context/UserContext";
 import profilePic from "../../assets/img/profilePic.png";
 import UserContact from "../../components/UserContact";
 
+// const SlideTest = () => {
+
+//     const swiper = useSwiper();
+//     const swiperSlide = useSwiperSlide();
+
+//     // console.dir(swiper);
+//     // console.dir(swiperSlide);
+//     // if(swiperSlide) {
+//     //     console.log(swiperSlide.isBeginning());
+//     // }
+
+//     return (
+//         <button onClick={() => {
+//             console.log(swiper.isBeginning());
+//         }}>테스트</button>
+//     );
+// }
+
 
 const ProjectDetail = () => {
-    const { user} = useUser();
+
+    const { user } = useUser();
     const navigate = useNavigate();
     const [proData, setProData] = useState({});
     const [isHovered, setIsHovered] = useState(false);
@@ -25,7 +44,10 @@ const ProjectDetail = () => {
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
     const domain = "http://localhost:8080";
-   
+
+    const [showSwiper, setShowSwiper] = useState(false);
+
+
     const formatDateTime = (dateString) => {
         const date = new Date(dateString);
         const year = date.getFullYear();
@@ -33,17 +55,18 @@ const ProjectDetail = () => {
         const day = String(date.getDate()).padStart(2, "0");
         const hours = String(date.getHours()).padStart(2, "0");
         const minutes = String(date.getMinutes()).padStart(2, "0");
-    
+
         return `${year}-${month}-${day} ${hours}:${minutes}`;
-      };
+    };
 
     async function getProjectDetail() {
         const res = await fetch(`${domain}/project/detail?id=${id}`);
         const data = await res.json();
         setProData(data);
+        setShowSwiper(true);
         if (data && data.name) {
             console.log(data.name);
-        }   
+        }
     }
 
     const fetchUserLikeStatus = async () => {
@@ -105,10 +128,9 @@ const ProjectDetail = () => {
     useEffect(() => {
         getProjectDetail();
         fetchUserLikeStatus();
-    }, []); 
-    
-    
-    
+    }, []);
+
+
     return (
         <div className="container-full">
             <div className="container py-5">
@@ -125,48 +147,72 @@ const ProjectDetail = () => {
                 <div className="row pt-5">
                     <div className="worksingle-content col-lg-8 m-auto text-left justify-content-center">
                         <h1 className="worksingle-heading h3 pb-3 light-300 typo-space-line">{proData.title}</h1>
-                        
+
                     </div>
                 </div>
 
                 <section className="py-5">
                     <div className="mySwiper">
-                        <Swiper
-                            loop={proData.imgs && proData.imgs.length >= 2}
-                            effect={'coverflow'}
-                            grabCursor={true}
-                            slidesPerView={3}
-                            coverflowEffect={{
-                                rotate: 50,
-                                stretch: 0,
-                                depth: 100,
-                                modifier: 1,
-                                slideShadows: true,
-                            }}
-                            spaceBetween={20}
-                            centeredSlides={true}
-                            autoplay={{
-                                delay: 2500,
-                                disableOnInteraction: false,
-                            }}
-                            pagination={{
-                                clickable: true,
-                            }}
-                            modules={[EffectCoverflow, Autoplay, Pagination, FreeMode]}
-                            className="mySwiper"
-                        >
-                            {proData.imgs && proData.imgs.map((img, index) => (
-                                <SwiperSlide key={img.id}>
+                        {showSwiper && (
+                            proData.imgs.length > 1 ? (
+                                <Swiper
+                                    loop={proData.imgs.length > 3}
+                                    effect={proData.imgs.length >= 4 ? 'coverflow' : 'slide'}  // 4장 이상일 때 coverflow 사용
+                                    grabCursor={true}
+                                    slidesPerView={proData.imgs.length >= 4 ? 3 : 1}  // 4장 이상일 때는 3장, 그 미만은 1장씩 보이게 설정
+                                    coverflowEffect={{
+                                        rotate: 50,
+                                        stretch: 0,
+                                        depth: 100,
+                                        modifier: 1,
+                                        slideShadows: proData.imgs.length >= 4,
+                                    }}
+                                    spaceBetween={20}
+                                    centeredSlides={true}
+                                    autoplay={{
+                                        delay: 2500,
+                                        disableOnInteraction: false,
+                                    }}
+                                    pagination={{
+                                        clickable: true,
+                                    }}
+                                    modules={[EffectCoverflow, Autoplay, Pagination, FreeMode]}
+                                >
+                                    {proData.imgs.map((img, index) => (
+                                        <SwiperSlide
+                                            key={img.id}
+                                            style={{
+                                                boxShadow: proData.imgs.length >= 4 ? '0px 10px 20px rgba(0, 0, 0, 0.2), 0px 6px 6px rgba(0, 0, 0, 0.15)' : 'none',
+                                                width: proData.imgs.length >= 4 ? '300px' : '500px',  
+                                                height: '500px',
+                                            }}
+                                        >
+                                            <img
+                                                className="img-fluid border rounded"
+                                                src={`${domain}/project/download?id=${img.id}`}
+                                                alt={`Slide ${index + 1}`}
+                                                style={{
+                                                    width: '500px', height: '500px', display: 'block',
+                                                    margin: '0 auto',
+                                                }}
+                                            />
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
+                            ) : (
+                                // 이미지가 한 장일 경우 슬라이드 없이 표시
+                                <div className="single-image text-center">
                                     <img
                                         className="img-fluid border rounded"
-                                        src={`${domain}/project/download?id=${img.id}`}
-                                        alt={`Slide ${index + 1}`}
-                                        style={{ width: '100%', height: '500px' }}
+                                        src={`${domain}/project/download?id=${proData.imgs[0].id}`}
+                                        alt="Single Image"
+                                        style={{ width: '500px', height: '500px' }}
                                     />
-                                </SwiperSlide>
-                            ))}
-                        </Swiper>
+                                </div>
+                            )
+                        )}
                     </div>
+
 
                     {
                         proData.link && (
@@ -185,7 +231,7 @@ const ProjectDetail = () => {
 
                     <div className="card-body">
                         <div className='d-flex justify-content-center'>
-                        <div className="d-flex">
+                            <div className="d-flex">
                                 <i
                                     className={`bx h2 px-1 ${likeStatus[proData.id]?.liked ? 'bxs-like' : 'bx-like'} ${isHovered ? 'bx-tada' : ''}`}
                                     onClick={(e) => handleLikeClick(e, proData.id)} // 좋아요 클릭 시 처리
@@ -193,8 +239,8 @@ const ProjectDetail = () => {
                                     onMouseEnter={() => setIsHovered(true)}
                                     onMouseLeave={() => setIsHovered(false)}
                                 ></i>
-                            <span className='pt-2 h4'style={{ color: '#4232C2' }}>{likeStatus[proData.id] !== undefined ? likeStatus[proData.id].count : proData.likeCount}</span>
-                        </div>
+                                <span className='pt-2 h4' style={{ color: '#4232C2' }}>{likeStatus[proData.id] !== undefined ? likeStatus[proData.id].count : proData.likeCount}</span>
+                            </div>
                         </div>
                     </div>
                     <div className="row pt-5">
