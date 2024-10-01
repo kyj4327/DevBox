@@ -91,7 +91,7 @@ const HiringUpdate = () => {
         } else {
             const token = localStorage.getItem('accessToken');
             try {
-                const url = `${domain}/hiring/write`;
+                const url = `${domain}/hiring/update`;
                 const response = await fetch(url, {
                     method: 'POST',
                     credentials: 'include',

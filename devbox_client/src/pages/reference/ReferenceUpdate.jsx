@@ -129,7 +129,7 @@ const ReferenceUpdate = () => {
         } else {
             const token = localStorage.getItem('accessToken');
             try {
-                const url = `${domain}/reference/write`;
+                const url = `${domain}/reference/update`;
                 const response = await fetch(url, {
                     method: 'POST',
                     credentials: 'include',
