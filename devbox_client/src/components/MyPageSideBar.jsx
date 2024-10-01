@@ -93,6 +93,16 @@ function MyPageSideBar() {
               </button>
               <ul className="submenu">
                 <li>
+                  <NavLink to="/mypage/myfreeboard">
+                    <i className="fal fa-envelope"></i> - 자유게시판
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/mypage/project/mylist">
+                    <i className="fal fa-envelope"></i> - 프로젝트 자랑
+                  </NavLink>
+                </li>
+                <li>
                   <NavLink to="/mypage/gathermate/mylist">
                     <i className="fal fa-envelope"></i> - 모여라 메이트
                   </NavLink>
@@ -102,17 +112,7 @@ function MyPageSideBar() {
                     <i className="fal fa-envelope"></i> - 추천해요
                   </NavLink>
                 </li>
-                <li>
-                  <NavLink to="/mypage/project/mylist">
-                    <i className="fal fa-envelope"></i> - 프로젝트 자랑
-                  </NavLink>
-                </li>
               </ul>
-            </li>
-            <li>
-              <NavLink to="/mypage/myfreeboard">
-                <i className="fal fa-envelope"></i> 자유게시판
-              </NavLink>
             </li>
           </ul>
         </div>
