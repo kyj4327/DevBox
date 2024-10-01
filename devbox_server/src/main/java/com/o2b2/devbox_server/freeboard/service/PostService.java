@@ -2,12 +2,14 @@ package com.o2b2.devbox_server.freeboard.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.o2b2.devbox_server.freeboard.DTO.PostDTO;
 import com.o2b2.devbox_server.freeboard.entity.Post;
 import com.o2b2.devbox_server.freeboard.repository.CommentRepository;
 import com.o2b2.devbox_server.freeboard.repository.PostRepository;
@@ -83,5 +85,27 @@ public class PostService {
     public void deletePost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
         postRepository.delete(post);
+    }
+
+    public long getUserPostCount(Long userId) {
+        return postRepository.countByUserId(userId);
+    }
+
+    //회원의 게시물만 조회
+
+     public List<PostDTO> getPostsByUserId(Long userId) {
+        List<Post> posts = postRepository.findByUserId(userId); // 사용자 ID로 게시글 조회
+        return posts.stream()
+                .map(post -> {
+                    PostDTO dto = new PostDTO();
+                    dto.setId(post.getId());
+                    dto.setTitle(post.getTitle());
+                    dto.setAuthor(post.getAuthor());
+                    dto.setCreatedAt(post.getCreatedAt());
+                    dto.setViews(post.getViews());
+                    dto.setUserId(post.getUser().getId()); // 사용자 ID 설정
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 }

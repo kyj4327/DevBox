@@ -123,3 +123,28 @@ export const deleteComment = async (id) => {
     throw error;
   }
 };
+
+// 댓글 수정
+export const editComment = async (id, commentData) => {
+  try {
+    const response = await apiClient.patch(`/comments/${id}`, commentData);
+    return response.data;
+  } catch (error) {
+    console.error("Error editing comment:", error);
+    throw error;
+  }
+};
+
+export const getUserPosts = async (userId) => {
+  try {
+    const response = await apiClient.get(`/posts/user/${userId}`); // 사용자 ID에 따른 게시글 요청
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user posts:", error);
+    throw error;
+  }
+};
+
+
+
+

@@ -52,6 +52,22 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
+    @Transactional
+    public Comment editComment(Long id, Comment updatedComment, Long userId) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment not found with id: " + id));
+
+        // 댓글 작성자와 현재 사용자가 같은지 확인
+        if (!comment.getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("You are not authorized to edit this comment");
+        }
+
+        comment.setContent(updatedComment.getContent());
+        // comment.setUpdatedAt(LocalDateTime.now());
+
+        return commentRepository.save(comment);
+    }
+
     // dto추가
 
     public CommentsDTO convertToDTO(Comment comment) {

@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getPost, deletePost, updatePost, toggleLike } from "../../services/api-service"; // toggleLike 추가
+import {
+  getPost,
+  deletePost,
+  updatePost,
+  toggleLike,
+} from "../../services/api-service"; // toggleLike 추가
 import FreeBoardComments from "../../components/FreeBoardComments";
 import Button from "../../components/Button";
 import { useUser } from "../../components/context/UserContext";
 import "../../assets/css/freeboard.css";
 import profilePic from "../../assets/img/profilePic.png";
 import PostButton from "../../components/PostButton";
+
+import Swal from "sweetalert2";
 
 const PostDetail = () => {
   const { id } = useParams();
@@ -50,15 +57,45 @@ const PostDetail = () => {
   };
 
   const handleDeletePost = async () => {
-    if (window.confirm("정말로 이 게시글을 삭제하시겠습니까?")) {
-      try {
-        await deletePost(id);
-        navigate("/freeboard/list");
-      } catch (error) {
-        console.error("Error deleting post:", error);
-        setError("게시글 삭제에 실패했습니다.");
-      }
+    // 사용자가 로그인하지 않은 경우 경고 표시
+    if (!user) {
+      Swal.fire({
+        icon: "warning",
+        title: "로그인 필요",
+        text: "로그인이 필요합니다.",
+      });
+      return;
     }
+
+    // 게시글 삭제 확인 대화 상자
+    Swal.fire({
+      icon: "warning",
+      title: "정말 삭제하시겠습니까?",
+      text: "삭제 후에는 되돌릴 수 없습니다.",
+      showCancelButton: true,
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deletePost(id); // 게시글 삭제 API 호출
+          Swal.fire({
+            icon: "success",
+            title: "게시글이 삭제되었습니다.",
+          });
+          navigate("/freeboard/list"); // 삭제 후 목록으로 이동
+        } catch (error) {
+          console.error("Error deleting post:", error);
+          Swal.fire({
+            icon: "error",
+            title: "게시글 삭제 실패",
+            text: "게시글 삭제에 실패했습니다. 다시 시도해 주세요.",
+          });
+        }
+      }
+    });
   };
 
   const handleEditPost = () => {
@@ -71,128 +108,134 @@ const PostDetail = () => {
 
   return (
     <section className="container py-5" style={{ padding: "0px" }}>
-    <div className="container">
-      <h1 className="h2 semi-bold-600 text-center mt-2">자유게시판</h1>
-      <p
-        className="text-center light-300"
-        style={{ marginBottom: "0", padding: "0px" }}
-      >
-       어떤 이야기든!
-      </p>
-    </div>
+      <div className="container">
+        <h1 className="h2 semi-bold-600 text-center mt-2">자유게시판</h1>
+        <p
+          className="text-center light-300"
+          style={{ marginBottom: "0", padding: "0px" }}
+        >
+          어떤 이야기든!
+        </p>
+      </div>
 
-    {post ? ( // post가 존재할 때 렌더링
-      <>
-        {/* 글 제목 */}
-        <div className="row pt-5">
-          <div className="worksingle-content col-lg-8 m-auto text-left justify-content-center">
-            <h2
-              className="worksingle-heading h3 pb-3 light-300 typo-space-line"
-              style={{ marginTop: "10px" }}
-            >
-              {post.title}
-            </h2>
+      {post ? ( // post가 존재할 때 렌더링
+        <>
+          {/* 글 제목 */}
+          <div className="row pt-5">
+            <div className="worksingle-content col-lg-8 m-auto text-left justify-content-center">
+              <h2
+                className="worksingle-heading h3 pb-3 light-300 typo-space-line"
+                style={{ marginTop: "10px" }}
+              >
+                {post.title}
+              </h2>
+            </div>
           </div>
-        </div>
 
-        {/* 작성자 정보 */}
-        <div className="row justify-content-center">
-          <div className="col-lg-8 ml-auto mr-auto pt-1 pb-2">
-            <div className="d-flex align-items-center text-muted light-300">
-              <img
-                src={profilePic}
-                alt="profile"
-                className="profile-image me-1"
-                style={{
-                  width: "50px",
-                  height: "50px",
-                  objectFit: "cover",
-                  borderRadius: "50%",
-                }}
-              />
-              <div className="d-flex flex-column">
-                <span>작성자: {post.author}</span>
-                <span>
-                  작성일:  {new Date(post.createdAt).toLocaleString()}
-                  조회수: {post.views}
-                </span>
+          {/* 작성자 정보 */}
+          <div className="row justify-content-center">
+            <div className="col-lg-8 ml-auto mr-auto pt-1 pb-2">
+              <div className="d-flex align-items-center text-muted light-300">
+                <img
+                  src={profilePic}
+                  alt="profile"
+                  className="profile-image me-1"
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                  }}
+                />
+                <div className="d-flex flex-column">
+                  <span>작성자: {post.author}</span>
+                  <span>
+                    작성일: {new Date(post.createdAt).toLocaleString()}
+                    조회수: {post.views}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* 게시글 내용 */}
-        <div className="row justify-content-center">
-          <div className="col-lg-8 ml-auto mr-auto pt-3 pb-4 border border-3">
+          {/* 게시글 내용 */}
+          <div className="row justify-content-center">
             <div
-              className="text-muted light-300"
-              style={{ color: "black !important" }}
-              dangerouslySetInnerHTML={{ __html: post.content }} // HTML을 렌더링
-            />
+              className="col-lg-8 ml-auto mr-auto pt-3 pb-4 border border-3"
+              style={{ minHeight: "200px" }} // 최소 높이 설정
+            >
+              <div
+                className="text-muted light-300"
+                style={{ color: "black !important" }}
+                dangerouslySetInnerHTML={{ __html: post.content }} // HTML을 렌더링
+              />
 
-            {/* <div className="col-lg-8 ml-auto mr-auto pt-1 pb-2">
+              {/* <div className="col-lg-8 ml-auto mr-auto pt-1 pb-2">
               <div className="d-flex flex-column text-muted light-300">
                 <span>지원 방법: {apply}</span>
               </div>
             </div> */}
 
-            <div className="d-flex justify-content-center">
-              <div className="d-flex">
-
-                {/* 좋아요 버튼 */}
-                {post.likeCount !== undefined && (
-                  <PostButton
-                  icon={
-                    
-                    <ion-icon
-                      name={post.likeCount > 0 ? 'heart' : 'heart-outline'}
-                      style={{ color: post.likeCount > 0 ? 'red' : 'black', fontSize: '25px' }}
-                    ></ion-icon>
-                  }
-                    text={post.likeCount}
-                    onClick={handleToggleLike}
-                    disabled={!user}
-                  />
-                  
-                )}
-                {/* <PostButton
+              <div className="d-flex justify-content-center">
+                <div className="d-flex">
+                  {/* 좋아요 버튼 */}
+                  {post.likeCount !== undefined && (
+                    <PostButton
+                      icon={
+                        <ion-icon
+                          name={post.likeCount > 0 ? "heart" : "heart-outline"}
+                          style={{
+                            color: post.likeCount > 0 ? "red" : "black",
+                            fontSize: "25px",
+                          }}
+                        ></ion-icon>
+                      }
+                      text={post.likeCount}
+                      onClick={handleToggleLike}
+                      disabled={!user}
+                    />
+                  )}
+                  {/* <PostButton
                   text={isRecruiting ? "모집중" : "모집완료"}
                   onClick={handleToggleRecruit}
                 /> */}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* 버튼과 목록으로 */}
-        <div className="row justify-content-center">
-          <div
-            className="col-lg-8 d-flex justify-content-between"
-            style={{ padding: "10px 0px 0px" }}
-          >
-            <div className="d-flex">
-              {/* 작성자가 아닐 경우 수정/삭제 버튼을 숨김 */}
-              {user && post.author === user.nickname && (
-                <>
-                  <PostButton text="수정" onClick={handleEditPost} />
-                  <PostButton text="삭제" onClick={handleDeletePost} />
-                </>
-              )}
-            </div>
-            <div className="d-flex">
-              <PostButton text="목록으로" onClick={() => navigate("/freeboard/list")} />
+          {/* 버튼과 목록으로 */}
+          <div className="row justify-content-center">
+            <div
+              className="col-lg-8 d-flex justify-content-between"
+              style={{ padding: "10px 0px 0px" }}
+            >
+              <div className="d-flex" style={{ display: "flex", gap: "15px" }}>
+                {/* 작성자가 아닐 경우 수정/삭제 버튼을 숨김 */}
+                {user && post.author === user.nickname && (
+                  <>
+                    <Button text="수정" onClick={handleEditPost} />
+                    <Button text="삭제" onClick={handleDeletePost} />
+                  </>
+                )}
+              </div>
+              <div className="d-flex">
+                <Button
+                  text="목록으로"
+                  onClick={() => navigate("/freeboard/list")}
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* 댓글 컴포넌트 */}
-        <div className="row justify-content-center"></div>
-        <FreeBoardComments postId={id} />
+          {/* 댓글 컴포넌트 */}
+          <div className="row justify-content-center"></div>
+          <FreeBoardComments postId={id} />
         </>
-    ) : (
-      <div>Loading...</div> // post가 null일 경우 로딩 표시
-    )}
-  </section>
+      ) : (
+        <div>Loading...</div> // post가 null일 경우 로딩 표시
+      )}
+    </section>
   );
 };
 
