@@ -14,6 +14,7 @@ const MsgDetail = () => {
     const [sender, setSender] = useState('');
     const [reciver, setReciver] = useState('');
     const [content, setContent] = useState('');
+    
 
     async function get() {
         const token = localStorage.getItem('accessToken');
@@ -30,7 +31,7 @@ const MsgDetail = () => {
 
         setTitle(data.title);
         setContent(data.content);
-        setSender(data.sender);
+        setSender(data.sender ? data.sender : "탈퇴한 회원");
         setReciver(data.reciver);
 
     }

@@ -21,11 +21,12 @@ const Message = () => {
         });
 
         const data = await res.json();
-        // console.log(data);
+        console.log(data);
         setPageData(data);
         setCurrentPage(page);  // 페이지 데이터 불러온 후, 현재 페이지 업데이트
-        
     }
+
+    
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
