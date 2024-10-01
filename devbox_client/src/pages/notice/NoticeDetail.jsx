@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useUser } from "../../components/context/UserContext";
 import profilePic from "../../assets/img/profilePic.png";
 import PostButton from "../../components/PostButton";
+import Swal from "sweetalert2";
 
 const NoticeDetail = () => {
   const { postId } = useParams();
@@ -61,35 +62,55 @@ const NoticeDetail = () => {
 
   // 게시글 삭제
   const deletePost = async () => {
-    const confirmed = window.confirm("정말로 이 게시글을 삭제하시겠습니까?");
-    if (!confirmed) return;
-
     try {
-      const response = await fetch(
-        `http://localhost:8080/notice/delete/${postId}`,
-        {
-          method: "DELETE", // 삭제 요청
-          headers: {
-            "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      // SweetAlert2로 삭제 확인 창을 띄움
+      const result = await Swal.fire({
+        title: "게시글을 삭제하시겠습니까?",
+        text: "삭제 후에는 되돌릴 수 없습니다!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "삭제",
+        cancelButtonText: "취소",
+      });
 
-      if (!response.ok) {
-        if (response.status === 403) {
-          throw new Error("작성자가 아닙니다.");
+      // 사용자가 삭제를 확정한 경우
+      if (result.isConfirmed) {
+        const response = await fetch(
+          `http://localhost:8080/notice/delete/${postId}`,
+          {
+            method: "DELETE", // 삭제 요청
+            headers: {
+              "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          if (response.status === 403) {
+            throw new Error("작성자가 아닙니다.");
+          }
+          throw new Error("네트워크 응답이 올바르지 않습니다.");
         }
-        throw new Error("네트워크 응답이 올바르지 않습니다.");
+
+        Swal.fire({
+          icon: "success",
+          title: "삭제 완료",
+          text: "게시글이 성공적으로 삭제되었습니다.",
+        });
+
+        navigate("/notice/list"); // 삭제 후 목록 페이지로 이동
       }
-
-      alert("게시글이 성공적으로 삭제되었습니다.");
-      navigate("/notice/list"); // 삭제 후 목록 페이지로 이동
     } catch (error) {
       console.error("삭제 중 오류 발생:", error);
-      alert(error.message || "글 삭제에 실패했습니다. 다시 시도해주세요.");
+      Swal.fire({
+        icon: "error",
+        title: "삭제 실패",
+        text: error.message || "글 삭제에 실패했습니다. 다시 시도해주세요.",
+      });
     }
   };
+
 
 
   

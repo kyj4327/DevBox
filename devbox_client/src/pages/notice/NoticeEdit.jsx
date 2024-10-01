@@ -4,6 +4,7 @@ import "react-quill/dist/quill.snow.css";
 import Button from "../../components/Button";
 import WriteLong from "../../components/WriteLong";
 import QuillEditor from "../../components/QuillEditor";
+import Swal from "sweetalert2";
 
 function NoticeEdit() {
   const [title, setTitle] = useState("");
@@ -25,7 +26,12 @@ function NoticeEdit() {
 
       } catch (error) {
         console.error("글 불러오기 중 오류 발생:", error);
-        alert("글을 불러오는데 실패했습니다.");
+        Swal.fire({
+          title: "로드 실패",
+          text: "글을 불러오는데 실패했습니다.",
+          icon: "error",
+          confirmButtonText: "확인",
+        });
       }
     };
 
@@ -33,7 +39,7 @@ function NoticeEdit() {
   }, [postId]);
 
   const toList = () => {
-    navigate("/gatherlist");
+    navigate("/notice/list");
   };
   
   const updateData = async () => {
@@ -63,11 +69,22 @@ function NoticeEdit() {
       const data = await response.text();
       console.log("업데이트된 데이터:", data);
 
-       alert(data.message || "글이 성공적으로 수정되었습니다.");
-      navigate(`/notice/detail/${postId}`);
+      Swal.fire({
+        title: '수정 성공',
+        text: data.message || "글이 수정되었습니다.",
+        icon: 'success',
+        confirmButtonText: '확인'
+      }).then(() => {
+        navigate(`/notice/detail/${postId}`);
+      });
     } catch (error) {
       console.error("수정 실패:", error);
-      alert(error.message || "글 수정에 실패했습니다.");
+      Swal.fire({
+        title: '수정 실패',
+        text: error.message || "글 수정에 실패했습니다.",
+        icon: 'error',
+        confirmButtonText: '확인'
+      });
     }
   };
 
@@ -76,9 +93,9 @@ function NoticeEdit() {
     <div>
       <section className="container py-5">
         <div className="container py-5">
-          <h1 className="h2 semi-bold-600 text-center mt-2">모여라 메이트 게시글 수정</h1>
+          <h1 className="h2 semi-bold-600 text-center mt-2">공지사항 게시글 수정</h1>
           <p className="text-center pb-5 light-300">
-            글을 수정하고 업데이트하세요!
+          공지사항 수정 업데이트 페이지
           </p>
           <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
             <div className="contact-form row">
