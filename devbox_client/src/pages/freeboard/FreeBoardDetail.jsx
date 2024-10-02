@@ -168,7 +168,7 @@ const FreeBoardDetail = () => {
                   />
                   <span>
                     <span>{formatDate(post.createdAt)}</span>
-                    <span style={{ marginLeft: "10px" }}>
+                    <span style={{ marginLeft: "5px" }}>
                       조회수: {post.views}
                     </span>
                   </span>
