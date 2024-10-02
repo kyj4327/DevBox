@@ -206,7 +206,7 @@ const NoticeDetail = () => {
 
         </>
       ) : (
-        <div>Loading...</div> // post가 null일 경우 로딩 표시
+        <div></div> // post가 null일 경우 로딩 표시
       )}
     </section>
   );
