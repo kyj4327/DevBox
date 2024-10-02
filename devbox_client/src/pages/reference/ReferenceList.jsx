@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
 import Swal from 'sweetalert2';
+import UserContact from '../../components/UserContact';
 
 const ReferenceList = () => {
     const domain = "http://localhost:8080";
@@ -81,7 +82,7 @@ const ReferenceList = () => {
                                     <div className="row p-2">
                                         <div className="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
                                             <h3>{v.title}</h3>
-                                            <span>작성자 : {v.userId}</span>
+                                            <span>작성자 : <UserContact nickname={v.userId} nicknameStyle={{ fontSize: "16px", color: "#6266EA" }} /></span>
                                         </div>
                                         <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                                             <li style={{ listStyle: 'none' }}>{v.selectJob}</li>
