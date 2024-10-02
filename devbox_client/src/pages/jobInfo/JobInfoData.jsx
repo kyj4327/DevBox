@@ -131,7 +131,7 @@ const JobInfoData = () => {
 
                 <div className="form-row pt-2">
                     <div className="col-md-12 col-10 text-end">
-                        <Button text={'목록으로'} onClick={toList} />
+                        <Button text={'목록'} icon="list" onClick={toList} />
                     </div>
                 </div>
             </section>

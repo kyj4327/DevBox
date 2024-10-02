@@ -26,33 +26,35 @@ public class ContactController {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-    
-            String systemEmail = "devbox2024@gmail.com";
-            helper.setFrom(systemEmail);                  // 발신자는 시스템 이메일로 설정
-            helper.setTo(new String[] {systemEmail, emailRequest.getEmail()});                    // 수신자는 시스템 이메일로 설정
 
-            helper.setReplyTo(emailRequest.getEmail());   // 회신 이메일을 문의자의 이메일로 설정
-            helper.setSubject("새로운 문의: " + emailRequest.getSubject());
-    
+            String systemEmail = "devbox2024@gmail.com";
+            helper.setFrom(systemEmail); // 발신자는 시스템 이메일로 설정
+            helper.setTo(new String[] { systemEmail, emailRequest.getEmail() }); // 수신자는 시스템 이메일로 설정
+
+            helper.setReplyTo(emailRequest.getEmail()); // 회신 이메일을 문의자의 이메일로 설정
+            helper.setSubject("[DevBox] 문의사항 : " + emailRequest.getSubject());
+
             String emailContent = String.format(
-                "<h2>새로운 문의가 접수되었습니다</h2>" +
-                "<p><strong>이름:</strong> %s</p>" +
-                "<p><strong>이메일:</strong> %s</p>" +
-                "<p><strong>전화번호:</strong> %s</p>" +
-                "<p><strong>제목:</strong> %s</p>" +
-                "<p><strong>내용:</strong></p>" +
-                "<p>%s</p>",
-                emailRequest.getName(),
-                emailRequest.getEmail(),
-                emailRequest.getPhone(),
-                emailRequest.getSubject(),
-                emailRequest.getMessage()
-            );
-    
+                    "<h1>\"%s\" 님의 문의사항입니다.</h1><br>"
+                            + "<h4>이름 : %s</h4><br>"
+                            + "<h4>이메일 : %s</h4><br>"
+                            + "<h4>전화번호 : %s</h4><br>"
+                            + "<hr><br>"
+                            + "<h4>제목</h4><br>"
+                            + "<p>%s</p><br>"
+                            + "<h4>내용</h4><br>"
+                            + "<p>%s</p>",
+                    emailRequest.getName(),
+                    emailRequest.getName(),
+                    emailRequest.getEmail(),
+                    emailRequest.getPhone(),
+                    emailRequest.getSubject(),
+                    emailRequest.getMessage());
+
             helper.setText(emailContent, true);
-    
+
             mailSender.send(message);
-    
+
             return ResponseEntity.ok().body("문의가 성공적으로 전송되었습니다");
         } catch (MessagingException e) {
             return ResponseEntity.internalServerError().body("문의 전송 실패: " + e.getMessage());

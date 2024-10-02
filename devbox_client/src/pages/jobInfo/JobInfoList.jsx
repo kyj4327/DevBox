@@ -13,7 +13,7 @@ const JobInfoList = () => {
             <div className="container py-5">
                 <h1 className="h2 semi-bold-600 text-center mt-2">개발 직군 정보</h1>
                 <p className="text-center pb-5 light-300">다양한 개발 직군에 대해서 알아봅시다.</p>
-                <div className="row projects gx-lg-5">
+                <div className="row projects gx-lg-5 justify-content-center">
                     <JobInfo jobinfo={'backend'} src={backend} alt={'제작자:IYIKON-Flaticon'} text={'back-end'} />
                     <JobInfo jobinfo={'frontend'} src={frontend} alt={'제작자: Freepik - Flaticon'} text={'front-end'} />
                     <JobInfo jobinfo={'devops'} src={devops} alt={'제작자:Freepik-Flaticon'} text={'DevOps'} />

@@ -45,10 +45,10 @@ const EduInfo = (props) => {
 
     return (
             <div className="container py-5">
-                <h1 className="h2 semi-bold-600 text-center mt-2">교육 프로그램</h1>
+                <h1 className="h2 semi-bold-600 text-center mt-2" style={{cursor: 'default'}}>교육 프로그램</h1>
                 <p
                         className="text-center light-300"
-                        style={{ marginBottom: "0", padding: "0px" }}
+                        style={{ marginBottom: "0", padding: "0px",cursor: 'default' }}
                     >
                         멀 보고 있냐~ 신청해야지!!
                     </p>
@@ -58,7 +58,7 @@ const EduInfo = (props) => {
                         <Category text={'모집완료'} onClick={clickState} isActive={props.state} />
                     </div>
                 </div>
-                <div className="row projects gx-lg-5">
+                <div className="row projects gx-lg-5 justify-content-center">
                     {props.list && props.list.map((edu) => {
                         const daysLeft = calculateDaysLeft(edu.recruit);
                         const daysEnd = progressMax(edu.recruit);

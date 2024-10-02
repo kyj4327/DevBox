@@ -100,27 +100,29 @@ const ReservationList = () => {
                                 <Category text={'예약완료'} isActive={category} onClick={clickCategory} />
                                 <Category text={'사용완료'} isActive={category} onClick={clickCategory} />
                             </div>
-                            <div className="row d-flex align-items-center pb-5">
-                                <div className="row py-4" style={{ justifyContent: 'flex-end' }}>
-                                    <div className="col-lg-6" style={{ width: '20%' }}>
-                                        <DatePicker className="form-control form-control-lg light-300"
-                                            selected={startDate}
-                                            onChange={(date) => setStartDate(date)}
-                                            dateFormat="yyyy년 MM월"
-                                            showMonthYearPicker
-                                            locale={ko}
-                                            placeholderText='년/월'
-                                            popperPlacement="top" // 달력을 위쪽에 표시
-                                        />
-                                    </div>
-                                    <div className="col-lg-6" style={{ width: '20%', display: 'flex', justifyContent: 'space-between', alignContent: 'center' }}>
-                                        <button className="btn rounded-pill px-4 btn-primary light-300" onClick={searchDate}>검색</button>
-                                        <button className="btn rounded-pill px-4 btn-primary light-300"
+                            <div className="row d-flex justify-content-center align-items-center pb-5">
+                                <div className="row py-4" style={{ padding: '0' }}>
+                                    <div style={{ padding: '0', display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
+                                        <span className="me-2">
+                                            <DatePicker className="form-control"
+                                                selected={startDate}
+                                                onChange={(date) => setStartDate(date)}
+                                                dateFormat="yyyy년 MM월"
+                                                showMonthYearPicker
+                                                locale={ko}
+                                                placeholderText='년/월'
+                                                popperPlacement="top" // 달력을 위쪽에 표시
+                                            />
+                                        </span>
+                                        <button className="btn px-4 border border-2 me-2" onClick={searchDate}>
+                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                        </button>
+                                        <button className="btn px-4 border border-2"
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 setStartDate('');
                                                 setDate('All');
-                                            }}><img src={reset} alt="https://icons8.com" /></button>
+                                            }}><i class="fa-solid fa-rotate-right"></i></button>
                                     </div>
                                 </div>
                                 {

@@ -55,9 +55,9 @@ import { UserProvider } from './components/context/UserContext';
 
 import BDIAIntroduction from "./pages/bdia/BDIAIntroduction";
 import BDIASchedule from "./pages/bdia/BDIASchedule";
-import FreeBoard from "./pages/freeboard/FreeBoard";
+import FreeBoardList from "./pages/freeboard/FreeBoardList";
+import FreeBoardWrite from "./pages/freeboard/FreeBoardWrite";
 import FreeBoardDetail from "./pages/freeboard/FreeBoardDetail";
-import PostDetail from "./pages/freeboard/PostDetail";
 import Contact from "./pages/contact/Contact";
 import EduWrite from './pages/education/EduWrite';
 import Main from './pages/Main';
@@ -158,11 +158,11 @@ function AppContent() {
           <Route path="/schedule" element={<BDIASchedule />} />
 
           {/* 자유게시판 */}
-          <Route path="/freeboard/list" element={<FreeBoard />} />
-          <Route path="/freeboard/write" element={<FreeBoardDetail />} />
-          <Route path="/freeboard/:id" element={<FreeBoardDetail />} />
-          <Route path="/freeboard/update/:id" element={<FreeBoardDetail />} />
-          <Route path="/freeboard/detail/:id" element={<PostDetail />} />
+          <Route path="/freeboard/list" element={<FreeBoardList />} />
+          <Route path="/freeboard/write" element={<FreeBoardWrite />} />
+          <Route path="/freeboard/:id" element={<FreeBoardWrite />} />
+          <Route path="/freeboard/update/:id" element={<FreeBoardWrite />} />
+          <Route path="/freeboard/detail/:id" element={<FreeBoardDetail />} />
 
           {/* FAQ */}
           <Route path="/faq" element={<Contact />} />

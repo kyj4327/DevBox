@@ -57,7 +57,7 @@ const ContestList = () => {
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2">공모전</h1>
                     <p className="text-center pb-5 light-300">대회/공모전의 세부요강은 주최사의 기획에 의해 내용이 변경될 수 있으니, 주최사의 공고를 반드시 확인해 보시기 바랍니다.</p>
-                    <div className="row projects gx-lg-5">
+                    <div className="row projects gx-lg-5 justify-content-center">
                         {
                             data.map((v) => {
                                 return (
@@ -141,17 +141,17 @@ const ContestList = () => {
                                 )
                             })
                         }
+                        {
+                            userRole === "ROLE_ADMIN"
+                                ? <div className="form-row pt-2" style={{ padding: '8px 56px 0px' }}>
+                                    <div className="col-md-12 col-10 text-end">
+                                        <Button text={'글쓰기'} icon="pen" onClick={toWrite} />
+                                    </div>
+                                </div>
+                                : ''
+                        }
                     </div>
                 </div>
-                {
-                    userRole === "ROLE_ADMIN"
-                        ? <div className="form-row pt-2">
-                            <div className="col-md-12 col-10 text-end">
-                                <Button text={'작성하기'} onClick={toWrite} />
-                            </div>
-                        </div>
-                        : ''
-                }
             </section>
             <Pagination handlePageChange={handlePageChange} pageData={pageData} />
         </div>

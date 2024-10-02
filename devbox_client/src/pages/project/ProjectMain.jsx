@@ -59,6 +59,12 @@ const ProjectMain = (props) => {
         props.setRefresh();
     };
 
+    const clickState = (e) => {
+        e.preventDefault();
+        const category = e.target.dataset.category;
+        props.clickState(category); // category 값을 명시적으로 전달
+    };
+
     const handleLikeClick = (e, proId) => {
         e.stopPropagation();
         e.preventDefault();
@@ -81,15 +87,33 @@ const ProjectMain = (props) => {
 
     return (
         <div className="container py-5">
-            <h1 className="h2 semi-bold-600 text-center mt-2">프로젝트 자랑 게시판</h1>
+            <h1 className="h2 semi-bold-600 text-center mt-2" style={{cursor: 'default'}}>프로젝트 자랑 게시판</h1>
             <p
                 className="text-center light-300"
-                style={{ marginBottom: "0", padding: "0px" }}
+                style={{ marginBottom: "0", padding: "0px",cursor: 'default' }}
             >
                 맘껏 자랑해봐!
             </p>
-            <section className="container py-5">
-                <div className="row projects gx-lg-5">
+            <section className="container my-5">
+                <div className="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <label
+                        className={`btn btn-outline-primary ${props.category === '최신순' ? 'active' : ''}`}
+                        htmlFor="btnradio1"
+                        data-category="최신순"
+                        onClick={clickState}>
+                        최신순
+                    </label>
+
+                    <input type="radio" className="btn-check" name="btnradio" id="btnradio2" autoComplete="off" />
+                    <label
+                        className={`btn btn-outline-primary ${props.category === '인기순' ? 'active' : ''}`}
+                        htmlFor="btnradio2"
+                        data-category="인기순"
+                        onClick={clickState}>
+                        인기순
+                    </label>
+                </div>
+                <div className="row projects gx-lg-5 pt-3">
                     {props.list && props.list.map((pro) => (
                         <div className="service-work overflow-hidden card mb-3 mx-2 col-sm-6 col-lg-4 pt-4 project marketing social business " key={pro.id}>
                             <Link to={`/project/detail?id=${pro.id}`} className="overflow-hidden card mb-2 mx-1 text-decoration-none .border-1">
@@ -101,7 +125,7 @@ const ProjectMain = (props) => {
                                 />
                             </Link>
                             <div className="card-body">
-                                <h5 className="card-title h6 m-0 semi-bold-600 text-dark text-center">{pro.title}</h5>
+                                <h5 className="card-title h6 m-0 semi-bold-600 text-dark text-center" style={{cursor: 'default'}}>{pro.title}</h5>
                                 <p className="card-text pt-2 mb-1 light-300 text-dark text-center">
                                     작성자: <UserContact nickname={pro.name} />
                                 </p>
@@ -113,12 +137,12 @@ const ProjectMain = (props) => {
                                         onMouseEnter={() => setIsHovered(true)}
                                         onMouseLeave={() => setIsHovered(false)}
                                     ></i>
-                                    <span className='pt-1'style={{ color: '#4232C2' }}>{likeStatus[pro.id]?.count || pro.likeCount}</span>
+                                    <span className='pt-1' style={{ color: '#4232C2' }}>{likeStatus[pro.id]?.count || pro.likeCount}</span>
                                 </div>
                             </div>
                         </div>
                     ))}
-                    <div className="form-row pt-5">
+                    <div className="form-row pt-4">
                         <div className="col-md-12 col-10 text-end">
                             {user && (
                                 <Button text={'글쓰기'} onClick={() => navigate('/project/write')} />

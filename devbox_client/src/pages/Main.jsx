@@ -167,7 +167,7 @@ const Main = () => {
                   onClick={clickCategory}
                 />
               </div>
-              <div className="row gy-5 g-lg-5 mb-4" style={{ marginTop: "0" }}>
+              <div className="row gy-5 g-lg-5 mb-4 justify-content-center" style={{ marginTop: "0" }}>
                 {hiringData.map((v) => {
                   return (
                     <div className="col-sm-6 col-lg-4" key={v.id}>

@@ -26,7 +26,7 @@ const Footer = () => {
                             <p className="text-lg-end text-center text-light light-300">
                                 <ul className="list-inline footer-icons light-300">
                                     <li className="list-inline-item m-0">
-                                        <Link to="깃주소" className="text-light" target="_blank">
+                                        <Link to="https://github.com/kyj4327/DevBox" className="text-light" target="_blank">
                                             <i className='bx bxl-github' style={{ fontSize: '36px' }}></i>
                                         </Link>
                                     </li>

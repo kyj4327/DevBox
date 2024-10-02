@@ -65,7 +65,7 @@ const Reservation = () => {
         } else if (user.role === "ROLE_USER") {
             Swal.fire({
                 icon: "error",
-                title: "권한이 없습니다."
+                title: "수강생만 이용가능합니다."
             }).then(() => {
                 navigate('/reservation/write');
             });

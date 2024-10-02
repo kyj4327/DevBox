@@ -1,13 +1,13 @@
 const WriteLong = ({ titleTag, name, value, onChange, contentDelete, onDelete, wordCount }) => {
     return (
         <div>
-            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">
+            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>
                 {titleTag}
                 {
                     contentDelete ?
-                        <button type="button" className="btn rounded-pill px-4 light-300 border border-2"
-                            style={{ marginLeft: '1rem' }} onClick={onDelete}>
-                            삭제
+                        <button type="button" className="btn px-4 light-300 border border-2"
+                            style={{ marginLeft: '1rem', borderRadius: '10px' }} onClick={onDelete}>
+                            <i className="fa-regular fa-trash-can"></i> 삭제
                         </button>
                         : ''
                 }
