@@ -1,8 +1,11 @@
 package com.o2b2.devbox_server.user.service;
 
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class EmailService {
@@ -14,10 +17,20 @@ public class EmailService {
     }
 
     public void sendVerificationCode(String to, String code) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject("DevBox 의 비밀번호 찾기 인증코드 전송메일입니다.");
-        message.setText("인증코드: " + code);
-        mailSender.send(message);
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(to);
+            helper.setSubject("[DevBox] 비밀번호 찾기 인증코드");
+
+            String emailContent = String.format(
+                    "<h4>아래의 인증코드를 입력해주세요.</h4><br>"
+                            + "<h1>인증코드 : <span style='color:blue;'>%s</span></h1>",
+                    code);
+
+            helper.setText(emailContent, true);
+            mailSender.send(message);
+        } catch (MessagingException e) {
+        }
     }
 }
