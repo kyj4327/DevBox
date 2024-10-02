@@ -76,15 +76,12 @@ const FreeBoardList = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const options = {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false, // 24시간 형식
-    };
-    return date.toLocaleString("ko-KR", options).replace(",", ""); // 한국어 형식으로 포맷
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    // const hours = String(date.getHours()).padStart(2, "0");   시 분이 필요할시 추가
+    // const minutes = String(date.getMinutes()).padStart(2, "0");  시 분이 필요할시 추가
+    return ` ${year}-${month}-${day}`; //${hours}:${minutes} 시 분이 필요할시 추가
   };
 
   // if (isLoading) return <div>로딩 중...</div>;
@@ -125,7 +122,12 @@ const FreeBoardList = () => {
                         </Link>
                       </td>
                       <td data-label="작성자" className="notice-author">
-                      <UserContact nickname={post.author} />
+                      <UserContact
+                          nickname={post.author}
+                          nicknameStyle={{
+                            fontSize: "14.4px",
+                            color: "#666666",
+                          }}/>
                       </td>
                       <td data-label="작성일" className="notice-date">
                         {formatDate(post.createdAt)}

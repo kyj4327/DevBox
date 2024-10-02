@@ -103,6 +103,16 @@ const FreeBoardDetail = () => {
     navigate(`/freeboard/update/${id}`);
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    // const hours = String(date.getHours()).padStart(2, "0");   시 분이 필요할시 추가
+    // const minutes = String(date.getMinutes()).padStart(2, "0");  시 분이 필요할시 추가
+    return `작성일: ${year}-${month}-${day}`; //${hours}:${minutes} 시 분이 필요할시 추가
+  };
+
   if (isLoading) return <div className="loading">로딩 중...</div>;
   if (error) return <div className="error">{error}</div>;
   if (!post) return <div className="not-found">게시글을 찾을 수 없습니다.</div>;
@@ -149,10 +159,18 @@ const FreeBoardDetail = () => {
                   }}
                 />
                 <div className="d-flex flex-column">
-                <UserContact nickname={post.author} />
+                  <UserContact
+                    nickname={post.author}
+                    nicknameStyle={{
+                      fontSize: "16px",
+                      color: "#6C757D",
+                    }}
+                  />
                   <span>
-                    작성일: {new Date(post.createdAt).toLocaleString()}
-                    조회수: {post.views}
+                    <span>{formatDate(post.createdAt)}</span>
+                    <span style={{ marginLeft: "10px" }}>
+                      조회수: {post.views}
+                    </span>
                   </span>
                 </div>
               </div>
