@@ -84,33 +84,33 @@ const MesReply = () => {
         <div>
             <section className="container py-5">
                 <div className="container py-5">
-                    <h1 className="h2 semi-bold-600 text-center mt-2 pb-5 ">답장</h1>
+                    <h1 className="h2 semi-bold-600 text-center mt-2 pb-5" style={{cursor: 'default'}}>답장</h1>
                     <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
                         <p className="text-center pb-5 light-300"></p>
                         <div className="contact-form row">
                             <div className="col-lg-6 mb-4">
-                                <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">보낼분</h2>
+                                <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>보낼분</h2>
                                 <p className="worksingle-footer py-3 text-muted light-300">
                                     <div className="form-floating">
                                         <input type='text' className="form-control form-control-lg light-300" id='sender' name='sender' placeholder='보낼분'
-                                            value={sender} onChange={(e) => { setSender(e.target.value) }} readOnly />
+                                            value={sender} onChange={(e) => { setSender(e.target.value) }} style={{cursor: 'default'}} readOnly />
                                         <label htmlFor="floatingsubject light-300">보낼분</label>
                                     </div>
                                 </p>
                             </div>
                             <div className="col-lg-6 mb-4">
-                                <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">받을분</h2>
+                                <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>받을분</h2>
                                 <p className="worksingle-footer py-3 text-muted light-300">
                                     <div className="form-floating">
                                         <input type='text' className="form-control form-control-lg light-300" id='reciver' name='reciver' placeholder='받을분'
-                                            value={reciver} onChange={(e) => { setReciver(e.target.value) }} readOnly />
+                                            value={reciver} onChange={(e) => { setReciver(e.target.value) }} style={{cursor: 'default'}} readOnly />
                                         <label htmlFor="floatingsubject light-300">받을분</label>
                                     </div>
                                 </p>
                             </div>
                             <WriteShort titleTag={'제목'} type={'text'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} />
 
-                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">작성 내용</h2>
+                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>작성 내용</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
                                 <div className=" form-floating">
                                     <QuillEditor

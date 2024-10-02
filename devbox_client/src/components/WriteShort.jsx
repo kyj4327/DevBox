@@ -1,7 +1,7 @@
 const WriteShort = ({ type, titleTag, name, value, onChange, wordCount }) => {
     return (
         <div className="col-lg-6">
-            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">{titleTag}</h2>
+            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>{titleTag}</h2>
             <p className="worksingle-footer py-3 text-muted light-300">
                 <div className="col-12">
                     <div className="form-floating mb-4">

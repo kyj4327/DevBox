@@ -13,25 +13,6 @@ import { useUser } from "../../components/context/UserContext";
 import profilePic from "../../assets/img/profilePic.png";
 import UserContact from "../../components/UserContact";
 
-// const SlideTest = () => {
-
-//     const swiper = useSwiper();
-//     const swiperSlide = useSwiperSlide();
-
-//     // console.dir(swiper);
-//     // console.dir(swiperSlide);
-//     // if(swiperSlide) {
-//     //     console.log(swiperSlide.isBeginning());
-//     // }
-
-//     return (
-//         <button onClick={() => {
-//             console.log(swiper.isBeginning());
-//         }}>테스트</button>
-//     );
-// }
-
-
 const ProjectDetail = () => {
 
     const { user } = useUser();

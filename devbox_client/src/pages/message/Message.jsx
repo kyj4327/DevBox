@@ -4,11 +4,12 @@ import Pagination from "../../components/Pagination";
 
 const Message = () => {
     const [pageData, setPageData] = useState({});
+    const [readTime, setReadTime] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const domain = "http://localhost:8080"; 
     const [refresh, setRefresh] = useState(false);
     // 상태 변경 초기값 false
-    const [category, setCategory] = useState('받은쪽지');
+    const [category, setCategory] = useState('');
 
     async function get(page = 1) {
         const token = localStorage.getItem('accessToken');
@@ -23,6 +24,8 @@ const Message = () => {
         const data = await res.json();
         console.log(data);
         setPageData(data);
+        setReadTime(data.readtime);
+
         setCurrentPage(page);  // 페이지 데이터 불러온 후, 현재 페이지 업데이트
     }
 

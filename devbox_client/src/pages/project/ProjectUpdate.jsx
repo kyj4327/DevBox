@@ -158,22 +158,22 @@ const ProjectUpdate = () => {
         <div>
             <section className="container py-5">
                 <div className="container py-5">
-                    <h1 className="h2 semi-bold-600 text-center mt-2 pb-5 ">프로젝트 자랑 수정</h1>
+                    <h1 className="h2 semi-bold-600 text-center mt-2 pb-5" style={{cursor: 'default'}}>프로젝트 자랑 수정</h1>
                     <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
                         <p className="text-center pb-5 light-300"></p>
                         <div className="contact-form row">
                             <WriteShort titleTag={'제목'} type={'text'} name={'title'} value={title} onChange={(e) => setTitle(e.target.value)} />
                             <div className="col-lg-6 mb-4">
-                                <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">작성자</h2>
+                                <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>작성자</h2>
                                 <p className="worksingle-footer py-3 text-muted light-300">
                                     <div className="form-floating">
-                                        <input type="text" className="form-control form-control-lg light-300" id={name} name={name} placeholder="작성자"
+                                        <input type="text" className="form-control form-control-lg light-300" style={{cursor: 'default'}} id={name} name={name} placeholder="작성자"
                                             value={name} onChange={(e) => setName(e.target.value)} readOnly />
                                         <label htmlFor="floatingsubject light-300">작성자</label>
                                     </div>
                                 </p>
                             </div>
-                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">자랑 이미지</h2>
+                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>자랑 이미지</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
                                 <div id="templatemo-slide-link-target" className="card py-3 mb-3">
                                     <DragDrop  addFiles={addFiles} initialFiles={savedImgs}
@@ -183,7 +183,7 @@ const ProjectUpdate = () => {
                             </p>
 
                             <div>
-                                <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">자랑 링크</h2>
+                                <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>자랑 링크</h2>
                                 <p className="worksingle-footer py-3 text-muted light-300">
                                     <div className="col-12">
                                         <div className="form-floating mb-4">
@@ -194,7 +194,7 @@ const ProjectUpdate = () => {
                                     </div>
                                 </p>
                             </div>
-                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">프로젝트 소개</h2>
+                            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>프로젝트 소개</h2>
                             <p className="worksingle-footer py-3 text-muted light-300">
                                 <div className=" form-floating">
                                     <QuillEditor

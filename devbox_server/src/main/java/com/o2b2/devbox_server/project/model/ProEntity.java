@@ -35,7 +35,7 @@ public class ProEntity {
     @Column(length = 500, nullable = false)
     String coment;
 
-    LocalDateTime time = LocalDateTime.now();
+    LocalDateTime time;
 
 
     @OneToMany(mappedBy = "proEntity", cascade = CascadeType.REMOVE)

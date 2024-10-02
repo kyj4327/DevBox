@@ -82,7 +82,7 @@ const ProjectMyMain = (props) => {
     return (
         <>
              <div className="mypage-content__title-wrapper">
-                <h5 className="mypage-content__title">프로젝트 자랑 게시판</h5>
+                <h5 className="mypage-content__title" style={{cursor: 'default'}}>프로젝트 자랑 게시판</h5>
             </div>
             <section className="container py-4">
                 <div className="row projects gx-lg-5">
@@ -97,7 +97,7 @@ const ProjectMyMain = (props) => {
                                 />
                             </Link>
                             <div className="card-body">
-                                <h5 className="card-title h6 m-0 semi-bold-600 text-dark text-center">{pro.title}</h5>
+                                <h5 className="card-title h6 m-0 semi-bold-600 text-dark text-center" style={{cursor: 'default'}}>{pro.title}</h5>
                                 <p className="card-text pt-2 mb-1 light-300 text-dark text-center">
                                     작성자: <UserContact nickname={pro.name} />
                                 </p>

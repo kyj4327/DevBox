@@ -1,5 +1,6 @@
 package com.o2b2.devbox_server.message.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -54,24 +56,45 @@ public class MsgController {
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "6") int size) {
 
-        // CustomUserDetails에서 nickname 추출
-        String sender = userDetails.getNickname();
-
-        System.out.println("Sender: " + sender + ", category: " + category);
-
         Direction dir = Direction.DESC;
-        Pageable pageable = PageRequest.of(page - 1, size, dir, "order", "id"); // 페이지 요청 생성
+        Pageable pageable;
 
-        // 카테고리가 받은쪽지이면
-        // sender(로그인한사람)로 DB의 receiver 데이터 조회
-        Page<? extends MsgEntity> p;
-        if (category.equals("받은쪽지")) {
-            p = msgReciverRepository.findByReceiver(userDetails.getUserEntity(), pageable);
+        // 카테고리 확인
+        Page<MsgEntity> p; // Page 객체를 먼저 선언합니다.
+        if (category.equals("중요쪽지")) {
+            // 중요쪽지의 경우, like가 있는 쪽지로 정렬
+            pageable = PageRequest.of(page - 1, size, dir, "sendTime"); // sendTime으로 정렬
+
+            // 수신자에서 like가 있는 메시지 조회
+            Page<MsgEntity> receivedLikes = msgReciverRepository
+                    .findByReceiverAndLikeIsNotNull(userDetails.getUserEntity(), pageable);
+
+            // 발신자에서 like가 있는 메시지 조회
+            Page<MsgEntity> sentLikes = msgSenderRepository.findBySenderAndLikeIsNotNull(userDetails.getUserEntity(),
+                    pageable);
+
+            // 두 페이지의 메시지를 합칩니다.
+            List<MsgEntity> allLikes = new ArrayList<>();
+            allLikes.addAll(receivedLikes.getContent());
+            allLikes.addAll(sentLikes.getContent());
+
+            // 결과를 Page로 감싸기 위해 totalElements 계산
+            long totalElements = receivedLikes.getTotalElements() + sentLikes.getTotalElements();
+            p = new PageImpl<>(allLikes, pageable, totalElements);
         } else {
-            p = msgSenderRepository.findBySender(userDetails.getUserEntity(), pageable);
+            // 받은쪽지 또는 보낸쪽지인 경우 sendTime으로 정렬
+            pageable = PageRequest.of(page - 1, size, dir, "sendTime");
+
+            // 카테고리에 따라 조회
+            if (category.equals("받은쪽지")) {
+                p = msgReciverRepository.findByReceiver(userDetails.getUserEntity(), pageable);
+            } else {
+                p = msgSenderRepository.findBySender(userDetails.getUserEntity(), pageable);
+            }
         }
 
-        List<MsgEntity> list = (List<MsgEntity>) p.getContent();
+        // 결과에서 리스트 가져오기
+        List<MsgEntity> list = p.getContent();
 
         // 페이지네이션 관련 정보 계산
         int totalPage = p.getTotalPages();
@@ -94,7 +117,14 @@ public class MsgController {
             }
 
             map.put("sendTime", msg.getSendTime());
-            map.put("readTime", msg.getReadTime());
+            // 받은 사람의 readTime을 MsgReciverEntity에서 가져옴
+            Optional<MsgReciverEntity> reciverOpt = msgReciverRepository.findById(msg.getId());
+            if (reciverOpt.isPresent()) {
+                MsgReciverEntity reciverMsg = reciverOpt.get();
+                map.put("readTime", reciverMsg.getReadTime()); // Reciver의 읽은 시간
+            } else {
+                map.put("readTime", null); // 받은 사람이 읽지 않았거나 쪽지가 존재하지 않음
+            }
 
             // receiver가 null일 경우 처리
             if (msg.getReceiver() != null) {
@@ -271,53 +301,60 @@ public class MsgController {
 
     @GetMapping("/msg/detail")
     @ResponseBody
-    public Map<String, Object> msgDetail(@RequestParam Long id) {
+    public Map<String, Object> msgDetail(@RequestParam Long id, @RequestParam int kind) {
         Map<String, Object> map = new HashMap<>();
 
-        // Reciver 쪽지 정보 조회
-        Optional<MsgReciverEntity> reciverOpt = msgReciverRepository.findById(id);
-        if (reciverOpt.isPresent()) {
-            MsgReciverEntity reciverMsg = reciverOpt.get();
+        if (kind == 0) {
 
-            // readTime이 null이면 현재 시간을 읽은 시간으로 설정하고 저장합니다.
-            if (reciverMsg.getReadTime() == null) {
-                reciverMsg.setReadTime(LocalDateTime.now());
-                msgReciverRepository.save(reciverMsg); // 데이터베이스에 저장
+            // Reciver 쪽지 정보 조회
+            Optional<MsgReciverEntity> reciverOpt = msgReciverRepository.findById(id);
+            if (reciverOpt.isPresent()) {
+                MsgReciverEntity reciverMsg = reciverOpt.get();
+
+                // readTime이 null이면 현재 시간을 읽은 시간으로 설정하고 저장합니다.
+                if (reciverMsg.getReadTime() == null) {
+                    reciverMsg.setReadTime(LocalDateTime.now());
+                    msgReciverRepository.save(reciverMsg); // 데이터베이스에 저장
+                }
+
+                // Reciver 쪽지의 세부 정보를 map에 담습니다.
+                map.put("id", reciverMsg.getId());
+                map.put("title", reciverMsg.getTitle());
+                map.put("content", reciverMsg.getContent());
+
+                map.put("sender", reciverMsg.getSender() != null ? reciverMsg.getSender().getNickname() : null);
+
+                map.put("sendTime", reciverMsg.getSendTime());
+                map.put("reciver", reciverMsg.getReceiver() != null ? reciverMsg.getReceiver().getNickname() : null);
+                map.put("readTime", reciverMsg.getReadTime()); // 읽은 시간도 응답에 포함
+            } else {
+                // Reciver 쪽지가 없을 경우 에러 메시지 추가
+                map.put("reciverError", "Receiver message not found");
             }
+        } else { // kind 1 (보낸 쪽지함에서 호출)
 
-            // Reciver 쪽지의 세부 정보를 map에 담습니다.
-            map.put("id", reciverMsg.getId());
-            map.put("title", reciverMsg.getTitle());
-            map.put("content", reciverMsg.getContent());
-            
+            // Sender 쪽지 정보 조회
+            Optional<MsgSenderEntity> senderOpt = msgSenderRepository.findById(id);
+            if (senderOpt.isPresent()) {
+                MsgSenderEntity senderMsg = senderOpt.get();
 
-            map.put("sender", reciverMsg.getSender() != null ? reciverMsg.getSender().getNickname() : null);
-
-
-            map.put("sendTime", reciverMsg.getSendTime());
-            map.put("reciver", reciverMsg.getReceiver() != null ? reciverMsg.getReceiver().getNickname() : null);
-            map.put("readTime", reciverMsg.getReadTime()); // 읽은 시간도 응답에 포함
-        } else {
-            // Reciver 쪽지가 없을 경우 에러 메시지 추가
-            map.put("reciverError", "Receiver message not found");
-        }
-
-        // Sender 쪽지 정보 조회
-        Optional<MsgSenderEntity> senderOpt = msgSenderRepository.findById(id);
-        if (senderOpt.isPresent()) {
-            MsgSenderEntity senderMsg = senderOpt.get();
-
-            // Sender 쪽지의 세부 정보를 map에 담습니다.
-            map.put("id", senderMsg.getId());
-            map.put("title", senderMsg.getTitle());
-            map.put("content", senderMsg.getContent());
-            map.put("sender", senderMsg.getSender() != null ? senderMsg.getSender().getNickname() : null);
-            map.put("sendTime", senderMsg.getSendTime());
-            map.put("reciver", senderMsg.getReceiver() != null ? senderMsg.getReceiver().getNickname() : null);
-            
-        } else {
-            // Sender 쪽지가 없을 경우 에러 메시지 추가
-            map.put("senderError", "Sender message not found");
+                // Sender 쪽지의 세부 정보를 map에 담습니다.
+                map.put("id", senderMsg.getId());
+                map.put("title", senderMsg.getTitle());
+                map.put("content", senderMsg.getContent());
+                map.put("sender", senderMsg.getSender() != null ? senderMsg.getSender().getNickname() : null);
+                map.put("sendTime", senderMsg.getSendTime());
+                map.put("reciver", senderMsg.getReceiver() != null ? senderMsg.getReceiver().getNickname() : null);
+                // reciver 쪽지의 읽은 시간 반영
+                Optional<MsgReciverEntity> reciverOpt = msgReciverRepository.findById(id);
+                if (reciverOpt.isPresent()) {
+                    MsgReciverEntity reciverMsg = reciverOpt.get();
+                    map.put("readTime", reciverMsg.getReadTime()); // Reciver의 읽은 시간도 Sender 응답에 포함
+                }
+            } else {
+                // Sender 쪽지가 없을 경우 에러 메시지 추가
+                map.put("senderError", "Sender message not found");
+            }
         }
 
         return map; // 클라이언트에 map 반환

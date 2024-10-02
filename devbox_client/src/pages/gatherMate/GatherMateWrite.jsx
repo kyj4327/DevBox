@@ -183,7 +183,7 @@ function GatherMateWrite() {
         </div>
         <div className="form-row pt-2">
           <div className="col-md-12 col-10 text-end">
-            <Button text={"저장하기"} onClick={saveData} />
+            <Button text={"등록"} icon="pen" onClick={saveData} />
           </div>
         </div>
       </section>

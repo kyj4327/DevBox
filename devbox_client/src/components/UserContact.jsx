@@ -120,11 +120,11 @@ const UserContact = ({
                 </ul>
             </div>
 
-            <Modal
-                show={showModal}
-                onHide={handleClose}
-                backdrop={true}
-                keyboard={true}
+            <Modal 
+                show={showModal} 
+                onHide={handleClose} 
+                backdrop={true}   
+                keyboard={true}    
             >
                 <Modal.Header closeButton>
                     <Modal.Title>

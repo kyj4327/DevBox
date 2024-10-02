@@ -147,7 +147,7 @@ public class SecurityConfig {
                                                 // gatherMate 상세는 누구나
                                                 .requestMatchers("/gathermate/detail/**").permitAll()
                                                 .requestMatchers("/gathermate/posts/**").permitAll()
-                                                .requestMatchers("/gathermate/posts").authenticated()
+                                                .requestMatchers("/gathermate/posts**").permitAll()
                                                 .requestMatchers("/gathermate/likes/**").authenticated()
                                                 .requestMatchers("/gathermate/likes").authenticated()
                                                 // 좋아요 했는지 확인 유무.

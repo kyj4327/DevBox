@@ -106,7 +106,7 @@ function GatherMateEdit() {
   return (
     <div>
       <section className="container py-5">
-        <div className="container py-5">
+        <div className="container py-4">
           <h1 className="h2 semi-bold-600 text-center mt-2">
             모여라 메이트 게시글 수정
           </h1>
@@ -154,10 +154,10 @@ function GatherMateEdit() {
             </div>
           </div>
         </div>
-        <div className="form-row pt-2">
-          <div className="col-md-12 col-10 text-end">
-            <Button text={"목록으로"} onClick={toList} />
-            <Button text={"수정하기"} onClick={updateData} />
+        <div className="form-row py-2">
+          <div className="col-md-12 col-10 d-flex justify-content-between">
+            <Button text={"목록으로"}icon="list" onClick={toList} />
+            <Button text={"수정하기"} icon="edit" onClick={updateData} />
           </div>
         </div>
       </section>

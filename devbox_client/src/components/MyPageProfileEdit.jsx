@@ -1,57 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2"; // SweetAlert2 추가
+import { useUser } from '../components/context/UserContext';
 
 import "./MyPageProfileEdit.css";
 
 function MyPageProfileEdit() {
-  const [user, setUser] = useState({
-    email: "",
-    nickname: "",
-    name: "",
-    role: "",
-    field: "",
-  });
-  const [loading, setLoading] = useState(true);
+  const { user, loading, setUser, logout } = useUser();
+
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
   const [emailConfirmation, setEmailConfirmation] = useState(""); // 이메일 확인 상태
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
-  const fetchUserData = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch("http://localhost:8080/api/user/me", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        const frontendRole = data.role === "ROLE_USER" ? "일반회원" : "수강생";
-        setUser({ ...data, role: frontendRole });
-      } else {
-        if (response.status === 401) {
-          navigate("/auth");
-        } else {
-          throw new Error("Failed to fetch user data");
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleChange = (e) => {
     setUser({
@@ -104,7 +65,8 @@ function MyPageProfileEdit() {
 
       if (response.ok) {
         // 로그아웃 처리
-        await handleLogout(); // 로그아웃 함수 호출
+
+        logout(); 
 
         await Swal.fire({
           icon: "success",
@@ -122,33 +84,6 @@ function MyPageProfileEdit() {
         icon: "error",
         title: "탈퇴 실패",
         text: error.message || "회원탈퇴에 실패하였습니다.",
-      });
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/logout", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-
-      if (response.ok) {
-        localStorage.removeItem("accessToken");
-        setUser(null);
-      } else {
-        throw new Error("Failed to log out");
-      }
-    } catch (error) {
-      console.error("Error during logout:", error);
-      await Swal.fire({
-        icon: "error",
-        title: "로그아웃 실패",
-        text: error.message || "로그아웃에 실패하였습니다.",
       });
     }
   };
