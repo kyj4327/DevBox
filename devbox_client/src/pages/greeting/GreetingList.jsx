@@ -14,6 +14,7 @@ import "./GreetingList.css";
 // 아이콘들
 import modeCommentIcon from "../../assets/img/icons/modeComment.svg";
 import GreetingWrite from "./GreetingWrite";
+import UserContact from "../../components/UserContact";
 
 function GreetingList() {
   const { user } = useUser(); // UserContext -> user 가져오기
@@ -21,7 +22,7 @@ function GreetingList() {
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [searchType, setSearchType] = useState("제목 & 내용");
+  const [searchType, setSearchType] = useState("제목&내용");
   const [startPage, setStartPage] = useState(0);
   const [endPage, setEndPage] = useState(0);
 
@@ -33,6 +34,8 @@ function GreetingList() {
   const toggleComments = (postId) => {
     setExpandedPostId(expandedPostId === postId ? null : postId);
   };
+
+  console.log(user);
 
   const navigate = useNavigate();
   const toWrite = () => {
@@ -276,9 +279,19 @@ function GreetingList() {
                             alt="profile"
                             className="profile-image me-2"
                           />
-                          <span className="post-author fw-bold">
-                            {post.author}
-                          </span>
+                          <div className="author-details d-flex flex-column">
+                            <span className="post-author fw-bold">
+                              <UserContact
+                                nickname={post.author}
+                                nicknameStyle={{
+                                  fontSize: "16px",
+                                  color: "#212529",
+                                  fontWeight: "bold",
+                                }}
+                              />
+                            </span>
+                            <span className="post-field">{post.field}</span>
+                          </div>
                         </div>
                         <span className="post-time text-muted">
                           {formatDateTime(post.createdAt)}
@@ -290,6 +303,8 @@ function GreetingList() {
                         value={editingContent}
                         onChange={(e) => setEditingContent(e.target.value)}
                         className="form-control"
+                        style={{ height: "90px" }} // 높이를 200px로 설정
+
                       />
 
                       {/* 수정품 내부 저장 및 취소 버튼 */}
@@ -335,7 +350,14 @@ function GreetingList() {
                           />
                           <div className="author-details d-flex flex-column">
                             <span className="post-author fw-bold">
-                              {post.author}
+                              <UserContact
+                                nickname={post.author}
+                                nicknameStyle={{
+                                  fontSize: "16px",
+                                  color: "#212529",
+                                  fontWeight: "bold",
+                                }}
+                              />
                             </span>
                             <span className="post-field">{post.field}</span>
                           </div>
@@ -355,7 +377,7 @@ function GreetingList() {
                             overflowWrap: "break-word",
                             wordWrap: "break-word",
                             whiteSpace: "pre-wrap",
-                            marginBottom: "15px",
+                            marginBottom: "30px",
                           }}
                           dangerouslySetInnerHTML={{ __html: post.content }}
                         />
@@ -409,12 +431,15 @@ function GreetingList() {
                       </div>
                       {expandedPostId === post.id && (
                         <div className="comments-container mt-3 p-2">
-                        <div className="row justify-content-center">
-                          <div className="col-12">
-                            <BoardComments postId={post.id} boardType="greeting" />
+                          <div className="row justify-content-center">
+                            <div className="col-12">
+                              <BoardComments
+                                postId={post.id}
+                                boardType="greeting"
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
                       )}
                     </div>
                   )}
@@ -445,6 +470,7 @@ function GreetingList() {
             onChange={(e) => setSearchKeyword(e.target.value)}
             placeholder="검색어를 입력하세요"
             className="greeting-search-input"
+            style={{width:"500px"}}
           />
         </div>
 

@@ -6,6 +6,7 @@ import "./GatherMateDetail.css";
 import PostButton from "../../components/PostButton";
 import BoardComments from "../../components/BoardComments";
 import Swal from "sweetalert2"; // Import SweetAlert2
+import UserContact from '../../components/UserContact';
 
 const GatherMateDetail = () => {
   const { postId } = useParams();
@@ -133,7 +134,7 @@ const GatherMateDetail = () => {
   const handleLike = async () => {
     if (!user) {
       await Swal.fire({
-        icon: "info",
+        icon: "error",
         title: "로그인 필요",
         text: "로그인이 필요합니다.",
       });
@@ -293,7 +294,16 @@ const GatherMateDetail = () => {
                   }}
                 />
                 <div className="d-flex flex-column">
-                  <span>작성자: {post.author}</span>
+
+                
+
+                  <span>작성자: <UserContact
+                          nickname={post.author}
+                          nicknameStyle={{
+                            fontSize: "16px",
+                            color: "#6c757d",
+                          }}
+                        /></span>
                   <span>
                     작성일: {formatDateTime(post.createdAt)} 조회수:{post.views}
                   </span>

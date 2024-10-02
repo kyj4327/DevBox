@@ -22,7 +22,7 @@ function GatherMateMyList() {
   const [totalPages, setTotalPages] = useState(0);
   const [totalPosts, setTotalPosts] = useState(0); // 총 게시글 개수 추가
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [searchType, setSearchType] = useState("제목 & 내용");
+  const [searchType, setSearchType] = useState("제목&내용");
   const [startPage, setStartPage] = useState(0);
   const [endPage, setEndPage] = useState(0);
 

@@ -6,6 +6,7 @@ import Category from "../../components/Category";
 import SearchSelect from "../../components/SearchSelect";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../../components/context/UserContext"; // UserContext 사용
+import UserContact from "../../components/UserContact";
 
 import "./GatherMateList.css";
 
@@ -21,7 +22,7 @@ function GatherMateList() {
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [searchType, setSearchType] = useState("제목 & 내용");
+  const [searchType, setSearchType] = useState("제목&내용");
   const [startPage, setStartPage] = useState(0);
   const [endPage, setEndPage] = useState(0);
 
@@ -45,21 +46,22 @@ function GatherMateList() {
     }&size=10&sort=id,desc`;
 
     if (searchKeyword) {
-    url = `http://localhost:8080/gathermate/posts/search?keyword=${encodeURIComponent(searchKeyword)}&searchType=${encodeURIComponent(searchType)}&page=${
+      url = `http://localhost:8080/gathermate/posts/search?keyword=${encodeURIComponent(
+        searchKeyword
+      )}&searchType=${encodeURIComponent(searchType)}&page=${
         currentPage - 1
       }&size=10&sort=id,desc`;
     }
 
     if (category !== "All" && !searchKeyword) {
-    url += `&category=${encodeURIComponent(category)}`;
-  }
-
+      url += `&category=${encodeURIComponent(category)}`;
+    }
 
     try {
-      const res = await fetch(url,{
+      const res = await fetch(url, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
       const result = await res.json();
@@ -218,63 +220,68 @@ function GatherMateList() {
                     <div className="post-intro">
                       <span>#{post.intro}</span>
                     </div>
+                  </Link>
 
-                    <div
-                      className="post-meta"
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                    >
-                      {/* 왼쪽 작성자명, 시간 */}
-                      <span className="post-info">
-                        <span
-                          className="post-author"
-                          style={{ marginRight: "5px" }}
-                        >
-                          {post.author}
-                        </span>
-                        <span className="post-time">
-                          {formatDateTime(post.createdAt)}
-                        </span>
+                  <div
+                    className="post-meta"
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    {/* 왼쪽 작성자명, 시간 */}
+                    <span className="post-info">
+                      <span className="post-author">
+                        
+                        <UserContact
+                          nickname={post.author}
+                          nicknameStyle={{
+                            fontSize: "14.4px",
+                            color: "#888888",
+                          }}
+                        />
                       </span>
 
-                      {/* 오른쪽 조회수, 추천수, 댓글수 */}
-                      <div
-                        className="post-interactions"
-                        style={{ display: "flex", gap: "10px" }}
-                      >
-                        <span className="post-views">
-                          <img
-                            src={modevisibilityIcon}
-                            alt="View Icon"
-                            width="16"
-                            height="16"
-                          />
-                          {post.views}
-                        </span>
-                        <span className="post-likes">
-                          <img
-                            src={modeFavoriteIcon}
-                            alt="Like Icon"
-                            width="16"
-                            height="16"
-                          />
-                          {post.likeCount}
-                        </span>
-                        <span className="post-comment">
-                          <img
-                            src={modeCommentIcon}
-                            alt="Comment Icon"
-                            width="16"
-                            height="16"
-                          />
-                          {post.commentCount}
-                        </span>
-                      </div>
+                      <span className="post-time">
+                        {formatDateTime(post.createdAt)}
+                      </span>
+                    </span>
+
+                    {/* 오른쪽 조회수, 추천수, 댓글수 */}
+                    <div
+                      className="post-interactions"
+                      style={{ display: "flex", gap: "10px" }}
+                    >
+                      <span className="post-views">
+                        <img
+                          src={modevisibilityIcon}
+                          alt="View Icon"
+                          width="16"
+                          height="16"
+                        />
+                        {post.views}
+                      </span>
+                      <span className="post-likes">
+                        <img
+                          src={modeFavoriteIcon}
+                          alt="Like Icon"
+                          width="16"
+                          height="16"
+                        />
+                        {post.likeCount}
+                      </span>
+                      <span className="post-comment">
+                        <img
+                          src={modeCommentIcon}
+                          alt="Comment Icon"
+                          width="16"
+                          height="16"
+                        />
+                        {post.commentCount}
+                      </span>
                     </div>
-                  </Link>
+                  </div>
                 </div>
               ))}
             </div>

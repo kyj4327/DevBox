@@ -6,6 +6,7 @@ import "react-quill/dist/quill.snow.css";
 
 import Swal from "sweetalert2";
 import profilePic from "../../assets/img/profilePic.png";
+import UserContact from "../../components/UserContact";
 
 function GreetingWrite({ onPostCreated }) {
   const { user, loading } = useUser(); // Context에서 유저 정보가져오기
@@ -104,38 +105,46 @@ function GreetingWrite({ onPostCreated }) {
 
   return (
     <div>
-          <h1 className="h5 semi-bold-600 text mt-2">가입인사</h1>
-          <div className="author-info d-flex align-items-center">
-                      <img
-                        src={profilePic}
-                        alt="profile"
-                        className="profile-image me-2"
-                      />
-                      <span className="post-author fw-bold">{user.nickname}</span>
-                    </div>
-          <div className="contact-form row">
-            <div className="col-lg-12 mb-4">
-              <div className="form-floating position-relative">
-                <textarea
-                  className="form-control"
-                  placeholder="자기 자신을 표현하고 반갑게 인사해봐요!"
-                  style={{ height: "150px", paddingRight: "100px"}} // 공간 확보
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                ></textarea>
-                {/* 버튼을 textarea 오른쪽에 위치시키기 */}
-                <button
-                  type="button"
-                  className="btn btn-primary greeting-save-button"
-                  onClick={saveData}
-                  aria-label="글 저장하기"
-                >
-                  등록
-                </button>
-              </div>
-            </div>
-        <hr />
+      <h1 className="h5 semi-bold-600 text mt-2">가입인사</h1>
+      <div className="author-info d-flex align-items-center">
+        <img src={profilePic} alt="profile" className="profile-image me-2" />
+        <div className="author-details d-flex flex-column">
+          <span className="post-author fw-bold">
+            <UserContact
+              nickname={user.nickname}
+              nicknameStyle={{
+                fontSize: "16px",
+                color: "#212529",
+                fontWeight: "bold",
+              }}
+            />
+          </span>
+          <span className="post-field">{user.field}</span>
         </div>
+      </div>
+      <div className="contact-form row">
+        <div className="col-lg-12 mb-4">
+          <div className="form-floating position-relative">
+            <textarea
+              className="form-control"
+              placeholder="자기 자신을 표현하고 반갑게 인사해봐요!"
+              style={{ height: "150px", paddingRight: "100px" }} // 공간 확보
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            ></textarea>
+            {/* 버튼을 textarea 오른쪽에 위치시키기 */}
+            <button
+              type="button"
+              className="btn btn-primary greeting-save-button"
+              onClick={saveData}
+              aria-label="글 저장하기"
+            >
+              등록
+            </button>
+          </div>
+        </div>
+        <hr />
+      </div>
       {/* </section> */}
     </div>
   );
