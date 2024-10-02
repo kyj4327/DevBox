@@ -3,7 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import PropTypes from 'prop-types';
-import { useUser } from '../components/context/UserContext'; 
+import { useUser } from '../components/context/UserContext';
 
 const UserContact = ({
     nickname,

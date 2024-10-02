@@ -29,7 +29,7 @@ const MsgBell = () => {
                     const unreadCount = data.messages.filter(
                         (item) => item.readTime === null
                     ).length;
-    
+
                     setNullReadTimeCount(unreadCount);
                 } else {
                     setNullReadTimeCount(0); // 잘못된 데이터 형식인 경우에도 0으로 설정
@@ -44,7 +44,7 @@ const MsgBell = () => {
     }, [user]);
 
     return (
-        <Link to="/message/list" className="nav-link">
+        <Link to="/message/list" className="header-logout-button nav-link">
             <i className='bx bx-bell bx-sm bx-tada-hover text-primary' style={{ transform: 'translate(0%, 0%)' }}>
                 {nullReadTimeCount > 0 && (
                     <span className="badge rounded-pill bg-danger" style={{ position: 'absolute', top: '-10px', right: '-15px', fontSize: '12px' }}>

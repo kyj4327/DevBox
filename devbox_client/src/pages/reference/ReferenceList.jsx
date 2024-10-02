@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
 import Swal from 'sweetalert2';
+import UserContact from '../../components/UserContact';
 
 const ReferenceList = () => {
     const domain = "http://localhost:8080";
@@ -81,7 +82,7 @@ const ReferenceList = () => {
                                     <div className="row p-2">
                                         <div className="pricing-list-icon col-3 text-center m-auto text-secondary ml-5 py-2">
                                             <h3>{v.title}</h3>
-                                            <span>작성자 : {v.userId}</span>
+                                            <span>작성자 : <UserContact nickname={v.userId} nicknameStyle={{ fontSize: "16px", color: "#6266EA" }} /></span>
                                         </div>
                                         <div className="pricing-list-body col-md-5 align-items-center pl-3 pt-2">
                                             <li style={{ listStyle: 'none' }}>{v.selectJob}</li>
@@ -92,7 +93,11 @@ const ReferenceList = () => {
                                             {v.content5 === '' ? '' : <ContentList content={v.content5} />}
                                         </div>
                                         <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
-                                            <Link to={v.link} className="btn rounded-pill px-4 btn-primary light-300" target='_blank' style={{ marginRight: '1rem' }}>Link</Link>
+                                            <Link to={v.link.startsWith('http://') || v.link.startsWith('https://') ? v.link : `http://${v.link}`}
+                                                className="btn rounded-pill px-4 btn-primary light-300"
+                                                target='_blank' rel="noopener noreferrer" style={{ marginRight: '1rem' }}>
+                                                Link
+                                            </Link>
                                             {
                                                 v.userId === userNickName
                                                     ? <>
@@ -154,15 +159,15 @@ const ReferenceList = () => {
                             )
                         })
                     }
-                </div>
-                {
-                    !user ? ''
-                        : <div className="form-row pt-2">
-                            <div className="col-md-12 col-10 text-end">
-                                <Button text={'작성하기'} onClick={toWrite} />
+                    {
+                        !user ? ''
+                            : <div className="form-row pt-2" style={{ marginTop: '3rem' }}>
+                                <div className="col-md-12 col-10 text-end">
+                                    <Button text={'글쓰기'} icon="pen" onClick={toWrite} />
+                                </div>
                             </div>
-                        </div>
-                }
+                    }
+                </div>
             </section>
             <Pagination handlePageChange={handlePageChange} pageData={pageData} />
         </div>
