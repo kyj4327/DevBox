@@ -201,7 +201,7 @@ const FreeBoardComments = ({ postId }) => {
                           }}/>
                           <span
                             className="comment-time"
-                            style={{ marginLeft: "10px" }}
+                            style={{ marginLeft: "4.5px" }}
                           >
                             {formatDate(comment.createdAt)}
                           </span>
