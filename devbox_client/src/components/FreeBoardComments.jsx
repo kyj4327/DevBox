@@ -193,17 +193,17 @@ const FreeBoardComments = ({ postId }) => {
                           className="profile-image me-3"
                         />
                         <div>
-                        <UserContact
-                          nickname={comment.author}
-                          nicknameStyle={{
-                            fontSize: "12.8px",
-                            color: "#888888",
-                          }}/>
-                          <span
-                            className="comment-time"
-                            style={{ marginLeft: "4.5px" }}
-                          >
-                            {formatDate(comment.createdAt)}
+                          <span className="comment-author d-block">
+                            <UserContact
+                              nickname={comment.author}
+                              nicknameStyle={{
+                                fontSize: "16px",
+                                color: "#888888",
+                              }}
+                            />
+                          </span>
+                          <span className="comment-time">
+                          {formatDate(comment.createdAt)}
                           </span>
                         </div>
                       </div>
