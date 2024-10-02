@@ -29,10 +29,10 @@ const EduDetail = () => {
     return (
         <div className="container py-5">
             <div className="container">
-                    <h1 className="h2 semi-bold-600 text-center mt-2">교육 프로그램</h1>
+                    <h1 className="h2 semi-bold-600 text-center mt-2" style={{cursor: 'default'}}>교육 프로그램</h1>
                     <p
                         className="text-center light-300"
-                        style={{ marginBottom: "0", padding: "0px" }}
+                        style={{ marginBottom: "0", padding: "0px", cursor: 'default' }}
                     >
                         멀 보고 있냐~ 신청해야지!!
                     </p>
@@ -40,7 +40,7 @@ const EduDetail = () => {
 
                 <div className="row pt-5">
                     <div className="worksingle-content col-lg-8 m-auto text-left justify-content-center">
-                        <h1 className="worksingle-heading h3 pb-3 light-300 typo-space-line">{eduData.title}</h1>
+                        <h1 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>{eduData.title}</h1>
                         
                     </div>
                 </div>
@@ -54,7 +54,7 @@ const EduDetail = () => {
                 </div>
                 <div className="row pt-5">
                     <div className="worksingle-content col-lg-8 m-auto text-left justify-content-center">
-                        <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">과정요약</h2>
+                        <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>과정요약</h2>
                         <p className="worksingle-footer py-3 text-muted light-300">
                             <li>모집기간: {eduData.recruit}</li>
                             <li>교육기간: {eduData.eduterm}</li>
