@@ -88,7 +88,7 @@ function PasswordReset() {
     <div>
       {!isVerified ? (
         <div>
-          <h2>Reset Password</h2>
+          <h2 className='h2 semi-bold-600 text mt-2'>Reset Password</h2>
           <input className='password-input'
             type="email"
             placeholder="찾을 계정의 이메일을 입력하세요"
