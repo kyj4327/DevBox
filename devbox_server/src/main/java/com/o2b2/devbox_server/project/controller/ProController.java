@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -125,15 +126,23 @@ public class ProController {
 
     @GetMapping("/project/list")
     public Map<String, Object> proList(
+            @RequestParam(value = "category") String category,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "6") int size) {
 
-        // likeCount는 내림차순(DESC), time은 오름차순(ASC)으로 정렬
-        Sort sort = Sort.by(Sort.Order.desc("likeCount"), Sort.Order.desc("time"));
+        Page<ProEntity> p;
+        Pageable pageable = PageRequest.of(page - 1, size); // 페이지 요청 생성
 
-        Pageable pageable = PageRequest.of(page - 1, size, sort); // 페이지 요청 생성
+        if (category.equals("최신순")) {
+            p = proRepository.findByOrderByTimeDesc(pageable);
+        } else if (category.equals("인기순")) {
+            p = proRepository.findByOrderByLikeCountDescTimeDesc(pageable);
+        } else {
+            // 카테고리가 유효하지 않으면 예외 처리 또는 기본 동작 정의
+            throw new IllegalArgumentException("유효하지 않은 카테고리입니다.");
+        }
 
-        Page<ProEntity> p = proRepository.findAll(pageable);
+        // Page<ProEntity> p = proRepository.findAll(pageable);
         List<ProEntity> list = p.getContent();
 
         // 페이지네이션 관련 정보 계산
@@ -253,6 +262,8 @@ public class ProController {
             return map;
         }
 
+        pro.setTime(LocalDateTime.now());
+        
         ProEntity result = proRepository.save(pro);
 
         // 각 파일을 처리하는 반복문
@@ -303,7 +314,6 @@ public class ProController {
 
         // ProEntity에 UserEntity 설정
         pro.setUserEntity(user);
-
         // 데이터베이스에서 기존의 ProEntity를 가져옴
         ProEntity existingpro = proRepository.findById(pro.getId()).orElse(null);
 
@@ -361,6 +371,7 @@ public class ProController {
             // 수정된 ProEntity 객체를 데이터베이스에 저장
             pro.setLikeCount(likeCount);
             
+            pro.setTime(existingpro.getTime());
             proRepository.save(pro);
 
             // 성공 응답을 맵에 추가

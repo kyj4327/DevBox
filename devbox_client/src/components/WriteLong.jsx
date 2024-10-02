@@ -1,7 +1,7 @@
 const WriteLong = ({ titleTag, name, value, onChange, contentDelete, onDelete, wordCount }) => {
     return (
         <div>
-            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">
+            <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>
                 {titleTag}
                 {
                     contentDelete ?
