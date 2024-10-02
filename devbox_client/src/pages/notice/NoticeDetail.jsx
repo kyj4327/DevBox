@@ -4,6 +4,7 @@ import { useUser } from "../../components/context/UserContext";
 import profilePic from "../../assets/img/profilePic.png";
 import PostButton from "../../components/PostButton";
 import Swal from "sweetalert2";
+import Button from '../../components/Button';
 
 const NoticeDetail = () => {
   const { postId } = useParams();
@@ -192,13 +193,13 @@ const NoticeDetail = () => {
                 {/* 작성자가 아닐 경우 수정/삭제 버튼을 숨김 */}
                 {user && post.author === user.nickname && (
                   <>
-                    <PostButton text="수정" onClick={goToEditPage} />
-                    <PostButton text="삭제" onClick={deletePost} />
+                    <Button text="수정" icon="edit" onClick={goToEditPage} />
+                    <Button text="삭제" icon="trash" onClick={deletePost} />
                   </>
                 )}
               </div>
               <div className="d-flex">
-                <PostButton text="목록으로" onClick={toList} />
+                <Button text="목록으로" icon="list" onClick={toList} />
               </div>
             </div>
           </div>

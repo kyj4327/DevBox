@@ -7,6 +7,7 @@ import SearchSelect from "../../components/SearchSelect";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../../components/context/UserContext"; // UserContext 사용
 import UserContact from "../../components/UserContact";
+import Swal from "sweetalert2";
 
 import "./GatherMateList.css";
 
@@ -31,11 +32,17 @@ function GatherMateList() {
     if (user) {
       navigate("/gathermate/write");
     } else {
-      alert("글을 작성하려면 로그인해야 합니다.");
-      navigate("/gathermate/list");
+      Swal.fire({
+        icon: 'warning',
+        title: '로그인 필요',
+        text: '글을 작성하려면 로그인해야 합니다.',
+        confirmButtonText: '확인'
+      }).then(() => {
+        navigate("/gathermate/list");
+      });
     }
   };
-
+  
   useEffect(() => {
     fetchData();
   }, [category, currentPage]);
@@ -291,7 +298,7 @@ function GatherMateList() {
         </div>
         <div className="form-row pt-2">
           <div className="col-md-12 col-10 text-end">
-            <Button text={"작성하기"} onClick={toWrite} />
+            <Button text={"글쓰기"} icon="pen" onClick={toWrite} />
           </div>
         </div>
       </section>
