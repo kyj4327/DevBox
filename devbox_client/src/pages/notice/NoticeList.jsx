@@ -4,6 +4,7 @@ import Button from "../../components/Button";
 import Pagination from "../../components/Pagination";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../../components/context/UserContext"; // UserContext 사용
+import Swal from "sweetalert2";
 
 import "./NoticeList.css";
 
@@ -13,7 +14,7 @@ function NoticeList() {
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [searchType, setSearchType] = useState("제목 & 내용");
+  const [searchType, setSearchType] = useState("제목&내용");
   const [startPage, setStartPage] = useState(0);
   const [endPage, setEndPage] = useState(0);
 
@@ -22,8 +23,14 @@ function NoticeList() {
     if (user) {
       navigate("/notice/write");
     } else {
-      alert("글을 작성하려면 로그인해야 합니다.");
-      navigate("/notice/list");
+      Swal.fire({
+        icon: 'warning',
+        title: '로그인 필요',
+        text: '글을 작성하려면 로그인해야 합니다.',
+        confirmButtonText: '확인'
+      }).then(() => {
+        navigate("/notice/list");
+      });
     }
   };
 
@@ -190,6 +197,7 @@ function NoticeList() {
               text={"작성하기"}
               onClick={toWrite}
               className="notice-write-button"
+              icon="pen"
             />
           )}
         </div>

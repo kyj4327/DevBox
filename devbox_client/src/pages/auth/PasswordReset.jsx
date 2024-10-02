@@ -1,95 +1,133 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import "./PasswordReset.css"; 
-
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./PasswordReset.css";
+import Swal from "sweetalert2";
 
 function PasswordReset() {
-  const [email, setEmail] = useState('');
-  const [verificationCode, setVerificationCode] = useState('');
+  const [email, setEmail] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
-  const [newPassword, setNewPassword] = useState('');
+  const [newPassword, setNewPassword] = useState("");
   const navigate = useNavigate();
 
   const handleSendCode = () => {
-    fetch('http://localhost:8080/password/code', {
-      method: 'POST',
+    fetch("http://localhost:8080/password/code", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email }),
     })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        alert('인증코드를 발송하였습니다.');
-        setIsCodeSent(true);
-      } else {
-        alert('인증코드 발송에 실패하였습니다.\n(소셜로그인 계정인 경우 비밀번호 찾기를 할 수 없습니다.)');
-      }
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      alert('인증코드 발송에 실패하였습니다.\n(소셜로그인 계정인 경우 비밀번호 찾기를 할 수 없습니다.)');
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          Swal.fire({
+            icon: "success",
+            title: "인증코드 발송 완료",
+            text: "인증코드를 발송하였습니다.",
+          });
+          setIsCodeSent(true);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "발송 실패",
+            text: "인증코드 발송에 실패하였습니다.\n(소셜로그인 계정인 경우 비밀번호 찾기를 할 수 없습니다.)",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        Swal.fire({
+          icon: "error",
+          title: "오류 발생",
+          text: "인증코드 발송에 실패하였습니다.\n(소셜로그인 계정인 경우 비밀번호 찾기를 할 수 없습니다.)",
+        });
+      });
   };
 
   const handleVerifyCode = () => {
-    fetch('http://localhost:8080/password/verify', {
-      method: 'POST',
+    fetch("http://localhost:8080/password/verify", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, code: verificationCode }),
     })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        alert('인증이 완료되었습니다. 비밀번호를 변경해보세요.');
-        setIsVerified(true);
-      } else {
-        alert('인증에 실패하였습니다. 다시한번 확인해주세요.');
-      }
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      alert('Verification failed.');
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          Swal.fire({
+            icon: "success",
+            title: "인증 완료",
+            text: "인증이 완료되었습니다. 비밀번호를 변경해보세요.",
+          });
+          setIsVerified(true);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "인증 실패",
+            text: "인증에 실패하였습니다. 다시한번 확인해주세요.",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        Swal.fire({
+          icon: "error",
+          title: "오류 발생",
+          text: "인증에 실패하였습니다. 다시 시도해 주세요.",
+        });
+      });
   };
 
   const handleResetPassword = () => {
-    fetch('http://localhost:8080/password/reset', {
-      method: 'POST',
+    fetch("http://localhost:8080/password/reset", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, newPassword }),
     })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        alert('비밀번호가 변경되었습니다.');
-        window.close(); // 현재 창 닫기
-      } else {
-        alert('비밀번호 변경에 실패하였습니다.\n(소셜로그인 계정인 경우 비밀번호를 변경할 수 없습니다)');
-      }
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      alert('비밀번호 변경에 실패하였습니다.\n(소셜로그인 계정인 경우 비밀번호를 변경할 수 없습니다)');
-    });
-  };
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          Swal.fire({
+            icon: "success",
+            title: "비밀번호 변경 완료",
+            text: "비밀번호가 변경되었습니다.",
+          }).then(() => {
+            window.close();
+          }); // 현재 창 닫기
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: '변경 실패',
+            text: '비밀번호 변경에 실패하였습니다.\n(소셜로그인 계정인 경우 비밀번호를 변경할 수 없습니다)',
+          });
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        Swal.fire({
+          icon: 'error',
+          title: '오류 발생',
+          text: '비밀번호 변경에 실패하였습니다.\n(소셜로그인 계정인 경우 비밀번호를 변경할 수 없습니다)',
+        });
+      });
+    };
 
   const handleGoBack = () => {
-    window.close(); 
+    window.close();
   };
 
   return (
     <div>
       {!isVerified ? (
         <div>
-          <h2>Reset Password</h2>
-          <input className='password-input'
+          <h2 className="h2 semi-bold-600 text mt-2">Reset Password</h2>
+          <input
+            className="password-input"
             type="email"
             placeholder="찾을 계정의 이메일을 입력하세요"
             value={email}
@@ -99,22 +137,28 @@ function PasswordReset() {
           />
           {isCodeSent ? (
             <div>
-              <input className='password-input'
+              <input
+                className="password-input"
                 type="text"
                 placeholder="Enter verification code"
                 value={verificationCode}
                 onChange={(e) => setVerificationCode(e.target.value)}
                 required
               />
-              <button className="password-button" onClick={handleVerifyCode}>Verify Code</button>
+              <button className="password-button" onClick={handleVerifyCode}>
+                Verify Code
+              </button>
             </div>
           ) : (
-            <button className="password-button" onClick={handleSendCode}>인증코드 전송</button>
+            <button className="password-button" onClick={handleSendCode}>
+              인증코드 전송
+            </button>
           )}
 
-<button className="cancel-button" onClick={handleGoBack}>취소하기</button>
-</div>
-        
+          <button className="cancel-button" onClick={handleGoBack}>
+            취소하기
+          </button>
+        </div>
       ) : (
         <div>
           <h2>Set New Password</h2>

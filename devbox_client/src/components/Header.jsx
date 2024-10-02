@@ -7,31 +7,8 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import DevBox from "./DevBox";
 
 const Header = () => {
-  const { user, setUser, loading } = useUser();
+  const { user, loading ,logout} = useUser();
   const navigate = useNavigate();
-
-  const handleLogoutClick = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/logout", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-      });
-
-      if (response.ok) {
-        localStorage.removeItem("accessToken");
-        setUser(null);
-        navigate("/auth");
-      } else {
-        throw new Error("Failed to log out");
-      }
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
-  };
 
   const renderTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props} className="custom-tooltip">
@@ -124,7 +101,7 @@ const Header = () => {
                       <i className="bx bx-user-circle bx-sm text-primary"></i>
                     </Link>
                   </OverlayTrigger>
-                  <button onClick={handleLogoutClick} className="header-logout-button nav-link" aria-label="Logout">
+                  <button onClick={logout} className="header-logout-button nav-link" aria-label="Logout">
                     <i className='bx bx-log-out bx-sm text-primary'></i>
                   </button>
                 </>

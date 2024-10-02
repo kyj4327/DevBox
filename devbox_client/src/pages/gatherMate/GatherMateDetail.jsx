@@ -6,6 +6,8 @@ import "./GatherMateDetail.css";
 import PostButton from "../../components/PostButton";
 import BoardComments from "../../components/BoardComments";
 import Swal from "sweetalert2"; // Import SweetAlert2
+import UserContact from '../../components/UserContact';
+import Button from '../../components/Button';
 
 const GatherMateDetail = () => {
   const { postId } = useParams();
@@ -133,7 +135,7 @@ const GatherMateDetail = () => {
   const handleLike = async () => {
     if (!user) {
       await Swal.fire({
-        icon: "info",
+        icon: "error",
         title: "로그인 필요",
         text: "로그인이 필요합니다.",
       });
@@ -293,7 +295,16 @@ const GatherMateDetail = () => {
                   }}
                 />
                 <div className="d-flex flex-column">
-                  <span>작성자: {post.author}</span>
+
+                
+
+                  <span>작성자: <UserContact
+                          nickname={post.author}
+                          nicknameStyle={{
+                            fontSize: "16px",
+                            color: "#6c757d",
+                          }}
+                        /></span>
                   <span>
                     작성일: {formatDateTime(post.createdAt)} 조회수:{post.views}
                   </span>
@@ -381,20 +392,21 @@ const GatherMateDetail = () => {
                 {/* 작성자가 아닐 경우 수정/삭제 버튼을 숨김 */}
                 {user && post.author === user.nickname && (
                   <>
-                    <PostButton text="수정" onClick={goToEditPage} />
-                    <PostButton text="삭제" onClick={deletePost} />
+                    <Button text={"수정"} icon="edit"  onClick={goToEditPage} />
+                    <Button text={"삭제"} icon="trash" onClick={deletePost} />
+
                   </>
                 )}
               </div>
               <div className="d-flex">
-                <PostButton text="목록으로" onClick={toList} />
+                <Button text={"목록으로"} icon="list" onClick={toList} />
               </div>
             </div>
           </div>
 
           {/* 댓글 컴포넌트 */}
           <div className="row justify-content-center">
-            <div className="col-lg-8 ml-auto mr-auto pt-1 pb-2">
+            <div className="col-lg-8 ml-auto mr-auto pt-5 pb-2">
               {/* <GatherMateComments postId={postId} /> */}
 
               <BoardComments postId={postId} boardType="gathermate" />

@@ -7,6 +7,8 @@ import Button from "../../components/Button";
 import WriteLong from "../../components/WriteLong";
 import QuillEditor from "../../components/QuillEditor";
 
+import Swal from "sweetalert2";
+
 function NoticeWrite() {
   const { user, loading } = useUser();
 
@@ -18,14 +20,22 @@ function NoticeWrite() {
   // 로그인 상태를 확인
   useEffect(() => {
     if (!loading && user && user.role !== "ROLE_ADMIN") {
-      alert("권한이 없습니다.");
+      Swal.fire({
+        icon: "error",
+        title: "권한이 없습니다.",
+        text: "공지사항 작성 권한이 없습니다.",
+      });
       navigate("/notice/list");
     }
   }, [user, navigate]);
 
   const saveData = async () => {
     if (!user) {
-      alert("로그인이 필요합니다.");
+      Swal.fire({
+        icon: "warning",
+        title: "로그인이 필요합니다.",
+        text: "로그인 후 공지사항을 작성할 수 있습니다.",
+      });
       return;
     }
 
@@ -56,10 +66,18 @@ function NoticeWrite() {
       setTitle("");
       setContent("");
 
-      alert("공지사항을 저장되었습니다.");
+      Swal.fire({
+        icon: "success",
+        title: "공지사항 저장 완료",
+        text: "공지사항이 성공적으로 저장되었습니다.",
+      });
     } catch (error) {
       console.error("저장 중 오류 발생:", error);
-      alert("글 저장에 실패했습니다. 다시 시도해주세요.");
+      Swal.fire({
+        icon: "error",
+        title: "저장 실패",
+        text: "공지사항 저장에 실패했습니다. 다시 시도해주세요.",
+      });
     }
   };
 

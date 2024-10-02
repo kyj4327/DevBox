@@ -86,7 +86,8 @@ const ContestUpdate = () => {
         } else if (regEnd === '') {
             InputScrollAndFocus("regEnd", "접수마감 날짜를 선택해주세요.");
         } else if (regEnd < regStart) {
-            alert("접수마감 날짜가 접수시작 날짜보다 이후여야 합니다.");
+            InputScrollAndFocus("regEnd", "마감일이 시작일보다 빠릅니다.");
+            setRegEnd('');
         } else if (officialUrl.trim() === '') {
             InputScrollAndFocus("officialUrl", "공식 홈페이지 주소를 입력해주세요.");
             setOfficialUrl('');

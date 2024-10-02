@@ -70,7 +70,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.addCookie(createCookie("RefreshToken", refreshToken));
 
         // AccessToken을 URL 해시(fragment)에 포함하여 프론트엔드로 리다이렉트
-        String redirectUrl = "http://localhost:3000/home#accessToken=" + URLEncoder.encode(accessToken, StandardCharsets.UTF_8.name());
+        String redirectUrl = "http://localhost:3000/#accessToken=" + URLEncoder.encode(accessToken, StandardCharsets.UTF_8.name());
 
         // 성공 후 리다이렉트
 //        response.setStatus(HttpStatus.OK.value());

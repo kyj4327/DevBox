@@ -2,37 +2,14 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./MyPageSideBar.css";
 import profilePic from "../assets/img/profilePic.png";
+import { useUser } from '../components/context/UserContext';
 
 function MyPageSideBar() {
-  const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);
+  const { user, loading } = useUser();
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
-  const fetchUserData = async () => {
-    const response = await fetch("http://localhost:8080/api/user/me", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      setUser(data);
-    } else {
-      if (response.status === 401) {
-        navigate("/auth");
-      }
-    }
-  };
 
   const getRoleDisplayName = (role) => {
     switch (role) {
@@ -49,8 +26,13 @@ function MyPageSideBar() {
     setIsSubmenuOpen(!isSubmenuOpen);
   };
 
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <div>로딩 중...</div>;
 
+  if (!user) {
+    navigate("/auth");
+    return null;
+  }
+  
   return (
     <div className="sidebar_profile mt-50">
       <div className="profile_user">
@@ -93,6 +75,16 @@ function MyPageSideBar() {
               </button>
               <ul className="submenu">
                 <li>
+                  <NavLink to="/mypage/myfreeboard">
+                    <i className="fal fa-envelope"></i> - 자유게시판
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/mypage/project/mylist">
+                    <i className="fal fa-envelope"></i> - 프로젝트 자랑
+                  </NavLink>
+                </li>
+                <li>
                   <NavLink to="/mypage/gathermate/mylist">
                     <i className="fal fa-envelope"></i> - 모여라 메이트
                   </NavLink>
@@ -102,17 +94,7 @@ function MyPageSideBar() {
                     <i className="fal fa-envelope"></i> - 추천해요
                   </NavLink>
                 </li>
-                <li>
-                  <NavLink to="/mypage/project/mylist">
-                    <i className="fal fa-envelope"></i> - 프로젝트 자랑
-                  </NavLink>
-                </li>
               </ul>
-            </li>
-            <li>
-              <NavLink to="/mypage/myfreeboard">
-                <i className="fal fa-envelope"></i> 자유게시판
-              </NavLink>
             </li>
           </ul>
         </div>

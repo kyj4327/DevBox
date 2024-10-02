@@ -6,6 +6,7 @@ import Category from "../../components/Category";
 import SearchSelect from "../../components/SearchSelect";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../../components/context/UserContext"; // UserContext 사용
+import Swal from "sweetalert2";
 
 import "./GatherMateList.css";
 
@@ -22,7 +23,7 @@ function GatherMateMyList() {
   const [totalPages, setTotalPages] = useState(0);
   const [totalPosts, setTotalPosts] = useState(0); // 총 게시글 개수 추가
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [searchType, setSearchType] = useState("제목 & 내용");
+  const [searchType, setSearchType] = useState("제목&내용");
   const [startPage, setStartPage] = useState(0);
   const [endPage, setEndPage] = useState(0);
 
@@ -31,8 +32,14 @@ function GatherMateMyList() {
     if (user) {
       navigate("/gathermate/write");
     } else {
-      alert("글을 작성하려면 로그인해야 합니다.");
-      navigate("/gathermate/list");
+      Swal.fire({
+        icon: 'warning',
+        title: '로그인 필요',
+        text: '글을 작성하려면 로그인해야 합니다.',
+        confirmButtonText: '확인'
+      }).then(() => {
+        navigate("/gathermate/list");
+      });
     }
   };
 
