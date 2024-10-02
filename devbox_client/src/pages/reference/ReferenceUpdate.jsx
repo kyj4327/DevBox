@@ -10,6 +10,9 @@ import InputScrollAndFocus from '../../components/InputScrollAndFocus';
 
 const ReferenceUpdate = () => {
     const domain = "http://localhost:8080";
+    const toList = () => {
+        navigate('/reference/list');
+    };
 
     const { user } = useUser();
     const navigate = useNavigate();
@@ -216,20 +219,15 @@ const ReferenceUpdate = () => {
                                 wordCount={65} contentDelete={visibleContents === 3} onDelete={() => handleRemoveContent(5)} />
                         )}
                         {visibleContents < 3 && (
-                            <div className="form-row pt-2 py-2">
-                                <div className="col-md-12 col-10">
-                                    <button type="button" className="btn btn-secondary text-white px-md-4 px-2 py-md-3 py-1 radius-0 light-300" onClick={handleAddContent}>
-                                        내용 추가
-                                    </button>
-                                </div>
+                            <div className="col-md-12 col-10" style={{ marginBottom: '3rem' }}>
+                                <Button text={'추가'} icon="plus" onClick={handleAddContent} />
                             </div>
                         )}
                     </div>
-                </div>
-            </div>
-            <div className="form-row pt-2">
-                <div className="col-md-12 col-10 text-end">
-                    <Button text={'수정하기'} onClick={updateData} />
+                    <div className="col-md-12 col-10" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Button text={'목록'} icon="list" onClick={toList} />
+                        <Button text={'수정'} icon="edit" onClick={updateData} />
+                    </div>
                 </div>
             </div>
         </section>

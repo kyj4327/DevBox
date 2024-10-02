@@ -5,9 +5,9 @@ const WriteLong = ({ titleTag, name, value, onChange, contentDelete, onDelete, w
                 {titleTag}
                 {
                     contentDelete ?
-                        <button type="button" className="btn rounded-pill px-4 light-300 border border-2"
-                            style={{ marginLeft: '1rem' }} onClick={onDelete}>
-                            삭제
+                        <button type="button" className="btn px-4 light-300 border border-2"
+                            style={{ marginLeft: '1rem', borderRadius: '10px' }} onClick={onDelete}>
+                            <i className="fa-regular fa-trash-can"></i> 삭제
                         </button>
                         : ''
                 }

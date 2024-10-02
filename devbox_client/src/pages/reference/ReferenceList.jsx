@@ -159,15 +159,15 @@ const ReferenceList = () => {
                             )
                         })
                     }
-                </div>
-                {
-                    !user ? ''
-                        : <div className="form-row pt-2">
-                            <div className="col-md-12 col-10 text-end">
-                                <Button text={'작성하기'} onClick={toWrite} />
+                    {
+                        !user ? ''
+                            : <div className="form-row pt-2" style={{ marginTop: '3rem' }}>
+                                <div className="col-md-12 col-10 text-end">
+                                    <Button text={'글쓰기'} icon="pen" onClick={toWrite} />
+                                </div>
                             </div>
-                        </div>
-                }
+                    }
+                </div>
             </section>
             <Pagination handlePageChange={handlePageChange} pageData={pageData} />
         </div>
