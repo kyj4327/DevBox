@@ -149,8 +149,8 @@ const FreeBoardList = () => {
         <div className="notice-search-wrapper">
           {user && (
             <Button
-              text={"글쓰기"}
-              icon={"pen"}
+              text= "글쓰기"
+              icon="pen"
               onClick={toWrite}
               className="notice-write-button"
             />

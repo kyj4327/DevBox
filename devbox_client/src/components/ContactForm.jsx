@@ -226,7 +226,7 @@ const ContactForm = () => {
       <div className="col-md-12 col-12 m-auto text-end">
         <Button
           text={"문의하기"}
-          icon={"paper-plane"}
+          icon= "paper-plane"
           type="submit"
           className="contact-button btn-secondary rounded-pill px-md-5 px-4 py-2 radius-0 text-light light-300"
           disabled={isLoading}
