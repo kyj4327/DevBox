@@ -49,17 +49,17 @@ function MyPageSideBar() {
           <ul>
             <li>
               <NavLink to="/mypage" end>
-                <i className="fal fa-cog"></i> 나의 정보
+                <i className="mypageSideBar"></i> 나의 정보
               </NavLink>
             </li>
             <li>
               <NavLink to="/mypage/edit">
-                <i className="fal fa-cog"></i> 회원정보 수정
+                <i className="mypageSideBar"></i> 회원정보 수정
               </NavLink>
             </li>
             <li>
               <NavLink to="/mypage/reservation/check">
-                <i className="fal fa-layer-group"></i> 회의실 예약내역
+                <i className="mypageSideBar"></i> 회의실 예약내역
               </NavLink>
             </li>
 
@@ -71,27 +71,27 @@ function MyPageSideBar() {
                 aria-haspopup="true"
                 aria-expanded={isSubmenuOpen}
               >
-                <i className="fal fa-envelope"></i> 내가쓴 글
+                <i className="mypageSideBar"></i> 내가쓴 글
               </button>
               <ul className="submenu">
                 <li>
                   <NavLink to="/mypage/myfreeboard">
-                    <i className="fal fa-envelope"></i> - 자유게시판
+                    <i className="mypageSideBar"></i> - 자유게시판
                   </NavLink>
                 </li>
                 <li>
                   <NavLink to="/mypage/project/mylist">
-                    <i className="fal fa-envelope"></i> - 프로젝트 자랑
+                    <i className="mypageSideBar"></i> - 프로젝트 자랑
                   </NavLink>
                 </li>
                 <li>
                   <NavLink to="/mypage/gathermate/mylist">
-                    <i className="fal fa-envelope"></i> - 모여라 메이트
+                    <i className="mypageSideBar"></i> - 모여라 메이트
                   </NavLink>
                 </li>
                 <li>
                   <NavLink to="/mypage/reference/mylist">
-                    <i className="fal fa-envelope"></i> - 추천해요
+                    <i className="mypageSideBar"></i> - 추천해요
                   </NavLink>
                 </li>
               </ul>
