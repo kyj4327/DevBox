@@ -4,7 +4,6 @@ import { getPost, createPost, updatePost } from "../../services/api-service";
 import { useUser } from "../../components/context/UserContext";
 import Button from "../../components/Button";
 import WriteLong from "../../components/WriteLong";
-import WriteShort from "../../components/WriteShort";
 import QuillEditor from "../../components/QuillEditor";
 import Swal from 'sweetalert2';
 import "../../assets/css/freeboard.css";
@@ -90,7 +89,7 @@ const FreeBoardWrite = () => {
       if (!user) {
         throw new Error("로그인이 필요합니다.");
       }
-      const postData = { title, content, author: user.nickname };
+      const postData = { title, content, author: user.nickname }; // 작성자 정보 포함
       if (id) {
         await updatePost(id, postData);
       } else {
@@ -133,13 +132,8 @@ const FreeBoardWrite = () => {
           </p>
           <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
             <div className="contact-form row">
-              <WriteShort
-                type="text"
-                titleTag="작성자"
-                name="author"
-                value={user ? user.nickname : ""}
-                readOnly
-              />
+              {/* 작성자 필드를 숨김 처리 */}
+              <input type="hidden" name="author" value={user ? user.nickname : ""} />
               <WriteLong
                 titleTag="제목"
                 name="title"
