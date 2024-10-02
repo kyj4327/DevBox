@@ -175,8 +175,8 @@ function AuthContainer() {
   };
 
   const handleForgotPassword = () => {
-    // 새 창의 크기를 설정
-  const width = 500;
+    // 새 창의 크기 설정
+  const width = 600;
   const height = 300;
 
   // 화면의 중앙 위치
