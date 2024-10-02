@@ -93,7 +93,11 @@ const ReferenceList = () => {
                                             {v.content5 === '' ? '' : <ContentList content={v.content5} />}
                                         </div>
                                         <div className="pricing-list-footer col-4 text-center m-auto align-items-center">
-                                            <Link to={v.link} className="btn rounded-pill px-4 btn-primary light-300" target='_blank' style={{ marginRight: '1rem' }}>Link</Link>
+                                            <Link to={v.link.startsWith('http://') || v.link.startsWith('https://') ? v.link : `http://${v.link}`}
+                                                className="btn rounded-pill px-4 btn-primary light-300"
+                                                target='_blank' rel="noopener noreferrer" style={{ marginRight: '1rem' }}>
+                                                Link
+                                            </Link>
                                             {
                                                 v.userId === userNickName
                                                     ? <>

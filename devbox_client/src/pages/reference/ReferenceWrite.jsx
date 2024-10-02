@@ -23,6 +23,12 @@ const ReferenceWrite = () => {
     const [content4, setContent4] = useState('');
     const [content5, setContent5] = useState('');
 
+    // 링크 유효성검사
+    const validateUrl = (link) => {
+        const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/\S*)?$/;
+        return urlRegex.test(link);
+    };
+
     const [visibleContents, setVisibleContents] = useState(0); // 현재 추가된 내용의 수를 관리하는 상태
     // 내용 추가 버튼을 클릭했을 때 호출되는 함수 (누를 때마다 visibleContents 값을 증가시켜 표시할 내용의 수를 늘림)
     const handleAddContent = () => { setVisibleContents(visibleContents + 1); };
@@ -87,6 +93,9 @@ const ReferenceWrite = () => {
             InputScrollAndFocus("intro", "카테고리를 선택해주세요.");
         } else if (link.trim() === '') {
             InputScrollAndFocus("link", "사이트 주소를 입력해주세요.");
+            setLink('');
+        } else if (!validateUrl(link)) {
+            InputScrollAndFocus("link", "유효한 링크를 입력해주세요.");
             setLink('');
         } else if (content1.trim() === '') {
             InputScrollAndFocus("content1", "내용1을 입력해주세요.");
@@ -165,7 +174,19 @@ const ReferenceWrite = () => {
                         <WriteSelect titleTag="카테고리" name="intro"
                             value={selectJob || "카테고리를 선택해주세요."} onChange={(e) => setSelectJob(e.target.value)}
                             options={["Web", "DevOps", "Cloud", "Data", "Mobile", "Others"]} />
-                        <WriteLong titleTag={'사이트 주소'} name={'link'} value={link} onChange={(e) => { setLink(e.target.value) }} />
+                        <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">사이트 주소</h2>
+                        <p className="worksingle-footer py-3 text-muted light-300">
+                            <div className="col-12">
+                                <div className="form-floating mb-4">
+                                    <input type="text" className="form-control form-control-lg light-300" id="link" name="link" placeholder="사이트 주소"
+                                        value={link} onChange={(e) => { setLink(e.target.value) }} />
+                                    <label htmlFor="floatingsubject light-300">사이트 주소</label>
+                                </div>
+                                {
+                                    link.trim() === '' || validateUrl(link) ? '' : <p className="text-danger">유효한 링크가 아닙니다.</p>
+                                }
+                            </div>
+                        </p>
                         <WriteLong titleTag={'(필수) 내용1 (최대 65자)'} name={'content1'} value={content1} onChange={(e) => { setContent1(e.target.value) }} wordCount={65} />
                         <WriteLong titleTag={'(필수) 내용2 (최대 65자)'} name={'content2'} value={content2} onChange={(e) => { setContent2(e.target.value) }} wordCount={65} />
                         {/* 내용3, 내용4, 내용5는 visibleContents 값에 따라 조건부로 표시 */}
