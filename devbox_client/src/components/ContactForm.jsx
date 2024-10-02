@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./ContactForm.css";
-
+import Button from "./Button";
 const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -97,16 +97,22 @@ const ContactForm = () => {
   };
 
   return (
-    <form className="contact-form-container contact-form row" onSubmit={handleSubmit}>
+    <form
+      className="contact-form-container contact-form row"
+      onSubmit={handleSubmit}
+    >
       {isLoading && (
-        <div className="alert alert-info">문의사항 전송에는 잠시의 시간이 소요되니, 성공 메시지가 나오는 것을 기다려주세요.</div>
+        <div className="alert alert-info">
+          문의사항 전송에는 잠시의 시간이 소요되니, 성공 메시지가 나오는 것을
+          기다려주세요.
+        </div>
       )}
       {isSubmitted && !error && (
-        <div className="alert alert-success">문의가 성공적으로 전송되었습니다!</div>
+        <div className="alert alert-success">
+          문의가 성공적으로 전송되었습니다!
+        </div>
       )}
-      {error && (
-        <div className="alert alert-danger">{error}</div>
-      )}
+      {error && <div className="alert alert-danger">{error}</div>}
       <div className="col-lg-6 mb-4">
         <div className="form-floating">
           <input
@@ -129,28 +135,28 @@ const ContactForm = () => {
         </div>
       </div>
       <div className="col-lg-6 mb-4">
-  <div className="form-floating">
-    <input
-      type="text" // type을 text로 변경
-      className={`form-control form-control-lg light-300 ${
-        !validations.email ? "is-invalid" : ""
-      }`}
-      id="floatingemail"
-      name="email"
-      placeholder="Email"
-      value={formData.email}
-      onChange={handleChange}
-    />
-    <label htmlFor="floatingemail" className="light-300">
-      이메일
-    </label>
-    {!validations.email && (
-      <div className="invalid-feedback">
-        유효한 이메일 주소를 입력해주세요.
+        <div className="form-floating">
+          <input
+            type="text" // type을 text로 변경
+            className={`form-control form-control-lg light-300 ${
+              !validations.email ? "is-invalid" : ""
+            }`}
+            id="floatingemail"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+          <label htmlFor="floatingemail" className="light-300">
+            이메일
+          </label>
+          {!validations.email && (
+            <div className="invalid-feedback">
+              유효한 이메일 주소를 입력해주세요.
+            </div>
+          )}
+        </div>
       </div>
-    )}
-  </div>
-</div>
 
       <div className="col-lg-6 mb-4">
         <div className="form-floating">
@@ -218,13 +224,13 @@ const ContactForm = () => {
         </div>
       </div>
       <div className="col-md-12 col-12 m-auto text-end">
-        <button
+        <Button
+          text={"문의하기"}
+          icon={"paper-plane"}
           type="submit"
           className="contact-button btn-secondary rounded-pill px-md-5 px-4 py-2 radius-0 text-light light-300"
           disabled={isLoading}
-        >
-          문의하기
-        </button>
+        />
       </div>
     </form>
   );

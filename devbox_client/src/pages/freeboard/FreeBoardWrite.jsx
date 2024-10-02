@@ -5,7 +5,7 @@ import { useUser } from "../../components/context/UserContext";
 import Button from "../../components/Button";
 import WriteLong from "../../components/WriteLong";
 import QuillEditor from "../../components/QuillEditor";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import "../../assets/css/freeboard.css";
 
 const FreeBoardWrite = () => {
@@ -98,7 +98,9 @@ const FreeBoardWrite = () => {
       Swal.fire({
         icon: "success",
         title: "성공",
-        text: id ? "게시글이 성공적으로 수정되었습니다." : "게시글이 성공적으로 작성되었습니다.",
+        text: id
+          ? "게시글이 성공적으로 수정되었습니다."
+          : "게시글이 성공적으로 작성되었습니다.",
       }).then(() => {
         navigate("/freeboard/list");
       });
@@ -133,7 +135,11 @@ const FreeBoardWrite = () => {
           <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
             <div className="contact-form row">
               {/* 작성자 필드를 숨김 처리 */}
-              <input type="hidden" name="author" value={user ? user.nickname : ""} />
+              <input
+                type="hidden"
+                name="author"
+                value={user ? user.nickname : ""}
+              />
               <WriteLong
                 titleTag="제목"
                 name="title"
@@ -159,7 +165,8 @@ const FreeBoardWrite = () => {
         <div className="form-row pt-2">
           <div className="col-md-12 col-10 text-end">
             <Button
-              text={id ? "수정하기" : "작성하기"}
+              text={id ? "수정" : "등록"}
+              icon={id ? "edit" : "pen"}
               onClick={handleSubmit}
               className="btn-freeboard-write"
             />

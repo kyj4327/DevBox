@@ -233,14 +233,23 @@ const FreeBoardDetail = () => {
                 {/* 작성자가 아닐 경우 수정/삭제 버튼을 숨김 */}
                 {user && post.author === user.nickname && (
                   <>
-                    <Button text="수정" onClick={handleEditPost} />
-                    <Button text="삭제" onClick={handleDeletePost} />
+                    <Button
+                      text="수정"
+                      icon={"edit"}
+                      onClick={handleEditPost}
+                    />
+                    <Button
+                      text="삭제"
+                      icon={"trash"}
+                      onClick={handleDeletePost}
+                    />
                   </>
                 )}
               </div>
               <div className="d-flex">
                 <Button
-                  text="목록으로"
+                  text="목록"
+                  icon={"list"}
                   onClick={() => navigate("/freeboard/list")}
                 />
               </div>

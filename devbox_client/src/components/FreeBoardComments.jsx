@@ -203,7 +203,7 @@ const FreeBoardComments = ({ postId }) => {
                             />
                           </span>
                           <span className="comment-time">
-                          {formatDate(comment.createdAt)}
+                            {formatDate(comment.createdAt)}
                           </span>
                         </div>
                       </div>
@@ -251,18 +251,18 @@ const FreeBoardComments = ({ postId }) => {
                               rows="3"
                             />
                             <div className="edit-buttons">
-                              <button
+                              <Button
+                                text={"취소"}
                                 className="btn btn-link"
                                 onClick={handleCancelEdit}
-                              >
-                                취소
-                              </button>
-                              <button
+                              />
+
+                              <Button
+                                text={"등록"}
+                                icon={"pen"}
                                 className="btn btn-link"
                                 onClick={() => handleEditSubmit(comment.id)}
-                              >
-                                등록
-                              </button>
+                              />
                             </div>
                           </div>
                         </div>
@@ -289,12 +289,12 @@ const FreeBoardComments = ({ postId }) => {
                     placeholder="댓글을 작성해보세요"
                     required
                   ></textarea>
-                  <button
+                  <Button
+                    text={"등록"}
+                    icon={"pen"}
                     type="submit"
                     className="btn btn-primary position-absolute bottom-0 end-0 m-2"
-                  >
-                    등록
-                  </button>
+                  />
                 </div>
               </form>
             ) : (

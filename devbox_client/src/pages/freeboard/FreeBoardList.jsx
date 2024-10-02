@@ -42,10 +42,9 @@ const FreeBoardList = () => {
         setIsLoading(false);
       }
     };
-  
+
     fetchPosts();
   }, []);
-  
 
   const stripHtml = (html) => {
     return html.replace(/<[^>]+>/g, "");
@@ -123,12 +122,13 @@ const FreeBoardList = () => {
                         </Link>
                       </td>
                       <td data-label="작성자" className="notice-author">
-                      <UserContact
+                        <UserContact
                           nickname={post.author}
                           nicknameStyle={{
                             fontSize: "14.4px",
                             color: "#666666",
-                          }}/>
+                          }}
+                        />
                       </td>
                       <td data-label="작성일" className="notice-date">
                         {formatDate(post.createdAt)}
@@ -149,7 +149,8 @@ const FreeBoardList = () => {
         <div className="notice-search-wrapper">
           {user && (
             <Button
-              text={"작성하기"}
+              text={"글쓰기"}
+              icon={"pen"}
               onClick={toWrite}
               className="notice-write-button"
             />
