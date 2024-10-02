@@ -61,13 +61,10 @@ const Header = () => {
     <nav id="main_nav" className="navbar navbar-expand-lg navbar-light bg-white shadow">
       <div className="container d-flex justify-content-between align-items-center">
         <Link to="/" className="navbar-brand h1">
-          {/* <i className="bx bx-buildings bx-sm text-dark"></i>
-          <span className="text-dark h4">Dev</span>
-          <span className="text-primary h4">Box</span> */}
           <DevBox />
         </Link>
         <div className="align-self-center collapse navbar-collapse flex-fill d-lg-flex justify-content-lg-between" id="navbar-toggler-success">
-          <div className="flex-fill mx-xl-5 mb-2 menu-container">
+          <div className="flex-fill mx-xl-5 mb-2 menu-container" style={{ marginTop: '7px' }}>
             <ul className="nav navbar-nav d-flex justify-content-between mx-xl-5 text-center text-dark">
               <li className="nav-item">
                 <span className="nav-link btn-outline-primary rounded-pill px-3" style={{ cursor: 'default' }}>BDIA</span>
@@ -115,12 +112,8 @@ const Header = () => {
               user ? (
                 <>
                   <MsgBell />
-                  <OverlayTrigger
-                    placement="bottom"
-                    delay={{ show: 250, hide: 400 }}
-                    overlay={renderTooltip}
-                  >
-                    <Link to="/mypage" className="nav-link">
+                  <OverlayTrigger placement="bottom" delay={{ show: 250, hide: 400 }} overlay={renderTooltip}>
+                    <Link to="/mypage" className="header-logout-button nav-link">
                       <i className="bx bx-user-circle bx-sm text-primary"></i>
                     </Link>
                   </OverlayTrigger>
@@ -129,7 +122,7 @@ const Header = () => {
                   </button>
                 </>
               ) : (
-                <Link to="/auth" className="nav-link" style={{ color: "#4232C2", textDecoration: 'underline', cursor: 'pointer' }}>
+                <Link to="/auth" className="nav-link text-decoration-none" style={{ color: "#4232C2", textDecoration: 'underline', cursor: 'pointer' }}>
                   로그인/회원가입
                 </Link>
               )
