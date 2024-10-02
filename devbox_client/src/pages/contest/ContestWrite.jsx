@@ -9,6 +9,9 @@ import InputScrollAndFocus from '../../components/InputScrollAndFocus';
 
 const ContestWrite = () => {
     const domain = "http://localhost:8080";
+    const toList = () => {
+        navigate('/contest/list');
+    };
 
     const { user } = useUser();
     const navigate = useNavigate();
@@ -126,11 +129,10 @@ const ContestWrite = () => {
                         <WriteLong titleTag={'홈페이지 주소'} name={'officialUrl'} value={officialUrl} onChange={(e) => { setOfficialUrl(e.target.value) }} />
                         <WriteLong titleTag={'이미지 주소'} name={'imgUrl'} value={imgUrl} onChange={(e) => { setImgUrl(e.target.value) }} />
                     </div>
-                </div>
-            </div>
-            <div className="form-row pt-2">
-                <div className="col-md-12 col-10 text-end">
-                    <Button text={'저장하기'} onClick={saveData} />
+                    <div className="col-md-12 col-10" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Button text={'목록'} icon="list" onClick={toList} />
+                        <Button text={'등록'} icon="pen" onClick={saveData} />
+                    </div>
                 </div>
             </div>
         </section >
