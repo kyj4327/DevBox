@@ -5,8 +5,9 @@ import Pagination from "../../components/Pagination";
 import { getAllPosts } from "../../services/api-service";
 import Button from "../../components/Button";
 import { useUser } from "../../components/context/UserContext";
+import UserContact from "../../components/UserContact";
 
-const FreeBoard = () => {
+const FreeBoardList = () => {
   const { user } = useUser();
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,9 +30,9 @@ const FreeBoard = () => {
       try {
         setIsLoading(true);
         const data = await getAllPosts();
-        // 게시글을 최신순으로 정렬
+        // 글 번호를 기준으로 정렬 (내림차순)
         const sortedPosts = Array.isArray(data)
-          ? data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          ? data.sort((a, b) => b.id - a.id)
           : [];
         setPosts(sortedPosts);
       } catch (error) {
@@ -75,15 +76,12 @@ const FreeBoard = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const options = {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false, // 24시간 형식
-    };
-    return date.toLocaleString("ko-KR", options).replace(",", ""); // 한국어 형식으로 포맷
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    // const hours = String(date.getHours()).padStart(2, "0");   시 분이 필요할시 추가
+    // const minutes = String(date.getMinutes()).padStart(2, "0");  시 분이 필요할시 추가
+    return ` ${year}-${month}-${day}`; //${hours}:${minutes} 시 분이 필요할시 추가
   };
 
   // if (isLoading) return <div>로딩 중...</div>;
@@ -124,7 +122,13 @@ const FreeBoard = () => {
                         </Link>
                       </td>
                       <td data-label="작성자" className="notice-author">
-                        {post.author}
+                        <UserContact
+                          nickname={post.author}
+                          nicknameStyle={{
+                            fontSize: "14.4px",
+                            color: "#666666",
+                          }}
+                        />
                       </td>
                       <td data-label="작성일" className="notice-date">
                         {formatDate(post.createdAt)}
@@ -145,7 +149,8 @@ const FreeBoard = () => {
         <div className="notice-search-wrapper">
           {user && (
             <Button
-              text={"작성하기"}
+              text= "글쓰기"
+              icon="pen"
               onClick={toWrite}
               className="notice-write-button"
             />
@@ -158,4 +163,4 @@ const FreeBoard = () => {
   );
 };
 
-export default FreeBoard;
+export default FreeBoardList;
