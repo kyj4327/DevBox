@@ -211,7 +211,7 @@ const Main = () => {
                                     <Category text={'Busan'} isActive={category} onClick={clickCategory} />
                                     <Category text={'Others'} isActive={category} onClick={clickCategory} />
                                 </div>
-                                <div className="row gy-5 g-lg-5 mb-4" style={{ marginTop: '0' }}>
+                                <div className="row gy-5 g-lg-5 mb-4 justify-content-center" style={{ marginTop: '0' }}>
                                     {
                                         hiringData.map((v) => {
                                             return (

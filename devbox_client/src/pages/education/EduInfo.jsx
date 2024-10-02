@@ -58,7 +58,7 @@ const EduInfo = (props) => {
                         <Category text={'모집완료'} onClick={clickState} isActive={props.state} />
                     </div>
                 </div>
-                <div className="row projects gx-lg-5">
+                <div className="row projects gx-lg-5 justify-content-center">
                     {props.list && props.list.map((edu) => {
                         const daysLeft = calculateDaysLeft(edu.recruit);
                         const daysEnd = progressMax(edu.recruit);

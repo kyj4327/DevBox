@@ -62,7 +62,7 @@ const HiringList = () => {
                             <Category text={'Others'} isActive={category} onClick={clickCategory} />
                         </div>
                     </div>
-                    <div className="row projects gx-lg-5">
+                    <div className="row projects gx-lg-5 justify-content-center">
                         {
                             data.map((v) => {
                                 return (
