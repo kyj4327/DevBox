@@ -3,6 +3,7 @@ import profilePic from "../assets/img/profilePic.png";
 import "./BoardComments.css"; // CSS 파일 이름도 변경
 import { useUser } from "../components/context/UserContext";
 import Swal from "sweetalert2";
+import UserContact from './UserContact';
 
 const BoardComments = ({ postId, boardType }) => {
   const { user, accessToken, loading } = useUser();
@@ -389,7 +390,14 @@ const BoardComments = ({ postId, boardType }) => {
                 />
                 <div>
                   <span className="comment-author d-block">
-                    {reply.authorName}
+
+                  <UserContact
+                          nickname={reply.authorName}
+                          nicknameStyle={{
+                            fontSize: "16px",
+                            color: "black",
+                            fontWeight: "bold",
+                          }}/>
                   </span>
                   {/* <span className="comment-time">{reply.createdAt}</span> */}
                   <span className="comment-time">{formatDateTime(reply.createdAt)}</span>
@@ -541,7 +549,16 @@ const BoardComments = ({ postId, boardType }) => {
                     />
                     <div>
                       <span className="comment-author d-block">
-                        {comment.authorName}
+                        
+                      <UserContact
+                          nickname={comment.authorName}
+                          nicknameStyle={{
+                            fontSize: "16px",
+                            color: "black",
+                            fontWeight: "bold",
+                          }}/>
+
+
                       </span>
                       {/* <span className="comment-time">{comment.createdAt}</span> */}
                       <span className="comment-time">{formatDateTime(comment.createdAt)}</span>

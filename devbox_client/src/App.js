@@ -63,6 +63,8 @@ import EduWrite from './pages/education/EduWrite';
 import Main from './pages/Main';
 import MsgDetail from './pages/message/MsgDetail';
 
+import NotFound from './components/NotFound';
+
 
 function AppContent() {
   const location = useLocation();
@@ -165,6 +167,8 @@ function AppContent() {
           {/* FAQ */}
           <Route path="/faq" element={<Contact />} />
 
+          {/* 404 Not Found Route */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       {!hideFooter && <Footer />} {/* Footer 조건부 렌더링 */}

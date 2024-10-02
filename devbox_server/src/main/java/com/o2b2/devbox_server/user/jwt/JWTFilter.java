@@ -48,6 +48,7 @@ public class JWTFilter extends OncePerRequestFilter {
                 || requestURI.equals("/gathermate/list")
                 || requestURI.matches("/gathermate/.*/commentslist") // 게시글 상세는 제외
                 || requestURI.matches("/gathermate/posts/.*") // 게시글 상세는 제외
+                || requestURI.matches("/gathermate/posts.*") // 게시글 상세는 제외
 
                 // 메인페이지
                 || requestURI.matches("/")
