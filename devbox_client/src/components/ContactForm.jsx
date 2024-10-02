@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./ContactForm.css";
 import Button from "./Button";
+
 const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -125,6 +126,7 @@ const ContactForm = () => {
             placeholder="Name"
             value={formData.name}
             onChange={handleChange}
+            disabled={isLoading} // 비활성화 추가
           />
           <label htmlFor="floatingname" className="light-300">
             성함
@@ -137,7 +139,7 @@ const ContactForm = () => {
       <div className="col-lg-6 mb-4">
         <div className="form-floating">
           <input
-            type="text" // type을 text로 변경
+            type="text"
             className={`form-control form-control-lg light-300 ${
               !validations.email ? "is-invalid" : ""
             }`}
@@ -146,6 +148,7 @@ const ContactForm = () => {
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
+            disabled={isLoading} // 비활성화 추가
           />
           <label htmlFor="floatingemail" className="light-300">
             이메일
@@ -170,6 +173,7 @@ const ContactForm = () => {
             placeholder="Phone"
             value={formData.phone}
             onChange={handleChange}
+            disabled={isLoading} // 비활성화 추가
           />
           <label htmlFor="floatingphone" className="light-300">
             전화번호
@@ -193,6 +197,7 @@ const ContactForm = () => {
             placeholder="Subject"
             value={formData.subject}
             onChange={handleChange}
+            disabled={isLoading} // 비활성화 추가
           />
           <label htmlFor="floatingsubject" className="light-300">
             문의제목
@@ -214,6 +219,7 @@ const ContactForm = () => {
             name="message"
             value={formData.message}
             onChange={handleChange}
+            disabled={isLoading} // 비활성화 추가
           />
           <label htmlFor="floatingtextarea" className="light-300">
             문의내용
@@ -226,10 +232,10 @@ const ContactForm = () => {
       <div className="col-md-12 col-12 m-auto text-end">
         <Button
           text={"문의하기"}
-          icon= "paper-plane"
+          icon="paper-plane"
           type="submit"
           className="contact-button btn-secondary rounded-pill px-md-5 px-4 py-2 radius-0 text-light light-300"
-          disabled={isLoading}
+          disabled={isLoading} // 비활성화 추가
         />
       </div>
     </form>
