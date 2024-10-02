@@ -30,9 +30,9 @@ const FreeBoardList = () => {
       try {
         setIsLoading(true);
         const data = await getAllPosts();
-        // 게시글을 최신순으로 정렬
+        // 글 번호를 기준으로 정렬 (내림차순)
         const sortedPosts = Array.isArray(data)
-          ? data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          ? data.sort((a, b) => b.id - a.id)
           : [];
         setPosts(sortedPosts);
       } catch (error) {
@@ -42,9 +42,10 @@ const FreeBoardList = () => {
         setIsLoading(false);
       }
     };
-
+  
     fetchPosts();
   }, []);
+  
 
   const stripHtml = (html) => {
     return html.replace(/<[^>]+>/g, "");
