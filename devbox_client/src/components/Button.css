@@ -9,5 +9,5 @@
 }
 
 .button_css:hover {
-    transform: translateY(-2px); /* 위로 조금 올라가는 효과 */
+    transform: translateY(-2px);
 }
