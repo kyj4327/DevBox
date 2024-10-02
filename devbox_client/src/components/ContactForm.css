@@ -1,0 +1,10 @@
+.contact-form-container {
+  width: 100%; /* 부모 요소 너비를 100%로 설정 */
+  margin: 0 auto; /* 중앙 정렬 */
+}
+
+.contact-form-container .alert {
+  width: calc(100% - 1.5rem); /* 양쪽에서 각각 1rem씩 빼기 */
+  margin: 1rem auto; /* 위아래 마진 추가 및 중앙 정렬 */
+  padding: 1rem; /* 패딩 추가 (필요시 조정) */
+}
