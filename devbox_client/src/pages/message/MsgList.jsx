@@ -99,7 +99,7 @@ const MsgList = (props) => {
             </div>
             <div className="form-row pt-5">
                 <div className="col-md-11 col-10 text-end">
-                    <Button text={'쪽지'} onClick={(e) => {
+                    <Button icon={'paper-plane'} text={'쪽지 쓰기'} onClick={(e) => {
                         e.preventDefault();
                         navigate('/message/write');
                     }} />

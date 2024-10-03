@@ -103,20 +103,25 @@ const MsgDetail = () => {
                         <div className="row pt-3">
                             <div className="col text-start">
 
-                                <Button text={'목록'} onClick={(e) => { e.preventDefault(); navigate('/message/list') }} />
+                                <Button icon={'list'} text={'목록'} onClick={(e) => { e.preventDefault(); navigate('/message/list') }} />
                             </div>
                             <div className="col text-end">
                                 {sender !== "탈퇴한 회원" && (
+                                    <span className="me-2">
+
                                     <Button
+                                        icon={'reply'}
                                         text={'답장'}
                                         onClick={(e) => {
                                             e.preventDefault();
                                             navigate(`/message/reply?id=${msgData.id}`);
                                         }}
                                         />
+                                        </span>
                                         
                                 )}
                                 <Button
+                                    icon={'trash'}
                                     text={'삭제'}
                                     onClick={async (e) => {
                                         e.preventDefault();

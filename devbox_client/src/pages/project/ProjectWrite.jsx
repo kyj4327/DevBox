@@ -200,7 +200,7 @@ const ProjectWrite = () => {
 
                 <div className="form-row pt-2">
                     <div className="col-md-12 col-10 text-end">
-                        <Button text={'프젝 자랑'} onClick={handleDetail} />
+                        <Button icon={'pen'} text={'등록'} onClick={handleDetail} />
                     </div>
                 </div>
             </section>

@@ -257,22 +257,23 @@ const ProjectDetail = () => {
                             </div>
                             <div className="row">
                                 <div className="col text-start">
-                                    <Button text={'목록'} onClick={() => { navigate('/project/list') }} />
+                                    <Button icon={'list'} text={'목록'} onClick={() => { navigate('/project/list') }} />
                                 </div>
                                 <div className="col text-end">
                                     {user && proData.name === user.nickname && (
-                                        <>
-                                            <button
-                                                type="button"
-                                                className="me-2 btn btn-secondary text-white px-md-4 px-2 py-md-3 py-1 radius-0 light-300"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    navigate(`/project/update?id=${proData.id}`);
-                                                }}
-                                            >
-                                                수정
-                                            </button>
+                                        <>   
+                                        <span className="me-2">
+                                        <Button
+                                            icon={'edit'}
+                                            text={'수정'}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                navigate(`/project/update?id=${proData.id}`);
+                                            }}
+                                            />
+                                            </span>
                                             <Button
+                                                icon={'trash'}
                                                 text={'삭제'}
                                                 onClick={async (e) => {
                                                     e.preventDefault();
