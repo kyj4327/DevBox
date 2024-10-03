@@ -7,6 +7,7 @@ import { useUser } from "../../components/context/UserContext";
 const EduInfo = (props) => {
     const { user } = useUser();
     const navigate = useNavigate();
+    const userRole = user ? user.role : null;
 
     const clickState = (e) => {
         e.preventDefault();
@@ -99,17 +100,22 @@ const EduInfo = (props) => {
                             </div>
                         );
                     })}
-                </div>
-                <div className="form-row pt-2">
-                    <div className="col-md-12 col-10 text-end">
-                        { user && (
-                            <>
-                        <Button icon={'pen'} text={'등록'} onClick={() => { navigate('/edu/write') }} />
-                            </>
-                        )}
-                    </div>
-                </div>
             </div>
+            {
+                userRole === "ROLE_ADMIN"
+                    ?
+                    <div className="form-row pt-2">
+                        <div className="col-md-12 col-10 text-end">
+                            {user && (
+                                <>
+                                    <Button icon={'pen'} text={'등록'} onClick={() => { navigate('/edu/write') }} />
+                                </>
+                            )}
+                        </div>
+                    </div>
+                    : ''
+            }
+        </div>
     );
 };
 

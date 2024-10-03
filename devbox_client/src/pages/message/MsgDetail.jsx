@@ -43,10 +43,6 @@ const MsgDetail = () => {
         get();
     }, []);
 
-    console.log("Message ID:", msgData.senderId);
-
-
-
     return (
         <div>
             <section className="container py-5">
@@ -56,7 +52,7 @@ const MsgDetail = () => {
 
                         <div className="contact-form row">
                             <div className="col-lg-6 mb-4">
-                                <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>보낸사람</h2>
+                                <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>보낼분</h2>
                                 <p className="worksingle-footer py-3 text-muted light-200">
                                     <div className="floating">
                                         <input type={'text'} className="form-control form-control-lg light-300"
@@ -66,7 +62,7 @@ const MsgDetail = () => {
                             </div>
 
                             <div className="col-lg-6 mb-4">
-                                <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>받은사람</h2>
+                                <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>받을분</h2>
                                 <p className="worksingle-footer py-3 text-muted light-200">
                                     <div className="floating">
                                         <input type={'text'} className="form-control form-control-lg light-300"

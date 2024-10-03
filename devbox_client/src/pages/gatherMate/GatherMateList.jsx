@@ -176,7 +176,7 @@ function GatherMateList() {
           <form onSubmit={handleSearch} className="mb-3 search-form">
             <div className="search-select-container">
               <SearchSelect
-                options={["내용 & 제목", "작성자"]} // 드롭다운 옵션
+                options={["제목&내용", "작성자"]} // 드롭다운 옵션
                 value={searchType} // 현재 선택된 값
                 onChange={handleSelectChange} // 값이 변경되면 호출
               />

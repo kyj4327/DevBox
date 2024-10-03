@@ -12,7 +12,7 @@ const EduDetail = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
-
+    const userRole = user ? user.role : null;
 
     async function get() {
         const res = await fetch(`${domain}/edu/detail?id=${id}`);
@@ -67,7 +67,7 @@ const EduDetail = () => {
                                 <Button icon={'list'} text={'목록'} onClick={() => { navigate('/edu/list') }} />
                             </div>
                             <div className="col text-end">
-                                { user &&  (
+                                {  userRole === "ROLE_ADMIN" &&  (
                                     <>
                                         <button type="submit" className="me-2 button_css border border-2" onClick={(e) => { e.preventDefault(); navigate(`/edu/update?id=${eduData.id}`); }}>
                                             <i className={`fas fa-edit`}></i> 수정
