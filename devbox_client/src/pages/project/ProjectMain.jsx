@@ -145,7 +145,7 @@ const ProjectMain = (props) => {
                     <div className="form-row pt-4">
                         <div className="col-md-12 col-10 text-end">
                             {user && (
-                                <Button text={'글쓰기'} onClick={() => navigate('/project/write')} />
+                                <Button icon={'pen'} text={'등록'} onClick={() => navigate('/project/write')} />
                             )}
                         </div>
                     </div>

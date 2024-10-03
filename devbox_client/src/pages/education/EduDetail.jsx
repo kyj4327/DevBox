@@ -64,15 +64,16 @@ const EduDetail = () => {
                         </p>
                         <div className="row">
                             <div className="col text-start">
-                                <Button text={'목록'} onClick={() => { navigate('/edu/list') }} />
+                                <Button icon={'list'} text={'목록'} onClick={() => { navigate('/edu/list') }} />
                             </div>
                             <div className="col text-end">
                                 { user &&  (
                                     <>
-                                        <button type="submit" className="me-2 btn btn-secondary text-white px-md-4 px-2 py-md-3 py-1 radius-0 light-300"
-                                            onClick={(e) => { e.preventDefault(); navigate(`/edu/update?id=${eduData.id}`); }}
-                                        >수정</button>
+                                        <button type="submit" className="me-2 button_css border border-2" onClick={(e) => { e.preventDefault(); navigate(`/edu/update?id=${eduData.id}`); }}>
+                                            <i className={`fas fa-edit`}></i> 수정
+                                        </button>
                                         <Button
+                                            icon={'trash'}
                                             text={'삭제'}
                                             onClick={async (e) => {
                                                 e.preventDefault();
