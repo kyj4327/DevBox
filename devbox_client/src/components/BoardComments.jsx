@@ -218,10 +218,13 @@ const BoardComments = ({ postId, boardType }) => {
       return;
     }
     Swal.fire({
+      icon: "warning",
       title: "댓글을 삭제하시겠습니까?",
       showCancelButton: true,
       confirmButtonText: "삭제",
       cancelButtonText: "취소",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
     }).then((result) => {
       if (result.isConfirmed) {
         fetch(`${boardName}/comments/${commentId}/delete`, {
@@ -345,11 +348,20 @@ const BoardComments = ({ postId, boardType }) => {
   };
 
   const openReplyForm = (commentId, replyId = null) => {
-    setReplyData({
-      parentId: commentId,
-      replyToId: replyId,
-      message: "",
-    });
+    // 같은 commentId와 replyId를 다시 클릭했을 때 입력칸을 닫음
+    if (replyData.parentId === commentId && replyData.replyToId === replyId) {
+      setReplyData({
+        parentId: null,
+        replyToId: null,
+        message: "",
+      });
+    } else {
+      setReplyData({
+        parentId: commentId,
+        replyToId: replyId,
+        message: "",
+      });
+    }
   };
 
   const toggleDropdown = (id, type) => {
@@ -613,20 +625,6 @@ const BoardComments = ({ postId, boardType }) => {
                           rows="3"
                         />
                         <div className="edit-buttons">
-                          {/* <button
-                              type="button"
-                              className="btn btn-secondary"
-                              onClick={handleCancelEdit}
-                            >
-                              취소
-                            </button>
-                            <button
-                              type="button"
-                              className="btn btn-primary me-2"
-                              onClick={() => handleEditSubmit(comment.id)}
-                            >
-                              등록
-                            </button> */}
                           <span
                             className="btn-text"
                             onClick={handleCancelEdit}

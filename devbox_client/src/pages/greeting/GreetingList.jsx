@@ -253,7 +253,7 @@ function GreetingList() {
     <div>
       <section className="container py-5">
         {/* <section className="container py-5" style={{ padding: "0px 0px" }}> */}
-        {/* <div className="container-inner py-5"> */}
+        <div className="container-inner py-5">
         <h1 className="h2 semi-bold-600 text-center mt-2">가입인사</h1>
         <p className="text-center pb-5 light-300">
           DevBox에 오신 것을 환영합니다.
@@ -450,6 +450,7 @@ function GreetingList() {
         ) : (
           <p className="no-data text-center">데이터가 없습니다.</p>
         )}
+        </div>
       </section>
 
       <form
