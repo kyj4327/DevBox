@@ -61,10 +61,55 @@
   font-weight: bold;
 }
 
+/* 각 dropdown-item 스타일 (기존 스타일 유지) */
+.dropdown-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* 창 크기 줄었을 때 메뉴 스타일 */
+.navbar-menu {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; /* 전체 폭을 차지하도록 설정 */
+  padding: 1rem;
+}
+
+/* resized-menu-item 스타일 */
+.resized-menu-item {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center;
+}
+
+.resized-menu-item>h5 {
+  cursor: default;
+}
+
+.resized-menu-item h5 {
+  color: #007bff;
+  font-weight: bold;
+  margin: 0 0 20px 0;
+}
+
+.resized-menu-item a {
+  color: #333;
+  text-decoration: none;
+  margin-bottom: 15px;
+}
+
+.resized-menu-item a:hover {
+  color: #007bff;
+  font-weight: bold;
+}
+
 .custom-tooltip .tooltip-inner {
   background-color: rgb(89, 88, 88);
-  max-width: 250px; 
-  text-align: left; 
+  max-width: 250px;
+  text-align: left;
 }
 .custom-tooltip.bs-tooltip-bottom .arrow::before {
   border-bottom-color: white;
