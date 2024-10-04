@@ -68,6 +68,10 @@ public class PasswordResetService {
         if (user.getProvider() != null) {
             return false; // 소셜 계정의 경우 비밀번호 재설정 불가
         }
+        // 비밀번호 유효성 검사
+        if (!isValidPassword(newPassword)) {
+            throw new InvalidPasswordException("비밀번호는 최소 6자리 이상, 숫자, 문자, 특수문자를 각각 하나 이상 포함해야 합니다.");
+        }
 
         user.setPassword(bCryptPasswordEncoder.encode(newPassword));
         userRepository.save(user);
@@ -80,5 +84,17 @@ public class PasswordResetService {
         Random random = new Random();
         int code = 100000 + random.nextInt(900000); // 6자리 숫자 코드 생성
         return String.valueOf(code);
+    }
+    // 비밀번호 유효성 검사 메서드 추가
+    private boolean isValidPassword(String password) {
+        String regex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&]).{6,}$";
+        return password.matches(regex);
+    }
+
+    // 커스텀 예외 정의
+    public class InvalidPasswordException extends RuntimeException {
+        public InvalidPasswordException(String message) {
+            super(message);
+        }
     }
 }

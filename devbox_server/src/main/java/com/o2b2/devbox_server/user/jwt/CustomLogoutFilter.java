@@ -50,7 +50,7 @@ import java.io.IOException;
             String refresh = null;
             Cookie[] cookies = request.getCookies();
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("refresh")) {
+                if (cookie.getName().equals("RefreshToken")) {
                     refresh = cookie.getValue();
                 }
             }
@@ -93,29 +93,23 @@ import java.io.IOException;
             refreshRepository.deleteByRefresh(refresh);
 
             //Refresh 토큰 Cookie 값 0
-            Cookie cookie = new Cookie("refresh", null);
+            Cookie cookie = new Cookie("RefreshToken", null);
             cookie.setMaxAge(0);
             cookie.setPath("/");
 
             response.addCookie(cookie);
+
+            // JSESSIONID 쿠키 삭제
+            Cookie jsessionidCookie = new Cookie("JSESSIONID", null);
+            jsessionidCookie.setMaxAge(0);  // 만료 시간 설정
+            jsessionidCookie.setPath("/");  // 경로 설정
+            response.addCookie(jsessionidCookie);  // 쿠키 삭제
 
             // 세션 무효화
             HttpSession session = request.getSession(false);
             if (session != null) {
                 session.invalidate();
             }
-
-            // JSESSIONID 쿠키 삭제
-            Cookie jsessionidCookie = new Cookie("JSESSIONID", "");
-            jsessionidCookie.setMaxAge(0);
-            jsessionidCookie.setPath("/");
-            response.addCookie(jsessionidCookie);
-
-            // Access Token 쿠키 삭제
-            Cookie accessTokenCookie = new Cookie("AccessToken", null);
-            accessTokenCookie.setMaxAge(0);
-            accessTokenCookie.setPath("/");
-            response.addCookie(accessTokenCookie);
 
             response.setStatus(HttpServletResponse.SC_OK);
 

@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../../components/context/UserContext";
 
 import "react-quill/dist/quill.snow.css";
 import Button from "../../components/Button";
@@ -7,8 +8,11 @@ import WriteLong from "../../components/WriteLong";
 import WriteShort from "../../components/WriteShort";
 import QuillEditor from "../../components/QuillEditor";
 import WriteSelect from "../../components/WriteSelect";
+import Swal from "sweetalert2";
 
 function GatherMateWrite() {
+  const { user, loading } = useUser(); // Context에서 유저 정보가져오기
+
   const [intro, setIntro] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -17,21 +21,68 @@ function GatherMateWrite() {
 
   const navigate = useNavigate();
 
+  // 로그인 상태를 확인
+  useEffect(() => {
+    if (!loading && !user) {
+      Swal.fire({
+        title: "로그인 필요",
+        text: "로그인이 필요합니다.",
+        icon: "warning",
+        confirmButtonText: "확인",
+      }).then(() => {
+        navigate("/auth");
+      });
+    }
+  }, [user, loading, navigate]);
+
   const saveData = async () => {
+    if (!user) {
+      Swal.fire({
+        title: "로그인 필요",
+        text: "로그인이 필요합니다.",
+        icon: "warning",
+        confirmButtonText: "확인",
+      });
+      return;
+    }
+
+    if (!title.trim()) {
+      Swal.fire({
+        title: "제목 입력 필요",
+        text: "제목을 입력해주세요.",
+        icon: "warning",
+        confirmButtonText: "확인",
+      });
+      return;
+    }
+
+    // quill -> html 제외 후 확인
+    if (content.replace(/<[^>]*>?/gm, "").trim().length < 1) {
+      Swal.fire({
+        title: "내용 입력 필요",
+        text: "내용을 입력해주세요.",
+        icon: "warning",
+        confirmButtonText: "확인",
+      });
+      return;
+    }
+
     const newGatherMate = {
       intro,
-      title,
-      content,
+      title: title.trim(),
+      content: content.trim(),
       apply,
       isRecruiting,
       datePosted: new Date().toISOString(),
     };
 
     try {
-      const response = await fetch("http://localhost:8080/gathermate/posts", {
+      const response = await fetch("http://localhost:8080/gathermate/write", {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
         body: JSON.stringify(newGatherMate),
       });
@@ -41,24 +92,43 @@ function GatherMateWrite() {
       }
 
       const data = await response.json();
-      console.log("저장된 데이터:", data);
+      navigate(`/gathermate/detail/${data.id}`);
 
-      // 저장 후 게시글 상세 페이지로 이동 (data.id는 저장된 게시글 ID)
-      navigate(`/gatherdetail/${data.id}`);
-
-      // 입력 필드 초기화
       setIntro("");
       setTitle("");
       setContent("");
       setApply("");
       setIsRecruiting(true);
 
-      alert("글이 성공적으로 저장되었습니다.");
+      Swal.fire({
+        title: "저장 성공",
+        text: "글이 성공적으로 저장되었습니다.",
+        icon: "success",
+        confirmButtonText: "확인",
+      });
     } catch (error) {
       console.error("저장 중 오류 발생:", error);
-      alert("글 저장에 실패했습니다. 다시 시도해주세요.");
+      Swal.fire({
+        title: "저장 실패",
+        text: "글 저장에 실패했습니다. 다시 시도해주세요.",
+        icon: "error",
+        confirmButtonText: "확인",
+      });
     }
   };
+
+  if (loading) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (!user) {
+    return (
+      <div>
+        로그인 후 글쓰기가 가능합니다.{" "}
+        <button onClick={() => navigate("/auth")}>로그인하기</button>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -75,7 +145,7 @@ function GatherMateWrite() {
               <WriteSelect
                 titleTag="말머리"
                 name="intro"
-                value={intro|| "말머리를 선택하세요"}
+                value={intro || "말머리를 선택하세요"}
                 onChange={(e) => setIntro(e.target.value)}
                 options={["스터디", "공모전", "프로젝트", "식사", "기타"]}
               />
@@ -108,13 +178,12 @@ function GatherMateWrite() {
                   />
                 </div>
               </div>
-
             </div>
           </div>
         </div>
         <div className="form-row pt-2">
           <div className="col-md-12 col-10 text-end">
-            <Button text={"저장하기"} onClick={saveData} />
+            <Button text={"등록"} icon="pen" onClick={saveData} />
           </div>
         </div>
       </section>

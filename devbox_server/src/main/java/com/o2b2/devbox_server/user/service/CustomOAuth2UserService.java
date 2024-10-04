@@ -53,7 +53,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         if (existData == null) {
 
             // 랜덤 닉네임 생성
-            String nickname = generateRandomNickname();
+            String nickname = generateUniqueRandomNickname();
             String provider = userRequest.getClientRegistration().getRegistrationId(); // google, kakao, naver
 //            String providerId = oAuth2User.getAttribute("id").toString();
 
@@ -94,6 +94,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             return new CustomOAuth2User(userDTO);
 
         }
+    }
+    // 중복되지 않는 닉네임 생성
+    private String generateUniqueRandomNickname() {
+        String nickname;
+        do {
+            nickname = generateRandomNickname();
+        } while (userRepository.findByNickname(nickname) != null);
+        return nickname;
     }
 
     // 닉네임 자동 조합

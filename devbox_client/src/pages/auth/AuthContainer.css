@@ -1,4 +1,4 @@
-/* AuthContainer.css */
+/* Montserrat 글씨체 */
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
 * {
@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh; /* 화면 높이 전체에서 중앙에 배치 */
+  min-height: 91.5vh; /* 화면 높이 전체에서 중앙에 배치 */
   background-color: #f6f5f7; /* 배경색을 설정 */
 }
 
@@ -255,7 +255,7 @@
 }
 
 .auth-relative-container input {
-  width: 300px;
+  width: 100%; /* 부모 컨테이너의 너비에 맞춤 */
   padding: 12px 15px;
   background-color: #eee;
   border: none;
@@ -267,7 +267,7 @@
   color: green;
   position: absolute;
   left: 0;
-  bottom: -10px;
+  bottom: -10px; /* 에러 메시지가 입력 필드 아래에 적절히 배치되도록 조정 */
 }
 
 .auth-social-container {

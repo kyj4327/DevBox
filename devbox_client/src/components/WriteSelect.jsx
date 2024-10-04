@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "../assets/css/WriteSelect.css";
+import "./WriteSelect.css";
 
 const WriteSelect = ({ titleTag, name, value, onChange, options }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,13 +31,13 @@ const WriteSelect = ({ titleTag, name, value, onChange, options }) => {
 
   return (
     <div className="col-lg-6 mb-4">
-      <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">
+      <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>
         {titleTag}
       </h2>
       <p className="worksingle-footer py-3 text-muted light-300">
         <div className="custom-select-container" ref={dropdownRef}>
           <div className="form-floating">
-            <div className="custom-select-header" onClick={toggleDropdown}>
+            <div className="custom-select-header" onClick={toggleDropdown} id={name}>
               {value}
               <span className={`arrow ${isOpen ? 'open' : ''}`}></span>
             </div>

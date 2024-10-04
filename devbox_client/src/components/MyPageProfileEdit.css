@@ -1,14 +1,103 @@
-.mypage-profile-edit__content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-top: 50px;
-  width: 847px; 
-  height: 500px; 
-  align-items: center; 
-  justify-content: center; 
+/* 모달 배경 */
+.mypage-profile-edit__modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* 반투명 배경 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
 }
+
+/* 모달 내용 */
+.mypage-profile-edit__modal-content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  animation: slideDown 0.3s ease-in-out;
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* 제목 스타일 */
+.mypage-profile-edit__modal-content h2 {
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* 텍스트 스타일 */
+.mypage-profile-edit__modal-content p {
+  margin-bottom: 20px;
+  color: #555;
+}
+
+/* 버튼 스타일 */
+.mypage-profile-edit__btn-confirm-delete,
+.mypage-profile-edit__btn-cancel {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.mypage-profile-edit__btn-confirm-delete {
+  background-color: #d33;
+  color: #fff;
+  margin-right: 10px;
+}
+
+.mypage-profile-edit__btn-confirm-delete:disabled {
+  background-color: #f5a6a6;
+  cursor: not-allowed;
+}
+
+.mypage-profile-edit__btn-confirm-delete:hover:not(:disabled) {
+  background-color: #a00;
+}
+
+.mypage-profile-edit__btn-cancel {
+  background-color: #ddd;
+  color: #333;
+}
+
+.mypage-profile-edit__btn-cancel:hover {
+  background-color: #bbb;
+}
+
+/* 닫기 버튼 (선택 사항) */
+.mypage-profile-edit__modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #999;
+  transition: color 0.3s;
+}
+
+.mypage-profile-edit__modal-close:hover {
+  color: #333;
+}
+
+/* 모달 css END */
 
 .mypage-profile-edit__title {
   font-size: 24px;
@@ -18,6 +107,7 @@
 
 .mypage-profile-edit__form-group {
   margin-bottom: 15px;
+  align-items: center;
 }
 
 .mypage-profile-edit__form-group label {
@@ -65,74 +155,42 @@
   margin-top: 20px;
 }
 
-.mypage-profile-edit__modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 30%;
-  height: auto;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: translate(-50%, -50%);
-}
-
-.mypage-profile-edit__modal-content {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  width: 100%;
-}
-
-.mypage-profile-edit__btn-confirm-delete {
-  background-color: red;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.mypage-profile-edit__btn-cancel {
-  background-color: gray;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.mypage-profile-edit__btn-confirm-delete:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.edit-input {
-  width: 330px;
-  height: 30px;
-}
-
-/* 라디오버튼 ->  회원 유형 옆으로 배치 */
+/* 회원정보 전체 그룹 */
 .mypage-profile-edit__form-group {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  width: 500px;
 }
 
 /* 전체 라디오 그룹을 감싸는 컨테이너 */
 .mypage-profile-edit__radio-group {
   display: flex;
   align-items: center;
-  gap: 20px; /* 라디오 버튼 사이의 간격 */
+  gap: 10px; 
 }
 
+.mypage-profile-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
 
-/* 라디오 버튼의 크기 */
-input[type="radio"] {
-  width: 10px; 
-  height: 10px; 
-  vertical-align: middle; /* 라벨 텍스트와 수직 정렬 */
-  margin-right: 9px; /* 라벨과의 간격 조정 */
+/* 버튼 컨테이너 스타일 수정 */
+.mypage-profile-edit-footer_btn {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.radio-text {
+  margin-left: 5px;
+}
+.mypage-profile-edit__radio-label input {
+  margin-left: 5px;
 }

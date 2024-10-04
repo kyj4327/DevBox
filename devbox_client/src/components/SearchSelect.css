@@ -1,0 +1,59 @@
+.custom-searchselect-container {
+  width: 100px;
+  position: relative;
+}
+
+.custom-searchselect-header {
+  width: 100%;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  background-color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 텍스트와 화살표를 양쪽 끝에 배치 */
+  padding: 0 10px; /* 양쪽 여백 추가 */
+  min-height: 27px;
+  font-size: 14px;
+}
+
+.custom-searchselect-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ced4da;
+  border-top: none;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 1000;
+  font-size: 14px;
+}
+
+.custom-searchselect-options li {
+  padding: 10px 15px;
+  cursor: pointer;
+  color: #555;
+}
+
+.custom-searchselect-options li:hover {
+  background-color: #f8f9fa;
+  color: black;
+}
+
+.custom-searchselect-arrow {
+  border: solid #6c757d;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg);
+  transition: transform 0.3s ease;
+}
+
+.custom-searchselect-arrow.open {
+  transform: rotate(-135deg);
+}

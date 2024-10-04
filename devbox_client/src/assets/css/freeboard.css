@@ -1,0 +1,112 @@
+.freeboard-post-detail {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px;
+  font-family: 'Nanum Gothic', sans-serif;
+  border-radius: 8px;
+}
+
+.freeboard-post-header {
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.freeboard-post-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.freeboard-post-meta {
+  font-size: 14px;
+  color: #666;
+}
+
+.freeboard-post-content {
+  line-height: 1.8;
+  margin-bottom: 40px;
+  min-height: 200px;
+  padding: 20px 0;
+  overflow-x: auto;
+}
+
+.freeboard-post-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1em auto;
+}
+
+.freeboard-post-content .large-image {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.freeboard-post-content .large-image:hover {
+  transform: scale(1.05);
+}
+
+.freeboard-post-content a {
+  color: #03c75a;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.freeboard-post-content a:hover {
+  color: #02b350;
+  text-decoration: underline;
+}
+
+.freeboard-post-actions, .edit-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  text-align: right;
+}
+
+
+.freeboard-comments-section, .freeboard-comment-form, .edit-post-form {
+  padding: 20px 0;
+}
+
+.freeboard-comments-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.freeboard-comments-list {
+  list-style: none;
+  padding: 0;
+}
+
+.freeboard-comment {
+  padding: 15px 0;
+}
+
+.freeboard-comment-content {
+  margin-bottom: 10px;
+}
+
+.freeboard-comment-meta {
+  font-size: 12px;
+  color: #666;
+}
+
+.freeboard-comment-input {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #e5e5e5;
+}
+
+.btn-freeboard-edit {
+  color: #03c75a;
+
+}
+
+
+
+
+

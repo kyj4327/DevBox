@@ -1,10 +1,11 @@
-const Button = ({ text, onClick }) => {
-    return (
-        <button type="submit" className="btn btn-secondary text-white px-md-4 px-2 py-md-3 py-1 radius-0 light-300"
-            onClick={onClick}>
-            {text}
-        </button>
-    );
+import './Button.css';
+
+const Button = ({ text, icon, onClick }) => {
+  return (
+    <button type="submit" className="button_css border border-2" onClick={onClick}>
+      <i className={`fas fa-${icon}`}></i> {text}
+    </button>
+  );
 };
 
 export default Button;
