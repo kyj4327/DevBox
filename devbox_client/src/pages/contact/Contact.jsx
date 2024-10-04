@@ -1,23 +1,21 @@
 import React from "react";
 import ContactForm from "../../components/ContactForm";
 import "../../assets/css/contact.css";
-import bannerImage from "../../assets/img/contact.jpg";
+import bannerImage from '../../assets/img/banner-img-01.svg';
 
 const Contact = () => {
   return (
     <>
-      <section className="contact-background">
-        <img src={bannerImage} alt="Contact Banner" />
+      <section className="bg-light">
         <div className="container py-4">
           <div className="row align-items-center justify-content-between">
             <div className="contact-header col-lg-4">
-              <h1 className="contact-primary pb-3 text-primary">Contact</h1>
+              <h1 className="h2 pb-3 text-primary">FAQ</h1>
               <h3 className="h4 regular-400">문의사항</h3>
-              <p className="contact-adress light-300">
-                부산광역시 해운대구 센텀동로
-                <br />
-                41 센텀벤처타운 502호
-              </p>
+              <p className="light-300">부산광역시 해운대구 센텀동로 41 센텀벤처타운 502호</p>
+            </div>
+            <div className="faq-img col-lg-5 align-items-end col-md-4">
+              <img src={bannerImage} />
             </div>
           </div>
         </div>
