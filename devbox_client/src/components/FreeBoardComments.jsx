@@ -215,9 +215,8 @@ const FreeBoardComments = ({ postId }) => {
                             ...
                           </div>
                           <div
-                            className={`dropdown-menu ${
-                              dropdownOpen.id === comment.id ? "show" : ""
-                            }`}
+                            className={`dropdown-menu ${dropdownOpen.id === comment.id ? "show" : ""
+                              }`}
                           >
                             <button
                               className="dropdown-item"
@@ -250,18 +249,24 @@ const FreeBoardComments = ({ postId }) => {
                               rows="3"
                             />
                             <div className="edit-buttons">
-                              <button
-                                className="btn btn-link"
+                              <span
+                                className="btn-text"
                                 onClick={handleCancelEdit}
+                                style={{
+                                  cursor: "pointer",
+                                  marginRight: "10px",
+                                  color: "#6c757d",
+                                }}
                               >
                                 취소
-                              </button>
-                              <button
-                                className="btn btn-link"
+                              </span>
+                              <span
+                                className="btn-text"
                                 onClick={() => handleEditSubmit(comment.id)}
+                                style={{ cursor: "pointer", color: "#007bff" }}
                               >
                                 등록
-                              </button>
+                              </span>
                             </div>
                           </div>
                         </div>
