@@ -7,7 +7,7 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import DevBox from "./DevBox";
 
 const Header = () => {
-  const { user, loading ,logout} = useUser();
+  const { user, loading, logout } = useUser();
   const navigate = useNavigate();
 
   const renderTooltip = (props) => (
@@ -40,6 +40,9 @@ const Header = () => {
         <Link to="/" className="navbar-brand h1">
           <DevBox />
         </Link>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-toggler-success" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
         <div className="align-self-center collapse navbar-collapse flex-fill d-lg-flex justify-content-lg-between" id="navbar-toggler-success">
           <div className="flex-fill mx-xl-5 mb-2 menu-container" style={{ marginTop: '7px' }}>
             <ul className="nav navbar-nav d-flex justify-content-between mx-xl-5 text-center text-dark">
