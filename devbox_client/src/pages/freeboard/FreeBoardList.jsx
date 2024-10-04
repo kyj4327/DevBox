@@ -146,10 +146,15 @@ const FreeBoardList = () => {
           )}
         </div>
 
-        <div className="notice-search-wrapper">
+        <div style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          marginTop: '20px',
+          marginBottom: '20px'
+        }}>
           {user && (
             <Button
-              text= "글쓰기"
+              text="글쓰기"
               icon="pen"
               onClick={toWrite}
               className="notice-write-button"
