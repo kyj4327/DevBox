@@ -253,20 +253,10 @@ public class MsgController {
             MsgReciverEntity reciverMsg = reciverOpt.get();
             map.put("id", reciverMsg.getId());
             map.put("reciver", reciverMsg.getReceiver().getNickname());
+            map.put("sender", reciverMsg.getSender().getNickname());
         } else {
             map.put("reciverError", "Receiver message not found");
         }
-
-        // Sender 정보 조회
-        Optional<MsgSenderEntity> senderOpt = msgSenderRepository.findById(id);
-        if (senderOpt.isPresent()) {
-            MsgSenderEntity senderMsg = senderOpt.get();
-            map.put("id", senderMsg.getId());
-            map.put("sender", senderMsg.getSender().getNickname());
-        } else {
-            map.put("senderError", "Sender message not found");
-        }
-
         return map;
     }
 
