@@ -9,7 +9,6 @@ import { useUser } from "../components/context/UserContext";
 import Button from "../components/Button";
 import profilePic from "../assets/img/profilePic.png";
 import Swal from "sweetalert2";
-// import '../components/BoardComments.css';
 import "./GatherMateComments.css";
 import UserContact from "./UserContact";
 
@@ -168,9 +167,9 @@ const FreeBoardComments = ({ postId }) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
-    const hours = String(date.getHours()).padStart(2, "0"); //시 분이 필요할시 추가
-    const minutes = String(date.getMinutes()).padStart(2, "0"); //시 분이 필요할시 추가
-    return `작성일: ${year}-${month}-${day}-${hours}:${minutes}`; //${hours}:${minutes} 시 분이 필요할시 추가
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    return `작성일: ${year}-${month}-${day}-${hours}:${minutes}`;
   };
 
   return (
@@ -251,18 +250,18 @@ const FreeBoardComments = ({ postId }) => {
                               rows="3"
                             />
                             <div className="edit-buttons">
-                              <Button
-                                text={"취소"}
+                              <button
                                 className="btn btn-link"
                                 onClick={handleCancelEdit}
-                              />
-
-                              <Button
-                                text={"등록"}
-                                icon={"pen"}
+                              >
+                                취소
+                              </button>
+                              <button
                                 className="btn btn-link"
                                 onClick={() => handleEditSubmit(comment.id)}
-                              />
+                              >
+                                등록
+                              </button>
                             </div>
                           </div>
                         </div>
@@ -289,12 +288,12 @@ const FreeBoardComments = ({ postId }) => {
                     placeholder="댓글을 작성해보세요"
                     required
                   ></textarea>
-                  <Button
-                    text={"등록"}
-                    icon={"pen"}
+                  <button
                     type="submit"
                     className="btn btn-primary position-absolute bottom-0 end-0 m-2"
-                  />
+                  >
+                    등록
+                  </button>
                 </div>
               </form>
             ) : (

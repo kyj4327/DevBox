@@ -2,14 +2,13 @@ package com.o2b2.devbox_server.freeboard.entity;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
 import com.o2b2.devbox_server.user.entity.UserEntity;
+
+import jakarta.persistence.*;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,18 +28,20 @@ public class Comment {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
-    
+
     @Column(length = 500, nullable = false)
     private String author;
 
+    // Post와의 연관관계
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
     @JsonIgnoreProperties({"comments"})
     private Post post;
 
+    // UserEntity와의 양방향 연관관계 (ManyToOne)
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnoreProperties({"proEntitys", "MsgEntitys", "MsgSenderEntitys"})
+    @JsonIgnoreProperties({"proEntitys", "MsgEntitys", "MsgSenderEntitys", "posts", "comments"})
     private UserEntity user;
 
     // Getters and Setters

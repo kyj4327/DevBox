@@ -2,6 +2,8 @@ package com.o2b2.devbox_server.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.o2b2.devbox_server.gatherMate.comments.entity.GathermateComment;
+import com.o2b2.devbox_server.freeboard.entity.Comment;
+import com.o2b2.devbox_server.freeboard.entity.Post;
 import com.o2b2.devbox_server.gatherMate.entity.GatherMate;
 import com.o2b2.devbox_server.gatherMate.like.entity.Like;
 import com.o2b2.devbox_server.greeting.comments.entity.GreetingComment;
@@ -18,8 +20,6 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 @Entity
 @Data
 public class UserEntity {
@@ -35,41 +35,47 @@ public class UserEntity {
     private String nickname;
     private String password;
 
-    // oAuth2에서 추가 되는 정보
-    private String provider; // google, naver, kakao 인지 어느 소셜 로그인했는지
-    private String providerId;// sub=101926511570168785716
+    // 소셜 로그인 정보
+    private String provider;
+    private String providerId;
 
-    // @ManyToOne(fetch = FetchType.EAGER)
-    // @JoinColumn(name = "role_id", nullable = false)
-    // private Role role;
     private String role;
-
     private String field;
 
+    // 자유게시판(Post)와의 연관관계 (양방향 매핑)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Post> posts = new ArrayList<>();
+
+    // 댓글(Comment)와의 연관관계 (양방향 매핑)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Comment> comments = new ArrayList<>();
+
+    // 프로젝트와의 연관관계
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     List<ProEntity> proEntitys = new ArrayList<>();
 
-
-    // @OneToMany(mappedBy = "userEntity", cascade = CascadeType.REMOVE)
-    // List<EduEntity> eduEntitys = new ArrayList<>();
-    
     @OneToMany(mappedBy = "receiver")
     @JsonIgnore
     List<MsgReciverEntity> MsgEntitys = new ArrayList<>();
-    
+
     @OneToMany(mappedBy = "sender")
     @JsonIgnore
     List<MsgSenderEntity> MsgSenderEntitys = new ArrayList<>();
 
+    // 프로젝트 좋아요와의 연관관계
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    List<ProLike> proLikes = new ArrayList<>();
+    private List<ProLike> proLikes = new ArrayList<>();
 
+    // Reference와의 연관관계
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     List<Reference> ReferenceLists = new ArrayList<>();
 
+    // Reservation과의 연관관계
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     List<Reservation> ReservationLists = new ArrayList<>();
@@ -100,3 +106,4 @@ public class UserEntity {
     private List<GreetingComment> greetingComments = new ArrayList<>();
 
 }
+
