@@ -1,8 +1,10 @@
 package com.o2b2.devbox_server.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.o2b2.devbox_server.gatherMate.comments.entity.GathermateComment;
 import com.o2b2.devbox_server.gatherMate.entity.GatherMate;
 import com.o2b2.devbox_server.gatherMate.like.entity.Like;
+import com.o2b2.devbox_server.greeting.comments.entity.GreetingComment;
 import com.o2b2.devbox_server.greeting.entity.Greeting;
 import com.o2b2.devbox_server.message.model.MsgReciverEntity;
 import com.o2b2.devbox_server.message.model.MsgSenderEntity;
@@ -82,8 +84,19 @@ public class UserEntity {
     @JsonIgnore
     private List<GatherMate> gatherMates = new ArrayList<>();
 
-    // 모여라메이트
+    // 모여라메이트 댓글
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<GathermateComment> gathermateComments = new ArrayList<>();
+
+    // 가입인사
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Greeting> greetings = new ArrayList<>();
+
+    // 가입인사 댓글
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<GreetingComment> greetingComments = new ArrayList<>();
+
 }
