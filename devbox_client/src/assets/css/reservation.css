@@ -1,10 +1,13 @@
-.contact-section {
+.reservation-section {
     background-image: url('../img/reservation.jpeg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     color: white;
-    height: 326px;
+}
+
+.reservation-img {
+    visibility: hidden;
 }
 
 .react-calendar__month-view__weekdays>div>* {
