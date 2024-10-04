@@ -199,7 +199,7 @@ const NoticeDetail = () => {
                 )}
               </div>
               <div className="d-flex">
-                <Button text="목록으로" icon="list" onClick={toList} />
+                <Button text="목록" icon="list" onClick={toList} />
               </div>
             </div>
           </div>

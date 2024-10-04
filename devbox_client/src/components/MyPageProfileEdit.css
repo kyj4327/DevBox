@@ -187,3 +187,10 @@
   width: 100%;
   margin-top: 20px;
 }
+
+.radio-text {
+  margin-left: 5px;
+}
+.mypage-profile-edit__radio-label input {
+  margin-left: 5px;
+}

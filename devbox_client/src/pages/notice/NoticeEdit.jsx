@@ -39,10 +39,6 @@ function NoticeEdit() {
     fetchPost();
   }, [postId]);
 
-  const toList = () => {
-    navigate("/notice/list");
-  };
-
   const updateData = async () => {
     const updatedNotice = {
       title,
@@ -129,9 +125,8 @@ function NoticeEdit() {
           </div>
         </div>
         <div className="form-row pt-2">
-          <div className="col-md-12 col-10 d-flex justify-content-between">
-            <Button text={"목록으로"} icon="list" onClick={toList} />
-            <Button text={"수정하기"} icon="edit" onClick={updateData} />
+          <div className="col-md-12 col-10 d-flex justify-content-end">
+            <Button text={"수정"} icon="edit" onClick={updateData} />
           </div>
         </div>
       </section>

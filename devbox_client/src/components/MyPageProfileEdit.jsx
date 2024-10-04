@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2"; // SweetAlert2 추가
-import { useUser } from '../components/context/UserContext';
+import { useUser } from "../components/context/UserContext";
 
 import "./MyPageProfileEdit.css";
 
@@ -12,7 +12,6 @@ function MyPageProfileEdit() {
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
   const [emailConfirmation, setEmailConfirmation] = useState(""); // 이메일 확인 상태
   const navigate = useNavigate();
-
 
   const handleChange = (e) => {
     setUser({
@@ -66,7 +65,7 @@ function MyPageProfileEdit() {
       if (response.ok) {
         // 로그아웃 처리
 
-        logout(); 
+        logout();
 
         await Swal.fire({
           icon: "success",
@@ -179,7 +178,7 @@ function MyPageProfileEdit() {
                   checked={user.role === "일반회원"}
                   onChange={handleChange}
                 />
-                일반회원
+                <span className="radio-text">일반회원</span>
               </label>
 
               <label className="mypage-profile-edit__radio-label">
@@ -190,7 +189,7 @@ function MyPageProfileEdit() {
                   checked={user.role === "수강생"}
                   onChange={handleChange}
                 />
-                수강생
+                <span className="radio-text">수강생</span>
               </label>
             </div>
           </div>
@@ -201,8 +200,13 @@ function MyPageProfileEdit() {
               name="field"
               value={user.field}
               onChange={handleChange}
-              style={{ width: '400px', height:'46px', padding: '10px',  border: '1px solid  #ccc', borderRadius:'5px' }}
-              
+              style={{
+                width: "400px",
+                height: "46px",
+                padding: "10px",
+                border: "1px solid  #ccc",
+                borderRadius: "5px",
+              }}
             >
               <option value="non-developer">비개발자(non-developer)</option>
               <option value="web-dev">
@@ -277,11 +281,8 @@ function MyPageProfileEdit() {
                 탈퇴하시면 작성하신 모든 게시글이 함께 삭제됩니다.
               </h5>
 
+              <p>탈퇴하려면 가입했던 이메일을 입력해주세요:</p>
               <p>
-                탈퇴하려면 가입했던 이메일을 입력해주세요:
-                </p>
-                <p>
-
                 <strong>{user.email}</strong>
               </p>
 
@@ -289,11 +290,10 @@ function MyPageProfileEdit() {
                 type="text"
                 placeholder="이메일 입력"
                 value={emailConfirmation}
-                style={{ width: "410px", marginBottom:"15px"}}
-
+                style={{ width: "410px", marginBottom: "15px" }}
                 onChange={(e) => setEmailConfirmation(e.target.value)}
               />
-              <div style={{ display: "flex", justifyContent: "flex-end"}}>
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
                 <button
                   type="button"
                   onClick={confirmDeleteAccount}
