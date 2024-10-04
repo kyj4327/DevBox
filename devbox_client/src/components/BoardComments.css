@@ -68,7 +68,8 @@ textarea {
 }
 
 .comment-content {
-  margin-top: 10px;
+  margin-left: 8px;
+  margin-bottom: 8px;
 }
 
 .reply-button {
@@ -77,6 +78,7 @@ textarea {
   color: #007bff;
   cursor: pointer;
   padding: 0;
+  margin-left: 8px;
 }
 
 .reply {
