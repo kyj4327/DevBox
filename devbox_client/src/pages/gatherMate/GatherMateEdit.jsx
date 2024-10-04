@@ -47,10 +47,6 @@ function GatherMateEdit() {
     fetchPost();
   }, [postId]);
 
-  const toList = () => {
-    navigate("/gathermate/list");
-  };
-
   const updateData = async () => {
     const updatedGatherMate = {
       intro,
@@ -155,9 +151,8 @@ function GatherMateEdit() {
           </div>
         </div>
         <div className="form-row py-2">
-          <div className="col-md-12 col-10 d-flex justify-content-between">
-            <Button text={"목록으로"}icon="list" onClick={toList} />
-            <Button text={"수정하기"} icon="edit" onClick={updateData} />
+          <div className="col-md-12 col-10 d-flex justify-content-end">
+            <Button text={"수정"} icon="edit" onClick={updateData} />
           </div>
         </div>
       </section>
