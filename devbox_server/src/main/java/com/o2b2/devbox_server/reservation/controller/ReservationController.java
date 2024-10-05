@@ -53,6 +53,23 @@ public class ReservationController {
         return list;
     }
 
+    // 예약 가능 여부 확인 API 추가
+    @PostMapping("/reservation/availability")
+    public Map<String, Object> checkReservationAvailability(@RequestBody Map<String, String> requestData) {
+        String date = requestData.get("date");
+        String time = requestData.get("time");
+
+        // 전달된 날짜와 시간이 이미 예약된 경우가 있는지 확인
+        List<Reservation> existingReservations = reservationRepository.findByDateAndTime(date, time);
+        Map<String, Object> response = new HashMap<>();
+        if (existingReservations.isEmpty()) {
+            response.put("isAvailable", true); // 예약 가능
+        } else {
+            response.put("isAvailable", false); // 예약 불가능
+        }
+        return response;
+    }
+
     @GetMapping("/reservation/check/{category}/{date}")
     public List<Map<String, Object>> reservationList(
             @PathVariable("category") String category,

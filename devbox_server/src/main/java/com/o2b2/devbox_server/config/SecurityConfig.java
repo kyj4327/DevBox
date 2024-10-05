@@ -215,6 +215,7 @@ public class SecurityConfig {
                                                 // 6층 회의실 예약
                                                 .requestMatchers("/reservation/write/**").permitAll()
                                                 .requestMatchers("/reservation/write").hasAnyRole("ADMIN", "STUDENT")
+                                                .requestMatchers("/reservation/availability").authenticated()
                                                 .requestMatchers("/reservation/check/**").authenticated()
                                                 .requestMatchers("/reservation/delete**").authenticated()
                                                 .requestMatchers("/reservation/delete**").hasAnyRole("ADMIN", "STUDENT")

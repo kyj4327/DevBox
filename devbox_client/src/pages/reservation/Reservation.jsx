@@ -15,6 +15,8 @@ const Reservation = () => {
     const { user } = useUser();
     const navigate = useNavigate();
 
+    const token = localStorage.getItem('accessToken');
+
     const [value, onChange] = useState(new Date());
     const userName = useState(user ? user.name : '');
     const [date, setDate] = useState('');
@@ -90,8 +92,23 @@ const Reservation = () => {
         return true;
     };
 
+    // 예약 가능 여부를 확인하는 함수 추가
+    const checkReservationAvailability = async () => {
+        const url = `${domain}/reservation/availability`;
+        const response = await fetch(url, {
+            method: 'post',
+            credentials: 'include',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ date: date, time: time })
+        });
+        const data = await response.json();
+        return data.isAvailable; // 서버에서 예약 가능 여부 반환
+    };
+
     const saveData = async () => {
-        const token = localStorage.getItem('accessToken');
         try {
             const url = `${domain}/reservation/write`;
             const response = await fetch(url, {
@@ -132,6 +149,16 @@ const Reservation = () => {
     const handleSave = async (e) => {
         e.preventDefault();
         if (validateFields()) {
+            const isAvailable = await checkReservationAvailability(); // 예약 가능 여부 확인
+            if (!isAvailable) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "이미 예약된 날짜/시간입니다."
+                }).then(() => {
+                    window.location.reload();
+                });
+                return;
+            }
             const result = await Swal.fire({
                 title: "예약하시겠습니까?",
                 text: `${date} ${time}`,

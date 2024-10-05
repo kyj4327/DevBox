@@ -20,4 +20,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     Page<Reservation> findByUserEntityAndConditionAndDateContaining(UserEntity userEntity, String condition, String date, Pageable pageable);
 
+    List<Reservation> findByDateAndTime(String date, String time);
+
 }
