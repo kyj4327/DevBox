@@ -19,7 +19,7 @@ const BoardComments = ({ postId, boardType }) => {
   const [editCommentContent, setEditCommentContent] = useState("");
 
   // 동적으로 API 경로 생성
-  const boardName = `http://localhost:8080/${boardType}`;
+  const boardName = `https://devback.shop/${boardType}`;
 
   const formatDateTime = (dateString) => {
     const date = new Date(dateString);

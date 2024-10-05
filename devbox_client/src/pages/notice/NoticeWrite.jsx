@@ -46,7 +46,7 @@ function NoticeWrite() {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/notice/write", {
+      const response = await fetch("https://devback.shop/notice/write", {
         method: "POST",
         credentials: "include",
         headers: {

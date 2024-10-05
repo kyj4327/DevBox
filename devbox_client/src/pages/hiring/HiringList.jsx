@@ -7,7 +7,7 @@ import { useUser } from '../../components/context/UserContext';
 import Swal from 'sweetalert2';
 
 const HiringList = () => {
-    const domain = "http://localhost:8080";
+    const domain = "https://devback.shop";
 
     const { user } = useUser();
     const navigate = useNavigate();

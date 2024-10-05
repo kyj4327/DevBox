@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import InputScrollAndFocus from '../../components/InputScrollAndFocus';
 
 const ReferenceWrite = () => {
-    const domain = "http://localhost:8080";
+    const domain = "https://devback.shop";
 
     const { user } = useUser(); // Context에서 유저 정보 가져오기
     const navigate = useNavigate();

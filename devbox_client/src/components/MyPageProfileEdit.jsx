@@ -25,7 +25,7 @@ function MyPageProfileEdit() {
     const dbRole = user.role === "일반회원" ? "ROLE_USER" : "ROLE_STUDENT";
 
     try {
-      const response = await fetch("http://localhost:8080/api/user/update", {
+      const response = await fetch("https://devback.shop/api/user/update", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -53,7 +53,7 @@ function MyPageProfileEdit() {
 
   const handleDeleteAccount = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/user/delete", {
+      const response = await fetch("https://devback.shop/api/user/delete", {
         method: "DELETE",
         credentials: "include",
         headers: {

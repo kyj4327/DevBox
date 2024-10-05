@@ -39,12 +39,12 @@ function NoticeList() {
   }, [currentPage]);
 
   const fetchData = async () => {
-    let url = `http://localhost:8080/notice/posts?page=${
+    let url = `https://devback.shop/notice/posts?page=${
       currentPage - 1
     }&size=10&sort=id,desc`;
 
     if (searchKeyword) {
-      url = `http://localhost:8080/notice/posts/search?keyword=${encodeURIComponent(
+      url = `https://devback.shop/notice/posts/search?keyword=${encodeURIComponent(
         searchKeyword
       )}&searchType=${encodeURIComponent(searchType)}&page=${
         currentPage - 1

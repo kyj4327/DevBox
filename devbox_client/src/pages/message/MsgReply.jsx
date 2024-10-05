@@ -12,7 +12,7 @@ const MesReply = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
-    const domain = "http://localhost:8080";
+    const domain = "https://devback.shop";
     const [title, setTitle] = useState('');
     const [sender, setSender] = useState('');
     const [reciver, setReciver] = useState('');

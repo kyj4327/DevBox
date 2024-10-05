@@ -77,7 +77,7 @@ function GatherMateWrite() {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/gathermate/write", {
+      const response = await fetch("https://devback.shop/gathermate/write", {
         method: "POST",
         credentials: "include",
         headers: {

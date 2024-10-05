@@ -137,7 +137,7 @@ const DragDrop = (props) => {
             return (
               <div  style={{ 'display': 'flow' }}>
                 <img width='120px' height='120px' 
-                 src={`http://localhost:8080/project/download?id=${v.id}`}></img>
+                 src={`https://devback.shop/project/download?id=${v.id}`}></img>
                 <div style={{ 
                   'display': 'flex', 
                   'alignItems': 'center',

@@ -24,7 +24,7 @@ const ProjectDetail = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
-    const domain = "http://localhost:8080";
+    const domain = "https://devback.shop";
 
     const [showSwiper, setShowSwiper] = useState(false);
 

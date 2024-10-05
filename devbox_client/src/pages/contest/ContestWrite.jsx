@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 import InputScrollAndFocus from '../../components/InputScrollAndFocus';
 
 const ContestWrite = () => {
-    const domain = "http://localhost:8080";
+    const domain = "https://devback.shop";
 
     const { user } = useUser();
     const navigate = useNavigate();

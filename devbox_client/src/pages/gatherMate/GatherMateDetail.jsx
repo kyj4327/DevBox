@@ -37,7 +37,7 @@ const GatherMateDetail = () => {
   const fetchPost = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/posts/${postId}`,
+        `https://devback.shop/gathermate/posts/${postId}`,
         {
           method: "GET",
           credentials: "include",
@@ -97,7 +97,7 @@ const GatherMateDetail = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/delete/${postId}`,
+        `https://devback.shop/gathermate/delete/${postId}`,
         {
           method: "DELETE", // 삭제 요청
           headers: {
@@ -144,7 +144,7 @@ const GatherMateDetail = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/likes/${postId}`,
+        `https://devback.shop/gathermate/likes/${postId}`,
         {
           method: "POST",
           credentials: "include",
@@ -181,7 +181,7 @@ const GatherMateDetail = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/edit/${postId}/recruiting`,
+        `https://devback.shop/gathermate/edit/${postId}/recruiting`,
         {
           method: "PUT",
           headers: {
@@ -224,7 +224,7 @@ const GatherMateDetail = () => {
     const accessToken = localStorage.getItem("accessToken");
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/isLiked/posts/${postId}`,
+        `https://devback.shop/gathermate/isLiked/posts/${postId}`,
         {
           method: "GET",
           credentials: "include",

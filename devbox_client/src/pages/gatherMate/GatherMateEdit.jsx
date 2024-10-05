@@ -22,7 +22,7 @@ function GatherMateEdit() {
     const fetchPost = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/gathermate/posts/${postId}`
+          `https://devback.shop/gathermate/posts/${postId}`
         );
         if (!response.ok) {
           throw new Error("네트워크 응답이 올바르지 않습니다.");
@@ -59,7 +59,7 @@ function GatherMateEdit() {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/edit/${postId}`,
+        `https://devback.shop/gathermate/edit/${postId}`,
         {
           method: "PUT",
           headers: {

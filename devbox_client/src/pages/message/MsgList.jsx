@@ -5,7 +5,7 @@ import Category from "../../components/Category";
 
 const MsgList = (props) => {
     const navigate = useNavigate();
-    const domain = "http://localhost:8080";
+    const domain = "https://devback.shop";
     const [likeStatus, setLikeStatus] = useState({});
 
     const like = async (msgId) => {

@@ -11,7 +11,7 @@ const MsgDetail = () => {
     const id = searchParams.get('id');
     const category = searchParams.get('category');
     const kind = category == '받은쪽지' ? 0 : 1;
-    const domain = "http://localhost:8080";
+    const domain = "https://devback.shop";
     const [title, setTitle] = useState('');
     const [sender, setSender] = useState('');
     const [reciver, setReciver] = useState('');

@@ -56,12 +56,12 @@ function GreetingList() {
   }, [currentPage]);
 
   const fetchData = async () => {
-    let url = `http://localhost:8080/greeting/posts?page=${
+    let url = `https://devback.shop/greeting/posts?page=${
       currentPage - 1
     }&size=10&sort=id,desc`;
 
     if (searchKeyword) {
-      url = `http://localhost:8080/greeting/posts/search?keyword=${encodeURIComponent(
+      url = `https://devback.shop/greeting/posts/search?keyword=${encodeURIComponent(
         searchKeyword
       )}&searchType=${encodeURIComponent(searchType)}&page=${
         currentPage - 1
@@ -144,7 +144,7 @@ function GreetingList() {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/greeting/delete/${postId}`,
+        `https://devback.shop/greeting/delete/${postId}`,
         {
           method: "DELETE", // 삭제 요청
           headers: {
@@ -203,7 +203,7 @@ function GreetingList() {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/greeting/edit/${postId}`,
+        `https://devback.shop/greeting/edit/${postId}`,
         {
           method: "PUT",
           headers: {

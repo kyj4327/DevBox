@@ -54,7 +54,7 @@ function GreetingWrite({ onPostCreated }) {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/greeting/write", {
+      const response = await fetch("https://devback.shop/greeting/write", {
         method: "POST",
         credentials: "include",
         headers: {

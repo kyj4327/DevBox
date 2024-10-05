@@ -23,7 +23,7 @@ const ContactForm = () => {
     message: true,
   });
 
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8080";
+  const API_URL = process.env.REACT_APP_API_URL || "https://devback.shop";
 
   const handleChange = (e) => {
     const { name, value } = e.target;

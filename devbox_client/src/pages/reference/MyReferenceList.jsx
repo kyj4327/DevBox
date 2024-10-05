@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import Category from '../../components/Category';
 
 const MyReferenceList = () => {
-    const domain = "http://localhost:8080";
+    const domain = "https://devback.shop";
 
     const { user, loading } = useUser();
     const navigate = useNavigate();

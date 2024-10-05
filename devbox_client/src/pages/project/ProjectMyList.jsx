@@ -9,7 +9,7 @@ const ProjectMyList = () => {
     const [pageData, setPageData] = useState({});
     const [refresh, setRefresh] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const domain = "http://localhost:8080";
+    const domain = "https://devback.shop";
    
     async function get(page = 1) {
         const token = localStorage.getItem('accessToken');

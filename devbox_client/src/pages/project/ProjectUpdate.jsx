@@ -11,7 +11,7 @@ import QuillEditor from "../../components/QuillEditor";
 
 const ProjectUpdate = () => {
     const navigate = useNavigate();
-    const domain = "http://localhost:8080";
+    const domain = "https://devback.shop";
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
