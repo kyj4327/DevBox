@@ -10,9 +10,6 @@ import InputScrollAndFocus from '../../components/InputScrollAndFocus';
 
 const ReferenceWrite = () => {
     const domain = "http://localhost:8080";
-    const toList = () => {
-        navigate('/reference/list');
-    };
 
     const { user } = useUser(); // Context에서 유저 정보 가져오기
     const navigate = useNavigate();
@@ -209,13 +206,12 @@ const ReferenceWrite = () => {
                         )}
                         {/* 내용 추가 버튼은 visibleContents가 3 미만일 때만 표시 */}
                         {visibleContents < 3 && (
-                            <div className="col-md-12 col-10" style={{ marginBottom: '3rem' }}>
+                            <div className="col-md-12 col-10">
                                 <Button text={'추가'} icon="plus" onClick={handleAddContent} />
                             </div>
                         )}
                     </div>
-                    <div className="col-md-12 col-10" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Button text={'목록'} icon="list" onClick={toList} />
+                    <div className="col-md-12 col-10 text-end">
                         <Button text={'등록'} icon="pen" onClick={saveData} />
                     </div>
                 </div>

@@ -9,9 +9,6 @@ import InputScrollAndFocus from '../../components/InputScrollAndFocus';
 
 const HiringWrite = () => {
     const domain = "http://localhost:8080";
-    const toList = () => {
-        navigate('/hiring/list');
-    };
 
     const { user } = useUser();
     const navigate = useNavigate();
@@ -122,8 +119,7 @@ const HiringWrite = () => {
                         <WriteLong titleTag={'이미지 주소'} name={'imgUrl'} value={imgUrl} onChange={(e) => { setImgUrl(e.target.value) }} />
                         <WriteLong titleTag={'원티드 주소'} name={'wantedUrl'} value={wantedUrl} onChange={(e) => { setWantedUrl(e.target.value) }} />
                     </div>
-                    <div className="col-md-12 col-10" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Button text={'목록'} icon="list" onClick={toList} />
+                    <div className="col-md-12 col-10 text-end">
                         <Button text={'등록'} icon="pen" onClick={saveData} />
                     </div>
                 </div>
