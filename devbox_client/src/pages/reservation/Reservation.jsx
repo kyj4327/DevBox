@@ -1,4 +1,5 @@
 import '../../assets/css/reservation.css';
+import forCSS from '../../assets/img/banner-img-01.svg';
 
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -170,15 +171,16 @@ const Reservation = () => {
 
     return (
         <div>
-            <section className="bg-light contact-section">
+            <section className="bg-light reservation-section">
                 <div className="container py-4">
                     <div className="row align-items-center justify-content-between">
                         <div className="contact-header col-lg-4">
                             <h1 className="h2 pb-3 text-primary">Reservation</h1>
                             <h3 className="h4 regular-400">회의실 예약</h3>
-                            <p className="light-300">
-                                6층 회의실
-                            </p>
+                            <p className="light-300">6층 회의실</p>
+                        </div>
+                        <div className="reservation-img col-lg-5 align-items-end col-md-4">
+                            <img src={forCSS} />
                         </div>
                     </div>
                 </div>
@@ -233,7 +235,7 @@ const Reservation = () => {
                     </div>
                 </div>
             </section >
-        </div >
+        </div>
     );
 };
 
