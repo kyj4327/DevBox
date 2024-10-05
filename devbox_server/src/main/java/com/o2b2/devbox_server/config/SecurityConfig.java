@@ -182,14 +182,14 @@ public class SecurityConfig {
                                                 .requestMatchers("/greeting/edit/**").authenticated()
 
                                                 // 공지사항
-                                                .requestMatchers("/notice/detail/**").permitAll()
+                                                .requestMatchers("/notice/write").hasRole("ADMIN")
                                                 .requestMatchers("/notice/posts/**").permitAll()
                                                 .requestMatchers("/notice/posts").authenticated()
                                                 .requestMatchers("/notice/posts**").authenticated()
 
                                                 // 공모전 공고
                                                 .requestMatchers("/contest/list*").permitAll()
-                                                .requestMatchers("/contest/write").authenticated()
+//                                                .requestMatchers("/contest/write").authenticated()
                                                 .requestMatchers("/contest/write").hasRole("ADMIN")
                                                 .requestMatchers("/contest/update**").authenticated()
                                                 .requestMatchers("/contest/update**").hasRole("ADMIN")
@@ -198,7 +198,7 @@ public class SecurityConfig {
 
                                                 // 채용 공고
                                                 .requestMatchers("/hiring/list/**").permitAll()
-                                                .requestMatchers("/hiring/write").authenticated()
+//                                                .requestMatchers("/hiring/write").authenticated()
                                                 .requestMatchers("/hiring/write").hasRole("ADMIN")
                                                 .requestMatchers("/hiring/update**").authenticated()
                                                 .requestMatchers("/hiring/update**").hasRole("ADMIN")
