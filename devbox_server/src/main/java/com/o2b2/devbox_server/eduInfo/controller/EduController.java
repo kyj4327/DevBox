@@ -20,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,9 +32,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.o2b2.devbox_server.eduInfo.model.EduEntity;
 import com.o2b2.devbox_server.eduInfo.repository.EduRepository;
-import com.o2b2.devbox_server.gatherMate.service.GatherMateService;
-import com.o2b2.devbox_server.user.dto.CustomUserDetails;
-import com.o2b2.devbox_server.user.entity.UserEntity;
 import com.o2b2.devbox_server.user.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -80,7 +76,6 @@ public class EduController {
 
         Page<EduEntity> p = eduRepository.findByState(state, pageable);
         List<EduEntity> list = p.getContent();
-
         // 페이지네이션 관련 정보 계산
         int totalPage = p.getTotalPages();
         int startPage = (page - 1) / 10 * 10 + 1;

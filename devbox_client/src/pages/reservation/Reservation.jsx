@@ -1,4 +1,5 @@
 import '../../assets/css/reservation.css';
+import forCSS from '../../assets/img/banner-img-01.svg';
 
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -14,6 +15,8 @@ const Reservation = () => {
     const { user } = useUser();
     const navigate = useNavigate();
 
+    const token = localStorage.getItem('accessToken');
+
     const [value, onChange] = useState(new Date());
     const userName = useState(user ? user.name : '');
     const [date, setDate] = useState('');
@@ -21,7 +24,10 @@ const Reservation = () => {
     const condition = "예약완료";
     const [timeData, setTimeData] = useState([]);
 
+    const [isWeekend, setIsWeekend] = useState(false); // 주말 여부를 저장할 상태 변수
     useEffect(() => {
+        const dayOfWeek = moment(value).day();
+        setIsWeekend(dayOfWeek === 0 || dayOfWeek === 6); // 토요일(6), 일요일(0)인지 확인
         setDate(moment(value).format("YYYY년 MM월 DD일"));
     }, [value]);
 
@@ -54,7 +60,13 @@ const Reservation = () => {
     };
 
     const validateFields = () => {
-        if (!user) {
+        if (isWeekend) { // 주말인지 체크
+            Swal.fire({
+                icon: "warning",
+                title: "주말은 예약 불가합니다."
+            });
+            return false;
+        } else if (!user) {
             Swal.fire({
                 icon: "error",
                 title: "로그인이 필요합니다."
@@ -80,8 +92,23 @@ const Reservation = () => {
         return true;
     };
 
+    // 예약 가능 여부를 확인하는 함수 추가
+    const checkReservationAvailability = async () => {
+        const url = `${domain}/reservation/availability`;
+        const response = await fetch(url, {
+            method: 'post',
+            credentials: 'include',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ date: date, time: time })
+        });
+        const data = await response.json();
+        return data.isAvailable; // 서버에서 예약 가능 여부 반환
+    };
+
     const saveData = async () => {
-        const token = localStorage.getItem('accessToken');
         try {
             const url = `${domain}/reservation/write`;
             const response = await fetch(url, {
@@ -122,6 +149,16 @@ const Reservation = () => {
     const handleSave = async (e) => {
         e.preventDefault();
         if (validateFields()) {
+            const isAvailable = await checkReservationAvailability(); // 예약 가능 여부 확인
+            if (!isAvailable) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "이미 예약된 날짜/시간입니다."
+                }).then(() => {
+                    window.location.reload();
+                });
+                return;
+            }
             const result = await Swal.fire({
                 title: "예약하시겠습니까?",
                 text: `${date} ${time}`,
@@ -163,22 +200,25 @@ const Reservation = () => {
 
     const TimeButton = ({ value }) => {
         return (
-            <button className={`btn px-4 mx-auto btn-outline-primary ${isDisabled(value) ? "disabled-btn" : ""}`}
-                onClick={timeClick} disabled={isDisabled(value)}>{value}</button>
+            !isWeekend && ( // 주말일 경우 버튼을 숨김
+                <button className={`btn px-4 mx-auto btn-outline-primary ${isDisabled(value) ? "disabled-btn" : ""}`}
+                    onClick={timeClick} disabled={isDisabled(value)}>{value}</button>
+            )
         );
     };
 
     return (
         <div>
-            <section className="bg-light contact-section">
+            <section className="bg-light reservation-section">
                 <div className="container py-4">
                     <div className="row align-items-center justify-content-between">
                         <div className="contact-header col-lg-4">
                             <h1 className="h2 pb-3 text-primary">Reservation</h1>
                             <h3 className="h4 regular-400">회의실 예약</h3>
-                            <p className="light-300">
-                                6층 회의실
-                            </p>
+                            <p className="light-300">6층 회의실</p>
+                        </div>
+                        <div className="reservation-img col-lg-5 align-items-end col-md-4">
+                            <img src={forCSS} />
                         </div>
                     </div>
                 </div>
@@ -233,7 +273,7 @@ const Reservation = () => {
                     </div>
                 </div>
             </section >
-        </div >
+        </div>
     );
 };
 
