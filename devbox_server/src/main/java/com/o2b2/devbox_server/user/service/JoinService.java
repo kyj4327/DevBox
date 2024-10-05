@@ -43,6 +43,11 @@ public class JoinService {
             }
         }
 
+        // 닉네임 중복 확인
+        if (isNicknameDuplicated(nickname)) {
+            throw new IllegalArgumentException("이미 사용 중인 닉네임입니다.");
+        }
+
         // 비밀번호 유효성 검사 추가
         if (!isValidPassword(password)) {
             throw new IllegalArgumentException("비밀번호는 영어, 숫자, 특수기호가 한 개씩 포함된 6자 이상이어야 합니다.");
@@ -66,4 +71,9 @@ public class JoinService {
         String regex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&]).{6,}$";
         return password.matches(regex);
     }
+    // 닉네임 중복 확인 메서드
+    private boolean isNicknameDuplicated(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
 }
