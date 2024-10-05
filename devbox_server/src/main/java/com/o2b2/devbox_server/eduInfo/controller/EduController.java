@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Sort;
 import org.springframework.core.io.UrlResource;
@@ -36,13 +37,24 @@ import com.o2b2.devbox_server.user.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.*;
 
 @RestController
 @CrossOrigin
 @Transactional
 public class EduController {
 
-    private final Path fileStorageLocation = Paths.get("c:/images"); // 파일 저장 경로
+//    private final Path fileStorageLocation = Paths.get("c:/images"); // 파일 저장 경로
+
+    // S3 파일 URL 생성 메서드
+    private String getS3FileUrl(String filename) {
+        return String.format("https://%s.s3.%s.amazonaws.com/%s", bucketName, region, filename);
+    }
 
     // 고유한 파일명을 생성하는 메서드
     private String generateUniqueFilename(String originalFilename) {
@@ -56,11 +68,38 @@ public class EduController {
         return uniqueFilename;
     }
 
+    @Value("${aws.s3.bucket}")
+    private String bucketName;
+
+    @Value("${aws.region}")
+    private String region;
+
+    @Value("${aws.accessKeyId}")
+    private String accessKeyId;
+
+    @Value("${aws.secretKey}")
+    private String secretKey;
+
+    private final S3Client s3Client;
+
+
     @Autowired
     EduRepository eduRepository;
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    public EduController(
+            @Value("${aws.accessKeyId}") String accessKeyId,
+            @Value("${aws.secretKey}") String secretKey,
+            @Value("${aws.region}") String region) {
+        this.s3Client = S3Client.builder()
+                .region(Region.of(region))
+                .credentialsProvider(StaticCredentialsProvider.create(
+                        AwsBasicCredentials.create(accessKeyId, secretKey)))
+                .build();
+    }
 
     @GetMapping("/edu/list/{state}")
     public Map<String, Object> eduList(
@@ -128,10 +167,34 @@ public class EduController {
         edu.setImg(uniqueFilename);
         EduEntity result = eduRepository.save(edu);
 
+//        try {
+//            // 파일을 지정된 경로에 고유한 파일명으로 저장
+//            file.transferTo(new File("c:/images/" + uniqueFilename));
+//        } catch (IllegalStateException | IOException e) {
+//            e.printStackTrace();
+//            map.put("code", 500);
+//            map.put("msg", "업로드 중 오류 발생: " + e.getMessage());
+//            return map;
+//        }
+//
+//        map.put("code", 200);
+//        map.put("msg", "업로드 완료");
+//
+//        return map;
+//    }
+
+    // AWS_S3 이용
         try {
-            // 파일을 지정된 경로에 고유한 파일명으로 저장
-            file.transferTo(new File("c:/images/" + uniqueFilename));
-        } catch (IllegalStateException | IOException e) {
+            // S3에 파일 업로드
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(uniqueFilename)
+                    .acl(ObjectCannedACL.PUBLIC_READ) // 필요에 따라 ACL 설정
+                    .contentType(file.getContentType())
+                    .build();
+
+            s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes()));
+        } catch (S3Exception | IOException e) {
             e.printStackTrace();
             map.put("code", 500);
             map.put("msg", "업로드 중 오류 발생: " + e.getMessage());
@@ -143,6 +206,7 @@ public class EduController {
 
         return map;
     }
+
 
     @PostMapping("/edu/update")
     public Map<String, Object> update(
@@ -165,10 +229,54 @@ public class EduController {
 
                 edu.setImg(uniqueFilename);
 
+//                try {
+//                    // 새로운 파일을 지정된 경로에 저장 (고유한 파일명으로)
+//                    file.transferTo(new File("c:/images/" + uniqueFilename));
+//                } catch (IllegalStateException | IOException e) {
+//                    e.printStackTrace(); // 파일 저장 중 오류 발생 시 스택 트레이스 출력
+//                    map.put("code", 500);
+//                    map.put("msg", "파일 업로드 중 오류 발생: " + e.getMessage());
+//                    return map; // 오류 발생 시 바로 반환
+//                }
+//            } else {
+//                // 파일이 없으면 기존의 파일 이름 유지
+//                edu.setImg(existingEdu.getImg());
+//            }
+//
+//            // EduEntity 객체를 데이터베이스에 저장
+//            eduRepository.save(edu);
+//
+//            // 응답 맵에 성공 코드와 메시지 추가
+//            map.put("code", 200);
+//            map.put("msg", "수정 완료");
+//
+//        } else {
+//            // 기존 EduEntity가 없는 경우 처리
+//            map.put("code", 404);
+//            map.put("msg", "존재하지 않는 데이터입니다.");
+//        }
+//
+//        return map; // 수정 완료 응답 반환
+//    }
                 try {
-                    // 새로운 파일을 지정된 경로에 저장 (고유한 파일명으로)
-                    file.transferTo(new File("c:/images/" + uniqueFilename));
-                } catch (IllegalStateException | IOException e) {
+                    // 새로운 파일을 S3에 업로드
+                    PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                            .bucket(bucketName)
+                            .key(uniqueFilename)
+                            .acl(ObjectCannedACL.PUBLIC_READ) // 필요에 따라 ACL 설정
+                            .contentType(file.getContentType())
+                            .build();
+
+                    s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes()));
+
+                    // 기존 파일을 S3에서 삭제
+                    DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                            .bucket(bucketName)
+                            .key(existingEdu.getImg())
+                            .build();
+                    s3Client.deleteObject(deleteObjectRequest);
+
+                } catch (S3Exception | IOException e) {
                     e.printStackTrace(); // 파일 저장 중 오류 발생 시 스택 트레이스 출력
                     map.put("code", 500);
                     map.put("msg", "파일 업로드 중 오류 발생: " + e.getMessage());
@@ -195,11 +303,47 @@ public class EduController {
         return map; // 수정 완료 응답 반환
     }
 
+//    @DeleteMapping("/edu/delete")
+//    public String edudelete(@RequestParam Long Id) {
+//        eduRepository.deleteById(Id);
+//        return "삭제 완료";
+//    }
+
     @DeleteMapping("/edu/delete")
-    public String edudelete(@RequestParam Long Id) {
-        eduRepository.deleteById(Id);
-        return "삭제 완료";
+    public Map<String, Object> edudelete(@RequestParam Long Id) {
+        Map<String, Object> response = new HashMap<>();
+
+        Optional<EduEntity> eduOpt = eduRepository.findById(Id);
+
+        if (eduOpt.isPresent()) {
+            EduEntity edu = eduOpt.get();
+
+            try {
+                // S3에서 이미지 파일 삭제
+                DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(edu.getImg())
+                        .build();
+                s3Client.deleteObject(deleteObjectRequest);
+
+                // 데이터베이스에서 EduEntity 삭제
+                eduRepository.deleteById(Id);
+
+                response.put("code", 200);
+                response.put("msg", "삭제 완료");
+            } catch (S3Exception e) {
+                e.printStackTrace();
+                response.put("code", 500);
+                response.put("msg", "S3에서 파일 삭제 중 오류 발생: " + e.getMessage());
+            }
+        } else {
+            response.put("code", 404);
+            response.put("msg", "존재하지 않는 데이터입니다.");
+        }
+
+        return response;
     }
+
 
     @GetMapping("/edu/detail")
     @ResponseBody
@@ -213,7 +357,10 @@ public class EduController {
         map.put("id", edu.getId());
         map.put("title", edu.getTitle());
         map.put("subtitle", edu.getSubtitle());
-        map.put("img", edu.getImg());
+
+        //        map.put("img", edu.getImg());
+        map.put("img", getS3FileUrl(edu.getImg())); // S3 URL로 변경
+
         map.put("recruit", edu.getRecruit());
         map.put("eduterm", edu.getEduterm());
         map.put("people", edu.getPeople());
@@ -237,7 +384,10 @@ public class EduController {
         map.put("id", edu.getId());
         map.put("title", edu.getTitle());
         map.put("subtitle", edu.getSubtitle());
-        map.put("img", edu.getImg());
+
+//        map.put("img", edu.getImg());
+        map.put("img", getS3FileUrl(edu.getImg())); // S3 URL로 변경
+
         map.put("recruit", edu.getRecruit());
         map.put("eduterm", edu.getEduterm());
         map.put("people", edu.getPeople());
@@ -251,28 +401,49 @@ public class EduController {
 
     @GetMapping("/edu/download")
     public ResponseEntity<Resource> downloadFile(@RequestParam Long id) {
+//        try {
+//            Optional<EduEntity> opt = eduRepository.findById(id);
+//            String filename = opt.get().getImg();
+//            // 파일 경로 생성
+//            Path filePath = fileStorageLocation.resolve(filename).normalize();
+//            Resource resource = new UrlResource(filePath.toUri());
+//
+//            // 파일이 존재하지 않을 경우 예외 처리
+//            if (!resource.exists()) {
+//                return ResponseEntity.notFound().build();
+//            }
+//
+//            // 파일의 MIME 타입을 추측 (추가 설정 가능)
+//            String contentType = "application/octet-stream";
+//            return ResponseEntity.ok()
+//                    .contentType(org.springframework.http.MediaType.parseMediaType(contentType))
+//                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+//                    .body(resource);
+//        } catch (IOException ex) {
+//            // 파일 읽기 오류 처리
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
         try {
             Optional<EduEntity> opt = eduRepository.findById(id);
-            String filename = opt.get().getImg();
-            // 파일 경로 생성
-            Path filePath = fileStorageLocation.resolve(filename).normalize();
-            Resource resource = new UrlResource(filePath.toUri());
-
-            // 파일이 존재하지 않을 경우 예외 처리
-            if (!resource.exists()) {
+            if (!opt.isPresent()) {
                 return ResponseEntity.notFound().build();
             }
 
-            // 파일의 MIME 타입을 추측 (추가 설정 가능)
-            String contentType = "application/octet-stream";
-            return ResponseEntity.ok()
-                    .contentType(org.springframework.http.MediaType.parseMediaType(contentType))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                    .body(resource);
-        } catch (IOException ex) {
+            EduEntity edu = opt.get();
+            String filename = edu.getImg();
+
+            // S3에서 파일의 URL 생성
+            String fileUrl = getS3FileUrl(filename);
+
+            // 클라이언트가 파일을 직접 다운로드하도록 리다이렉트
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.LOCATION, fileUrl);
+            return new ResponseEntity<>(headers, HttpStatus.FOUND);
+
+        } catch (Exception ex) {
             // 파일 읽기 오류 처리
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 }
