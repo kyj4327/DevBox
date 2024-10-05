@@ -22,7 +22,10 @@ const Reservation = () => {
     const condition = "예약완료";
     const [timeData, setTimeData] = useState([]);
 
+    const [isWeekend, setIsWeekend] = useState(false); // 주말 여부를 저장할 상태 변수
     useEffect(() => {
+        const dayOfWeek = moment(value).day();
+        setIsWeekend(dayOfWeek === 0 || dayOfWeek === 6); // 토요일(6), 일요일(0)인지 확인
         setDate(moment(value).format("YYYY년 MM월 DD일"));
     }, [value]);
 
@@ -55,7 +58,13 @@ const Reservation = () => {
     };
 
     const validateFields = () => {
-        if (!user) {
+        if (isWeekend) { // 주말인지 체크
+            Swal.fire({
+                icon: "warning",
+                title: "주말은 예약 불가합니다."
+            });
+            return false;
+        } else if (!user) {
             Swal.fire({
                 icon: "error",
                 title: "로그인이 필요합니다."
@@ -164,8 +173,10 @@ const Reservation = () => {
 
     const TimeButton = ({ value }) => {
         return (
-            <button className={`btn px-4 mx-auto btn-outline-primary ${isDisabled(value) ? "disabled-btn" : ""}`}
-                onClick={timeClick} disabled={isDisabled(value)}>{value}</button>
+            !isWeekend && ( // 주말일 경우 버튼을 숨김
+                <button className={`btn px-4 mx-auto btn-outline-primary ${isDisabled(value) ? "disabled-btn" : ""}`}
+                    onClick={timeClick} disabled={isDisabled(value)}>{value}</button>
+            )
         );
     };
 
