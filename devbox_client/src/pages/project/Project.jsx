@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
 import ProjectMain from "./ProjectMain";
 import Pagination from "../../components/Pagination";
 

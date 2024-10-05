@@ -17,14 +17,14 @@ const EduInfo = (props) => {
 
     const progressMax = (recruit) => {
         const recruitDates = recruit.split(' ~ ');
-        
+
         const startDate = new Date(recruitDates[0]);
         const end = new Date(recruitDates[1]);
-        
+
 
         const timeDiff = end - startDate;
         const daysEnd = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-        
+
         return daysEnd;
     };
 
@@ -45,21 +45,26 @@ const EduInfo = (props) => {
     };
 
     return (
+        <div className="py-5">
             <div className="container py-5">
-                <h1 className="h2 semi-bold-600 text-center mt-2" style={{cursor: 'default'}}>교육 프로그램</h1>
+                <h1 className="h2 semi-bold-600 text-center mt-2" style={{ cursor: 'default' }}>교육 프로그램</h1>
                 <p
-                        className="text-center light-300"
-                        style={{ marginBottom: "0", padding: "0px",cursor: 'default' }}
-                    >
-                        멀 보고 있냐~ 신청해야지!!
-                    </p>
+                    className="text-center light-300"
+                    style={{ marginBottom: "0", padding: "0px", cursor: 'default' }}
+                >
+                    멀 보고 있냐~ 신청해야지!!
+                </p>
+
                 <div className="row justify-content-center my-5">
-                    <div className="filter-btns shadow-md rounded-pill text-center col-auto">
+                    <div className="filter-btns shadow-md py-5 my-4 rounded-pill text-center col-auto">
                         <Category text={'모집중'} onClick={clickState} isActive={props.state} />
                         <Category text={'모집완료'} onClick={clickState} isActive={props.state} />
                     </div>
                 </div>
-                <div className="row projects gx-lg-5 justify-content-center">
+                <div className="row projects"
+                    style={{
+                        marginTop: '-80px', display: "flex",
+                    }}>
                     {props.list && props.list.map((edu) => {
                         const daysLeft = calculateDaysLeft(edu.recruit);
                         const daysEnd = progressMax(edu.recruit);
@@ -67,15 +72,15 @@ const EduInfo = (props) => {
                         const isUrgent = daysLeft <= 3;
 
                         return (
-                            <div key={edu.id} className="col-sm-6 col-lg-4">
+                            <div key={edu.id} className="col-lg-4 col-md-6 col-sm-12 pt-3 px-2" style={{ width: '33.2%' }}>
                                 <Link to={`/edu/detail?id=${edu.id}`} className="text-decoration-none">
-                                    <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
+                                    <div className="service-work overflow-hidden card">
                                         <img className="card-img-top" src={`${edu.logo}`} alt={edu.logo} style={{ height: '130px', objectFit: 'contain' }} />
                                         <div className="card-body">
                                             {props.state !== '모집완료' && (
-                                                <div style={{ display: 'flex'}}>
+                                                <div style={{ display: 'flex' }}>
                                                     <div className="progress" role="progressbar" aria-label="Example 20px high"
-                                                        style={{ width: '75%', height:'20px' }}
+                                                        style={{ width: '75%', height: '20px' }}
                                                         aria-valuenow={percentageCompleted}
                                                         aria-valuemin="0"
                                                         aria-valuemax={daysEnd}>
@@ -100,21 +105,22 @@ const EduInfo = (props) => {
                             </div>
                         );
                     })}
+                    {
+                        userRole === "ROLE_ADMIN"
+                            ?
+                            <div className="form-row pt-5">
+                                <div className="col-md-12 col-12 text-end">
+                                    {user && (
+                                        <>
+                                            <Button icon={'pen'} text={'등록'} onClick={() => { navigate('/edu/write') }} />
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+                            : ''
+                    }
+                </div>
             </div>
-            {
-                userRole === "ROLE_ADMIN"
-                    ?
-                    <div className="form-row pt-2">
-                        <div className="col-md-12 col-10 text-end">
-                            {user && (
-                                <>
-                                    <Button icon={'pen'} text={'등록'} onClick={() => { navigate('/edu/write') }} />
-                                </>
-                            )}
-                        </div>
-                    </div>
-                    : ''
-            }
         </div>
     );
 };

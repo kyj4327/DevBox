@@ -459,7 +459,7 @@ function GreetingList() {
       >
         <div className="search-select-container">
           <SearchSelect
-            options={["내용 & 제목", "작성자"]}
+            options={["제목&내용", "작성자"]}
             value={searchType}
             onChange={handleSelectChange}
           />

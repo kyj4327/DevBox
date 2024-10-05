@@ -5,8 +5,6 @@ import '../../assets/css/boxicon.min.css';
 import '../../assets/css/templatemo.css';
 import '../../assets/css/custom.css';
 
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
 import Pagination from '../../components/Pagination';
 import EduInfo from './EduInfo';
 import { useEffect, useState } from 'react';
@@ -39,13 +37,15 @@ const EduMain = () => {
         setCurrentPage(pageNumber);
     };
 
-    useEffect(() => {
-        get(currentPage);
-    }, [currentPage, state]);
-
+    
     const clickState = (s) => {
         setState(s);
     };
+
+    useEffect(() => {
+        get(currentPage);
+
+    }, [currentPage, state]);
 
     return (
         <div className="EduMain">
