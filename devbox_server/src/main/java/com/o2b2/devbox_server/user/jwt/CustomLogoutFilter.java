@@ -13,11 +13,19 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
-    public class CustomLogoutFilter extends GenericFilterBean {
+public class CustomLogoutFilter extends GenericFilterBean {
 
         private final JWTUtil jwtUtil;
         private final RefreshRepository refreshRepository;
+
+        private static final List<String> ALLOWED_REDIRECT_URIS = Arrays.asList(
+                "https://devbox.world",
+                "https://devboxworld.netlify.app"
+        );
+
 
         public CustomLogoutFilter(JWTUtil jwtUtil, RefreshRepository refreshRepository) {
 
@@ -49,9 +57,12 @@ import java.io.IOException;
             //get refresh token
             String refresh = null;
             Cookie[] cookies = request.getCookies();
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("RefreshToken")) {
-                    refresh = cookie.getValue();
+            if (cookies != null) { // Null check 추가
+                for (Cookie cookie : cookies) {
+                    if ("RefreshToken".equals(cookie.getName())) {
+                        refresh = cookie.getValue();
+                        break;
+                    }
                 }
             }
 
