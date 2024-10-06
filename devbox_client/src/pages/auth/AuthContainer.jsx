@@ -38,15 +38,15 @@ function AuthContainer() {
   }, [navigate]);
 
   const onNaverLogin = () => {
-    window.location.href = "https://devback.shop/oauth2/authorization/naver";
+    window.location.href = "https://www.devback.shop/oauth2/authorization/naver";
   };
 
   const onGoogleLogin = () => {
-    window.location.href = "https://devback.shop/oauth2/authorization/google";
+    window.location.href = "https://www.devback.shop/oauth2/authorization/google";
   };
 
   const onKakaoLogin = () => {
-    window.location.href = "https://devback.shop/oauth2/authorization/kakao";
+    window.location.href = "https://www.devback.shop/oauth2/authorization/kakao";
   };
 
   const handleSignUpClick = () => {
@@ -125,7 +125,7 @@ function AuthContainer() {
   const checkEmailExists = async (email) => {
     try {
       const response = await fetch(
-        `https://devback.shop/check-email?email=${email}`
+        `https://www.devback.shop/check-email?email=${email}`
       );
       if (response.status === 409) {
         setEmailError("이미 가입된 이메일입니다.");
@@ -259,7 +259,7 @@ function AuthContainer() {
       role: role,
     };
 
-    fetch("https://devback.shop/join", {
+    fetch("https://www.devback.shop/join", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -304,7 +304,7 @@ function AuthContainer() {
     };
 
     try {
-      const response = await fetch("https://devback.shop/login", {
+      const response = await fetch("https://www.devback.shop/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

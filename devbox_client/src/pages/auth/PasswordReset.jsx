@@ -16,7 +16,7 @@ function PasswordReset() {
 
   const handleSendCode = () => {
     setIsSendingCode(true); // 로딩 시작
-    fetch("https://devback.shop/password/code", {
+    fetch("https://www.devback.shop/password/code", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +53,7 @@ function PasswordReset() {
   };
 
   const handleVerifyCode = () => {
-    fetch("https://devback.shop/password/verify", {
+    fetch("https://www.devback.shop/password/verify", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -88,7 +88,7 @@ function PasswordReset() {
   };
 
   const handleResetPassword = () => {
-    fetch("https://devback.shop/password/reset", {
+    fetch("https://www.devback.shop/password/reset", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

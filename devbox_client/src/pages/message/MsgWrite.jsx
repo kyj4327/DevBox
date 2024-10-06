@@ -14,7 +14,7 @@ const MesWrite = () => {
     const [reciver, setReciver] = useState('');
     const [content, setContent] = useState('');
     const [nickNameError, setNickNameError] = useState('');
-    const domain = "https://devback.shop";
+    const domain = "https://www.devback.shop";
     useEffect(() => {
         if (!loading) {
             if (user) {

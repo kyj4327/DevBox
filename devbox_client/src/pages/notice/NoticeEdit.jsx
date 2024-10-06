@@ -17,7 +17,7 @@ function NoticeEdit() {
     const fetchPost = async () => {
       try {
         const response = await fetch(
-          `https://devback.shop/notice/posts/${postId}`
+          `https://www.devback.shop/notice/posts/${postId}`
         );
         if (!response.ok) {
           throw new Error("네트워크 응답이 올바르지 않습니다.");
@@ -48,7 +48,7 @@ function NoticeEdit() {
 
     try {
       const response = await fetch(
-        `https://devback.shop/notice/edit/${postId}`,
+        `https://www.devback.shop/notice/edit/${postId}`,
         {
           method: "PUT",
           headers: {

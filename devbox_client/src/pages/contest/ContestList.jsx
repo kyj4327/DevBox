@@ -6,7 +6,7 @@ import { useUser } from '../../components/context/UserContext';
 import Swal from 'sweetalert2';
 
 const ContestList = () => {
-    const domain = "https://devback.shop";
+    const domain = "https://www.devback.shop";
 
     const { user } = useUser();
     const navigate = useNavigate();

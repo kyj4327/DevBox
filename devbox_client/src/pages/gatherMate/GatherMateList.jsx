@@ -48,12 +48,12 @@ function GatherMateList() {
   }, [category, currentPage]);
 
   const fetchData = async () => {
-    let url = `https://devback.shop/gathermate/posts?page=${
+    let url = `https://www.devback.shop/gathermate/posts?page=${
       currentPage - 1
     }&size=10&sort=id,desc`;
 
     if (searchKeyword) {
-      url = `https://devback.shop/gathermate/posts/search?keyword=${encodeURIComponent(
+      url = `https://www.devback.shop/gathermate/posts/search?keyword=${encodeURIComponent(
         searchKeyword
       )}&searchType=${encodeURIComponent(searchType)}&page=${
         currentPage - 1

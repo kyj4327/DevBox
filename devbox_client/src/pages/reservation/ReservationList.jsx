@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const ReservationList = () => {
-    const domain = "https://devback.shop";
+    const domain = "https://www.devback.shop";
     const [state, setState] = useState(false);
 
     const { user, loading } = useUser();

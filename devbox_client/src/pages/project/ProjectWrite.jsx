@@ -22,7 +22,7 @@ const ProjectWrite = () => {
     const [uploadImgs, setUploadImgs] = useState([]);
     const [delImgId, setDelImgId] = useState([]);
     const [savedImgs, setSavedImgs] = useState([]);
-    const domain = "https://devback.shop";
+    const domain = "https://www.devback.shop";
     const [linkError, setLinkError] = useState('');
 
 

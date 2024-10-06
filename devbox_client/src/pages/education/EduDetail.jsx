@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { useUser } from "../../components/context/UserContext";
 
 const EduDetail = () => {
-    const domain = "https://devback.shop";    
+    const domain = "https://www.devback.shop";    
     const { user } = useUser();
     const navigate = useNavigate();
     const [eduData, setEduData] = useState({});

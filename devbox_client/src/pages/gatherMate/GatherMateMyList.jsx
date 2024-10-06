@@ -48,12 +48,12 @@ function GatherMateMyList() {
   }, [category, currentPage]); // searchKeyword와 searchType 추가
 
   const fetchData = async () => {
-    let url = `https://devback.shop/gathermate/myposts?page=${
+    let url = `https://www.devback.shop/gathermate/myposts?page=${
       currentPage - 1
     }&size=5&sort=id,desc`;
 
     if (searchKeyword) {
-      url = `https://devback.shop/gathermate/myposts/search?keyword=${encodeURIComponent(
+      url = `https://www.devback.shop/gathermate/myposts/search?keyword=${encodeURIComponent(
         searchKeyword
       )}&searchType=${encodeURIComponent(searchType)}&page=${
         currentPage - 1

@@ -8,7 +8,7 @@ const Project = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [category, setCategory] = useState('최신순');
 
-    const domain = "https://devback.shop";
+    const domain = "https://www.devback.shop";
     async function get(page = 1) {
         const res = await fetch(`${domain}/project/list?page=${page}&category=${category}`);
         const data = await res.json();

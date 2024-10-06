@@ -9,7 +9,7 @@ import { useUser } from "../../components/context/UserContext";
 
 const EduWrite = () => {
     const { user,loading } = useUser();
-    const domain = "https://devback.shop"; 
+    const domain = "https://www.devback.shop"; 
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [subtitle, setSubtitle] = useState('');

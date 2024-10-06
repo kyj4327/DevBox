@@ -24,7 +24,7 @@ const NoticeDetail = () => {
   const fetchPost = async () => {
     try {
       const response = await fetch(
-        `https://devback.shop/notice/posts/${postId}`,{
+        `https://www.devback.shop/notice/posts/${postId}`,{
           method: "GET",
           credentials: "include",
           headers: {
@@ -77,7 +77,7 @@ const NoticeDetail = () => {
       // 사용자가 삭제를 확정한 경우
       if (result.isConfirmed) {
         const response = await fetch(
-          `https://devback.shop/notice/delete/${postId}`,
+          `https://www.devback.shop/notice/delete/${postId}`,
           {
             method: "DELETE", // 삭제 요청
             headers: {

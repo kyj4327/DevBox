@@ -46,7 +46,7 @@ function NoticeWrite() {
     };
 
     try {
-      const response = await fetch("https://devback.shop/notice/write", {
+      const response = await fetch("https://www.devback.shop/notice/write", {
         method: "POST",
         credentials: "include",
         headers: {

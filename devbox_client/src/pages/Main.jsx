@@ -4,7 +4,7 @@ import Category from "../components/Category";
 import { useUser } from "../../src/components/context/UserContext";
 
 const Main = () => {
-  const domain = "https://devback.shop";
+  const domain = "https://www.devback.shop";
 
   const [error, setError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);

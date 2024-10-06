@@ -10,7 +10,7 @@ const ProjectMain = (props) => {
     const navigate = useNavigate();
     const [isHovered, setIsHovered] = useState(false); // 마우스 호버 상태 관리
     const [likeStatus, setLikeStatus] = useState({}); // 좋아요 상태 및 수 관리
-    const domain = "https://devback.shop";
+    const domain = "https://www.devback.shop";
 
     const fetchUserLikeStatus = async () => {
         const token = localStorage.getItem('accessToken');
