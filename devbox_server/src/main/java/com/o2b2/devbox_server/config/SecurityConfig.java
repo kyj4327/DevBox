@@ -24,6 +24,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -84,8 +85,12 @@ public class SecurityConfig {
 
                                                                 CorsConfiguration configuration = new CorsConfiguration();
 
-                                                                configuration.setAllowedOrigins(Collections
-                                                                                .singletonList("https://devbox.world"));
+//                                                                configuration.setAllowedOrigins(Collections
+//                                                                                .singletonList("https://devbox.world"));
+                                                                configuration.setAllowedOrigins(Arrays.asList(
+                                                                        "https://devbox.world",
+                                                                        "https://devboxworld.netlify.app"
+                                                                ));
                                                                 configuration.setAllowedMethods(
                                                                                 Collections.singletonList("*"));
                                                                 configuration.setAllowCredentials(true);
@@ -93,10 +98,11 @@ public class SecurityConfig {
                                                                                 Collections.singletonList("*"));
                                                                 configuration.setMaxAge(3600L);
 
-                                                                configuration.setExposedHeaders(Collections
-                                                                                .singletonList("Set-Cookie"));
-                                                                configuration.setExposedHeaders(Collections
-                                                                                .singletonList("Authorization"));
+//                                                                configuration.setExposedHeaders(Collections
+//                                                                                .singletonList("Set-Cookie"));
+//                                                                configuration.setExposedHeaders(Collections
+//                                                                                .singletonList("Authorization"));
+                                                                configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization")); // 두 헤더 모두 설정
 
                                                                 return configuration;
                                                         }
