@@ -337,7 +337,6 @@ public class ProController {
                 PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                         .bucket(bucketName)
                         .key(uniqueFilename)
-                        .acl(ObjectCannedACL.PUBLIC_READ)
                         .contentType(mFile.getContentType())
                         .build();
 
@@ -425,7 +424,6 @@ public class ProController {
                         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                                 .bucket(bucketName)
                                 .key(uniqueFilename)
-                                .acl(ObjectCannedACL.PUBLIC_READ) // 필요에 따라 ACL 설정
                                 .contentType(mFile.getContentType())
                                 .build();
 

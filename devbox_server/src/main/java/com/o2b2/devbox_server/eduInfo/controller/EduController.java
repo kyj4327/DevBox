@@ -189,7 +189,6 @@ public class EduController {
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucketName)
                     .key(uniqueFilename)
-                    .acl(ObjectCannedACL.PUBLIC_READ) // 필요에 따라 ACL 설정
                     .contentType(file.getContentType())
                     .build();
 
@@ -263,7 +262,6 @@ public class EduController {
                     PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                             .bucket(bucketName)
                             .key(uniqueFilename)
-                            .acl(ObjectCannedACL.PUBLIC_READ) // 필요에 따라 ACL 설정
                             .contentType(file.getContentType())
                             .build();
 
