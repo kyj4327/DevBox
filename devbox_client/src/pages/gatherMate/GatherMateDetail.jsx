@@ -58,7 +58,7 @@ const GatherMateDetail = () => {
       setPost(data);
       // // setLikes(data.likes || 0);
       // setIsLiked(data.isLiked || false);
-      setIsRecruiting(data.isRecruiting);
+      setIsRecruiting(data.recruiting);
       setApply(data.apply);
     } catch (error) {
       console.error("Error fetching post:", error);
