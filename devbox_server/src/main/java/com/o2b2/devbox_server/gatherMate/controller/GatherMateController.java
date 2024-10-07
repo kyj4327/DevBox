@@ -2,6 +2,7 @@ package com.o2b2.devbox_server.gatherMate.controller;
 
 import com.o2b2.devbox_server.gatherMate.request.GatherMatePostCreate;
 import com.o2b2.devbox_server.gatherMate.request.GatherMatePostEdit;
+import com.o2b2.devbox_server.gatherMate.request.GatherMateRecruitingUpdate;
 import com.o2b2.devbox_server.gatherMate.response.GatherMateResponse;
 import com.o2b2.devbox_server.gatherMate.service.GatherMateService;
 import com.o2b2.devbox_server.user.dto.CustomUserDetails;
@@ -148,14 +149,34 @@ public class GatherMateController {
     }
 
     // 모집중 모집완료
+//    @PutMapping("/edit/{postId}/recruiting")
+//    public ResponseEntity<Map<String, String>> updateRecruitmentStatus(@PathVariable Long postId,
+//                                                                       @RequestBody @Valid GatherMateRecruitingUpdate request,
+//                                                                       @AuthenticationPrincipal CustomUserDetails userDetails) {
+//
+//        Long userId = userDetails.getUserEntity().getId();
+//        gatherMateService.updateRecruitmentStatus(postId, request, userId);
+//
+//        Map<String, String> response = new HashMap<>();
+//        response.put("message", "모집 상태가 성공적으로 변경되었습니다.");
+//
+//        return ResponseEntity.ok(response);
+//    }
     @PutMapping("/edit/{postId}/recruiting")
     public ResponseEntity<Map<String, String>> updateRecruitmentStatus(@PathVariable Long postId,
-                                                                       @RequestBody @Valid GatherMatePostEdit request,
+                                                                       @RequestBody Map<String, Boolean> request,
                                                                        @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-
         Long userId = userDetails.getUserEntity().getId();
-        gatherMateService.updateRecruitmentStatus(postId, request, userId);
+
+        // 요청 바디에서 isRecruiting 값 추출
+        Boolean isRecruiting = request.get("isRecruiting");
+        if (isRecruiting == null) {
+            throw new IllegalArgumentException("isRecruiting 값이 필요합니다.");
+        }
+
+        // 서비스 메서드 호출
+        gatherMateService.updateRecruitmentStatus(postId, isRecruiting, userId);
 
         Map<String, String> response = new HashMap<>();
         response.put("message", "모집 상태가 성공적으로 변경되었습니다.");

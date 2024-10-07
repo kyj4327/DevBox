@@ -58,7 +58,7 @@ const GatherMateDetail = () => {
       setPost(data);
       // // setLikes(data.likes || 0);
       // setIsLiked(data.isLiked || false);
-      setIsRecruiting(data.isRecruiting);
+      setIsRecruiting(data.recruiting);
       setApply(data.apply);
     } catch (error) {
       console.error("Error fetching post:", error);
@@ -177,8 +177,8 @@ const GatherMateDetail = () => {
   };
 
   const handleToggleRecruit = async () => {
-    const newRecruitingStatus = !isRecruiting; // 현재 상태의 반대값으로 변경
-
+    const newRecruitingStatus = !isRecruiting;
+  
     try {
       const response = await fetch(
         `http://localhost:8080/gathermate/edit/${postId}/recruiting`,
@@ -191,10 +191,11 @@ const GatherMateDetail = () => {
           body: JSON.stringify({ isRecruiting: newRecruitingStatus }),
         }
       );
-
+  
       if (response.ok) {
         const data = await response.json();
-        setIsRecruiting(newRecruitingStatus);
+        // 백엔드에서 업데이트된 데이터를 다시 가져옵니다.
+        await fetchPost();
         await Swal.fire({
           icon: "success",
           title: "모집 상태 변경",
