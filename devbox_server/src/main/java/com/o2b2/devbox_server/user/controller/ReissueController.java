@@ -91,7 +91,8 @@ public class ReissueController {
 
 //        response.setHeader("RefreshToken", newAccess);
         response.setHeader("Authorization", "Bearer " + newAccess);
-        response.addCookie(createCookie("RefreshToken", newRefresh));
+//        response.addCookie(createCookie("RefreshToken", newRefresh));
+        createCookieWithSameSite(response, "RefreshToken", newRefresh);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -107,6 +108,14 @@ public class ReissueController {
 
         refreshRepository.save(refreshEntity);
     }
+
+
+    private void createCookieWithSameSite(HttpServletResponse response, String key, String value) {
+        String cookie = String.format("%s=%s; Max-Age=%d; Secure; HttpOnly; SameSite=None; Path=/",
+                key, value, 60 * 60 * 24);
+        response.addHeader("Set-Cookie", cookie);
+    }
+
 
     // 쿠키 만드는 메서드.
     private Cookie createCookie(String key, String value) {
