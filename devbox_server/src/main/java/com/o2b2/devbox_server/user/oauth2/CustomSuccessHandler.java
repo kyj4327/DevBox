@@ -67,7 +67,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 //        response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("Authorization", "Bearer " + accessToken);
 
-        response.addCookie(createCookie("RefreshToken", refreshToken));
+//        response.addCookie(createCookie("RefreshToken", refreshToken));
+        createCookieWithSameSite(response, "RefreshToken", refreshToken);
 
         // AccessToken을 URL 해시(fragment)에 포함하여 프론트엔드로 리다이렉트
         String redirectUrl = "https://devbox.world/#accessToken=" + URLEncoder.encode(accessToken, StandardCharsets.UTF_8.name());
@@ -77,6 +78,12 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 //        response.sendRedirect("http://localhost:3000/home");
 
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+    }
+
+    private void createCookieWithSameSite(HttpServletResponse response, String key, String value) {
+        String cookie = String.format("%s=%s; Max-Age=%d; Secure; HttpOnly; SameSite=None; Path=/",
+                key, value, 60 * 60 * 24 * 30); // 30일
+        response.addHeader("Set-Cookie", cookie);
     }
 
     // RefreshToken을 DB에 저장하는 메서드
