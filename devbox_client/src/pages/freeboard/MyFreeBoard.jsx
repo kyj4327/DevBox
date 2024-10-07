@@ -77,9 +77,8 @@ const MyFreeboard = () => {
   return (
     <div className="mypage-content__wrapper">
       <div className="mypage-content__title-wrapper">
-            <h5 className="mypage-content__title">자유 게시판_내가 쓴 글</h5>
-          </div>
-      <section className="container py-5">
+        <h5 className="mypage-content__title">자유 게시판_내가 쓴 글</h5>
+      </div>
       <div className="row justify-content-center my-5">
         <div className="notice-list">
           <table className="notice-table">
@@ -113,9 +112,8 @@ const MyFreeboard = () => {
             </tbody>
           </table>
         </div>
-        </div>
-        <Pagination pageData={pageData} handlePageChange={handlePageChange} />
-      </section>
+      </div>
+      <Pagination pageData={pageData} handlePageChange={handlePageChange} />
     </div>
   );
 };
