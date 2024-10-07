@@ -144,7 +144,7 @@ function AuthContainer() {
 
     if (!validatePassword(newPassword)) {
       setPasswordError(
-        "비밀번호는 영어, 숫자, 특수기호 포함 6자 이상이어야 합니다."
+        "영어, 숫자, 특수기호 포함 6자 이상이어야 합니다."
       );
       setPasswordErrorColor("red");
     } else {
