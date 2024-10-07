@@ -2,12 +2,10 @@ package com.o2b2.devbox_server.gatherMate.entity;
 
 import com.o2b2.devbox_server.gatherMate.comments.entity.GathermateComment;
 import com.o2b2.devbox_server.gatherMate.domain.GatherMatePostEditor;
-import com.o2b2.devbox_server.gatherMate.domain.GatherMateRecruitingUpdateEditor;
 import com.o2b2.devbox_server.gatherMate.like.entity.Like;
 import com.o2b2.devbox_server.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
-// import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -76,12 +74,6 @@ public class GatherMate {
                 .intro(intro).apply(apply).title(title).content(content);
     }
 
-    public GatherMateRecruitingUpdateEditor.GatherMateRecruitingUpdateEditorBuilder toUpdateRecruiting(){
-        return GatherMateRecruitingUpdateEditor.builder()
-                .isRecruiting(isRecruiting);
-    }
-
-//    public GatherMatePostEditor
 
     public void edit(GatherMatePostEditor gatherMatePostEditor) {
         this.intro = gatherMatePostEditor.getIntro();
@@ -90,10 +82,7 @@ public class GatherMate {
         this.content = gatherMatePostEditor.getContent();
     }
 
-//    public void updateRecruiting(GatherMateRecruitingUpdateEditor gatherMateRecruitingUpdateEditor) {
-//        this.isRecruiting = gatherMateRecruitingUpdateEditor.isRecruiting();
-//    }
-public void updateRecruiting(boolean isRecruiting) {
-    this.isRecruiting = isRecruiting;
-}
+    public void updateRecruiting(boolean isRecruiting) {
+        this.isRecruiting = isRecruiting;
+    }
 }

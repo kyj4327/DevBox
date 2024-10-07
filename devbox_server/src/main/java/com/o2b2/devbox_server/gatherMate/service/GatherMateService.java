@@ -2,13 +2,11 @@ package com.o2b2.devbox_server.gatherMate.service;
 
 import com.o2b2.devbox_server.gatherMate.comments.repository.GathermateCommentRepository;
 import com.o2b2.devbox_server.gatherMate.domain.GatherMatePostEditor;
-import com.o2b2.devbox_server.gatherMate.domain.GatherMateRecruitingUpdateEditor;
 import com.o2b2.devbox_server.gatherMate.entity.GatherMate;
 import com.o2b2.devbox_server.gatherMate.like.repository.LikeRepository;
 import com.o2b2.devbox_server.gatherMate.repository.GatherMateRepository;
 import com.o2b2.devbox_server.gatherMate.request.GatherMatePostCreate;
 import com.o2b2.devbox_server.gatherMate.request.GatherMatePostEdit;
-import com.o2b2.devbox_server.gatherMate.request.GatherMateRecruitingUpdate;
 import com.o2b2.devbox_server.gatherMate.response.GatherMateResponse;
 import com.o2b2.devbox_server.user.entity.UserEntity;
 import com.o2b2.devbox_server.user.repository.UserRepository;
@@ -236,27 +234,6 @@ public class GatherMateService {
 
         gatherMate.edit(gatherMatePostEditor);
     }
-
-    // 모집중 변경 로직
-//    @Transactional
-//    public void updateRecruitmentStatus(Long postId, GatherMateRecruitingUpdate recruitingUpdate, Long userId) {
-//        GatherMate gatherMate = gatherMateRepository.findById(postId)
-//                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
-//
-//        // 작성자 확인
-//        if (!gatherMate.getUser().getId().equals(userId)) {
-//            throw new SecurityException("글 작성자만 모집 상태를 변경할 수 있습니다.");
-//        }
-//
-//        GatherMateRecruitingUpdateEditor.GatherMateRecruitingUpdateEditorBuilder updateBuilder = gatherMate.toUpdateRecruiting();
-//
-//        // 모집중, 모집완료만 변경
-//        GatherMateRecruitingUpdateEditor gatherMateRecruitingUpdateEditor = updateBuilder
-//                .isRecruiting(recruitingUpdate.isRecruiting())
-//                .build();
-//
-//        gatherMate.updateRecruiting(gatherMateRecruitingUpdateEditor);
-//    }
 
     @Transactional
     public void updateRecruitmentStatus(Long postId, boolean isRecruiting, Long userId) {
