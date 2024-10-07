@@ -82,7 +82,7 @@ const ProjectMyMain = (props) => {
     return (
         <>
              <div className="mypage-content__title-wrapper">
-                <h5 className="mypage-content__title" style={{cursor: 'default'}}>프로젝트 자랑 게시판</h5>
+                <h5 className="mypage-content__title" style={{cursor: 'default'}}>프로젝트 자랑_내가 쓴 글</h5>
             </div>
             <section className="container py-4">
                 <div className="row projects gx-lg-5">

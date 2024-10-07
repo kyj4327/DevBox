@@ -70,7 +70,7 @@ function MyPageSideBar() {
                 aria-haspopup="true"
                 aria-expanded={isSubmenuOpen}
               >
-                <i className="mypagesidebar"></i>내가쓴 글
+                <i className="mypagesidebar"></i>내가 쓴 글
               </button>
               <ul className="submenu">
                 <li>

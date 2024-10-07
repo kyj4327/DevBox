@@ -75,9 +75,11 @@ const MyFreeboard = () => {
   if (error) return <div className="error">{error}</div>;
 
   return (
-    <div>
+    <div className="mypage-content__wrapper">
+      <div className="mypage-content__title-wrapper">
+            <h5 className="mypage-content__title">자유 게시판_내가 쓴 글</h5>
+          </div>
       <section className="container py-5">
-        <h1 className="h2 semi-bold-600 text-center mt-2">내 게시글</h1>
         <div className="notice-list">
           <table className="notice-table">
             <thead>

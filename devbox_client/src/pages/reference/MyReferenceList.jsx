@@ -64,7 +64,7 @@ const MyReferenceList = () => {
     return (
         <div className="mypage-content__wrapper">
             <div className="mypage-content__title-wrapper">
-                <h5 className="mypage-content__title">추천해요 내가 쓴 글</h5>
+                <h5 className="mypage-content__title">추천해요_내가 쓴 글</h5>
             </div>
             <div className="mypage-content__user-info">
                 <div className="filter-btns shadow-md rounded-pill text-center col-auto">
