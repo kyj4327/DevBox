@@ -76,7 +76,7 @@ const MyReferenceList = () => {
                     <Category text={'Mobile'} isActive={selectJob} onClick={clickSelectJob} />
                     <Category text={'Others'} isActive={selectJob} onClick={clickSelectJob} />
                 </div>
-                <div className="row d-flex align-items-center pb-5">
+                <div className="row d-flex justify-content-center align-items-center pb-5">
                     {
                         data.map((v) => {
                             return (
