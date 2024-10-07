@@ -24,16 +24,13 @@ public class GatherMatePostEdit {
     @NotBlank(message = "내용을 입력해주세요.") // 빈값이 넘어오면 에러를 발생시켜준다.
     private String content;
 
-//    private LocalDateTime createdAt;
-    private boolean isRecruiting;
 
     @Builder
-    public GatherMatePostEdit(String intro, String apply, String title, String content, boolean isRecruiting) {
+    public GatherMatePostEdit(String intro, String apply, String title, String content) {
         this.intro = intro;
         this.apply = apply;
         this.title = title;
         this.content = content;
-        this.isRecruiting = isRecruiting;
     }
 }
 

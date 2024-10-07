@@ -229,33 +229,23 @@ public class GatherMateService {
                 .apply(postEdit.getApply())
                 .title(postEdit.getTitle())
                 .content(postEdit.getContent())
-                .isRecruiting(postEdit.isRecruiting())
+//                .isRecruiting(postEdit.isRecruiting())
                 .build();
 
         gatherMate.edit(gatherMatePostEditor);
     }
 
-    // 모집중 변경 로직
     @Transactional
-    public void updateRecruitmentStatus(Long postId, GatherMatePostEdit postEdit, Long userId) {
+    public void updateRecruitmentStatus(Long postId, boolean isRecruiting, Long userId) {
         GatherMate gatherMate = gatherMateRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
 
-        // 작성자 확인
         if (!gatherMate.getUser().getId().equals(userId)) {
             throw new SecurityException("글 작성자만 모집 상태를 변경할 수 있습니다.");
         }
 
-        GatherMatePostEditor.GatherMatePostEditorBuilder editorBuilder = gatherMate.toEditor();
-
-        // 모집중, 모집변경만 변경
-        GatherMatePostEditor gatherMatePostEditor = editorBuilder
-                    .isRecruiting(postEdit.isRecruiting())
-                            .build();
-
-        gatherMate.edit(gatherMatePostEditor);
+        gatherMate.updateRecruiting(isRecruiting);
     }
-
 
     // 삭제하기
     public void delete(Long postId, Long userId) {
