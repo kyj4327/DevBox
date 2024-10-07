@@ -66,7 +66,7 @@ const MyReferenceList = () => {
             <div className="mypage-content__title-wrapper">
                 <h5 className="mypage-content__title">추천해요_내가 쓴 글</h5>
             </div>
-            <div className="mypage-content__user-info">
+            <div className="row justify-content-center my-5">
                 <div className="filter-btns shadow-md rounded-pill text-center col-auto">
                     <Category text={'All'} isActive={selectJob} onClick={clickSelectJob} />
                     <Category text={'Web'} isActive={selectJob} onClick={clickSelectJob} />
@@ -76,7 +76,8 @@ const MyReferenceList = () => {
                     <Category text={'Mobile'} isActive={selectJob} onClick={clickSelectJob} />
                     <Category text={'Others'} isActive={selectJob} onClick={clickSelectJob} />
                 </div>
-                <div className="row d-flex justify-content-center align-items-center pb-5">
+            </div>
+                {/* <div className="row d-flex justify-content-center align-items-center pb-5"> */}
                     {
                         data.map((v) => {
                             return (
@@ -157,8 +158,7 @@ const MyReferenceList = () => {
                             )
                         })
                     }
-                </div>
-            </div>
+                {/* </div> */}
             <Pagination handlePageChange={handlePageChange} pageData={pageData} />
         </div>
     );
