@@ -61,34 +61,22 @@ public class MsgController {
 
         // 카테고리 확인
         Page<MsgEntity> p; // Page 객체를 먼저 선언합니다.
+        // 카테고리 확인
         if (category.equals("중요쪽지")) {
-            // 중요쪽지의 경우, like가 있는 쪽지로 정렬
-            pageable = PageRequest.of(page - 1, size, dir, "sendTime"); // sendTime으로 정렬
-
-            // 수신자에서 like가 있는 메시지 조회
-            Page<MsgEntity> receivedLikes = msgReciverRepository
-                    .findByReceiverAndLikeIsNotNull(userDetails.getUserEntity(), pageable);
-
-            // 발신자에서 like가 있는 메시지 조회
-            Page<MsgEntity> sentLikes = msgSenderRepository.findBySenderAndLikeIsNotNull(userDetails.getUserEntity(),
-                    pageable);
-
-            // 두 페이지의 메시지를 합칩니다.
-            List<MsgEntity> allLikes = new ArrayList<>();
-            allLikes.addAll(receivedLikes.getContent());
-            allLikes.addAll(sentLikes.getContent());
-
-            // 결과를 Page로 감싸기 위해 totalElements 계산
-            long totalElements = receivedLikes.getTotalElements() + sentLikes.getTotalElements();
-            p = new PageImpl<>(allLikes, pageable, totalElements);
-        } else {
-            // 받은쪽지 또는 보낸쪽지인 경우 sendTime으로 정렬
+            // 중요 쪽지: 받은 사람이 like한 쪽지로 필터링
             pageable = PageRequest.of(page - 1, size, dir, "sendTime");
 
-            // 카테고리에 따라 조회
+            // 수신자에서 like가 true인 메시지 조회
+            p = msgReciverRepository.findByReceiverAndLikeIsTrue(userDetails.getUserEntity(), pageable);
+        } else {
+            // 받은쪽지 또는 보낸쪽지인 경우 기존 로직대로 진행
+            pageable = PageRequest.of(page - 1, size, dir, "sendTime");
+
             if (category.equals("받은쪽지")) {
+                // 받은 쪽지 조회
                 p = msgReciverRepository.findByReceiver(userDetails.getUserEntity(), pageable);
             } else {
+                // 보낸 쪽지 조회
                 p = msgSenderRepository.findBySender(userDetails.getUserEntity(), pageable);
             }
         }
