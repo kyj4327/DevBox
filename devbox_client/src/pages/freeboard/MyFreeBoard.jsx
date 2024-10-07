@@ -80,6 +80,7 @@ const MyFreeboard = () => {
             <h5 className="mypage-content__title">자유 게시판_내가 쓴 글</h5>
           </div>
       <section className="container py-5">
+      <div className="row justify-content-center my-5">
         <div className="notice-list">
           <table className="notice-table">
             <thead>
@@ -111,6 +112,7 @@ const MyFreeboard = () => {
               ))}
             </tbody>
           </table>
+        </div>
         </div>
         <Pagination pageData={pageData} handlePageChange={handlePageChange} />
       </section>

@@ -77,7 +77,7 @@ const MyReferenceList = () => {
                     <Category text={'Others'} isActive={selectJob} onClick={clickSelectJob} />
                 </div>
             </div>
-                {/* <div className="row d-flex justify-content-center align-items-center pb-5"> */}
+            <div className="row justify-content-center my-5">
                     {
                         data.map((v) => {
                             return (
@@ -158,7 +158,7 @@ const MyReferenceList = () => {
                             )
                         })
                     }
-                {/* </div> */}
+                    </div>
             <Pagination handlePageChange={handlePageChange} pageData={pageData} />
         </div>
     );

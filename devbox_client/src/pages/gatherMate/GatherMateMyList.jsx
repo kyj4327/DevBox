@@ -199,6 +199,7 @@ function GatherMateMyList() {
               검색
             </button>
           </form>
+          <div className="row justify-content-center my-5">
           {data.length > 0 ? (
             <div className="post-list">
               {data.map((post) => (
@@ -295,6 +296,7 @@ function GatherMateMyList() {
           ) : (
             <p>작성한 글이 없습니다.</p> // 메시지 수정
           )}
+          </div>
         {/* </div> */}
         {/* <div className="form-row pt-2">
           <div className="col-md-12 col-10 text-end">
