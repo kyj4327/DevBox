@@ -66,12 +66,14 @@ const NoticeDetail = () => {
     try {
       // SweetAlert2로 삭제 확인 창을 띄움
       const result = await Swal.fire({
-        title: "게시글을 삭제하시겠습니까?",
-        text: "삭제 후에는 되돌릴 수 없습니다!",
         icon: "warning",
+        title: "삭제하시겠습니까?",
+        text: "삭제 후에는 되돌릴 수 없습니다.",
         showCancelButton: true,
         confirmButtonText: "삭제",
+        confirmButtonColor: "#d33",
         cancelButtonText: "취소",
+        cancelButtonColor: "#3085d6"
       });
 
       // 사용자가 삭제를 확정한 경우
@@ -96,18 +98,16 @@ const NoticeDetail = () => {
 
         Swal.fire({
           icon: "success",
-          title: "삭제 완료",
-          text: "게시글이 성공적으로 삭제되었습니다.",
+          title: "삭제되었습니다."
         });
 
         navigate("/notice/list"); // 삭제 후 목록 페이지로 이동
       }
     } catch (error) {
-      console.error("삭제 중 오류 발생:", error);
       Swal.fire({
         icon: "error",
-        title: "삭제 실패",
-        text: error.message || "글 삭제에 실패했습니다. 다시 시도해주세요.",
+        title: "삭제 중 오류가 발생했습니다.",
+        text: error.message || "다시 시도해 주세요."
       });
     }
   };

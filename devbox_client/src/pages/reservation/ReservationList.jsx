@@ -165,14 +165,14 @@ const ReservationList = () => {
                                                                             return;
                                                                         }
                                                                         Swal.fire({
+                                                                            icon: "warning",
                                                                             title: "취소하시겠습니까?",
                                                                             text: `${v.date} ${v.time}`,
-                                                                            icon: "warning",
                                                                             showCancelButton: true,
                                                                             confirmButtonText: "예",
                                                                             confirmButtonColor: "#3085d6",
                                                                             cancelButtonText: "아니오",
-                                                                            cancelButtonColor: "#d33",
+                                                                            cancelButtonColor: "#d33"
                                                                         }).then((result) => {
                                                                             if (result.isConfirmed) {
                                                                                 async function send() {
@@ -184,8 +184,8 @@ const ReservationList = () => {
                                                                                         }
                                                                                     });
                                                                                     Swal.fire({
-                                                                                        title: "취소되었습니다.",
-                                                                                        icon: "success"
+                                                                                        icon: "success",
+                                                                                        title: "취소되었습니다."
                                                                                     }).then(() => {
                                                                                         window.location.reload();
                                                                                     });

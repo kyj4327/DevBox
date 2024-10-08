@@ -180,8 +180,8 @@ export const UserProvider = ({ children }) => {
         setUser(null);
         Swal.fire({
           icon: "error",
-          title: "로그인 실패",
-          text: "로그인에 실패했습니다. 다시 시도해 주세요.",
+          title: "로그인에 실패했습니다.",
+          text: "다시 시도해 주세요."
         });
       }
     } catch (error) {
@@ -189,8 +189,8 @@ export const UserProvider = ({ children }) => {
       setUser(null);
       Swal.fire({
         icon: "error",
-        title: "로그인 에러",
-        text: "로그인 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.",
+        title: "로그인 중 오류가 발생했습니다.",
+        text: "다시 시도해 주세요."
       });
     }
   };

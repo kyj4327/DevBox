@@ -100,9 +100,9 @@ const ContestList = () => {
                                                                                 }
                                                                                 const token = localStorage.getItem('accessToken');
                                                                                 Swal.fire({
+                                                                                    icon: "warning",
                                                                                     title: "삭제하시겠습니까?",
                                                                                     text: "삭제 후에는 되돌릴 수 없습니다.",
-                                                                                    icon: "warning",
                                                                                     showCancelButton: true,
                                                                                     confirmButtonText: "삭제",
                                                                                     confirmButtonColor: "#d33",
@@ -119,8 +119,8 @@ const ContestList = () => {
                                                                                                 }
                                                                                             });
                                                                                             Swal.fire({
-                                                                                                title: "삭제되었습니다.",
-                                                                                                icon: "success"
+                                                                                                icon: "success",
+                                                                                                title: "삭제되었습니다."
                                                                                             }).then(() => {
                                                                                                 window.location.reload();
                                                                                             });

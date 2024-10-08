@@ -42,8 +42,7 @@ const EduWrite = () => {
         if (!loading &&!user) {
             Swal.fire({
                 icon: "error",
-                title: "로그인 필요",
-                text: "로그인이 필요합니다."
+                title: "로그인이 필요합니다."
             });
             navigate('/auth');
         }
@@ -55,27 +54,24 @@ const EduWrite = () => {
 
         if (!state || (state !== '모집중' && state !== '모집완료')) {
             Swal.fire({
-                icon: "error",
-                title: "상태 오류",
-                text: "모집중 또는 모집완료 상태를 선택해주세요."
+                icon: "warning",
+                title: "모집상태를 선택해 주세요."
             });
             return;
         }
 
         if (new Date(start) > new Date(end)) {
             Swal.fire({
-                icon: "error",
-                title: "날짜 오류",
-                text: "종료일은 시작일보다 이후여야 합니다."
+                icon: "warning",
+                title: "마감일이 시작일보다 빠릅니다."
             });
             return;
         }
 
         if (uploadImg.length === 0) {
             Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "포스터를 첨부 해주세요."
+                icon: "warning",
+                title: "포스터를 첨부해 주세요."
               });
             return; 
         }
@@ -115,15 +111,14 @@ const EduWrite = () => {
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "Oops...",
-                    text: "포스터를 첨부 해주세요."
+                    title: "다시 입력해 주세요."
                 });
             }
         } catch (error) {
             Swal.fire({
                 icon: "error",
-                title: "Oops...",
-                text: "저장 중 오류가 발생했습니다. 다시 시도해주세요."
+                title: "저장 중 오류가 발생했습니다.",
+                text: "다시 시도해 주세요."
             });
         }
             

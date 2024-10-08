@@ -85,7 +85,7 @@ const Reservation = () => {
         } else if (time === '') {
             Swal.fire({
                 icon: "warning",
-                title: "예약 시간을 선택해주세요."
+                title: "예약 시간을 선택해 주세요."
             });
             return false;
         }
@@ -135,13 +135,14 @@ const Reservation = () => {
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "다시 입력해주세요."
+                    title: "다시 입력해 주세요."
                 });
             }
         } catch (error) {
             Swal.fire({
                 icon: "error",
-                title: "예약 중 오류가 발생했습니다. 다시 시도해주세요."
+                title: "예약 중 오류가 발생했습니다.",
+                text: "다시 시도해 주세요."
             });
         }
     };
@@ -160,14 +161,14 @@ const Reservation = () => {
                 return;
             }
             const result = await Swal.fire({
+                icon: "warning",
                 title: "예약하시겠습니까?",
                 text: `${date} ${time}`,
-                icon: "warning",
                 showCancelButton: true,
                 confirmButtonText: "예약",
                 confirmButtonColor: "#3085d6",
                 cancelButtonText: "취소",
-                cancelButtonColor: "#d33",
+                cancelButtonColor: "#d33"
             });
             if (result.isConfirmed) {
                 saveData();

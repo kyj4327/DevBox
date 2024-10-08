@@ -21,9 +21,8 @@ const MesWrite = () => {
                 setSender(user.nickname || '');
             } else {
                 Swal.fire({
-                    icon: "warning",
-                    title: "로그인 필요",
-                    text: "로그인이 필요합니다.",
+                    icon: "error",
+                    title: "로그인이 필요합니다."
                 }).then(() => {
                     navigate('/auth');
                 });
@@ -60,7 +59,7 @@ const MesWrite = () => {
     const validateNickname = async (nickname) => {
         
         if (!nickname.trim() || nickname.trim().length === 0) {
-            setNickNameError('받는 사람의 닉네임을 입력해주세요.'); // 빈 입력 시 오류 메시지
+            setNickNameError('받는 사람을 입력해 주세요.'); // 빈 입력 시 오류 메시지
             return;
         }
 
@@ -81,7 +80,7 @@ const MesWrite = () => {
         if (inputNickname.trim()) {
             validateNickname(inputNickname); // 입력된 닉네임 검증
         } else {
-            setNickNameError('받는 사람의 닉네임을 입력해주세요.'); // 비어있을 때 오류 메시지
+            setNickNameError('받는 사람을 입력해 주세요.'); // 비어있을 때 오류 메시지
         }
     };
 
@@ -89,17 +88,28 @@ const MesWrite = () => {
     const handleDetail = async () => {
         if (!reciver.trim()) {
             Swal.fire({
-                icon: "error",
-                title: "받을 분 입력 오류",
-                text: "받을 분을 입력해주세요." // 받을 분 비어있을 때 경고 메시지
+                icon: "warning",
+                title: "받는 사람을 입력해 주세요." // 받을 분 비어있을 때 경고 메시지
             });
             return;
         }
         if (nickNameError) {
             Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: nickNameError // 링크 오류 메시지 출력
+                icon: "warning",
+                title: nickNameError // 링크 오류 메시지 출력
+            });
+            return;
+        }
+        if (!title || !content) {
+            Swal.fire({
+                icon: "warning",
+                title: "메시지를 입력하지 않았습니다.",
+                text: "그래도 전송하시겠습니까?",
+                showCancelButton: true,
+                confirmButtonText: "전송",
+                confirmButtonColor: "#3085d6",
+                cancelButtonText: "취소",
+                cancelButtonColor: "#d33"
             });
             return;
         }
@@ -131,8 +141,8 @@ const MesWrite = () => {
         } else {
             Swal.fire({
                 icon: "error",
-                title: "Oops...",
-                text: data.msg
+                title: "전송 중 오류가 발생했습니다.",
+                text: "다시 시도해 주세요."
             });
         }
 

@@ -20,9 +20,8 @@ function GreetingWrite({ onPostCreated }) {
     if (!loading && !user) {
       // user가 없으면 로그인 페이지로 리다이렉트
       Swal.fire({
-        icon: "warning",
-        title: "로그인 필요",
-        text: "로그인이 필요합니다.",
+        icon: "error",
+        title: "로그인이 필요합니다."
       });
     }
   }, [user, loading]);
@@ -31,8 +30,7 @@ function GreetingWrite({ onPostCreated }) {
     if (!user) {
       Swal.fire({
         icon: "error",
-        title: "로그인 필요",
-        text: "로그인이 필요합니다.",
+        title: "로그인이 필요합니다."
       });
       return;
     }
@@ -41,8 +39,7 @@ function GreetingWrite({ onPostCreated }) {
     if (content.replace(/<[^>]*>?/gm, "").trim().length < 1) {
       Swal.fire({
         icon: "warning",
-        title: "내용 입력 필요",
-        text: "내용을 입력해주세요.",
+        title: "내용을 입력해 주세요."
       });
       return;
     }
@@ -74,18 +71,16 @@ function GreetingWrite({ onPostCreated }) {
 
       Swal.fire({
         icon: "success",
-        title: "작성 완료",
-        text: "가입인사가 작성되었습니다.",
+        title: "저장되었습니다."
       }); // 부모 컴포넌트의 fetchData 함수 호출하여 리스트 갱신
       if (onPostCreated) {
         onPostCreated();
       }
     } catch (error) {
-      console.error("저장 중 오류 발생:", error);
       Swal.fire({
         icon: "error",
-        title: "저장 실패",
-        text: "글 저장에 실패했습니다. 다시 시도해주세요.",
+        title: "저장 중 오류가 발생했습니다.",
+        text: "다시 시도해 주세요."
       });
     }
   };

@@ -47,22 +47,22 @@ const HiringWrite = () => {
             });
             return;
         } else if (company.trim() === '') {
-            InputScrollAndFocus("company", "회사명을 입력해주세요.");
+            InputScrollAndFocus("company", "회사명을 입력해 주세요.");
             setCompany('');
         } else if (area.trim() === '') {
-            InputScrollAndFocus("area", "지역을 입력해주세요.");
+            InputScrollAndFocus("area", "지역을 입력해 주세요.");
             setArea('');
         } else if (job.trim() === '') {
-            InputScrollAndFocus("job", "직군/직무를 입력해주세요.");
+            InputScrollAndFocus("job", "직군/직무를 입력해 주세요.");
             setJob('');
         } else if (career.trim() === '') {
-            InputScrollAndFocus("career", "경력을 입력해주세요.");
+            InputScrollAndFocus("career", "경력을 입력해 주세요.");
             setCareer('');
         } else if (imgUrl.trim() === '') {
-            InputScrollAndFocus("imgUrl", "이미지 주소를 입력해주세요.");
+            InputScrollAndFocus("imgUrl", "이미지 주소를 입력해 주세요.");
             setImgUrl('');
         } else if (wantedUrl.trim() === '') {
-            InputScrollAndFocus("wantedUrl", "원티드 주소를 입력해주세요.");
+            InputScrollAndFocus("wantedUrl", "원티드 주소를 입력해 주세요.");
             setWantedUrl('');
         } else {
             const token = localStorage.getItem('accessToken');
@@ -93,13 +93,14 @@ const HiringWrite = () => {
                 } else {
                     Swal.fire({
                         icon: "error",
-                        title: "다시 입력해주세요."
+                        title: "다시 입력해 주세요."
                     });
                 }
             } catch (error) {
                 Swal.fire({
                     icon: "error",
-                    title: "저장 중 오류가 발생했습니다. 다시 시도해주세요."
+                    title: "저장 중 오류가 발생했습니다.",
+                    text: "다시 시도해 주세요."
                 });
             }
         }
@@ -109,7 +110,7 @@ const HiringWrite = () => {
         <section className="container py-5">
             <div className="container py-5">
                 <h1 className="h2 semi-bold-600 text-center mt-2">채용 공고</h1>
-                <p className="text-center pb-5 light-300">더 다양한 채용 정보를 알고 싶다면 5층 취업 상담실을 방문해주세요.</p>
+                <p className="text-center pb-5 light-300">더 다양한 채용 정보를 알고 싶다면 5층 취업 상담실을 방문해 주세요.</p>
                 <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
                     <div className="contact-form row">
                         <WriteShort type={'text'} titleTag={'회사명'} name={'company'} value={company} onChange={(e) => { setCompany(e.target.value) }} />

@@ -117,14 +117,14 @@ const MyReferenceList = () => {
                                                                 }
                                                                 const token = localStorage.getItem('accessToken');
                                                                 Swal.fire({
+                                                                    icon: "warning",
                                                                     title: "삭제하시겠습니까?",
                                                                     text: "삭제 후에는 되돌릴 수 없습니다.",
-                                                                    icon: "warning",
                                                                     showCancelButton: true,
                                                                     confirmButtonText: "삭제",
                                                                     confirmButtonColor: "#d33",
                                                                     cancelButtonText: "취소",
-                                                                    cancelButtonColor: "#3085d6",
+                                                                    cancelButtonColor: "#3085d6"
                                                                 }).then((result) => {
                                                                     if (result.isConfirmed) {
                                                                         async function send() {
@@ -136,8 +136,8 @@ const MyReferenceList = () => {
                                                                                 }
                                                                             });
                                                                             Swal.fire({
-                                                                                title: "삭제되었습니다.",
-                                                                                icon: "success"
+                                                                                icon: "success",
+                                                                                title: "삭제되었습니다."
                                                                             }).then(() => {
                                                                                 window.location.reload();
                                                                             });

@@ -51,8 +51,7 @@ function MyPageProfileEdit() {
       if (response.ok) {
         await Swal.fire({
           icon: "success",
-          title: "성공",
-          text: "회원정보가 성공적으로 수정되었습니다.",
+          title: "회원정보가 수정되었습니다."
         });
         navigate("/mypage");
       } else {
@@ -95,22 +94,22 @@ function MyPageProfileEdit() {
       setError(error.message);
       await Swal.fire({
         icon: "error",
-        title: "탈퇴 실패",
-        text: error.message || "회원탈퇴에 실패하였습니다.",
+        title: "회원탈퇴에 실패하였습니다.",
+        text: error.message || "다시 시도해 주세요.",
       });
     }
   };
 
   const confirmDeleteAccount = () => {
     Swal.fire({
-      title: "정말 탈퇴하시겠습니까?",
-      html: "회원 탈퇴는 취소할 수 없습니다.<br>탈퇴 시 작성했던 모든 글은 삭제됩니다.",
       icon: "warning",
+      title: "탈퇴하시겠습니까?",
+      html: "회원 탈퇴는 취소할 수 없습니다.<br>탈퇴 시 작성했던 모든 글은 삭제됩니다.",
       showCancelButton: true,
+      confirmButtonText: "탈퇴",
       confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "확인",
       cancelButtonText: "취소",
+      cancelButtonColor: "#3085d6"
     }).then((result) => {
       if (result.isConfirmed) {
         handleDeleteAccount();
@@ -284,7 +283,7 @@ function MyPageProfileEdit() {
                 탈퇴하시면 작성하신 모든 게시글이 함께 삭제됩니다.
               </h5>
 
-              <p>탈퇴하려면 가입했던 이메일을 입력해주세요:</p>
+              <p>탈퇴하려면 가입했던 이메일을 입력해 주세요:</p>
               <p>
                 <strong>{user.email}</strong>
               </p>

@@ -80,13 +80,13 @@ const EduDetail = () => {
                                                 // SweetAlert2로 삭제 확인 창 띄우기
                                                 const result = await Swal.fire({
                                                     icon: "warning",
-                                                    title: "정말 삭제하시겠습니까?",
+                                                    title: "삭제하시겠습니까?",
                                                     text: "삭제 후에는 되돌릴 수 없습니다.",
                                                     showCancelButton: true, // 취소 버튼 추가
                                                     confirmButtonText: "삭제",
-                                                    cancelButtonText: "취소",
                                                     confirmButtonColor: "#d33", // 삭제 버튼 색상 (빨간색)
-                                                    cancelButtonColor: "#3085d6", // 취소 버튼 색상 (파란색)
+                                                    cancelButtonText: "취소",
+                                                    cancelButtonColor: "#3085d6" // 취소 버튼 색상 (파란색)
                                                 });
 
                                                 const token = localStorage.getItem('accessToken');
@@ -101,7 +101,10 @@ const EduDetail = () => {
                                                         },
                                                     });
 
-                                                    Swal.fire("삭제 완료", "프로젝트가 삭제되었습니다.", "success");
+                                                    Swal.fire({
+                                                        icon: "success",
+                                                        title: "삭제되었습니다."
+                                                      });
                                                     navigate('/edu/list');
                                                 }
                                             }}

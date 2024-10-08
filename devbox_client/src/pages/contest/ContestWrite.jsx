@@ -48,26 +48,26 @@ const ContestWrite = () => {
             });
             return;
         } else if (title.trim() === '') {
-            InputScrollAndFocus("title", "공모명을 입력해주세요.");
+            InputScrollAndFocus("title", "공모명을 입력해 주세요.");
             setTitle('');
         } else if (host.trim() === '') {
-            InputScrollAndFocus("host", "주최/주관을 입력해주세요.");
+            InputScrollAndFocus("host", "주최/주관을 입력해 주세요.");
             setHost('');
         } else if (target.trim() === '') {
-            InputScrollAndFocus("target", "참가대상을 입력해주세요.");
+            InputScrollAndFocus("target", "참가대상을 입력해 주세요.");
             setTarget('');
         } else if (regStart === '') {
-            InputScrollAndFocus("regStart", "접수시작 날짜를 입력해주세요.");
+            InputScrollAndFocus("regStart", "접수시작 날짜를 입력해 주세요.");
         } else if (regEnd === '') {
-            InputScrollAndFocus("regEnd", "접수마감 날짜를 입력해주세요.");
+            InputScrollAndFocus("regEnd", "접수마감 날짜를 입력해 주세요.");
         } else if (regEnd < regStart) {
             InputScrollAndFocus("regEnd", "마감일이 시작일보다 빠릅니다.");
             setRegEnd('');
         } else if (officialUrl.trim() === '') {
-            InputScrollAndFocus("officialUrl", "홈페이지 주소를 입력해주세요.");
+            InputScrollAndFocus("officialUrl", "홈페이지 주소를 입력해 주세요.");
             setOfficialUrl('');
         } else if (imgUrl.trim() === '') {
-            InputScrollAndFocus("imgUrl", "이미지 주소를 입력해주세요.");
+            InputScrollAndFocus("imgUrl", "이미지 주소를 입력해 주세요.");
             setImgUrl('');
         } else {
             const token = localStorage.getItem('accessToken');
@@ -99,13 +99,14 @@ const ContestWrite = () => {
                 } else {
                     Swal.fire({
                         icon: "error",
-                        title: "다시 입력해주세요."
+                        title: "다시 입력해 주세요."
                     });
                 }
             } catch (error) {
                 Swal.fire({
                     icon: "error",
-                    title: "저장 중 오류가 발생했습니다. 다시 시도해주세요."
+                    title: "저장 중 오류가 발생했습니다.",
+                    text: "다시 시도해 주세요."
                 });
             }
         }

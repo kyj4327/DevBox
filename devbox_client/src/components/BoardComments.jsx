@@ -69,8 +69,8 @@ const BoardComments = ({ postId, boardType }) => {
         console.error(error);
         Swal.fire({
           icon: "error",
-          title: "댓글 불러오기 실패",
-          text: error.message,
+          title: "댓글을 불러오는데 실패했습니다.",
+          text: error.message
         });
       });
   }, [postId, boardName, accessToken]);
@@ -80,9 +80,8 @@ const BoardComments = ({ postId, boardType }) => {
     e.preventDefault();
     if (!user) {
       Swal.fire({
-        icon: "warning",
-        title: "로그인 필요",
-        text: "로그인이 필요합니다.",
+        icon: "error",
+        title: "로그인이 필요합니다."
       });
       return;
     }
@@ -103,9 +102,8 @@ const BoardComments = ({ postId, boardType }) => {
         .then((response) => {
           if (response.status === 401) {
             Swal.fire({
-              icon: "warning",
-              title: "로그인 필요",
-              text: "로그인이 필요합니다.",
+              icon: "error",
+              title: "로그인이 필요합니다."
             });
             return;
           }
@@ -135,7 +133,7 @@ const BoardComments = ({ postId, boardType }) => {
           Swal.fire({
             icon: "error",
             title: "댓글 작성 실패",
-            text: error.message,
+            text: error.message
           });
         });
     }
@@ -146,9 +144,8 @@ const BoardComments = ({ postId, boardType }) => {
     e.preventDefault();
     if (!user) {
       Swal.fire({
-        icon: "warning",
-        title: "로그인 필요",
-        text: "로그인이 필요합니다.",
+        icon: "error",
+        title: "로그인이 필요합니다."
       });
       return;
     }
@@ -169,9 +166,8 @@ const BoardComments = ({ postId, boardType }) => {
         .then((response) => {
           if (response.status === 401) {
             Swal.fire({
-              icon: "warning",
-              title: "로그인 필요",
-              text: "로그인이 필요합니다.",
+              icon: "error",
+              title: "로그인이 필요합니다."
             });
             return;
           }
@@ -201,7 +197,7 @@ const BoardComments = ({ postId, boardType }) => {
           Swal.fire({
             icon: "error",
             title: "답글 작성 실패",
-            text: error.message,
+            text: error.message
           });
         });
     }
@@ -211,20 +207,20 @@ const BoardComments = ({ postId, boardType }) => {
   const handleDeleteComment = (commentId) => {
     if (!user) {
       Swal.fire({
-        icon: "warning",
-        title: "로그인 필요",
-        text: "로그인이 필요합니다.",
+        icon: "error",
+        title: "로그인이 필요합니다."
       });
       return;
     }
     Swal.fire({
       icon: "warning",
       title: "댓글을 삭제하시겠습니까?",
+      text: "삭제 후에는 되돌릴 수 없습니다.",
       showCancelButton: true,
       confirmButtonText: "삭제",
-      cancelButtonText: "취소",
       confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
+      cancelButtonText: "취소",
+      cancelButtonColor: "#3085d6"
     }).then((result) => {
       if (result.isConfirmed) {
         fetch(`${boardName}/comments/${commentId}/delete`, {
@@ -245,8 +241,8 @@ const BoardComments = ({ postId, boardType }) => {
           .then((data) => {
             Swal.fire({
               icon: "success",
-              title: "댓글이 삭제되었습니다.",
-              text: data.message,
+              title: "댓글이 삭제되었습니다."
+              // text: data.message
             });
             return fetch(`${boardName}/${postId}/commentslist`, {
               headers: {
@@ -268,8 +264,8 @@ const BoardComments = ({ postId, boardType }) => {
             console.error(error);
             Swal.fire({
               icon: "error",
-              title: "오류",
-              text: error.message,
+              title: "삭제 중 오류가 발생했습니다.",
+              text: error.message || "다시 시도해 주세요."
             });
           });
       }
@@ -290,9 +286,8 @@ const BoardComments = ({ postId, boardType }) => {
   const handleEditSubmit = (commentId) => {
     if (!user) {
       Swal.fire({
-        icon: "warning",
-        title: "로그인 필요",
-        text: "로그인이 필요합니다.",
+        icon: "error",
+        title: "로그인이 필요합니다."
       });
       return;
     }
@@ -316,8 +311,8 @@ const BoardComments = ({ postId, boardType }) => {
       .then((data) => {
         Swal.fire({
           icon: "success",
-          title: "성공",
-          text: data.message || "댓글이 성공적으로 수정되었습니다.",
+          title: "댓글이 수정되었습니다."
+          // text: data.message
         });
         return fetch(`${boardName}/${postId}/commentslist`, {
           headers: {
@@ -341,8 +336,8 @@ const BoardComments = ({ postId, boardType }) => {
         console.error("수정 실패:", error);
         Swal.fire({
           icon: "error",
-          title: "수정 실패",
-          text: error.message || "댓글 수정에 실패했습니다.",
+          title: "수정 중 오류가 발생했습니다.",
+          text: error.message || "다시 시도해 주세요."
         });
       });
   };

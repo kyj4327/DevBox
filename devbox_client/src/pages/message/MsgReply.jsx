@@ -22,6 +22,21 @@ const MesReply = () => {
 
     const handleDetail = async (e) => {
         e.preventDefault();
+
+        if (!title || !content) {
+            Swal.fire({
+                icon: "warning",
+                title: "메시지를 입력하지 않았습니다.",
+                text: "그래도 전송하시겠습니까?",
+                showCancelButton: true,
+                confirmButtonText: "전송",
+                confirmButtonColor: "#3085d6",
+                cancelButtonText: "취소",
+                cancelButtonColor: "#d33"
+            });
+            return;
+        }
+
         const formData = new FormData();
 
 
@@ -46,8 +61,8 @@ const MesReply = () => {
         } else {
             Swal.fire({
                 icon: "error",
-                title: "Oops...",
-                text: data.msg
+                title: "전송 중 오류가 발생했습니다.",
+                text: "다시 시도해 주세요."
             });
         }
 

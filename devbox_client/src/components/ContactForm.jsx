@@ -75,7 +75,7 @@ const ContactForm = () => {
     setIsLoading(true);
 
     if (!validateForm()) {
-      setError("입력값을 확인해주세요.");
+      setError("입력값을 확인해 주세요.");
       setIsLoading(false);
       return;
     }
@@ -132,7 +132,7 @@ const ContactForm = () => {
             성함
           </label>
           {!validations.name && (
-            <div className="invalid-feedback">이름을 입력해주세요.</div>
+            <div className="invalid-feedback">이름을 입력해 주세요.</div>
           )}
         </div>
       </div>
@@ -155,7 +155,7 @@ const ContactForm = () => {
           </label>
           {!validations.email && (
             <div className="invalid-feedback">
-              유효한 이메일 주소를 입력해주세요.
+              유효한 이메일 주소를 입력해 주세요.
             </div>
           )}
         </div>
@@ -203,7 +203,7 @@ const ContactForm = () => {
             문의제목
           </label>
           {!validations.subject && (
-            <div className="invalid-feedback">문의 제목을 입력해주세요.</div>
+            <div className="invalid-feedback">문의 제목을 입력해 주세요.</div>
           )}
         </div>
       </div>
@@ -225,7 +225,7 @@ const ContactForm = () => {
             문의내용
           </label>
           {!validations.message && (
-            <div className="invalid-feedback">문의 내용을 입력해주세요.</div>
+            <div className="invalid-feedback">문의 내용을 입력해 주세요.</div>
           )}
         </div>
       </div>

@@ -43,9 +43,8 @@ function GreetingList() {
       navigate("/greeting/write");
     } else {
       Swal.fire({
-        icon: "warning",
-        title: "로그인 필요",
-        text: "글을 작성하려면 로그인해야 합니다.",
+        icon: "error",
+        title: "로그인이 필요합니다."
       });
       navigate("/greeting/list");
     }
@@ -130,14 +129,14 @@ function GreetingList() {
   // 게시글 삭제 함수
   const deletePost = async (postId) => {
     const confirmed = await Swal.fire({
-      title: "가입인사 삭제",
-      text: "가입인사를 삭제하시겠습니까?",
       icon: "warning",
+      title: "삭제하시겠습니까?",
+      text: "삭제 후에는 되돌릴 수 없습니다.",
       showCancelButton: true,
       confirmButtonText: "삭제",
-      cancelButtonText: "취소",
       confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
+      cancelButtonText: "취소",
+      cancelButtonColor: "#3085d6"
     });
 
     if (!confirmed.isConfirmed) return;
@@ -163,16 +162,14 @@ function GreetingList() {
 
       Swal.fire({
         icon: "success",
-        title: "삭제 완료",
-        text: "가입인사가 삭제되었습니다.",
+        title: "삭제되었습니다."
       });
       fetchData(); // 삭제 후 리스트 갱신
     } catch (error) {
-      console.error("삭제 중 오류 발생:", error);
       Swal.fire({
         icon: "error",
-        title: "삭제 실패",
-        text: error.message || "글 삭제에 실패했습니다. 다시 시도해주세요.",
+        title: "삭제 중 오류가 발생했습니다.",
+        text: error.message || "다시 시도해 주세요.",
       });
     }
   };
@@ -226,8 +223,7 @@ function GreetingList() {
 
       Swal.fire({
         icon: "success",
-        title: "수정 완료",
-        text: "가입인사가 수정되었습니다.",
+        title: "수정되었습니다."
       });
 
       // 리스트에서 해당 게시글 업데이트
@@ -240,11 +236,10 @@ function GreetingList() {
       setEditingPostId(null);
       setEditingContent("");
     } catch (error) {
-      console.error("수정 실패:", error);
       Swal.fire({
         icon: "error",
-        title: "수정 실패",
-        text: error.message || "글 수정에 실패했습니다.",
+        title: "수정 중 오류가 발생했습니다.",
+        text: error.message || "다시 시도해 주세요.",
       });
     }
   };
