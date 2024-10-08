@@ -59,36 +59,47 @@ public class MsgController {
         Direction dir = Direction.DESC;
         Pageable pageable;
 
-        // 카테고리 확인
-        Page<MsgEntity> p; // Page 객체를 먼저 선언합니다.
+        Page<MsgEntity> p;
+
         if (category.equals("중요쪽지")) {
-            // 중요쪽지의 경우, like가 있는 쪽지로 정렬
-            pageable = PageRequest.of(page - 1, size, dir, "sendTime"); // sendTime으로 정렬
-
-            // 수신자에서 like가 있는 메시지 조회
-            Page<MsgEntity> receivedLikes = msgReciverRepository
-                    .findByReceiverAndLikeIsNotNull(userDetails.getUserEntity(), pageable);
-
-            // 발신자에서 like가 있는 메시지 조회
-            Page<MsgEntity> sentLikes = msgSenderRepository.findBySenderAndLikeIsNotNull(userDetails.getUserEntity(),
-                    pageable);
-
-            // 두 페이지의 메시지를 합칩니다.
-            List<MsgEntity> allLikes = new ArrayList<>();
-            allLikes.addAll(receivedLikes.getContent());
-            allLikes.addAll(sentLikes.getContent());
-
-            // 결과를 Page로 감싸기 위해 totalElements 계산
-            long totalElements = receivedLikes.getTotalElements() + sentLikes.getTotalElements();
-            p = new PageImpl<>(allLikes, pageable, totalElements);
-        } else {
-            // 받은쪽지 또는 보낸쪽지인 경우 sendTime으로 정렬
+            // 중요쪽지: 받은 쪽지와 보낸 쪽지에서 좋아요(like)가 true인 쪽지들 조회
             pageable = PageRequest.of(page - 1, size, dir, "sendTime");
 
-            // 카테고리에 따라 조회
+            // 받은 쪽지에서 like가 true인 쪽지 조회
+            Page<MsgReciverEntity> receivedLikedMsgs = msgReciverRepository
+                    .findByReceiverAndLikeIsTrue(userDetails.getUserEntity(), pageable);
+
+            // 보낸 쪽지에서 like가 true인 쪽지 조회
+            Page<MsgSenderEntity> sentLikedMsgs = msgSenderRepository
+                    .findBySenderAndLikeIsTrue(userDetails.getUserEntity(), pageable);
+
+            // 두 결과를 하나의 리스트로 합침 (MsgEntity로 캐스팅)
+            List<MsgEntity> combinedLikedMsgs = new ArrayList<>();
+            combinedLikedMsgs.addAll(
+                    receivedLikedMsgs.getContent().stream().map(msg -> (MsgEntity) msg).collect(Collectors.toList())); // 받은
+                                                                                                                       // 쪽지의
+                                                                                                                       // 내용
+                                                                                                                       // 추가
+            combinedLikedMsgs.addAll(
+                    sentLikedMsgs.getContent().stream().map(msg -> (MsgEntity) msg).collect(Collectors.toList())); // 보낸
+                                                                                                                   // 쪽지의
+                                                                                                                   // 내용
+                                                                                                                   // 추가
+
+            // 페이징 처리를 위해 PageImpl 사용 (Spring Data에서 제공하는 Page 구현체)
+            p = new PageImpl<>(
+                    combinedLikedMsgs,
+                    pageable,
+                    (int) (receivedLikedMsgs.getTotalElements() + sentLikedMsgs.getTotalElements()));
+        } else {
+            // 기존 받은쪽지 또는 보낸쪽지 처리
+            pageable = PageRequest.of(page - 1, size, dir, "sendTime");
+
             if (category.equals("받은쪽지")) {
+                // 받은 쪽지 조회
                 p = msgReciverRepository.findByReceiver(userDetails.getUserEntity(), pageable);
             } else {
+                // 보낸 쪽지 조회
                 p = msgSenderRepository.findBySender(userDetails.getUserEntity(), pageable);
             }
         }
@@ -148,49 +159,87 @@ public class MsgController {
 
     @GetMapping("/msg/like")
     @ResponseBody
-    public Map<String, Object> like(@RequestParam Long id) {
+    public Map<String, Object> like(@RequestParam Long id, @RequestParam String type) {
         Map<String, Object> map = new HashMap<>();
-        Optional<MsgReciverEntity> msgOpt = msgReciverRepository.findById(id);
 
-        if (msgOpt.isPresent()) {
-            MsgReciverEntity msg = msgOpt.get();
+        if (type.equals("received")) {
+            Optional<MsgReciverEntity> msgOpt = msgReciverRepository.findById(id);
 
-            // 좋아요 상태 토글 (좋아요가 없으면 추가하고, 있으면 삭제)
-            if (msg.getLike() == null || !msg.getLike()) {
-                msg.setLike(true); // 좋아요 추가
+            if (msgOpt.isPresent()) {
+                MsgReciverEntity msg = msgOpt.get();
 
-                msg.setOrder(1);
+                // 좋아요 상태 토글
+                if (msg.getLike() == null || !msg.getLike()) {
+                    msg.setLike(true); // 좋아요 추가
+                    msg.setOrder(1);
+                } else {
+                    msg.setLike(false); // 좋아요 취소
+                    msg.setOrder(0);
+                }
+
+                msgReciverRepository.save(msg); // 변경된 상태를 저장
+                map.put("like", msg.getLike());
             } else {
-                msg.setLike(false); // 좋아요 취소
-                msg.setOrder(0);
+                map.put("error", "Received message not found");
+                return map; // 수신자 쪽지가 없으면 여기서 종료
+            }
+        } else if (type.equals("sent")) {
+            Optional<MsgSenderEntity> msgOpt = msgSenderRepository.findById(id);
+
+            if (msgOpt.isPresent()) {
+                MsgSenderEntity msg = msgOpt.get();
+
+                // 좋아요 상태 토글
+                if (msg.getLike() == null || !msg.getLike()) {
+                    msg.setLike(true); // 좋아요 추가
+                    msg.setOrder(1);
+                } else {
+                    msg.setLike(false); // 좋아요 취소
+                    msg.setOrder(0);
+                }
+
+                msgSenderRepository.save(msg); // 변경된 상태를 저장
+                map.put("like", msg.getLike());
+            } else {
+                map.put("error", "Sent message not found");
+                return map; // 발신자 쪽지가 없으면 여기서 종료
+            }
+        } else if (type.equals("important")) { // 중요쪽지 처리
+            // 중요쪽지는 받은쪽지와 보낸쪽지 둘 다에서 처리할 수 있으므로, 두 테이블에서 검색
+            Optional<MsgReciverEntity> receivedMsgOpt = msgReciverRepository.findById(id);
+            Optional<MsgSenderEntity> sentMsgOpt = msgSenderRepository.findById(id);
+
+            if (receivedMsgOpt.isPresent()) {
+                MsgReciverEntity msg = receivedMsgOpt.get();
+
+                // 중요쪽지에서도 좋아요 상태 토글
+                if (msg.getLike() != null && msg.getLike()) {
+                    msg.setLike(false); // 중요쪽지에서 해제
+                    msg.setOrder(0);
+                    msgReciverRepository.save(msg); // 상태 저장
+                }
+                map.put("like", msg.getLike());
             }
 
-            msgReciverRepository.save(msg); // 변경된 상태를 저장
+            if (sentMsgOpt.isPresent()) {
+                MsgSenderEntity msg = sentMsgOpt.get();
 
-            map.put("like", msg.getLike());
-        } else {
-            map.put("error", "Message not found");
-        }
-        Optional<MsgSenderEntity> msgOpts = msgSenderRepository.findById(id);
-
-        if (msgOpt.isPresent()) {
-            MsgSenderEntity msg = msgOpts.get();
-
-            // 좋아요 상태 토글 (좋아요가 없으면 추가하고, 있으면 삭제)
-            if (msg.getLike() == null || !msg.getLike()) {
-                msg.setLike(true); // 좋아요 추가
-
-                msg.setOrder(1);
-            } else {
-                msg.setLike(false); // 좋아요 취소
-                msg.setOrder(0);
+                // 중요쪽지에서도 좋아요 상태 토글
+                if (msg.getLike() != null && msg.getLike()) {
+                    msg.setLike(false); // 중요쪽지에서 해제
+                    msg.setOrder(0);
+                    msgSenderRepository.save(msg); // 상태 저장
+                }
+                map.put("like", msg.getLike());
             }
 
-            msgSenderRepository.save(msg); // 변경된 상태를 저장
-
-            map.put("like", msg.getLike());
+            // 만약 두 옵션 중 어떤 것도 존재하지 않는다면 에러 처리
+            if (!receivedMsgOpt.isPresent() && !sentMsgOpt.isPresent()) {
+                map.put("error", "Important message not found in either received or sent messages");
+                return map; // 중요쪽지에서 해당 메시지를 찾지 못한 경우
+            }
         } else {
-            map.put("error", "Message not found");
+            map.put("error", "Invalid message type");
         }
 
         return map; // 클라이언트에 map 반환
@@ -355,7 +404,6 @@ public class MsgController {
             @RequestParam Long id,
             @AuthenticationPrincipal CustomUserDetails userDetails) { // 현재 로그인된 사용자 정보
 
-        System.out.println("/msg/delete 요청");
         Map<String, Object> response = new HashMap<>();
 
         // 수신자 쪽지 삭제 처리
@@ -363,7 +411,6 @@ public class MsgController {
         if (msgReciverOpt.isPresent()) {
             MsgReciverEntity msgReciver = msgReciverOpt.get();
             // 로그인한 사용자가 수신자인지 확인
-            System.out.println(userDetails.getUserEntity().getNickname());
             if (msgReciver.getReceiver().getId().equals(userDetails.getUserEntity().getId())) {
                 msgReciverRepository.deleteById(id); // 수신 쪽지 삭제
                 response.put("code", 200);

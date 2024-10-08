@@ -130,8 +130,6 @@ const ProjectUpdate = () => {
 
 
     const addFiles = (files) => {
-        console.log(files);
-
         const fs = files.map(v => {
             return v.object;
         })
