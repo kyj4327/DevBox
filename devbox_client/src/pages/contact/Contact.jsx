@@ -2,6 +2,8 @@ import React from "react";
 import ContactForm from "../../components/ContactForm";
 import "../../assets/css/contact.css";
 import bannerImage from '../../assets/img/banner-img-01.svg';
+import { Link } from 'react-router-dom';
+import openChat from '../../assets/img/kakaoOpenChat.jpeg';
 
 const Contact = () => {
   return (
@@ -12,7 +14,6 @@ const Contact = () => {
             <div className="contact-header col-lg-4">
               <h1 className="h2 pb-3 text-primary">FAQ</h1>
               <h3 className="h4 regular-400">문의사항</h3>
-              <p className="light-300">부산광역시 해운대구 센텀동로 41 센텀벤처타운 502호</p>
             </div>
             <div className="faq-img col-lg-5 align-items-end col-md-4">
               <img src={bannerImage} />
@@ -23,13 +24,13 @@ const Contact = () => {
 
       <section className="container py-5">
         <h1 className="contact-primary col-12 col-xl-8 h2 text-left text-primary pt-3">
-          BDIA에게 궁금한점을 물어보세요!
+          DevBox 고객센터
         </h1>
         <h2 className="col-12 col-xl-8 h4 text-left regular-400">
-          교육관련, 궁금한점을 직접 문의하세요
+          오류를 찾았거나 개선이 필요한 점이 있다면 언제든지 문의해 주세요!
         </h2>
         <p className="contact-muted col-12 col-xl-8 text-left text-muted pb-5 light-300">
-          진행중에 교육과정, 진행예정인 교육과정에 대해 궁금한점을 물어보세요
+          여러분의 소중한 의견을 기다리고 있습니다.
         </p>
 
         <div className="row pb-4">
@@ -37,13 +38,15 @@ const Contact = () => {
             <div className="contact row mb-4">
               <div className="contact-icon col-lg-3 col-3">
                 <div className="border py-3 mb-2 text-center border rounded text-secondary">
-                  <i className="bx bx-laptop display-6" />
+                  <img src={openChat} />
                 </div>
               </div>
               <ul className="contact-info list-unstyled col-lg-9 col-9 light-300">
-                <li className="h5 mb-0">교육문의</li>
-                <li className="contact-muted">BDIA</li>
-                <li className="contact-muted">051-749-9354</li>
+                <li className="h5 mb-0">DevBox 고객센터</li>
+                <li className="contact-muted">오픈카톡</li>
+                <li className="contact-muted">
+                  <Link to="https://open.kakao.com/o/sxzajjTg" target='_blank'>https://open.kakao.com/o/sxzajjTg</Link>
+                </li>
               </ul>
             </div>
           </div>
