@@ -64,15 +64,10 @@ const MesReply = () => {
         });
         const data = await res.json();
 
-        // 서버에서 받은 데이터 확인
-        console.log("서버 응답 데이터:", data);
-
         // Reciver와 Sender가 올바르게 들어오는지 확인
         setReciver(data.sender); // 서버에서 받은 사람이 원래 보낸 사람
         setSender(data.reciver); // 로그인한 사용자가 답장을 보내는 사람이므로 sender는 유저의 닉네임으로 설정
 
-        console.log("Reciver:", data.sender); // 서버에서 받은 메시지의 보낸 사람이 수신자가 됨
-        console.log("Sender:", data.reciver); // 현재 로그인한 사용자가 답장 보낸 사람이 됨
     }
 
 

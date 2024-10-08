@@ -1,6 +1,5 @@
 package com.o2b2.devbox_server.message.repository;
 
-import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,11 +13,7 @@ public interface MsgSenderRepository extends JpaRepository <MsgSenderEntity, Lon
 
     Page<MsgEntity> findBySender(UserEntity sender, Pageable pageable);
 
-    Page<MsgSenderEntity> findByReceiver(UserEntity sender, Pageable pageable);
-
-    List<MsgSenderEntity> findBySender(UserEntity Sender);
-
-    Page<MsgEntity> findBySenderAndLikeIsNotNull(UserEntity userEntity, Pageable pageable);
+    Page<MsgSenderEntity> findBySenderAndLikeIsTrue(UserEntity userEntity, Pageable pageable);
 
     
 }

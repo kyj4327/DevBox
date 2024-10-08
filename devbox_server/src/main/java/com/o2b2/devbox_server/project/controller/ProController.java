@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,20 +78,18 @@ public class ProController {
     @Autowired
     ProLikeRepository proLikeRepository;
 
-
     @GetMapping("project/mylist")
     public Map<String, Object> promyList(
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "6") int size,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-                
         // likeCount는 내림차순(DESC), time은 오름차순(ASC)으로 정렬
         Sort sort = Sort.by(Sort.Order.desc("likeCount"), Sort.Order.desc("time"));
 
         Pageable pageable = PageRequest.of(page - 1, size, sort); // 페이지 요청 생성
-        
-         // 로그인한 유저의 닉네임 가져오기
+
+        // 로그인한 유저의 닉네임 가져오기
         String currentNickname = userDetails.getNickname();
 
         Page<ProEntity> p = proRepository.findByUserEntityNickname(currentNickname, pageable);
@@ -244,7 +242,6 @@ public class ProController {
             @ModelAttribute ProEntity pro,
             @RequestParam("file") MultipartFile[] files,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
-        System.out.println(pro);
 
         // 결과를 담을 맵 생성
         Map<String, Object> map = new HashMap<>();
@@ -263,14 +260,17 @@ public class ProController {
         }
 
         pro.setTime(LocalDateTime.now());
-        
+
         ProEntity result = proRepository.save(pro);
 
         // 각 파일을 처리하는 반복문
         for (MultipartFile mFile : files) {
-            // 파일명 중복 방지를 위해 고유한 이름 생성
+            // 원본 파일의 확장자 추출
             String originalFilename = mFile.getOriginalFilename();
-            String uniqueFilename = generateUniqueFilename(originalFilename);
+            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+
+            // UUID를 사용하여 고유한 파일명 생성
+            String uniqueFilename = UUID.randomUUID().toString() + extension;
 
             // ProEntity 객체에 이미지 파일 이름 설정
             MultiImgEntity img = new MultiImgEntity();
@@ -296,7 +296,7 @@ public class ProController {
         // 성공 시 응답 메시지 설정
         map.put("code", 200);
         map.put("pro", "모든 파일 업로드 완료");
-
+        map.put("id", result.getId());
         return map; // 결과 반환
     }
 
@@ -370,14 +370,14 @@ public class ProController {
             int likeCount = existingpro.getLikeCount();
             // 수정된 ProEntity 객체를 데이터베이스에 저장
             pro.setLikeCount(likeCount);
-            
+
             pro.setTime(existingpro.getTime());
             proRepository.save(pro);
 
             // 성공 응답을 맵에 추가
             map.put("code", 200);
             map.put("pro", "수정 완료");
-
+            map.put("id", pro.getId());
         } else {
             // 기존 ProEntity가 없는 경우 처리
             map.put("code", 404);
@@ -463,7 +463,7 @@ public class ProController {
                 map.put("coment", pro.getComent());
                 map.put("name", pro.getName());
                 map.put("time", pro.getTime());
-                map.put("imgs",  pro.getMultiImgEntitys().stream().map(mie -> MultiImgDto.fromEntity(mie)));
+                map.put("imgs", pro.getMultiImgEntitys().stream().map(mie -> MultiImgDto.fromEntity(mie)));
                 map.put("code", 200); // 성공 코드
             } else {
                 // 작성자가 일치하지 않을 경우 권한 없음
