@@ -150,12 +150,18 @@ public class GatherMateController {
     // 모집중 모집완료
     @PutMapping("/edit/{postId}/recruiting")
     public ResponseEntity<Map<String, String>> updateRecruitmentStatus(@PathVariable Long postId,
-                                                                       @RequestBody @Valid GatherMatePostEdit request,
+                                                                       @RequestBody Map<String, Boolean> request,
                                                                        @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-
         Long userId = userDetails.getUserEntity().getId();
-        gatherMateService.updateRecruitmentStatus(postId, request, userId);
+
+        Boolean isRecruiting = request.get("isRecruiting");
+        if (isRecruiting == null) {
+            throw new IllegalArgumentException("isRecruiting 값이 필요합니다.");
+        }
+
+        // 서비스 메서드 호출
+        gatherMateService.updateRecruitmentStatus(postId, isRecruiting, userId);
 
         Map<String, String> response = new HashMap<>();
         response.put("message", "모집 상태가 성공적으로 변경되었습니다.");

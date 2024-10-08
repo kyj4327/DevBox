@@ -22,8 +22,7 @@ function NoticeWrite() {
     if (!loading && user && user.role !== "ROLE_ADMIN") {
       Swal.fire({
         icon: "error",
-        title: "권한이 없습니다.",
-        text: "공지사항 작성 권한이 없습니다.",
+        title: "권한이 없습니다."
       });
       navigate("/notice/list");
     }
@@ -32,9 +31,8 @@ function NoticeWrite() {
   const saveData = async () => {
     if (!user) {
       Swal.fire({
-        icon: "warning",
-        title: "로그인이 필요합니다.",
-        text: "로그인 후 공지사항을 작성할 수 있습니다.",
+        icon: "error",
+        title: "로그인이 필요합니다."
       });
       return;
     }
@@ -46,7 +44,7 @@ function NoticeWrite() {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/notice/write", {
+      const response = await fetch("https://www.devback.shop/notice/write", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -68,30 +66,19 @@ function NoticeWrite() {
 
       Swal.fire({
         icon: "success",
-        title: "공지사항 저장 완료",
-        text: "공지사항이 성공적으로 저장되었습니다.",
+        title: "저장되었습니다."
       });
     } catch (error) {
-      console.error("저장 중 오류 발생:", error);
       Swal.fire({
         icon: "error",
-        title: "저장 실패",
-        text: "공지사항 저장에 실패했습니다. 다시 시도해주세요.",
+        title: "저장 중 오류가 발생했습니다.",
+        text: "다시 시도해 주세요."
       });
     }
   };
 
   if (loading) {
     return <div>로딩 중...</div>;
-  }
-
-  if (!user) {
-    return (
-      <div>
-        로그인 후 글쓰기가 가능합니다.{" "}
-        <button onClick={() => navigate("/auth")}>로그인하기</button>
-      </div>
-    );
   }
 
   return (

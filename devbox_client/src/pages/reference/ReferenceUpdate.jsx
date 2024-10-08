@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import InputScrollAndFocus from '../../components/InputScrollAndFocus';
 
 const ReferenceUpdate = () => {
-    const domain = "http://localhost:8080";
+    const domain = "https://www.devback.shop";
 
     const { user } = useUser();
     const navigate = useNavigate();
@@ -92,22 +92,22 @@ const ReferenceUpdate = () => {
         e.preventDefault();
 
         if (title.trim().length > 10) {
-            InputScrollAndFocus("title", "글자수를 확인해주세요!");
+            InputScrollAndFocus("title", "글자수를 확인해 주세요!");
             return;
         } else if (content1.trim().length > 65) {
-            InputScrollAndFocus("content1", "글자수를 확인해주세요!");
+            InputScrollAndFocus("content1", "글자수를 확인해 주세요!");
             return;
         } else if (content2.trim().length > 65) {
-            InputScrollAndFocus("content2", "글자수를 확인해주세요!");
+            InputScrollAndFocus("content2", "글자수를 확인해 주세요!");
             return;
         } else if (content3.trim().length > 65) {
-            InputScrollAndFocus("content3", "글자수를 확인해주세요!");
+            InputScrollAndFocus("content3", "글자수를 확인해 주세요!");
             return;
         } else if (content4.trim().length > 65) {
-            InputScrollAndFocus("content4", "글자수를 확인해주세요!");
+            InputScrollAndFocus("content4", "글자수를 확인해 주세요!");
             return;
         } else if (content5.trim().length > 65) {
-            InputScrollAndFocus("content5", "글자수를 확인해주세요!");
+            InputScrollAndFocus("content5", "글자수를 확인해 주세요!");
             return;
         }
 
@@ -118,22 +118,22 @@ const ReferenceUpdate = () => {
             });
             return;
         } else if (title.trim() === '') {
-            InputScrollAndFocus("title", "제목을 입력해주세요.");
+            InputScrollAndFocus("title", "제목을 입력해 주세요.");
             setTitle('');
         } else if (selectJob === '') {
             document.activeElement.blur();
-            InputScrollAndFocus("intro", "카테고리를 선택해주세요.");
+            InputScrollAndFocus("intro", "카테고리를 선택해 주세요.");
         } else if (link.trim() === '') {
-            InputScrollAndFocus("link", "사이트 주소를 입력해주세요.");
+            InputScrollAndFocus("link", "사이트 주소를 입력해 주세요.");
             setLink('');
         } else if (!validateUrl(link)) {
-            InputScrollAndFocus("link", "유효한 링크를 입력해주세요.");
+            InputScrollAndFocus("link", "유효한 링크를 입력해 주세요.");
             setLink('');
         } else if (content1.trim() === '') {
-            InputScrollAndFocus("content1", "내용1을 입력해주세요.");
+            InputScrollAndFocus("content1", "내용1을 입력해 주세요.");
             setContent1('');
         } else if (content2.trim() === '') {
-            InputScrollAndFocus("content2", "내용2를 입력해주세요.");
+            InputScrollAndFocus("content2", "내용2를 입력해 주세요.");
             setContent2('');
         } else {
             const token = localStorage.getItem('accessToken');
@@ -165,13 +165,14 @@ const ReferenceUpdate = () => {
                 } else {
                     Swal.fire({
                         icon: "error",
-                        title: "다시 입력해주세요."
+                        title: "다시 입력해 주세요."
                     });
                 }
             } catch (error) {
                 Swal.fire({
                     icon: "error",
-                    title: "수정 중 오류가 발생했습니다. 다시 시도해주세요."
+                    title: "수정 중 오류가 발생했습니다.",
+                    text: "다시 시도해 주세요."
                 });
             }
         }
@@ -186,7 +187,7 @@ const ReferenceUpdate = () => {
                     <div className="contact-form row">
                         <WriteShort type={'text'} titleTag={'제목'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} wordCount={10} />
                         <WriteSelect titleTag="카테고리" name="intro"
-                            value={selectJob || "카테고리를 선택해주세요."} onChange={(e) => setSelectJob(e.target.value)}
+                            value={selectJob || "카테고리를 선택해 주세요."} onChange={(e) => setSelectJob(e.target.value)}
                             options={["Web", "DevOps", "Cloud", "Data", "Mobile", "Others"]} />
                         <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line">사이트 주소</h2>
                         <p className="worksingle-footer py-3 text-muted light-300">

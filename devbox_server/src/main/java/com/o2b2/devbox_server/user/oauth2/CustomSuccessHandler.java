@@ -58,25 +58,32 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String accessToken = jwtUtil.createJwt("access", username, role, 600000L);
 
         System.out.println("Before Refresh Token Creation: username = " + username);
-        String refreshToken = jwtUtil.createJwt(refreshTokenCategory, username, role, 60 * 60 * 24 * 30 * 1000L); // 30일 유효
+        String refreshToken = jwtUtil.createJwt(refreshTokenCategory, username, role, 86400000L); // 1일
 
         // 생성된 RefreshToken을 DB에 저장
-        saveRefreshToken(username, refreshToken, 60 * 60 * 24 * 30 * 1000L);
+        saveRefreshToken(username, refreshToken, 86400000L);
 
         // AccessToken과 RefreshToken
 //        response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("Authorization", "Bearer " + accessToken);
 
-        response.addCookie(createCookie("RefreshToken", refreshToken));
+//        response.addCookie(createCookie("RefreshToken", refreshToken));
+        createCookieWithSameSite(response, "RefreshToken", refreshToken);
 
         // AccessToken을 URL 해시(fragment)에 포함하여 프론트엔드로 리다이렉트
-        String redirectUrl = "http://localhost:3000/#accessToken=" + URLEncoder.encode(accessToken, StandardCharsets.UTF_8.name());
+        String redirectUrl = "https://devbox.world/#accessToken=" + URLEncoder.encode(accessToken, StandardCharsets.UTF_8.name());
 
         // 성공 후 리다이렉트
 //        response.setStatus(HttpStatus.OK.value());
 //        response.sendRedirect("http://localhost:3000/home");
 
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+    }
+
+    private void createCookieWithSameSite(HttpServletResponse response, String key, String value) {
+        String cookie = String.format("%s=%s; Max-Age=%d; Secure; HttpOnly; SameSite=None; Path=/",
+                key, value, 60 * 60 * 24 * 30); // 30일
+        response.addHeader("Set-Cookie", cookie);
     }
 
     // RefreshToken을 DB에 저장하는 메서드
@@ -94,7 +101,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(60*60*24*30); // 30일
-        //cookie.setSecure(true); // HTTPS 경우에 설정
+        cookie.setSecure(true); // HTTPS 경우 설정
         cookie.setPath("/");
         cookie.setHttpOnly(true);
 

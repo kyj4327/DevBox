@@ -7,7 +7,7 @@ import { useUser } from '../../components/context/UserContext';
 import Swal from 'sweetalert2';
 
 const HiringList = () => {
-    const domain = "http://localhost:8080";
+    const domain = "https://www.devback.shop";
 
     const { user } = useUser();
     const navigate = useNavigate();
@@ -54,7 +54,7 @@ const HiringList = () => {
             <section className="container py-5">
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2">채용 공고</h1>
-                    <p className="text-center pb-5 light-300">더 다양한 채용 정보를 알고 싶다면 5층 취업 상담실을 방문해주세요.</p>
+                    <p className="text-center pb-5 light-300">더 다양한 채용 정보를 알고 싶다면 5층 취업 상담실을 방문해 주세요.</p>
                     <div className="row justify-content-center my-5">
                         <div className="filter-btns shadow-md rounded-pill text-center col-auto">
                             <Category text={'All'} isActive={category} onClick={clickCategory} />
@@ -106,7 +106,7 @@ const HiringList = () => {
                                                                                     confirmButtonText: "삭제",
                                                                                     confirmButtonColor: "#d33",
                                                                                     cancelButtonText: "취소",
-                                                                                    cancelButtonColor: "#3085d6",
+                                                                                    cancelButtonColor: "#3085d6"
                                                                                 }).then((result) => {
                                                                                     if (result.isConfirmed) {
                                                                                         async function send() {
@@ -118,8 +118,8 @@ const HiringList = () => {
                                                                                                 }
                                                                                             });
                                                                                             Swal.fire({
-                                                                                                title: "삭제되었습니다.",
-                                                                                                icon: "success"
+                                                                                                icon: "success",
+                                                                                                title: "삭제되었습니다."
                                                                                             }).then(() => {
                                                                                                 window.location.reload();
                                                                                             });

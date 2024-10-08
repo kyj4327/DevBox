@@ -14,7 +14,7 @@ const UserContact = ({
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
-    const domain = "http://localhost:8080";
+    const domain = "https://www.devback.shop";
     const [title, setTitle] = useState('');
     const [reciver, setReciver] = useState(nickname);
     const [content, setContent] = useState('');
@@ -24,9 +24,8 @@ const UserContact = ({
     const handleDetail = async () => {
         if (!user) {
             Swal.fire({
-                icon: "warning",
-                title: "로그인 필요",
-                text: "로그인 후 이용해 주세요."
+                icon: "error",
+                title: "로그인이 필요합니다."
             });
             return;
         }
@@ -53,7 +52,7 @@ const UserContact = ({
             if (data.code === 200) {
                 Swal.fire({
                     icon: "success",
-                    title: "전송 완료!!",
+                    title: "전송 완료!",
                     text: "메시지가 성공적으로 발송되었습니다."
                 });
                 // 선택적으로 폼 필드 초기화
@@ -62,7 +61,7 @@ const UserContact = ({
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "Oops...",
+                    title: "전송 중 오류가 발생했습니다.",
                     text: data.msg
                 });
             }
@@ -70,8 +69,8 @@ const UserContact = ({
             console.error("Error sending message:", error);
             Swal.fire({
                 icon: "error",
-                title: "전송 실패",
-                text: "메시지를 보내는 중 오류가 발생했습니다."
+                title: "전송 중 오류가 발생했습니다.",
+                text: "다시 시도해 주세요."
             });
         }
     };
@@ -90,9 +89,8 @@ const UserContact = ({
 
         if (!user) {
             Swal.fire({
-                icon: "warning",
-                title: "로그인 필요",
-                text: "로그인 후 이용해 주세요."
+                icon: "error",
+                title: "로그인이 필요합니다."
             });
             return;
         }
@@ -164,8 +162,13 @@ const UserContact = ({
                         if (!title || !content) {
                             Swal.fire({
                                 icon: "warning",
-                                title: "입력 오류",
-                                text: "제목, 메시지 입력해주세요."
+                                title: "메시지를 입력하지 않았습니다.",
+                                text: "그래도 전송하시겠습니까?",
+                                showCancelButton: true,
+                                confirmButtonText: "전송",
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonText: "취소",
+                                cancelButtonColor: "#d33"
                             });
                             return;
                         }

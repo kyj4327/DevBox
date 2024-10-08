@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const MsgBell = () => {
     const [nullReadTimeCount, setNullReadTimeCount] = useState(0);
     const { user } = useUser();
-    const domain = "http://localhost:8080";
+    const domain = "https://www.devback.shop";
     useEffect(() => {
 
         const getMessages = async () => {

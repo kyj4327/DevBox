@@ -25,10 +25,8 @@ function GatherMateWrite() {
   useEffect(() => {
     if (!loading && !user) {
       Swal.fire({
-        title: "로그인 필요",
-        text: "로그인이 필요합니다.",
-        icon: "warning",
-        confirmButtonText: "확인",
+        icon: "error",
+        title: "로그인이 필요합니다."
       }).then(() => {
         navigate("/auth");
       });
@@ -38,20 +36,16 @@ function GatherMateWrite() {
   const saveData = async () => {
     if (!user) {
       Swal.fire({
-        title: "로그인 필요",
-        text: "로그인이 필요합니다.",
-        icon: "warning",
-        confirmButtonText: "확인",
+        icon: "error",
+        title: "로그인이 필요합니다."
       });
       return;
     }
 
     if (!title.trim()) {
       Swal.fire({
-        title: "제목 입력 필요",
-        text: "제목을 입력해주세요.",
         icon: "warning",
-        confirmButtonText: "확인",
+        title: "제목을 입력해 주세요."
       });
       return;
     }
@@ -59,10 +53,8 @@ function GatherMateWrite() {
     // quill -> html 제외 후 확인
     if (content.replace(/<[^>]*>?/gm, "").trim().length < 1) {
       Swal.fire({
-        title: "내용 입력 필요",
-        text: "내용을 입력해주세요.",
         icon: "warning",
-        confirmButtonText: "확인",
+        title: "내용을 입력해 주세요."
       });
       return;
     }
@@ -77,7 +69,7 @@ function GatherMateWrite() {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/gathermate/write", {
+      const response = await fetch("https://www.devback.shop/gathermate/write", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -101,18 +93,14 @@ function GatherMateWrite() {
       setIsRecruiting(true);
 
       Swal.fire({
-        title: "저장 성공",
-        text: "글이 성공적으로 저장되었습니다.",
         icon: "success",
-        confirmButtonText: "확인",
+        title: "저장되었습니다."
       });
     } catch (error) {
-      console.error("저장 중 오류 발생:", error);
       Swal.fire({
-        title: "저장 실패",
-        text: "글 저장에 실패했습니다. 다시 시도해주세요.",
         icon: "error",
-        confirmButtonText: "확인",
+        title: "저장 중 오류가 발생했습니다.",
+        text: "다시 시도해 주세요."
       });
     }
   };

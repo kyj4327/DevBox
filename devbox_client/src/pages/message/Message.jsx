@@ -6,7 +6,7 @@ const Message = () => {
     const [pageData, setPageData] = useState({});
     const [readTime, setReadTime] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const domain = "http://localhost:8080"; 
+    const domain = "https://www.devback.shop"; 
     const [refresh, setRefresh] = useState(false);
     // 상태 변경 초기값 false
     const [category, setCategory] = useState('받은쪽지');

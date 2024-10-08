@@ -34,12 +34,13 @@ public class ReissueController {
 
         // 쿠키에서 refresh token 얻기
         String refresh = null;
+
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-
-            if (cookie.getName().equals("RefreshToken")) {
-
-                refresh = cookie.getValue();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("RefreshToken")) {
+                    refresh = cookie.getValue();
+                }
             }
         }
 
@@ -90,7 +91,8 @@ public class ReissueController {
 
 //        response.setHeader("RefreshToken", newAccess);
         response.setHeader("Authorization", "Bearer " + newAccess);
-        response.addCookie(createCookie("RefreshToken", newRefresh));
+//        response.addCookie(createCookie("RefreshToken", newRefresh));
+        createCookieWithSameSite(response, "RefreshToken", newRefresh);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -107,13 +109,21 @@ public class ReissueController {
         refreshRepository.save(refreshEntity);
     }
 
+
+    private void createCookieWithSameSite(HttpServletResponse response, String key, String value) {
+        String cookie = String.format("%s=%s; Max-Age=%d; Secure; HttpOnly; SameSite=None; Path=/",
+                key, value, 60 * 60 * 24);
+        response.addHeader("Set-Cookie", cookie);
+    }
+
+
     // 쿠키 만드는 메서드.
     private Cookie createCookie(String key, String value) {
 
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(24*60*60);
-        //cookie.setSecure(true);
-        //cookie.setPath("/");
+        cookie.setSecure(true);
+        cookie.setPath("/");
         cookie.setHttpOnly(true);
 
         return cookie;

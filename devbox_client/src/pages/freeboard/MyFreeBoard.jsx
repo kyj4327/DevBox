@@ -29,7 +29,7 @@ const MyFreeboard = () => {
         setPosts(sortedPosts);
       } catch (error) {
         console.error("Error fetching user posts:", error);
-        setError("게시글을 불러오는 데 실패했습니다. 다시 시도해주세요.");
+        setError("게시글을 불러오는 데 실패했습니다. 다시 시도해 주세요.");
       } finally {
         setIsLoading(false);
       }
@@ -75,9 +75,11 @@ const MyFreeboard = () => {
   if (error) return <div className="error">{error}</div>;
 
   return (
-    <div>
-      <section className="container py-5">
-        <h1 className="h2 semi-bold-600 text-center mt-2">내 게시글</h1>
+    <div className="mypage-content__wrapper">
+      <div className="mypage-content__title-wrapper">
+        <h5 className="mypage-content__title">자유 게시판_내가 쓴 글</h5>
+      </div>
+      <div className="row justify-content-center my-5">
         <div className="notice-list">
           <table className="notice-table">
             <thead>
@@ -110,8 +112,8 @@ const MyFreeboard = () => {
             </tbody>
           </table>
         </div>
-        <Pagination pageData={pageData} handlePageChange={handlePageChange} />
-      </section>
+      </div>
+      <Pagination pageData={pageData} handlePageChange={handlePageChange} />
     </div>
   );
 };

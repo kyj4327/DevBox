@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const ReservationList = () => {
-    const domain = "http://localhost:8080";
+    const domain = "https://www.devback.shop";
     const [state, setState] = useState(false);
 
     const { user, loading } = useUser();
@@ -95,12 +95,12 @@ const ReservationList = () => {
                         </div>
                     </div>
                     : (
-                        <div className="mypage-content__user-info">
+                        <div className="row justify-content-center my-5">
                             <div className="filter-btns shadow-md rounded-pill text-center col-auto">
                                 <Category text={'예약완료'} isActive={category} onClick={clickCategory} />
                                 <Category text={'사용완료'} isActive={category} onClick={clickCategory} />
                             </div>
-                            <div className="row d-flex justify-content-center align-items-center pb-5">
+                            <div className="row text-end">
                                 <div className="row py-4" style={{ padding: '0' }}>
                                     <div style={{ padding: '0', display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
                                         <span className="me-2">
@@ -125,6 +125,8 @@ const ReservationList = () => {
                                             }}><i class="fa-solid fa-rotate-right"></i></button>
                                     </div>
                                 </div>
+                            </div>
+                            <div className="row d-flex justify-content-center align-items-center pb-5">
                                 {
                                     data.map((v) => {
                                         return (
@@ -163,14 +165,14 @@ const ReservationList = () => {
                                                                             return;
                                                                         }
                                                                         Swal.fire({
+                                                                            icon: "warning",
                                                                             title: "취소하시겠습니까?",
                                                                             text: `${v.date} ${v.time}`,
-                                                                            icon: "warning",
                                                                             showCancelButton: true,
                                                                             confirmButtonText: "예",
                                                                             confirmButtonColor: "#3085d6",
                                                                             cancelButtonText: "아니오",
-                                                                            cancelButtonColor: "#d33",
+                                                                            cancelButtonColor: "#d33"
                                                                         }).then((result) => {
                                                                             if (result.isConfirmed) {
                                                                                 async function send() {
@@ -182,8 +184,8 @@ const ReservationList = () => {
                                                                                         }
                                                                                     });
                                                                                     Swal.fire({
-                                                                                        title: "취소되었습니다.",
-                                                                                        icon: "success"
+                                                                                        icon: "success",
+                                                                                        title: "취소되었습니다."
                                                                                     }).then(() => {
                                                                                         window.location.reload();
                                                                                     });

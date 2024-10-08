@@ -31,7 +31,7 @@ const Footer = () => {
                                         </Link>
                                     </li>
                                     <li className="list-inline-item m-0">
-                                        <Link to="구글시트" className="text-light" target="_blank">
+                                        <Link to="https://docs.google.com/spreadsheets/d/1scaqVGvg7NxUNvaH4Oh4FHBW1ir5FTtwP9gedcSjG6s/edit?gid=720401076#gid=720401076" className="text-light" target="_blank">
                                             <i className='bx bxl-google' style={{ fontSize: '36px', marginLeft: '0.3rem' }}></i>
                                         </Link>
                                     </li>

@@ -10,7 +10,7 @@ import EduInfo from './EduInfo';
 import { useEffect, useState } from 'react';
 
 const EduMain = () => {
-    const domain = "http://localhost:8080"; 
+    const domain = "https://www.devback.shop"; 
     const [pageData, setPageData] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const [state, setState] = useState('모집중');

@@ -12,7 +12,7 @@ const EduUpdate = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
-    const domain = "http://localhost:8080"; 
+    const domain = "https://www.devback.shop"; 
     const { user } = useUser();
 
     const [title, setTitle] = useState('');
@@ -52,9 +52,8 @@ const EduUpdate = () => {
 
         if (new Date(start) > new Date(end)) {
             Swal.fire({
-                icon: "error",
-                title: "날짜 오류",
-                text: "종료일은 시작일보다 이후여야 합니다."
+                icon: "warning",
+                title: "마감일이 시작일보다 빠릅니다."
             });
             return;
         }
@@ -91,7 +90,7 @@ const EduUpdate = () => {
         } else {
             Swal.fire({
                 icon: "error",
-                title: "Opps..",
+                title: "다시 입력해 주세요.",
                 text: data.msg
             });
         }
@@ -138,8 +137,7 @@ const EduUpdate = () => {
         if (!user) {
             Swal.fire({
                 icon: "error",
-                title: "로그인 필요",
-                text: "로그인이 필요합니다."
+                title: "로그인이 필요합니다."
             });
             navigate('/auth');
         }

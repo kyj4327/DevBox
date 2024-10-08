@@ -61,9 +61,8 @@ const FreeBoardDetail = () => {
     // 사용자가 로그인하지 않은 경우 경고 표시
     if (!user) {
       Swal.fire({
-        icon: "warning",
-        title: "로그인 필요",
-        text: "로그인이 필요합니다.",
+        icon: "error",
+        title: "로그인이 필요합니다."
       });
       return;
     }
@@ -71,28 +70,27 @@ const FreeBoardDetail = () => {
     // 게시글 삭제 확인 대화 상자
     Swal.fire({
       icon: "warning",
-      title: "정말 삭제하시겠습니까?",
+      title: "삭제하시겠습니까?",
       text: "삭제 후에는 되돌릴 수 없습니다.",
       showCancelButton: true,
       confirmButtonText: "삭제",
-      cancelButtonText: "취소",
       confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
+      cancelButtonText: "취소",
+      cancelButtonColor: "#3085d6"
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
           await deletePost(id); // 게시글 삭제 API 호출
           Swal.fire({
             icon: "success",
-            title: "게시글이 삭제되었습니다.",
+            title: "삭제되었습니다."
           });
           navigate("/freeboard/list"); // 삭제 후 목록으로 이동
         } catch (error) {
-          console.error("Error deleting post:", error);
           Swal.fire({
             icon: "error",
-            title: "게시글 삭제 실패",
-            text: "게시글 삭제에 실패했습니다. 다시 시도해 주세요.",
+            title: "삭제 중 오류가 발생했습니다.",
+            text: error.message || "다시 시도해 주세요."
           });
         }
       }
