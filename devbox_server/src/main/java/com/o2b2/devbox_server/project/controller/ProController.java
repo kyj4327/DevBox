@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -307,18 +308,22 @@ public class ProController {
 
         // 각 파일을 처리하는 반복문
         for (MultipartFile mFile : files) {
-            // 파일명 중복 방지를 위해 고유한 이름 생성
+            // 원본 파일의 확장자 추출
             String originalFilename = mFile.getOriginalFilename();
-            String uniqueFilename = generateUniqueFilename(originalFilename);
+            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
 
-            // ProEntity 객체에 이미지 파일 이름 설정
+            // UUID를 사용하여 고유한 파일명 생성
+            String uniqueFilename = UUID.randomUUID().toString() + extension;
+
+
+          // ProEntity 객체에 이미지 파일 이름 설정
             MultiImgEntity img = new MultiImgEntity();
             img.setImg(uniqueFilename); // 고유한 파일명 설정
             img.setProEntity(result);
 
             // ProEntity 저장
             MultiImgEntity mResult = multiImgRepository.save(img);
-
+            
 //            try {
 //                // 파일을 지정된 경로에 저장
 //                mFile.transferTo(new File("c:/images/" + uniqueFilename));
