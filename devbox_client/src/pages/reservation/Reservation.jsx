@@ -225,9 +225,8 @@ const Reservation = () => {
             </section>
             <section className="container py-5">
                 <h1 className="col-12 col-xl-8 h2 text-left text-primary pt-3">부산 디지털 혁신아카데미 회의실</h1>
-                <h2 className="col-12 col-xl-8 h4 text-left regular-400">회의실 관련 문의</h2>
-                <p className="col-12 col-xl-8 text-left text-muted pb-5 light-300">
-                    번호 : 051-749-9424/9474
+                <p className="col-12 col-xl-8 text-left text-danger pb-5 light-300">
+                    본 6층 회의실 예약 서비스는 기능 구현을 위한 목적으로 제공되며, 실제 예약 및 사용은 부산 정보진흥원측에 문의하세요!
                 </p>
                 <div className="row d-flex align-items-center pb-5">
                     <div className="col-lg-6" style={{ display: 'flex', justifyContent: 'space-around' }}>
