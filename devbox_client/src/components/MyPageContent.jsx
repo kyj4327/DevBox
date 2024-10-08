@@ -12,7 +12,7 @@ function MyPageContent() {
   const getRoleDisplayName = (role) => {
     switch (role) {
       case "ROLE_USER":
-        return "일반인";
+        return "일반회원";
       case "ROLE_STUDENT":
         return "수강생";
       case "ROLE_ADMIN":
