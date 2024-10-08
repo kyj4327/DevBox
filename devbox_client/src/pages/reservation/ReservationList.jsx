@@ -95,12 +95,12 @@ const ReservationList = () => {
                         </div>
                     </div>
                     : (
-                        <div className="mypage-content__user-info">
+                        <div className="row justify-content-center my-5">
                             <div className="filter-btns shadow-md rounded-pill text-center col-auto">
                                 <Category text={'예약완료'} isActive={category} onClick={clickCategory} />
                                 <Category text={'사용완료'} isActive={category} onClick={clickCategory} />
                             </div>
-                            <div className="row d-flex justify-content-center align-items-center pb-5">
+                            <div className="row text-end">
                                 <div className="row py-4" style={{ padding: '0' }}>
                                     <div style={{ padding: '0', display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
                                         <span className="me-2">
@@ -125,6 +125,8 @@ const ReservationList = () => {
                                             }}><i class="fa-solid fa-rotate-right"></i></button>
                                     </div>
                                 </div>
+                            </div>
+                            <div className="row d-flex justify-content-center align-items-center pb-5">
                                 {
                                     data.map((v) => {
                                         return (
