@@ -121,9 +121,6 @@ const MesWrite = () => {
         formData.append("reciver", reciver);
         formData.append("content", content);
 
-        console.log(reciver);
-        console.log(sender);
-
         const token = localStorage.getItem('accessToken');
         const url = `${domain}/msg/write`;
         const res = await fetch(url, {

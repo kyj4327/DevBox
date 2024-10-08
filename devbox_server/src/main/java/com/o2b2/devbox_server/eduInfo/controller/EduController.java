@@ -108,8 +108,6 @@ public class EduController {
             @RequestParam(value = "size", defaultValue = "9") int size,
             @RequestParam(value = "search", required = false) String search) {
 
-        System.out.println(state);
-
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         Pageable pageable = PageRequest.of(page - 1, size, sort); // 페이지 요청 생성
 
@@ -147,8 +145,6 @@ public class EduController {
     public Map<String, Object> edu(
             @ModelAttribute EduEntity edu,
             @RequestParam("file") MultipartFile file) {
-        System.out.println(edu);
-        System.out.println(file.getOriginalFilename());
 
         Map<String, Object> map = new HashMap<>();
 
@@ -212,8 +208,6 @@ public class EduController {
     public Map<String, Object> update(
             @ModelAttribute EduEntity edu,
             @RequestParam(value = "file", required = false) MultipartFile file) {
-
-        System.out.println(edu);
 
         Map<String, Object> map = new HashMap<>();
 
