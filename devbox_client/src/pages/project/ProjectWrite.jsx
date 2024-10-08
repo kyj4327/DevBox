@@ -1,6 +1,6 @@
 import { upload } from "@testing-library/user-event/dist/upload";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import WriteShort from "../../components/WriteShort";
 import Button from "../../components/Button";
 import DragDrop from "./DragDrop";
@@ -22,6 +22,9 @@ const ProjectWrite = () => {
     const [uploadImgs, setUploadImgs] = useState([]);
     const [delImgId, setDelImgId] = useState([]);
     const [savedImgs, setSavedImgs] = useState([]);
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const id = searchParams.get('id');
     const domain = "http://localhost:8080";
     const [linkError, setLinkError] = useState('');
 
@@ -34,6 +37,7 @@ const ProjectWrite = () => {
     const handleDeleteImage = (id) => {
         setDelImgId([...delImgId, id]);
         setSavedImgs(savedImgs.filter((img) => img.id !== id));
+        setUploadImgs(uploadImgs.filter((img) => img.id !== id));
     };
 
     const handleLinkChange = (e) => {
@@ -48,13 +52,6 @@ const ProjectWrite = () => {
         }
     };
     
-
-    const onchangeImageUpload = (e) => {
-
-        const { files } = e.target;
-        setUploadImgs(Array.from(files)); // 파일 자체를 상태에 저장
-    };
-
     const handleDetail = async (e) => {
         e.preventDefault();
         
@@ -67,7 +64,7 @@ const ProjectWrite = () => {
             return;
         }
 
-        if (uploadImgs.length === 0) {
+        if (uploadImgs.length === 0 && savedImgs.length === 0) {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -102,12 +99,12 @@ const ProjectWrite = () => {
         });
         const data = await res.json();
         if (data.code == 200) {
-            navigate('/project/list');
+            navigate(`/project/detail?id=${data.id}`);
         } else {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "글자수/이미지 확인!!!"
+                text: linkError
             });
         }
 
@@ -196,7 +193,7 @@ const ProjectWrite = () => {
                     </div>
                 </div>
 
-                <div className="form-row pt-2">
+                <div className="form-row pt-2 me-2">
                     <div className="col-md-12 col-10 text-end">
                         <Button icon={'pen'} text={'등록'} onClick={handleDetail} />
                     </div>

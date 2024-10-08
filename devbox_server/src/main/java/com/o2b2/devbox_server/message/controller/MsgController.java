@@ -58,7 +58,6 @@ public class MsgController {
 
         Direction dir = Direction.DESC;
         Pageable pageable;
-
         Page<MsgEntity> p;
 
         if (category.equals("중요쪽지")) {

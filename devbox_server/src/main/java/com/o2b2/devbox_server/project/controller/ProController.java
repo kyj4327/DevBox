@@ -294,7 +294,7 @@ public class ProController {
         // 성공 시 응답 메시지 설정
         map.put("code", 200);
         map.put("pro", "모든 파일 업로드 완료");
-
+        map.put("id", result.getId());
         return map; // 결과 반환
     }
 
@@ -375,7 +375,7 @@ public class ProController {
             // 성공 응답을 맵에 추가
             map.put("code", 200);
             map.put("pro", "수정 완료");
-
+            map.put("id", pro.getId()); 
         } else {
             // 기존 ProEntity가 없는 경우 처리
             map.put("code", 404);
