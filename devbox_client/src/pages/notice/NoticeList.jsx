@@ -24,10 +24,8 @@ function NoticeList() {
       navigate("/notice/write");
     } else {
       Swal.fire({
-        icon: 'warning',
-        title: '로그인 필요',
-        text: '글을 작성하려면 로그인해야 합니다.',
-        confirmButtonText: '확인'
+        icon: 'error',
+        title: '로그인이 필요합니다.'
       }).then(() => {
         navigate("/notice/list");
       });
@@ -39,12 +37,12 @@ function NoticeList() {
   }, [currentPage]);
 
   const fetchData = async () => {
-    let url = `http://localhost:8080/notice/posts?page=${
+    let url = `https://www.devback.shop/notice/posts?page=${
       currentPage - 1
     }&size=10&sort=id,desc`;
 
     if (searchKeyword) {
-      url = `http://localhost:8080/notice/posts/search?keyword=${encodeURIComponent(
+      url = `https://www.devback.shop/notice/posts/search?keyword=${encodeURIComponent(
         searchKeyword
       )}&searchType=${encodeURIComponent(searchType)}&page=${
         currentPage - 1

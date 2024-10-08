@@ -35,7 +35,7 @@ const GatherMateComments = ({ postId }) => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:8080/gathermate/${postId}/commentslist`)
+    fetch(`https://www.devback.shop/gathermate/${postId}/commentslist`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch comments");
@@ -62,7 +62,7 @@ const GatherMateComments = ({ postId }) => {
         parentId: null,
       };
 
-      fetch(`http://localhost:8080/gathermate/${postId}/comments`, {
+      fetch(`https://www.devback.shop/gathermate/${postId}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -79,7 +79,7 @@ const GatherMateComments = ({ postId }) => {
             throw new Error("Failed to post comment");
           }
           return fetch(
-            `http://localhost:8080/gathermate/${postId}/commentslist`
+            `https://www.devback.shop/gathermate/${postId}/commentslist`
           );
         })
         .then((response) => {
@@ -111,7 +111,7 @@ const GatherMateComments = ({ postId }) => {
         parentId: replyData.parentId,
       };
 
-      fetch(`http://localhost:8080/gathermate/${postId}/comments`, {
+      fetch(`https://www.devback.shop/gathermate/${postId}/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -128,7 +128,7 @@ const GatherMateComments = ({ postId }) => {
             throw new Error("Failed to post reply");
           }
           return fetch(
-            `http://localhost:8080/gathermate/${postId}/commentslist`
+            `https://www.devback.shop/gathermate/${postId}/commentslist`
           );
         })
         .then((response) => {
@@ -156,7 +156,7 @@ const GatherMateComments = ({ postId }) => {
     const confirmed = window.confirm("정말로 이 댓글을 삭제하시겠습니까?");
     if (!confirmed) return;
 
-    fetch(`http://localhost:8080/gathermate/comments/${commentId}/delete`, {
+    fetch(`https://www.devback.shop/gathermate/comments/${commentId}/delete`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -173,7 +173,7 @@ const GatherMateComments = ({ postId }) => {
       })
       .then((data) => {
         alert(data.message);
-        return fetch(`http://localhost:8080/gathermate/${postId}/commentslist`);
+        return fetch(`https://www.devback.shop/gathermate/${postId}/commentslist`);
       })
       .then((response) => {
         if (!response.ok) {
@@ -206,7 +206,7 @@ const GatherMateComments = ({ postId }) => {
       return;
     }
     
-    fetch(`http://localhost:8080/gathermate/comments/${commentId}/edit`, {
+    fetch(`https://www.devback.shop/gathermate/comments/${commentId}/edit`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -222,7 +222,7 @@ const GatherMateComments = ({ postId }) => {
     })
     .then((data) => {
       alert(data.message || "댓글이 성공적으로 수정되었습니다.");
-      return fetch(`http://localhost:8080/gathermate/${postId}/commentslist`);
+      return fetch(`https://www.devback.shop/gathermate/${postId}/commentslist`);
     })
     .then((response) => {
       if (!response.ok) {

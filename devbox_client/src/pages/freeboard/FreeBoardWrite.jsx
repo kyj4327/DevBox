@@ -20,9 +20,8 @@ const FreeBoardWrite = () => {
   useEffect(() => {
     if (!loading && !user) {
       Swal.fire({
-        icon: "warning",
-        title: "로그인 필요",
-        text: "로그인이 필요합니다.",
+        icon: "error",
+        title: "로그인이 필요합니다."
       }).then(() => {
         navigate("/auth");
       });
@@ -38,11 +37,9 @@ const FreeBoardWrite = () => {
           setTitle(data.title);
           setContent(data.content);
         } catch (error) {
-          console.error("게시글을 불러오는 데 실패했습니다.", error);
           Swal.fire({
             icon: "error",
-            title: "오류",
-            text: "게시글을 불러오는 데 실패했습니다.",
+            title: "글을 불러오는데 실패했습니다."
           });
         } finally {
           setIsLoading(false);
@@ -62,8 +59,7 @@ const FreeBoardWrite = () => {
     if (!title.trim()) {
       Swal.fire({
         icon: "warning",
-        title: "제목 필요",
-        text: "제목을 입력해주십시오.",
+        title: "제목을 입력해 주세요."
       });
       return false;
     }
@@ -71,8 +67,7 @@ const FreeBoardWrite = () => {
     if (strippedContent.length === 0) {
       Swal.fire({
         icon: "warning",
-        title: "내용 필요",
-        text: "내용을 작성해주십시오.",
+        title: "내용을 입력해 주세요."
       });
       return false;
     }
@@ -97,19 +92,14 @@ const FreeBoardWrite = () => {
       }
       Swal.fire({
         icon: "success",
-        title: "성공",
-        text: id
-          ? "게시글이 성공적으로 수정되었습니다."
-          : "게시글이 성공적으로 작성되었습니다.",
+        title: id ? "수정되었습니다." : "저장되었습니다."
       }).then(() => {
         navigate("/freeboard/list");
       });
     } catch (error) {
-      console.error("게시글 저장에 실패했습니다.", error);
       Swal.fire({
         icon: "error",
-        title: "오류",
-        text: "게시글 저장에 실패했습니다.",
+        title: "저장 중 오류가 발생했습니다."
       });
       if (error.message === "User not authenticated") {
         navigate("/auth");

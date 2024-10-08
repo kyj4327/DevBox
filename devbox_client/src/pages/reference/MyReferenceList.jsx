@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import Category from '../../components/Category';
 
 const MyReferenceList = () => {
-    const domain = "http://localhost:8080";
+    const domain = "https://www.devback.shop";
 
     const { user, loading } = useUser();
     const navigate = useNavigate();
@@ -64,9 +64,9 @@ const MyReferenceList = () => {
     return (
         <div className="mypage-content__wrapper">
             <div className="mypage-content__title-wrapper">
-                <h5 className="mypage-content__title">추천해요 내가 쓴 글</h5>
+                <h5 className="mypage-content__title">추천해요_내가 쓴 글</h5>
             </div>
-            <div className="mypage-content__user-info">
+            <div className="row justify-content-center my-5">
                 <div className="filter-btns shadow-md rounded-pill text-center col-auto">
                     <Category text={'All'} isActive={selectJob} onClick={clickSelectJob} />
                     <Category text={'Web'} isActive={selectJob} onClick={clickSelectJob} />
@@ -76,7 +76,8 @@ const MyReferenceList = () => {
                     <Category text={'Mobile'} isActive={selectJob} onClick={clickSelectJob} />
                     <Category text={'Others'} isActive={selectJob} onClick={clickSelectJob} />
                 </div>
-                <div className="row d-flex align-items-center pb-5">
+            </div>
+            <div className="row justify-content-center my-5">
                     {
                         data.map((v) => {
                             return (
@@ -116,14 +117,14 @@ const MyReferenceList = () => {
                                                                 }
                                                                 const token = localStorage.getItem('accessToken');
                                                                 Swal.fire({
+                                                                    icon: "warning",
                                                                     title: "삭제하시겠습니까?",
                                                                     text: "삭제 후에는 되돌릴 수 없습니다.",
-                                                                    icon: "warning",
                                                                     showCancelButton: true,
                                                                     confirmButtonText: "삭제",
                                                                     confirmButtonColor: "#d33",
                                                                     cancelButtonText: "취소",
-                                                                    cancelButtonColor: "#3085d6",
+                                                                    cancelButtonColor: "#3085d6"
                                                                 }).then((result) => {
                                                                     if (result.isConfirmed) {
                                                                         async function send() {
@@ -135,8 +136,8 @@ const MyReferenceList = () => {
                                                                                 }
                                                                             });
                                                                             Swal.fire({
-                                                                                title: "삭제되었습니다.",
-                                                                                icon: "success"
+                                                                                icon: "success",
+                                                                                title: "삭제되었습니다."
                                                                             }).then(() => {
                                                                                 window.location.reload();
                                                                             });
@@ -157,8 +158,7 @@ const MyReferenceList = () => {
                             )
                         })
                     }
-                </div>
-            </div>
+                    </div>
             <Pagination handlePageChange={handlePageChange} pageData={pageData} />
         </div>
     );

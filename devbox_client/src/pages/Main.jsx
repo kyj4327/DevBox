@@ -4,7 +4,7 @@ import Category from "../components/Category";
 import { useUser } from "../../src/components/context/UserContext";
 
 const Main = () => {
-  const domain = "http://localhost:8080";
+  const domain = "https://www.devback.shop";
 
   const [error, setError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -148,7 +148,7 @@ const Main = () => {
                 <Link to="/hiring/list" className="semi-bold-600">
                   채용 공고 게시판
                 </Link>
-                에서 확인해주세요.
+                에서 확인해 주세요.
               </h4>
               <div className="filter-btns shadow-md rounded-pill text-center col-auto justify-content-center">
                 <Category

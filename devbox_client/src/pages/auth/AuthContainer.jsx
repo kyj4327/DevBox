@@ -38,15 +38,15 @@ function AuthContainer() {
   }, [navigate]);
 
   const onNaverLogin = () => {
-    window.location.href = "http://localhost:8080/oauth2/authorization/naver";
+    window.location.href = "https://www.devback.shop/oauth2/authorization/naver";
   };
 
   const onGoogleLogin = () => {
-    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+    window.location.href = "https://www.devback.shop/oauth2/authorization/google";
   };
 
   const onKakaoLogin = () => {
-    window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+    window.location.href = "https://www.devback.shop/oauth2/authorization/kakao";
   };
 
   const handleSignUpClick = () => {
@@ -125,7 +125,7 @@ function AuthContainer() {
   const checkEmailExists = async (email) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/check-email?email=${email}`
+        `https://www.devback.shop/check-email?email=${email}`
       );
       if (response.status === 409) {
         setEmailError("이미 가입된 이메일입니다.");
@@ -144,7 +144,7 @@ function AuthContainer() {
 
     if (!validatePassword(newPassword)) {
       setPasswordError(
-        "비밀번호는 영어, 숫자, 특수기호 포함 6자 이상이어야 합니다."
+        "영어, 숫자, 특수기호 포함 6자 이상이어야 합니다."
       );
       setPasswordErrorColor("red");
     } else {
@@ -169,7 +169,7 @@ function AuthContainer() {
     setName(newName);
 
     if (!isValidName(newName)) {
-      setNameError("공백 없이 이름을 입력해주세요.");
+      setNameError("공백 없이 이름을 입력해 주세요.");
     } else {
       setNameError("");
     }
@@ -181,7 +181,7 @@ function AuthContainer() {
     setNickname(newNickname);
 
     if (!isValidName(newNickname)) {
-      setNicknameError("공백 없이 닉네임을 입력해주세요.");
+      setNicknameError("공백 없이 닉네임을 입력해 주세요.");
     } else {
       setNicknameError("");
     }
@@ -209,7 +209,7 @@ function AuthContainer() {
       Swal.fire({
         icon: "error",
         title: "이메일 오류",
-        text: "이메일을 확인해주세요.",
+        text: "이메일을 확인해 주세요."
       });
       return;
     }
@@ -218,7 +218,7 @@ function AuthContainer() {
       Swal.fire({
         icon: "error",
         title: "비밀번호 오류",
-        text: "비밀번호 조건을 만족하지 않습니다.",
+        text: "비밀번호 조건을 만족하지 않습니다."
       });
       return;
     }
@@ -227,7 +227,7 @@ function AuthContainer() {
       Swal.fire({
         icon: "error",
         title: "비밀번호 불일치",
-        text: "비밀번호가 일치하지 않습니다.",
+        text: "비밀번호가 일치하지 않습니다."
       });
       return;
     }
@@ -236,7 +236,7 @@ function AuthContainer() {
       Swal.fire({
         icon: "error",
         title: "이름 오류",
-        text: "이름을 입력해주세요.",
+        text: "이름을 입력해 주세요."
       });
       return;
     }
@@ -245,7 +245,7 @@ function AuthContainer() {
       Swal.fire({
         icon: "error",
         title: "닉네임 오류",
-        text: "닉네임을 입력해주세요.",
+        text: "닉네임을 입력해 주세요."
       });
       return;
     }
@@ -259,7 +259,7 @@ function AuthContainer() {
       role: role,
     };
 
-    fetch("http://localhost:8080/join", {
+    fetch("https://www.devback.shop/join", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -281,7 +281,7 @@ function AuthContainer() {
         Swal.fire({
           icon: "success",
           title: "회원가입 성공",
-          text: result, // 서버로부터의 메시지 사용
+          text: result // 서버로부터의 메시지 사용
         });
         setIsRightPanelActive(false);
       })
@@ -289,7 +289,7 @@ function AuthContainer() {
         Swal.fire({
           icon: "error",
           title: "회원가입 실패",
-          text: error.message,
+          text: error.message
         });
       });
   };
@@ -304,7 +304,7 @@ function AuthContainer() {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/login", {
+      const response = await fetch("https://www.devback.shop/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -327,7 +327,7 @@ function AuthContainer() {
         Swal.fire({
           icon: "error",
           title: "로그인 실패",
-          text: "사용자 정보를 확인해주세요.",
+          text: "사용자 정보를 확인해 주세요."
         });
       } else {
         // 기타 에러 처리
@@ -337,8 +337,8 @@ function AuthContainer() {
       console.error("로그인 중 오류 발생:", error);
       Swal.fire({
         icon: "error",
-        title: "로그인 오류",
-        text: "로그인에 실패했습니다. 다시 시도해주세요.",
+        title: "로그인 중 오류가 발생했습니다.",
+        text: "다시 시도해 주세요."
       });
     }
   };

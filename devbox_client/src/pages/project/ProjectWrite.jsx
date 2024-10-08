@@ -25,7 +25,8 @@ const ProjectWrite = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
-    const domain = "http://localhost:8080";
+
+    const domain = "https://www.devback.shop";
     const [linkError, setLinkError] = useState('');
 
 
@@ -48,7 +49,7 @@ const ProjectWrite = () => {
         if (inputLink.trim() === '' || validateUrl(inputLink)) {
             setLinkError(''); // 링크가 비어있거나 유효한 경우 오류 메시지 제거
         } else {
-            setLinkError('유효한 링크를 입력해주세요!'); // 유효하지 않은 링크일 경우 오류 메시지
+            setLinkError('유효한 링크를 입력해 주세요.'); // 유효하지 않은 링크일 경우 오류 메시지
         }
     };
     
@@ -57,18 +58,16 @@ const ProjectWrite = () => {
         
         if (linkError) {
             Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: linkError // 링크 오류 메시지 출력
+                icon: "warning",
+                title: linkError // 링크 오류 메시지 출력
             });
             return;
         }
 
         if (uploadImgs.length === 0 && savedImgs.length === 0) {
             Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "이미지를 자랑해주세요!!"
+                icon: "warning",
+                title: "이미지를 첨부해 주세요."
             });
             return;
         }
@@ -99,12 +98,23 @@ const ProjectWrite = () => {
         });
         const data = await res.json();
         if (data.code == 200) {
-            navigate(`/project/detail?id=${data.id}`);
+     
         } else {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
                 text: linkError
+            Swal.fire({
+                icon: "success",
+                title: "저장되었습니다."
+            }).then(() => {
+       navigate(`/project/detail?id=${data.id}`);
+            });
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "저장 중 오류가 발생했습니다.",
+                text: "다시 시도해 주세요."
             });
         }
 
@@ -124,9 +134,8 @@ const ProjectWrite = () => {
                 setName(user.nickname || '');
             } else {
                 Swal.fire({
-                    icon: "warning",
-                    title: "로그인 필요",
-                    text: "로그인이 필요합니다.",
+                    icon: "error",
+                    title: "로그인이 필요합니다."
                 }).then(() => {
                     navigate('/auth');
                 });

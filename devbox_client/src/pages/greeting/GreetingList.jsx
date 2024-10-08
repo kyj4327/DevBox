@@ -43,9 +43,8 @@ function GreetingList() {
       navigate("/greeting/write");
     } else {
       Swal.fire({
-        icon: "warning",
-        title: "로그인 필요",
-        text: "글을 작성하려면 로그인해야 합니다.",
+        icon: "error",
+        title: "로그인이 필요합니다."
       });
       navigate("/greeting/list");
     }
@@ -56,12 +55,12 @@ function GreetingList() {
   }, [currentPage]);
 
   const fetchData = async () => {
-    let url = `http://localhost:8080/greeting/posts?page=${
+    let url = `https://www.devback.shop/greeting/posts?page=${
       currentPage - 1
     }&size=10&sort=id,desc`;
 
     if (searchKeyword) {
-      url = `http://localhost:8080/greeting/posts/search?keyword=${encodeURIComponent(
+      url = `https://www.devback.shop/greeting/posts/search?keyword=${encodeURIComponent(
         searchKeyword
       )}&searchType=${encodeURIComponent(searchType)}&page=${
         currentPage - 1
@@ -130,21 +129,21 @@ function GreetingList() {
   // 게시글 삭제 함수
   const deletePost = async (postId) => {
     const confirmed = await Swal.fire({
-      title: "가입인사 삭제",
-      text: "가입인사를 삭제하시겠습니까?",
       icon: "warning",
+      title: "삭제하시겠습니까?",
+      text: "삭제 후에는 되돌릴 수 없습니다.",
       showCancelButton: true,
       confirmButtonText: "삭제",
-      cancelButtonText: "취소",
       confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
+      cancelButtonText: "취소",
+      cancelButtonColor: "#3085d6"
     });
 
     if (!confirmed.isConfirmed) return;
 
     try {
       const response = await fetch(
-        `http://localhost:8080/greeting/delete/${postId}`,
+        `https://www.devback.shop/greeting/delete/${postId}`,
         {
           method: "DELETE", // 삭제 요청
           headers: {
@@ -163,16 +162,14 @@ function GreetingList() {
 
       Swal.fire({
         icon: "success",
-        title: "삭제 완료",
-        text: "가입인사가 삭제되었습니다.",
+        title: "삭제되었습니다."
       });
       fetchData(); // 삭제 후 리스트 갱신
     } catch (error) {
-      console.error("삭제 중 오류 발생:", error);
       Swal.fire({
         icon: "error",
-        title: "삭제 실패",
-        text: error.message || "글 삭제에 실패했습니다. 다시 시도해주세요.",
+        title: "삭제 중 오류가 발생했습니다.",
+        text: error.message || "다시 시도해 주세요.",
       });
     }
   };
@@ -203,7 +200,7 @@ function GreetingList() {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/greeting/edit/${postId}`,
+        `https://www.devback.shop/greeting/edit/${postId}`,
         {
           method: "PUT",
           headers: {
@@ -226,8 +223,7 @@ function GreetingList() {
 
       Swal.fire({
         icon: "success",
-        title: "수정 완료",
-        text: "가입인사가 수정되었습니다.",
+        title: "수정되었습니다."
       });
 
       // 리스트에서 해당 게시글 업데이트
@@ -240,11 +236,10 @@ function GreetingList() {
       setEditingPostId(null);
       setEditingContent("");
     } catch (error) {
-      console.error("수정 실패:", error);
       Swal.fire({
         icon: "error",
-        title: "수정 실패",
-        text: error.message || "글 수정에 실패했습니다.",
+        title: "수정 중 오류가 발생했습니다.",
+        text: error.message || "다시 시도해 주세요.",
       });
     }
   };
@@ -460,7 +455,7 @@ function GreetingList() {
       >
         <div className="search-select-container">
           <SearchSelect
-            options={["내용&제목", "작성자"]}
+            options={["제목&내용", "작성자"]}
             value={searchType}
             onChange={handleSelectChange}
           />

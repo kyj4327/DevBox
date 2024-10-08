@@ -4,13 +4,14 @@ import KakaoMap from "../../components/KakaoMap"; // 카카오 지도 컴포넌�
 import ImageSlider from "../../components/ImageSlider";
 import ImageList from "../../components/ImageList";
 import RoadExplain from "../../components/RoadExplain";
+import bdia from '../../assets/img/bdia_logo.svg';
 
 function BDIAIntroduction() {
   return (
     <div className="bdia-intro-container">
       <div className="bdia-header-container">  
         <img
-          src="http://edu.busanit.or.kr/resources/bdia/assets/img/bdia_logo.svg"
+          src={bdia}
           alt="바디아"
           style={{
             width: "30%",

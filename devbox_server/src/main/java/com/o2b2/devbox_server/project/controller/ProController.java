@@ -46,13 +46,28 @@ import com.o2b2.devbox_server.user.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import org.springframework.beans.factory.annotation.Value;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.S3Exception;
 
 @RestController
 @CrossOrigin
 @Transactional
 public class ProController {
 
-    private final Path fileStorageLocation = Paths.get("c:/images"); // 파일 저장 경로
+//    private final Path fileStorageLocation = Paths.get("c:/images"); // 파일 저장 경로
+
+    // S3 파일 URL 생성 메서드
+    private String getS3FileUrl(String filename) {
+        return String.format("https://%s.s3.%s.amazonaws.com/%s", bucketName, region, filename);
+    }
 
     // 고유한 파일명을 생성하는 메서드
     private String generateUniqueFilename(String originalFilename) {
@@ -66,6 +81,20 @@ public class ProController {
         return uniqueFilename;
     }
 
+    @Value("${aws.s3.bucket}")
+    private String bucketName;
+
+    @Value("${aws.region}")
+    private String region;
+
+    @Value("${aws.accessKeyId}")
+    private String accessKeyId;
+
+    @Value("${aws.secretKey}")
+    private String secretKey;
+
+    private final S3Client s3Client;
+
     @Autowired
     ProRepository proRepository;
 
@@ -77,6 +106,20 @@ public class ProController {
 
     @Autowired
     ProLikeRepository proLikeRepository;
+
+
+    @Autowired
+    public ProController(
+            @Value("${aws.accessKeyId}") String accessKeyId,
+            @Value("${aws.secretKey}") String secretKey,
+            @Value("${aws.region}") String region) {
+        this.s3Client = S3Client.builder()
+                .region(Region.of(region))
+                .credentialsProvider(StaticCredentialsProvider.create(
+                        AwsBasicCredentials.create(accessKeyId, secretKey)))
+                .build();
+    }
+
 
     @GetMapping("project/mylist")
     public Map<String, Object> promyList(
@@ -280,10 +323,30 @@ public class ProController {
             // ProEntity 저장
             MultiImgEntity mResult = multiImgRepository.save(img);
 
+//            try {
+//                // 파일을 지정된 경로에 저장
+//                mFile.transferTo(new File("c:/images/" + uniqueFilename));
+//            } catch (IllegalStateException | IOException e) {
+//                e.printStackTrace();
+//
+//                // 에러 발생 시 에러 메시지를 맵에 추가
+//                map.put("code", 500);
+//                map.put("pro", "업로드 중 오류 발생: " + e.getMessage());
+//                return map; // 에러 발생 시 바로 반환
+//            }
+
             try {
-                // 파일을 지정된 경로에 저장
-                mFile.transferTo(new File("c:/images/" + uniqueFilename));
-            } catch (IllegalStateException | IOException e) {
+                // S3에 파일 업로드
+                PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(uniqueFilename)
+                        .contentType(mFile.getContentType())
+                        .build();
+
+                RequestBody requestBody = RequestBody.fromInputStream(mFile.getInputStream(), mFile.getSize());
+                s3Client.putObject(putObjectRequest, requestBody);
+
+            } catch (S3Exception | IOException e) {
                 e.printStackTrace();
 
                 // 에러 발생 시 에러 메시지를 맵에 추가
@@ -323,16 +386,36 @@ public class ProController {
                 for (Long imgId : imgIds) {
                     // 데이터베이스에서 해당 이미지를 삭제
                     MultiImgEntity imgEntity = multiImgRepository.findById(imgId).orElse(null);
+//                    if (imgEntity != null) {
+//                        // 파일 시스템에서 이미지 파일 삭제
+//                        File file = new File("c:/images/" + imgEntity.getImg());
+//                        if (file.exists()) {
+//                            file.delete(); // 파일 삭제
+//                        }
+//
+//                        // 데이터베이스에서 이미지 엔티티 삭제
+//                        multiImgRepository.deleteById(imgId);
+//                    }
                     if (imgEntity != null) {
-                        // 파일 시스템에서 이미지 파일 삭제
-                        File file = new File("c:/images/" + imgEntity.getImg());
-                        if (file.exists()) {
-                            file.delete(); // 파일 삭제
+                        try {
+                            // S3에서 이미지 삭제
+                            DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                                    .bucket(bucketName)
+                                    .key(imgEntity.getImg())
+                                    .build();
+                            s3Client.deleteObject(deleteObjectRequest);
+                        } catch (S3Exception e) {
+                            e.printStackTrace();
+                            // S3에서 이미지 삭제 실패 시 처리
+                            map.put("code", 500);
+                            map.put("pro", "S3에서 이미지 삭제 중 오류 발생: " + e.getMessage());
+                            return map;
                         }
 
                         // 데이터베이스에서 이미지 엔티티 삭제
                         multiImgRepository.deleteById(imgId);
                     }
+
                 }
             }
 
@@ -351,10 +434,28 @@ public class ProController {
                     // MultiImgEntity를 데이터베이스에 저장
                     MultiImgEntity mResult = multiImgRepository.save(img);
 
+//                    try {
+//                        // 파일을 지정된 경로에 저장
+//                        mFile.transferTo(new File("c:/images/" + uniqueFilename));
+//                    } catch (IllegalStateException | IOException e) {
+//                        e.printStackTrace();
+//                        // 파일 저장 중 오류 발생 시 에러 메시지를 맵에 추가
+//                        map.put("code", 500);
+//                        map.put("pro", "파일 업로드 중 오류 발생: " + e.getMessage());
+//                        return map; // 에러 발생 시 바로 반환
                     try {
-                        // 파일을 지정된 경로에 저장
-                        mFile.transferTo(new File("c:/images/" + uniqueFilename));
-                    } catch (IllegalStateException | IOException e) {
+                        // S3에 파일 업로드
+                        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                                .bucket(bucketName)
+                                .key(uniqueFilename)
+                                .contentType(mFile.getContentType())
+                                .build();
+
+                        RequestBody requestBody = RequestBody.fromInputStream(mFile.getInputStream(), mFile.getSize());
+                        s3Client.putObject(putObjectRequest, requestBody);
+
+
+                    } catch (S3Exception | IOException e) {
                         e.printStackTrace();
                         // 파일 저장 중 오류 발생 시 에러 메시지를 맵에 추가
                         map.put("code", 500);
@@ -387,9 +488,41 @@ public class ProController {
         return map; // 수정 완료 응답 반환
     }
 
+//    @DeleteMapping("/project/delete")
+//    public Map<String, Object> prodelete(@RequestParam Long Id,
+//            @AuthenticationPrincipal CustomUserDetails userDetails) {
+//
+//        Map<String, Object> response = new HashMap<>();
+//
+//        // 프로젝트를 조회
+//        Optional<ProEntity> projectOpt = proRepository.findById(Id);
+//
+//        if (projectOpt.isPresent()) {
+//            ProEntity project = projectOpt.get();
+//
+//            // 로그인한 유저의 ID와 프로젝트 작성자의 ID를 비교
+//            if (project.getUserEntity().getId().equals(userDetails.getUserEntity().getId())) {
+//                // 유저가 일치할 경우 삭제
+//                proRepository.deleteById(Id);
+//                response.put("code", 200);
+//                response.put("msg", "삭제 완료");
+//            } else {
+//                // 유저가 일치하지 않을 경우 권한 없음 처리
+//                response.put("code", 403);
+//                response.put("msg", "삭제 권한이 없습니다.");
+//            }
+//        } else {
+//            // 해당 ID의 프로젝트가 없을 경우
+//            response.put("code", 404);
+//            response.put("msg", "프로젝트를 찾을 수 없습니다.");
+//        }
+//
+//        return response;
+//    }
+
     @DeleteMapping("/project/delete")
     public Map<String, Object> prodelete(@RequestParam Long Id,
-            @AuthenticationPrincipal CustomUserDetails userDetails) {
+                                         @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         Map<String, Object> response = new HashMap<>();
 
@@ -401,7 +534,25 @@ public class ProController {
 
             // 로그인한 유저의 ID와 프로젝트 작성자의 ID를 비교
             if (project.getUserEntity().getId().equals(userDetails.getUserEntity().getId())) {
-                // 유저가 일치할 경우 삭제
+                // 프로젝트에 연결된 모든 이미지 삭제
+                List<MultiImgEntity> images = project.getMultiImgEntitys();
+                for (MultiImgEntity img : images) {
+                    try {
+                        DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                                .bucket(bucketName)
+                                .key(img.getImg())
+                                .build();
+                        s3Client.deleteObject(deleteObjectRequest);
+                    } catch (S3Exception e) {
+                        e.printStackTrace();
+                        // S3에서 이미지 삭제 실패 시 처리
+                        response.put("code", 500);
+                        response.put("msg", "S3에서 이미지 삭제 중 오류 발생: " + e.getMessage());
+                        return response;
+                    }
+                }
+
+                // 프로젝트 삭제
                 proRepository.deleteById(Id);
                 response.put("code", 200);
                 response.put("msg", "삭제 완료");
@@ -419,6 +570,7 @@ public class ProController {
         return response;
     }
 
+
     @GetMapping("/project/detail")
     @ResponseBody
     public Map<String, Object> proDetail(@RequestParam Long id) {
@@ -426,19 +578,44 @@ public class ProController {
 
         Optional<ProEntity> proOpt = proRepository.findById(id);
 
-        ProEntity pro = proOpt.get();
-        map.put("id", pro.getId());
-        map.put("title", pro.getTitle());
-        map.put("link", pro.getLink());
-        map.put("coment", pro.getComent());
-        map.put("name", pro.getName());
-        map.put("imgs", pro.getMultiImgEntitys().stream().map(mie -> MultiImgDto.fromEntity(mie)));
-        map.put("user", UserDTO.fromEntity(pro.getUserEntity()));
-        map.put("likeCount", pro.getLikeCount());
-        map.put("time", pro.getTime());
+//        ProEntity pro = proOpt.get();
+//        map.put("id", pro.getId());
+//        map.put("title", pro.getTitle());
+//        map.put("link", pro.getLink());
+//        map.put("coment", pro.getComent());
+//        map.put("name", pro.getName());
+//        map.put("imgs", pro.getMultiImgEntitys().stream().map(mie -> MultiImgDto.fromEntity(mie)));
+//        map.put("user", UserDTO.fromEntity(pro.getUserEntity()));
+//        map.put("likeCount", pro.getLikeCount());
+//        map.put("time", pro.getTime());
+//
+//        return map;
+//
+//    }
+
+        if (proOpt.isPresent()) {
+            ProEntity pro = proOpt.get();
+            map.put("id", pro.getId());
+            map.put("title", pro.getTitle());
+            map.put("link", pro.getLink());
+            map.put("coment", pro.getComent());
+            map.put("name", pro.getName());
+            map.put("imgs", pro.getMultiImgEntitys().stream().map(MultiImgDto::fromEntity).collect(Collectors.toList()));
+            map.put("user", UserDTO.fromEntity(pro.getUserEntity()));
+            map.put("likeCount", pro.getLikeCount());
+            map.put("time", pro.getTime());
+
+            // S3 파일 URL 추가
+            List<String> imgUrls = pro.getMultiImgEntitys().stream()
+                    .map(img -> getS3FileUrl(img.getImg()))
+                    .collect(Collectors.toList());
+            map.put("imgUrls", imgUrls);
+        } else {
+            map.put("code", 404);
+            map.put("msg", "프로젝트를 찾을 수 없습니다.");
+        }
 
         return map;
-
     }
 
     @GetMapping("/project/update")
@@ -492,23 +669,37 @@ public class ProController {
             MultiImgEntity img = imgOptional.get();
             String filename = img.getImg();
 
-            // 파일 경로 생성
-            Path filePath = fileStorageLocation.resolve(filename).normalize();
-            Resource resource = new UrlResource(filePath.toUri());
+//            // 파일 경로 생성
+//            Path filePath = fileStorageLocation.resolve(filename).normalize();
+//            Resource resource = new UrlResource(filePath.toUri());
+//
+//            // 파일이 존재하지 않을 경우 404 반환
+//            if (!resource.exists() || !resource.isReadable()) {
+//                return ResponseEntity.notFound().build();
+//            }
+//
+//            // 파일의 MIME 타입을 추측 (추가 설정 가능)
+//            String contentType = "application/octet-stream";
+//            return ResponseEntity.ok()
+//                    .contentType(org.springframework.http.MediaType.parseMediaType(contentType))
+//                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+//                    .body(resource);
+//
+//        } catch (IOException ex) {
+//            // 파일 읽기 오류 처리
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
 
-            // 파일이 존재하지 않을 경우 404 반환
-            if (!resource.exists() || !resource.isReadable()) {
-                return ResponseEntity.notFound().build();
-            }
+// S3 적용
+            // S3에서 파일의 URL 생성
+            String fileUrl = getS3FileUrl(filename);
 
-            // 파일의 MIME 타입을 추측 (추가 설정 가능)
-            String contentType = "application/octet-stream";
-            return ResponseEntity.ok()
-                    .contentType(org.springframework.http.MediaType.parseMediaType(contentType))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                    .body(resource);
+            // 클라이언트가 파일을 직접 다운로드하도록 리다이렉트
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.LOCATION, fileUrl);
+            return new ResponseEntity<>(headers, HttpStatus.FOUND);
 
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             // 파일 읽기 오류 처리
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

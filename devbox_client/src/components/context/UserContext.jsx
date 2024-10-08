@@ -22,7 +22,7 @@ export const UserProvider = ({ children }) => {
   // Access Token 재발급 함수
   const refreshAccessToken = useCallback(async () => {
     try {
-      const response = await fetch("http://localhost:8080/reissue", {
+      const response = await fetch("https://www.devback.shop/reissue", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -77,7 +77,7 @@ export const UserProvider = ({ children }) => {
       }
 
       try {
-        const response = await fetch("http://localhost:8080/api/user/me", {
+        const response = await fetch("https://www.devback.shop/api/user/me", {
           method: "GET",
           credentials: "include",
           headers: {
@@ -100,7 +100,7 @@ export const UserProvider = ({ children }) => {
             const newAccessToken = localStorage.getItem("accessToken");
             if (newAccessToken) {
               const retryResponse = await fetch(
-                "http://localhost:8080/api/user/me",
+                "https://www.devback.shop/api/user/me",
                 {
                   method: "GET",
                   credentials: "include",
@@ -143,7 +143,7 @@ export const UserProvider = ({ children }) => {
   // 로그인 함수
   const login = async (credentials) => {
     try {
-      const response = await fetch("http://localhost:8080/login", {
+      const response = await fetch("https://www.devback.shop/login", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -160,7 +160,7 @@ export const UserProvider = ({ children }) => {
           localStorage.setItem("accessToken", token);
           // 사용자 정보 가져오기
           const userInfoResponse = await fetch(
-            "http://localhost:8080/api/user/me",
+            "https://www.devback.shop/api/user/me",
             {
               method: "GET",
               credentials: "include",
@@ -180,8 +180,8 @@ export const UserProvider = ({ children }) => {
         setUser(null);
         Swal.fire({
           icon: "error",
-          title: "로그인 실패",
-          text: "로그인에 실패했습니다. 다시 시도해 주세요.",
+          title: "로그인에 실패했습니다.",
+          text: "다시 시도해 주세요."
         });
       }
     } catch (error) {
@@ -189,8 +189,8 @@ export const UserProvider = ({ children }) => {
       setUser(null);
       Swal.fire({
         icon: "error",
-        title: "로그인 에러",
-        text: "로그인 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.",
+        title: "로그인 중 오류가 발생했습니다.",
+        text: "다시 시도해 주세요."
       });
     }
   };
@@ -198,13 +198,13 @@ export const UserProvider = ({ children }) => {
   // 로그아웃 함수
   const logout = async () => {
     try {
-      const response = await fetch("http://localhost:8080/logout", {
+      const response = await fetch("https://www.devback.shop/logout", {
         // 로그아웃 엔드포인트
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
+          // Authorization: `Bearer ${accessToken}`,
         },
       });
 

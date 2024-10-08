@@ -37,7 +37,7 @@ const GatherMateDetail = () => {
   const fetchPost = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/posts/${postId}`,
+        `https://www.devback.shop/gathermate/posts/${postId}`,
         {
           method: "GET",
           credentials: "include",
@@ -58,7 +58,7 @@ const GatherMateDetail = () => {
       setPost(data);
       // // setLikes(data.likes || 0);
       // setIsLiked(data.isLiked || false);
-      setIsRecruiting(data.isRecruiting);
+      setIsRecruiting(data.recruiting);
       setApply(data.apply);
     } catch (error) {
       console.error("Error fetching post:", error);
@@ -84,20 +84,20 @@ const GatherMateDetail = () => {
   // 게시글 삭제
   const deletePost = async () => {
     const confirmed = await Swal.fire({
-      title: "게시글 삭제",
-      text: "정말로 이 게시글을 삭제하시겠습니까?",
       icon: "warning",
+      title: "삭제하시겠습니까?",
+      text: "삭제 후에는 되돌릴 수 없습니다.",
       showCancelButton: true,
       confirmButtonText: "삭제",
-      cancelButtonText: "취소",
       confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
+      cancelButtonText: "취소",
+      cancelButtonColor: "#3085d6"
     });
     if (!confirmed.isConfirmed) return;
 
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/delete/${postId}`,
+        `https://www.devback.shop/gathermate/delete/${postId}`,
         {
           method: "DELETE", // 삭제 요청
           headers: {
@@ -116,17 +116,14 @@ const GatherMateDetail = () => {
 
       await Swal.fire({
         icon: "success",
-        title: "삭제 완료",
-        text: "게시글이 성공적으로 삭제되었습니다.",
-        confirmButtonText: "확인",
+        title: "삭제되었습니다."
       });
       navigate("/gathermate/list"); // 삭제 후 목록 페이지로 이동
     } catch (error) {
-      console.error("삭제 중 오류 발생:", error);
       await Swal.fire({
         icon: "error",
-        title: "삭제 실패",
-        text: error.message || "글 삭제에 실패했습니다. 다시 시도해주세요.",
+        title: "삭제 중 오류가 발생했습니다.",
+        text: error.message || "다시 시도해 주세요."
       });
     }
   };
@@ -136,15 +133,14 @@ const GatherMateDetail = () => {
     if (!user) {
       await Swal.fire({
         icon: "error",
-        title: "로그인 필요",
-        text: "로그인이 필요합니다.",
+        title: "로그인이 필요합니다."
       });
       return;
     }
 
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/likes/${postId}`,
+        `https://www.devback.shop/gathermate/likes/${postId}`,
         {
           method: "POST",
           credentials: "include",
@@ -167,21 +163,20 @@ const GatherMateDetail = () => {
       }));
       setIsLiked(data.isLiked);
     } catch (error) {
-      console.error("Error toggling like status:", error);
       await Swal.fire({
         icon: "error",
-        title: "좋아요 실패",
-        text: "로그인 후 좋아요를 실행할 수 있습니다.",
+        title: "좋아요 중 오류가 발생했습니다.",
+        text: error.message || "다시 시도해 주세요."
       });
     }
   };
 
   const handleToggleRecruit = async () => {
-    const newRecruitingStatus = !isRecruiting; // 현재 상태의 반대값으로 변경
-
+    const newRecruitingStatus = !isRecruiting;
+  
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/edit/${postId}/recruiting`,
+        `https://www.devback.shop/gathermate/edit/${postId}/recruiting`,
         {
           method: "PUT",
           headers: {
@@ -191,15 +186,14 @@ const GatherMateDetail = () => {
           body: JSON.stringify({ isRecruiting: newRecruitingStatus }),
         }
       );
-
+  
       if (response.ok) {
         const data = await response.json();
-        setIsRecruiting(newRecruitingStatus);
+        // 백엔드에서 업데이트된 데이터를 다시 가져옵니다.
+        await fetchPost();
         await Swal.fire({
           icon: "success",
-          title: "모집 상태 변경",
-          text: data.message || "모집 상태가 성공적으로 변경되었습니다.",
-          confirmButtonText: "확인",
+          title: data.message || "모집 상태가 변경되었습니다."
         });
       } else {
         const errorData = await response.json();
@@ -208,13 +202,10 @@ const GatherMateDetail = () => {
         );
       }
     } catch (error) {
-      console.error("모집 상태 업데이트 중 오류 발생:", error);
       await Swal.fire({
         icon: "error",
-        title: "모집 상태 변경 실패",
-        text:
-          error.message ||
-          "모집 상태를 변경하는 데 실패했습니다. 다시 시도해주세요.",
+        title: "변경 중 오류가 발생했습니다.",
+        text: error.message || "다시 시도해 주세요."
       });
     }
   };
@@ -224,7 +215,7 @@ const GatherMateDetail = () => {
     const accessToken = localStorage.getItem("accessToken");
     try {
       const response = await fetch(
-        `http://localhost:8080/gathermate/isLiked/posts/${postId}`,
+        `https://www.devback.shop/gathermate/isLiked/posts/${postId}`,
         {
           method: "GET",
           credentials: "include",

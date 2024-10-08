@@ -1,0 +1,36 @@
+name: Deploy to EC2
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH로 EC2에 접속하기
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script_stop: true
+          script: |
+            cd /home/ec2-user/DevBox
+            
+            # 기존 devbox_server-0.0.1-SNAPSHOT.jar 프로세스 종료
+            PID=$(ps aux | grep 'devbox_server-0.0.1-SNAPSHOT.jar' | grep -v grep | awk '{print $2}')
+            if [ -n "$PID" ]; then
+              echo "Killing process with PID: $PID"
+              kill -9 $PID
+            else
+              echo "No running process found for devbox_server-0.0.1-SNAPSHOT.jar"
+            fi
+            
+            # 최신 코드를 가져오고 빌드 수행
+            git pull origin main
+            cd devbox_server/
+            mvn package
+            cd target/
+            
+            # 새로운 JAR 파일을 백그라운드에서 실행
+            nohup java -jar *SNAPSHOT.jar > ./output.log 2>&1 &

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2"; // SweetAlert2 추가
+import Swal from "sweetalert2";
 import { useUser } from "../components/context/UserContext";
 
 import "./MyPageProfileEdit.css";
@@ -9,23 +9,36 @@ function MyPageProfileEdit() {
   const { user, loading, setUser, logout } = useUser();
 
   const [error, setError] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
-  const [emailConfirmation, setEmailConfirmation] = useState(""); // 이메일 확인 상태
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [emailConfirmation, setEmailConfirmation] = useState("");
   const navigate = useNavigate();
 
+  // 별도의 상태로 역할 관리
+  const [selectedRole, setSelectedRole] = useState(
+    user.role === "ROLE_USER" ? "일반회원" :
+    user.role === "ROLE_STUDENT" ? "수강생" :
+    ""
+  );
+
   const handleChange = (e) => {
-    setUser({
-      ...user,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    if (name === "role") {
+      setSelectedRole(value);
+    } else {
+      setUser({
+        ...user,
+        [name]: value,
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const dbRole = user.role === "일반회원" ? "ROLE_USER" : "ROLE_STUDENT";
+    const dbRole = selectedRole === "일반회원" ? "ROLE_USER" : "ROLE_STUDENT";
 
     try {
-      const response = await fetch("http://localhost:8080/api/user/update", {
+      const response = await fetch("https://www.devback.shop/api/user/update", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -38,12 +51,12 @@ function MyPageProfileEdit() {
       if (response.ok) {
         await Swal.fire({
           icon: "success",
-          title: "성공",
-          text: "회원정보가 성공적으로 수정되었습니다.",
+          title: "회원정보가 수정되었습니다."
         });
         navigate("/mypage");
       } else {
-        throw new Error("Failed to update user data");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update user data");
       }
     } catch (error) {
       console.error("Error updating user data:", error);
@@ -53,7 +66,7 @@ function MyPageProfileEdit() {
 
   const handleDeleteAccount = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/user/delete", {
+      const response = await fetch("https://www.devback.shop/api/user/delete", {
         method: "DELETE",
         credentials: "include",
         headers: {
@@ -64,7 +77,6 @@ function MyPageProfileEdit() {
 
       if (response.ok) {
         // 로그아웃 처리
-
         logout();
 
         await Swal.fire({
@@ -74,29 +86,30 @@ function MyPageProfileEdit() {
         });
         navigate("/auth"); // 탈퇴 후 로그인 페이지로 리디렉션
       } else {
-        throw new Error("회원탈퇴에 실패하였습니다.");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "회원탈퇴에 실패하였습니다.");
       }
     } catch (error) {
       console.error("회원탈퇴에 실패하였습니다:", error);
       setError(error.message);
       await Swal.fire({
         icon: "error",
-        title: "탈퇴 실패",
-        text: error.message || "회원탈퇴에 실패하였습니다.",
+        title: "회원탈퇴에 실패하였습니다.",
+        text: error.message || "다시 시도해 주세요.",
       });
     }
   };
 
   const confirmDeleteAccount = () => {
     Swal.fire({
-      title: "정말 탈퇴하시겠습니까?",
-      html: "회원 탈퇴는 취소할 수 없습니다.<br>탈퇴 시 작성했던 모든 글은 삭제됩니다.",
       icon: "warning",
+      title: "탈퇴하시겠습니까?",
+      html: "회원 탈퇴는 취소할 수 없습니다.<br>탈퇴 시 작성했던 모든 글은 삭제됩니다.",
       showCancelButton: true,
+      confirmButtonText: "탈퇴",
       confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "확인",
       cancelButtonText: "취소",
+      cancelButtonColor: "#3085d6"
     }).then((result) => {
       if (result.isConfirmed) {
         handleDeleteAccount();
@@ -155,18 +168,7 @@ function MyPageProfileEdit() {
               onChange={handleChange}
             />
           </div>
-          {/* <div className="mypage-profile-edit__form-group">
-          <label htmlFor="role">회원 유형 :</label>
-          <select
-            id="role"
-            name="role"
-            value={user.role}
-            onChange={handleChange}
-          >
-            <option value="일반회원">일반회원</option>
-            <option value="수강생">수강생</option>
-          </select>
-        </div> */}
+          {/* 회원 유형 라디오 버튼 */}
           <div className="mypage-profile-edit__form-group">
             <label>회원 유형 :</label>
             <div className="mypage-profile-edit__radio-group">
@@ -175,7 +177,7 @@ function MyPageProfileEdit() {
                   type="radio"
                   name="role"
                   value="일반회원"
-                  checked={user.role === "일반회원"}
+                  checked={selectedRole === "일반회원"}
                   onChange={handleChange}
                 />
                 <span className="radio-text">일반회원</span>
@@ -186,7 +188,7 @@ function MyPageProfileEdit() {
                   type="radio"
                   name="role"
                   value="수강생"
-                  checked={user.role === "수강생"}
+                  checked={selectedRole === "수강생"}
                   onChange={handleChange}
                 />
                 <span className="radio-text">수강생</span>
@@ -281,7 +283,7 @@ function MyPageProfileEdit() {
                 탈퇴하시면 작성하신 모든 게시글이 함께 삭제됩니다.
               </h5>
 
-              <p>탈퇴하려면 가입했던 이메일을 입력해주세요:</p>
+              <p>탈퇴하려면 가입했던 이메일을 입력해 주세요:</p>
               <p>
                 <strong>{user.email}</strong>
               </p>

@@ -10,7 +10,7 @@ const ProjectMyMain = (props) => {
     const navigate = useNavigate();
     const [isHovered, setIsHovered] = useState(false); // 마우스 호버 상태 관리
     const [likeStatus, setLikeStatus] = useState({}); // 좋아요 상태 및 수 관리
-    const domain = "http://localhost:8080";
+    const domain = "https://www.devback.shop";
 
     const fetchUserLikeStatus = async () => {
         const token = localStorage.getItem('accessToken');
@@ -82,7 +82,7 @@ const ProjectMyMain = (props) => {
     return (
         <>
              <div className="mypage-content__title-wrapper">
-                <h5 className="mypage-content__title" style={{cursor: 'default'}}>프로젝트 자랑 게시판</h5>
+                <h5 className="mypage-content__title" style={{cursor: 'default'}}>프로젝트 자랑_내가 쓴 글</h5>
             </div>
             <section className="container py-4">
                 <div className="row projects gx-lg-5">

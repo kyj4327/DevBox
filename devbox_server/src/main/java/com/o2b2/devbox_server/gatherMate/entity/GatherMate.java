@@ -6,7 +6,6 @@ import com.o2b2.devbox_server.gatherMate.like.entity.Like;
 import com.o2b2.devbox_server.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
-// import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -72,16 +71,18 @@ public class GatherMate {
 
     public GatherMatePostEditor.GatherMatePostEditorBuilder toEditor(){
         return GatherMatePostEditor.builder()
-                .intro(intro).apply(apply).title(title).content(content).isRecruiting(isRecruiting);
+                .intro(intro).apply(apply).title(title).content(content);
     }
 
-//    public GatherMatePostEditor
 
     public void edit(GatherMatePostEditor gatherMatePostEditor) {
         this.intro = gatherMatePostEditor.getIntro();
         this.apply = gatherMatePostEditor.getApply();
         this.title = gatherMatePostEditor.getTitle();
         this.content = gatherMatePostEditor.getContent();
-        this.isRecruiting = gatherMatePostEditor.isRecruiting();
+    }
+
+    public void updateRecruiting(boolean isRecruiting) {
+        this.isRecruiting = isRecruiting;
     }
 }

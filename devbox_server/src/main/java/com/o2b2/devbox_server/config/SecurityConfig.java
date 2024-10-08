@@ -24,6 +24,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -85,7 +86,11 @@ public class SecurityConfig {
                                                                 CorsConfiguration configuration = new CorsConfiguration();
 
                                                                 configuration.setAllowedOrigins(Collections
-                                                                                .singletonList("http://localhost:3000"));
+                                                                                .singletonList("https://devbox.world"));
+//                                                                configuration.setAllowedOrigins(Arrays.asList(
+//                                                                        "https://devbox.world",
+//                                                                        "https://devboxworld.netlify.app"
+//                                                                ));
                                                                 configuration.setAllowedMethods(
                                                                                 Collections.singletonList("*"));
                                                                 configuration.setAllowCredentials(true);
@@ -93,10 +98,11 @@ public class SecurityConfig {
                                                                                 Collections.singletonList("*"));
                                                                 configuration.setMaxAge(3600L);
 
-                                                                configuration.setExposedHeaders(Collections
-                                                                                .singletonList("Set-Cookie"));
-                                                                configuration.setExposedHeaders(Collections
-                                                                                .singletonList("Authorization"));
+//                                                                configuration.setExposedHeaders(Collections
+//                                                                                .singletonList("Set-Cookie"));
+//                                                                configuration.setExposedHeaders(Collections
+//                                                                                .singletonList("Authorization"));
+                                                                configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization")); // 두 헤더 모두 설정
 
                                                                 return configuration;
                                                         }
@@ -182,14 +188,14 @@ public class SecurityConfig {
                                                 .requestMatchers("/greeting/edit/**").authenticated()
 
                                                 // 공지사항
-                                                .requestMatchers("/notice/detail/**").permitAll()
+                                                .requestMatchers("/notice/write").hasRole("ADMIN")
                                                 .requestMatchers("/notice/posts/**").permitAll()
                                                 .requestMatchers("/notice/posts").authenticated()
                                                 .requestMatchers("/notice/posts**").authenticated()
 
                                                 // 공모전 공고
                                                 .requestMatchers("/contest/list*").permitAll()
-                                                .requestMatchers("/contest/write").authenticated()
+//                                                .requestMatchers("/contest/write").authenticated()
                                                 .requestMatchers("/contest/write").hasRole("ADMIN")
                                                 .requestMatchers("/contest/update**").authenticated()
                                                 .requestMatchers("/contest/update**").hasRole("ADMIN")
@@ -198,7 +204,7 @@ public class SecurityConfig {
 
                                                 // 채용 공고
                                                 .requestMatchers("/hiring/list/**").permitAll()
-                                                .requestMatchers("/hiring/write").authenticated()
+//                                                .requestMatchers("/hiring/write").authenticated()
                                                 .requestMatchers("/hiring/write").hasRole("ADMIN")
                                                 .requestMatchers("/hiring/update**").authenticated()
                                                 .requestMatchers("/hiring/update**").hasRole("ADMIN")
@@ -215,6 +221,7 @@ public class SecurityConfig {
                                                 // 6층 회의실 예약
                                                 .requestMatchers("/reservation/write/**").permitAll()
                                                 .requestMatchers("/reservation/write").hasAnyRole("ADMIN", "STUDENT")
+                                                .requestMatchers("/reservation/availability").authenticated()
                                                 .requestMatchers("/reservation/check/**").authenticated()
                                                 .requestMatchers("/reservation/delete**").authenticated()
                                                 .requestMatchers("/reservation/delete**").hasAnyRole("ADMIN", "STUDENT")

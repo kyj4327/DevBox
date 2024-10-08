@@ -33,10 +33,8 @@ function GatherMateMyList() {
       navigate("/gathermate/write");
     } else {
       Swal.fire({
-        icon: 'warning',
-        title: '로그인 필요',
-        text: '글을 작성하려면 로그인해야 합니다.',
-        confirmButtonText: '확인'
+        icon: "error",
+        title: "로그인이 필요합니다."
       }).then(() => {
         navigate("/gathermate/list");
       });
@@ -48,12 +46,12 @@ function GatherMateMyList() {
   }, [category, currentPage]); // searchKeyword와 searchType 추가
 
   const fetchData = async () => {
-    let url = `http://localhost:8080/gathermate/myposts?page=${
+    let url = `https://www.devback.shop/gathermate/myposts?page=${
       currentPage - 1
     }&size=5&sort=id,desc`;
 
     if (searchKeyword) {
-      url = `http://localhost:8080/gathermate/myposts/search?keyword=${encodeURIComponent(
+      url = `https://www.devback.shop/gathermate/myposts/search?keyword=${encodeURIComponent(
         searchKeyword
       )}&searchType=${encodeURIComponent(searchType)}&page=${
         currentPage - 1
@@ -199,6 +197,7 @@ function GatherMateMyList() {
               검색
             </button>
           </form>
+          <div className="row justify-content-center my-5">
           {data.length > 0 ? (
             <div className="post-list">
               {data.map((post) => (
@@ -295,6 +294,7 @@ function GatherMateMyList() {
           ) : (
             <p>작성한 글이 없습니다.</p> // 메시지 수정
           )}
+          </div>
         {/* </div> */}
         {/* <div className="form-row pt-2">
           <div className="col-md-12 col-10 text-end">

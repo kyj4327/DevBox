@@ -18,5 +18,7 @@ public interface MsgReciverRepository extends JpaRepository <MsgReciverEntity, L
 
     Page<MsgReciverEntity> findByReceiverAndLikeIsTrue(UserEntity userEntity, Pageable pageable);
 
-    
+
+    Page<MsgEntity> findByReceiverAndLikeIsTrue(UserEntity userEntity, Pageable pageable);
 }
+

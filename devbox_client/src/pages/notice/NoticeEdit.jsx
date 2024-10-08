@@ -17,7 +17,7 @@ function NoticeEdit() {
     const fetchPost = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/notice/posts/${postId}`
+          `https://www.devback.shop/notice/posts/${postId}`
         );
         if (!response.ok) {
           throw new Error("네트워크 응답이 올바르지 않습니다.");
@@ -26,12 +26,9 @@ function NoticeEdit() {
         setTitle(data.title);
         setContent(data.content);
       } catch (error) {
-        console.error("글 불러오기 중 오류 발생:", error);
         Swal.fire({
-          title: "로드 실패",
-          text: "글을 불러오는데 실패했습니다.",
           icon: "error",
-          confirmButtonText: "확인",
+          title: "글을 불러오는데 실패했습니다."
         });
       }
     };
@@ -48,7 +45,7 @@ function NoticeEdit() {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/notice/edit/${postId}`,
+        `https://www.devback.shop/notice/edit/${postId}`,
         {
           method: "PUT",
           headers: {
@@ -67,23 +64,17 @@ function NoticeEdit() {
       }
 
       const data = await response.text();
-      console.log("업데이트된 데이터:", data);
-
       Swal.fire({
-        title: "수정 성공",
-        text: data.message || "글이 수정되었습니다.",
         icon: "success",
-        confirmButtonText: "확인",
+        title: data.message || "수정되었습니다."
       }).then(() => {
         navigate(`/notice/detail/${postId}`);
       });
     } catch (error) {
-      console.error("수정 실패:", error);
       Swal.fire({
-        title: "수정 실패",
-        text: error.message || "글 수정에 실패했습니다.",
         icon: "error",
-        confirmButtonText: "확인",
+        title: "수정 중 오류가 발생했습니다.",
+        text: error.message || "다시 시도해 주세요."
       });
     }
   };

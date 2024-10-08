@@ -5,7 +5,7 @@ import Category from "../../components/Category";
 
 const MsgList = (props) => {
     const navigate = useNavigate();
-    const domain = "http://localhost:8080";
+    const domain = "https://www.devback.shop";
     const [likeStatus, setLikeStatus] = useState({});
 
     const like = async (msgId, type) => {
@@ -64,6 +64,7 @@ const MsgList = (props) => {
     };
 
     return (
+        <div className="py-5">
         <div className="container py-5">
             <h1 className="h2 semi-bold-600 text-center mt-2" style={{ cursor: 'default' }}>쪽지 보관함</h1>
 
@@ -119,6 +120,7 @@ const MsgList = (props) => {
                     }} />
                 </div>
             </div>
+        </div>
         </div>
     );
 };

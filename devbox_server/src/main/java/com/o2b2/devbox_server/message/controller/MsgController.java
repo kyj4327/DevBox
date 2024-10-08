@@ -60,6 +60,7 @@ public class MsgController {
         Pageable pageable;
         Page<MsgEntity> p;
 
+
         if (category.equals("중요쪽지")) {
             // 중요쪽지: 받은 쪽지와 보낸 쪽지에서 좋아요(like)가 true인 쪽지들 조회
             pageable = PageRequest.of(page - 1, size, dir, "sendTime");

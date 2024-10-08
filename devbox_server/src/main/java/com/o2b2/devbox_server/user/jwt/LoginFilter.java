@@ -77,19 +77,26 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String role = auth.getAuthority();
 
         //토큰 생성
-        String accessToken = jwtUtil.createJwt("access", username, role, 6000000L); // 10분
+        String accessToken = jwtUtil.createJwt("access", username, role, 600000L); // 10분
         String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L);// 24시간
 
         //Refresh 토큰 저장
-        saveRefreshToken(username, refreshToken, 60 * 60 * 24 * 30 * 1000L);
+        saveRefreshToken(username, refreshToken, 86400000L);
 
         // AccessToken과 RefreshToken을 쿠키에 추가
         response.setHeader("Authorization", "Bearer " + accessToken);
 //        response.addCookie(createCookie("AccessToken", accessToken));
-        response.addCookie(createCookie("RefreshToken", refreshToken));
+//        response.addCookie(createCookie("RefreshToken", refreshToken));
+        createCookieWithSameSite(response, "RefreshToken", refreshToken);
 
         // 성공 후 리다이렉트
         response.setStatus(HttpStatus.OK.value());
+    }
+
+    private void createCookieWithSameSite(HttpServletResponse response, String key, String value) {
+        String cookie = String.format("%s=%s; Max-Age=%d; Secure; HttpOnly; SameSite=None; Path=/",
+                key, value, 60 * 60 * 24); // 1일
+        response.addHeader("Set-Cookie", cookie);
     }
 
     @Override
@@ -114,8 +121,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(24*60*60); // 쿠키 세션 주기
-        //cookie.setSecure(true); // setSecure = https 통신 진행시 사용
-        //cookie.setPath("/");
+        cookie.setSecure(true); // setSecure = https 통신 진행시 사용
+        cookie.setHttpOnly(true); // JavaScript 접근 방지
+        cookie.setPath("/");
         cookie.setHttpOnly(true); // 어떤 클라이언트에서 자바스크립트로 해당 쿠키 접근 못하게 막기
 
         return cookie;

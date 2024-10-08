@@ -11,7 +11,7 @@ const MsgDetail = () => {
     const id = searchParams.get('id');
     const category = searchParams.get('category');
     const kind = category == '받은쪽지' ? 0 : 1;
-    const domain = "http://localhost:8080";
+    const domain = "https://www.devback.shop";
     const [title, setTitle] = useState('');
     const [sender, setSender] = useState('');
     const [reciver, setReciver] = useState('');
@@ -123,13 +123,13 @@ const MsgDetail = () => {
 
                                         const result = await Swal.fire({
                                             icon: "warning",
-                                            title: "정말 삭제하시겠습니까?",
+                                            title: "삭제하시겠습니까?",
                                             text: "삭제 후에는 되돌릴 수 없습니다.",
                                             showCancelButton: true,
                                             confirmButtonText: "삭제",
-                                            cancelButtonText: "취소",
                                             confirmButtonColor: "#d33",
-                                            cancelButtonColor: "#3085d6",
+                                            cancelButtonText: "취소",
+                                            cancelButtonColor: "#3085d6"
                                         });
 
                                         if (result.isConfirmed) {
@@ -145,16 +145,20 @@ const MsgDetail = () => {
                                                 });
 
                                                 if (res.ok) {
-                                                    Swal.fire("삭제 완료", "메시지가 삭제되었습니다.", "success");
-                                                    navigate('/message/list');
+                                                    Swal.fire({
+                                                        icon: "success",
+                                                        title: "삭제되었습니다."
+                                                    }).then(() => {
+                                                        navigate('/message/list');
+                                                    });
                                                 } else {
                                                     throw new Error('삭제 실패');
                                                 }
                                             } catch (error) {
                                                 Swal.fire({
                                                     icon: 'error',
-                                                    title: '서버 오류',
-                                                    text: '요청을 처리하는 중 오류가 발생했습니다.'
+                                                    title: '삭제 중 오류가 발생했습니다.',
+                                                    text: '다시 시도해 주세요.'
                                                 });
                                             }
                                         }

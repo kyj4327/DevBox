@@ -11,7 +11,7 @@ import QuillEditor from "../../components/QuillEditor";
 
 const ProjectUpdate = () => {
     const navigate = useNavigate();
-    const domain = "http://localhost:8080";
+    const domain = "https://www.devback.shop";
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
@@ -79,9 +79,8 @@ const ProjectUpdate = () => {
         // savedImgs와 uploadImgs를 모두 확인하도록 수정
         if (savedImgs.length === 0 && uploadImgs.length === 0) {
             Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "이미지를 자랑해주세요!!"
+                icon: "warning",
+                title: "이미지를 첨부해 주세요."
             });
             return;
         }
@@ -115,13 +114,19 @@ const ProjectUpdate = () => {
             body: formData
         });
         const data = await res.json();
+
         if (data.code == 200 && data.id) {
+            Swal.fire({
+                icon: "success",
+                title: "수정되었습니다."
+            }).then(() => {
             navigate(`/project/detail?id=${data.id}`);
+            });
         } else {
             Swal.fire({
                 icon: "error",
-                title: "Oops...",
-                text: "이미지를 자랑해주세요!!"
+                title: "수정 중 오류가 발생했습니다.",
+                text: "다시 시도해 주세요."
             });
         }
 
@@ -144,9 +149,8 @@ const ProjectUpdate = () => {
                 setName(user.nickname || '');
             } else {
                 Swal.fire({
-                    icon: "warning",
-                    title: "로그인 필요",
-                    text: "로그인이 필요합니다.",
+                    icon: "error",
+                    title: "로그인이 필요합니다."
                 }).then(() => {
                     navigate('/auth');
                 });

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8080/api"; // 백엔드 서버 URL에 맞게 수정하세요
+const API_BASE_URL = "https://www.devback.shop/api"; // 백엔드 서버 URL에 맞게 수정하세요
 
 // 공통 설정: withCredentials와 Authorization 헤더를 axios 인스턴스에 추가
 const apiClient = axios.create({

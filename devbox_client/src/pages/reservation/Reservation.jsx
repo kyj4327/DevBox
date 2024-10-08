@@ -10,10 +10,12 @@ import { useUser } from '../../components/context/UserContext';
 import Swal from 'sweetalert2';
 
 const Reservation = () => {
-    const domain = "http://localhost:8080";
+    const domain = "https://www.devback.shop";
 
     const { user } = useUser();
     const navigate = useNavigate();
+
+    const token = localStorage.getItem('accessToken');
 
     const [value, onChange] = useState(new Date());
     const userName = useState(user ? user.name : '');
@@ -22,7 +24,10 @@ const Reservation = () => {
     const condition = "예약완료";
     const [timeData, setTimeData] = useState([]);
 
+    const [isWeekend, setIsWeekend] = useState(false); // 주말 여부를 저장할 상태 변수
     useEffect(() => {
+        const dayOfWeek = moment(value).day();
+        setIsWeekend(dayOfWeek === 0 || dayOfWeek === 6); // 토요일(6), 일요일(0)인지 확인
         setDate(moment(value).format("YYYY년 MM월 DD일"));
     }, [value]);
 
@@ -55,7 +60,13 @@ const Reservation = () => {
     };
 
     const validateFields = () => {
-        if (!user) {
+        if (isWeekend) { // 주말인지 체크
+            Swal.fire({
+                icon: "warning",
+                title: "주말은 예약 불가합니다."
+            });
+            return false;
+        } else if (!user) {
             Swal.fire({
                 icon: "error",
                 title: "로그인이 필요합니다."
@@ -74,15 +85,30 @@ const Reservation = () => {
         } else if (time === '') {
             Swal.fire({
                 icon: "warning",
-                title: "예약 시간을 선택해주세요."
+                title: "예약 시간을 선택해 주세요."
             });
             return false;
         }
         return true;
     };
 
+    // 예약 가능 여부를 확인하는 함수 추가
+    const checkReservationAvailability = async () => {
+        const url = `${domain}/reservation/availability`;
+        const response = await fetch(url, {
+            method: 'post',
+            credentials: 'include',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ date: date, time: time })
+        });
+        const data = await response.json();
+        return data.isAvailable; // 서버에서 예약 가능 여부 반환
+    };
+
     const saveData = async () => {
-        const token = localStorage.getItem('accessToken');
         try {
             const url = `${domain}/reservation/write`;
             const response = await fetch(url, {
@@ -109,13 +135,14 @@ const Reservation = () => {
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "다시 입력해주세요."
+                    title: "다시 입력해 주세요."
                 });
             }
         } catch (error) {
             Swal.fire({
                 icon: "error",
-                title: "예약 중 오류가 발생했습니다. 다시 시도해주세요."
+                title: "예약 중 오류가 발생했습니다.",
+                text: "다시 시도해 주세요."
             });
         }
     };
@@ -123,15 +150,25 @@ const Reservation = () => {
     const handleSave = async (e) => {
         e.preventDefault();
         if (validateFields()) {
+            const isAvailable = await checkReservationAvailability(); // 예약 가능 여부 확인
+            if (!isAvailable) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "이미 예약된 날짜/시간입니다."
+                }).then(() => {
+                    window.location.reload();
+                });
+                return;
+            }
             const result = await Swal.fire({
+                icon: "warning",
                 title: "예약하시겠습니까?",
                 text: `${date} ${time}`,
-                icon: "warning",
                 showCancelButton: true,
                 confirmButtonText: "예약",
                 confirmButtonColor: "#3085d6",
                 cancelButtonText: "취소",
-                cancelButtonColor: "#d33",
+                cancelButtonColor: "#d33"
             });
             if (result.isConfirmed) {
                 saveData();
@@ -164,8 +201,10 @@ const Reservation = () => {
 
     const TimeButton = ({ value }) => {
         return (
-            <button className={`btn px-4 mx-auto btn-outline-primary ${isDisabled(value) ? "disabled-btn" : ""}`}
-                onClick={timeClick} disabled={isDisabled(value)}>{value}</button>
+            !isWeekend && ( // 주말일 경우 버튼을 숨김
+                <button className={`btn px-4 mx-auto btn-outline-primary ${isDisabled(value) ? "disabled-btn" : ""}`}
+                    onClick={timeClick} disabled={isDisabled(value)}>{value}</button>
+            )
         );
     };
 
@@ -187,9 +226,8 @@ const Reservation = () => {
             </section>
             <section className="container py-5">
                 <h1 className="col-12 col-xl-8 h2 text-left text-primary pt-3">부산 디지털 혁신아카데미 회의실</h1>
-                <h2 className="col-12 col-xl-8 h4 text-left regular-400">회의실 관련 문의</h2>
-                <p className="col-12 col-xl-8 text-left text-muted pb-5 light-300">
-                    번호 : 051-749-9424/9474
+                <p className="col-12 col-xl-8 text-left text-danger pb-5 light-300">
+                    본 6층 회의실 예약 서비스는 기능 구현을 위한 목적으로 제공되며, 실제 예약 및 사용은 부산 정보진흥원측에 문의하세요!
                 </p>
                 <div className="row d-flex align-items-center pb-5">
                     <div className="col-lg-6" style={{ display: 'flex', justifyContent: 'space-around' }}>

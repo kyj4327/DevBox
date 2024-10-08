@@ -15,16 +15,14 @@ public class GatherMatePostEditor {
 
     private final  String title; // 기본 값 = Null
     private final  String  content; // 기본 값 = Null
-    private final boolean isRecruiting;
 
     @Builder
-    public GatherMatePostEditor(String content, String title, String intro, String apply, boolean isRecruiting) {
+    public GatherMatePostEditor(String content, String title, String intro, String apply) {
 
         this.intro = intro;
         this.apply = apply;
         
         this.content = content;
         this.title = title;
-        this.isRecruiting = isRecruiting;
     }
 }

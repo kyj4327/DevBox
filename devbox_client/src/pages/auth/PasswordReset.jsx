@@ -16,7 +16,7 @@ function PasswordReset() {
 
   const handleSendCode = () => {
     setIsSendingCode(true); // 로딩 시작
-    fetch("http://localhost:8080/password/code", {
+    fetch("https://www.devback.shop/password/code", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -30,14 +30,14 @@ function PasswordReset() {
           Swal.fire({
             icon: "success",
             title: "인증코드 발송 완료",
-            text: "인증코드를 발송하였습니다.",
+            text: "인증코드를 발송하였습니다."
           });
           setIsCodeSent(true);
         } else {
           Swal.fire({
             icon: "error",
-            title: "발송 실패",
-            text: "인증코드 발송에 실패하였습니다.\n(소셜로그인 계정인 경우 비밀번호 찾기를 할 수 없습니다.)",
+            title: "인증코드 발송에 실패하였습니다.",
+            text: "소셜로그인 계정인 경우 비밀번호 찾기를 할 수 없습니다."
           });
         }
       })
@@ -46,14 +46,14 @@ function PasswordReset() {
         console.error("Error:", error);
         Swal.fire({
           icon: "error",
-          title: "오류 발생",
-          text: "인증코드 발송에 실패하였습니다.\n(소셜로그인 계정인 경우 비밀번호 찾기를 할 수 없습니다.)",
+          title: "인증코드 발송에 실패하였습니다.",
+          text: "소셜로그인 계정인 경우 비밀번호 찾기를 할 수 없습니다."
         });
       });
   };
 
   const handleVerifyCode = () => {
-    fetch("http://localhost:8080/password/verify", {
+    fetch("https://www.devback.shop/password/verify", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -65,15 +65,15 @@ function PasswordReset() {
         if (data.success) {
           Swal.fire({
             icon: "success",
-            title: "인증 완료",
-            text: "인증이 완료되었습니다. 비밀번호를 변경해보세요.",
+            title: "인증이 완료되었습니다.",
+            text: " 비밀번호를 변경해보세요."
           });
           setIsVerified(true);
         } else {
           Swal.fire({
             icon: "error",
-            title: "인증 실패",
-            text: "인증에 실패하였습니다. 다시 한번 확인해주세요.",
+            title: "인증에 실패하였습니다.",
+            text: "다시 확인해 주세요."
           });
         }
       })
@@ -81,14 +81,14 @@ function PasswordReset() {
         console.error("Error:", error);
         Swal.fire({
           icon: "error",
-          title: "오류 발생",
-          text: "인증에 실패하였습니다. 다시 시도해 주세요.",
+          title: "인증에 실패하였습니다.",
+          text: "다시 시도해 주세요."
         });
       });
   };
 
   const handleResetPassword = () => {
-    fetch("http://localhost:8080/password/reset", {
+    fetch("https://www.devback.shop/password/reset", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -100,16 +100,15 @@ function PasswordReset() {
         if (data.success) {
           Swal.fire({
             icon: "success",
-            title: "비밀번호 변경 완료",
-            text: "비밀번호가 변경되었습니다.",
+            title: "비밀번호가 변경되었습니다."
           }).then(() => {
             window.close();
           }); // 현재 창 닫기
         } else {
           Swal.fire({
             icon: "error",
-            title: "변경 실패",
-            html: "비밀번호 변경에 실패하였습니다.<br/>(소셜로그인 계정인 경우 비밀번호를 변경할 수 없습니다)",
+            title: "비밀번호 변경에 실패하였습니다.",
+            html: "소셜로그인 계정인 경우 비밀번호를 변경할 수 없습니다."
           });
         }
       })
@@ -117,8 +116,8 @@ function PasswordReset() {
         console.error("Error:", error);
         Swal.fire({
           icon: "error",
-          title: "오류 발생",
-          html: "비밀번호 변경에 실패하였습니다.<br/>(소셜로그인 계정인 경우 비밀번호를 변경할 수 없습니다)",
+          title: "비밀번호 변경에 실패하였습니다.",
+          html: "소셜로그인 계정인 경우 비밀번호를 변경할 수 없습니다."
         });
       });
   };
