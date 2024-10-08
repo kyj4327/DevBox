@@ -43,8 +43,8 @@ const Contact = () => {
                 <li className="h5 mb-0">DevBox 고객센터</li>
                 <li className="contact-muted">오픈카톡</li>
                 <li className="contact-muted">
-                  <Link to="https://open.kakao.com/o/sxzajjTg" target="_blank">
-                    https://open.kakao.com/o/sxzajjTg
+                  <Link to="https://open.kakao.com/o/smHmDjTg" target="_blank">
+                  https://open.kakao.com/
                   </Link>
                 </li>
               </ul>
