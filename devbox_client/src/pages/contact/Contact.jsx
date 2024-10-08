@@ -1,9 +1,9 @@
 import React from "react";
 import ContactForm from "../../components/ContactForm";
 import "../../assets/css/contact.css";
-import bannerImage from '../../assets/img/banner-img-01.svg';
-import { Link } from 'react-router-dom';
-import openChat from '../../assets/img/kakaoOpenChat.jpeg';
+import bannerImage from "../../assets/img/banner-img-01.svg";
+import { Link } from "react-router-dom";
+import openChat from "../../assets/img/kakaoOpenChat.jpeg";
 
 const Contact = () => {
   return (
@@ -37,15 +37,15 @@ const Contact = () => {
           <div className="col-lg-4">
             <div className="contact row mb-4">
               <div className="contact-icon col-lg-3 col-3">
-                <div className="border py-3 mb-2 text-center border rounded text-secondary">
-                  <img src={openChat} />
-                </div>
+                <img src={openChat} style={{ width: "80px", height: "80px" }} />
               </div>
               <ul className="contact-info list-unstyled col-lg-9 col-9 light-300">
                 <li className="h5 mb-0">DevBox 고객센터</li>
                 <li className="contact-muted">오픈카톡</li>
                 <li className="contact-muted">
-                  <Link to="https://open.kakao.com/o/sxzajjTg" target='_blank'>https://open.kakao.com/o/sxzajjTg</Link>
+                  <Link to="https://open.kakao.com/o/sxzajjTg" target="_blank">
+                    https://open.kakao.com/o/sxzajjTg
+                  </Link>
                 </li>
               </ul>
             </div>
