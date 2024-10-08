@@ -84,8 +84,8 @@ const GatherMateDetail = () => {
   // 게시글 삭제
   const deletePost = async () => {
     const confirmed = await Swal.fire({
-      title: "게시글 삭제",
-      text: "정말로 이 게시글을 삭제하시겠습니까?",
+      title: "삭제하시겠습니까?",
+      text: "삭제 후에는 되돌릴 수 없습니다.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "삭제",
