@@ -192,7 +192,8 @@ public class EduController {
                     .contentType(file.getContentType())
                     .build();
 
-            s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes()));
+            RequestBody requestBody = RequestBody.fromInputStream(file.getInputStream(), file.getSize());
+            s3Client.putObject(putObjectRequest, requestBody);
         } catch (S3Exception | IOException e) {
             e.printStackTrace();
             map.put("code", 500);
@@ -265,7 +266,8 @@ public class EduController {
                             .contentType(file.getContentType())
                             .build();
 
-                    s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes()));
+                    RequestBody requestBody = RequestBody.fromInputStream(file.getInputStream(), file.getSize());
+                    s3Client.putObject(putObjectRequest, requestBody);
 
                     // 기존 파일을 S3에서 삭제
                     DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()

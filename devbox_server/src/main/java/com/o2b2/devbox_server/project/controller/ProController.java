@@ -340,7 +340,8 @@ public class ProController {
                         .contentType(mFile.getContentType())
                         .build();
 
-                s3Client.putObject(putObjectRequest, RequestBody.fromBytes(mFile.getBytes()));
+                RequestBody requestBody = RequestBody.fromInputStream(mFile.getInputStream(), mFile.getSize());
+                s3Client.putObject(putObjectRequest, requestBody);
 
             } catch (S3Exception | IOException e) {
                 e.printStackTrace();
@@ -382,16 +383,36 @@ public class ProController {
                 for (Long imgId : imgIds) {
                     // 데이터베이스에서 해당 이미지를 삭제
                     MultiImgEntity imgEntity = multiImgRepository.findById(imgId).orElse(null);
+//                    if (imgEntity != null) {
+//                        // 파일 시스템에서 이미지 파일 삭제
+//                        File file = new File("c:/images/" + imgEntity.getImg());
+//                        if (file.exists()) {
+//                            file.delete(); // 파일 삭제
+//                        }
+//
+//                        // 데이터베이스에서 이미지 엔티티 삭제
+//                        multiImgRepository.deleteById(imgId);
+//                    }
                     if (imgEntity != null) {
-                        // 파일 시스템에서 이미지 파일 삭제
-                        File file = new File("c:/images/" + imgEntity.getImg());
-                        if (file.exists()) {
-                            file.delete(); // 파일 삭제
+                        try {
+                            // S3에서 이미지 삭제
+                            DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                                    .bucket(bucketName)
+                                    .key(imgEntity.getImg())
+                                    .build();
+                            s3Client.deleteObject(deleteObjectRequest);
+                        } catch (S3Exception e) {
+                            e.printStackTrace();
+                            // S3에서 이미지 삭제 실패 시 처리
+                            map.put("code", 500);
+                            map.put("pro", "S3에서 이미지 삭제 중 오류 발생: " + e.getMessage());
+                            return map;
                         }
 
                         // 데이터베이스에서 이미지 엔티티 삭제
                         multiImgRepository.deleteById(imgId);
                     }
+
                 }
             }
 
@@ -427,7 +448,9 @@ public class ProController {
                                 .contentType(mFile.getContentType())
                                 .build();
 
-                        s3Client.putObject(putObjectRequest, RequestBody.fromBytes(mFile.getBytes()));
+                        RequestBody requestBody = RequestBody.fromInputStream(mFile.getInputStream(), mFile.getSize());
+                        s3Client.putObject(putObjectRequest, requestBody);
+
 
                     } catch (S3Exception | IOException e) {
                         e.printStackTrace();
