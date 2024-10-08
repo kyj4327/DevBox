@@ -1,6 +1,6 @@
 import { upload } from "@testing-library/user-event/dist/upload";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import WriteShort from "../../components/WriteShort";
 import Button from "../../components/Button";
 import DragDrop from "./DragDrop";
@@ -22,9 +22,6 @@ const ProjectWrite = () => {
     const [uploadImgs, setUploadImgs] = useState([]);
     const [delImgId, setDelImgId] = useState([]);
     const [savedImgs, setSavedImgs] = useState([]);
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const id = searchParams.get('id');
     const domain = "https://www.devback.shop";
     const [linkError, setLinkError] = useState('');
 
@@ -37,7 +34,6 @@ const ProjectWrite = () => {
     const handleDeleteImage = (id) => {
         setDelImgId([...delImgId, id]);
         setSavedImgs(savedImgs.filter((img) => img.id !== id));
-        setUploadImgs(uploadImgs.filter((img) => img.id !== id));
     };
 
     const handleLinkChange = (e) => {
@@ -52,6 +48,13 @@ const ProjectWrite = () => {
         }
     };
     
+
+    const onchangeImageUpload = (e) => {
+
+        const { files } = e.target;
+        setUploadImgs(Array.from(files)); // 파일 자체를 상태에 저장
+    };
+
     const handleDetail = async (e) => {
         e.preventDefault();
         
@@ -63,7 +66,7 @@ const ProjectWrite = () => {
             return;
         }
 
-        if (uploadImgs.length === 0 && savedImgs.length === 0) {
+        if (uploadImgs.length === 0) {
             Swal.fire({
                 icon: "warning",
                 title: "이미지를 첨부해 주세요."
@@ -101,7 +104,7 @@ const ProjectWrite = () => {
                 icon: "success",
                 title: "저장되었습니다."
             }).then(() => {
-                navigate(`/project/detail?id=${data.id}`);
+                navigate('/project/list');
             });
         } else {
             Swal.fire({
@@ -115,6 +118,8 @@ const ProjectWrite = () => {
 
 
     const addFiles = (files) => {
+        console.log(files);
+
         const fs = files.map(v => {
             return v.object;
         })
@@ -195,7 +200,7 @@ const ProjectWrite = () => {
                     </div>
                 </div>
 
-                <div className="form-row pt-2 me-2">
+                <div className="form-row pt-2">
                     <div className="col-md-12 col-10 text-end">
                         <Button icon={'pen'} text={'등록'} onClick={handleDetail} />
                     </div>

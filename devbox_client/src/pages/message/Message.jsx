@@ -22,6 +22,7 @@ const Message = () => {
         });
 
         const data = await res.json();
+        console.log(data);
         setPageData(data);
         setReadTime(data.readtime);
 

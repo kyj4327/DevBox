@@ -12,11 +12,13 @@ import com.o2b2.devbox_server.user.entity.UserEntity;
 
 public interface MsgReciverRepository extends JpaRepository <MsgReciverEntity, Long> {
 
+    Page<MsgReciverEntity> findBySender(UserEntity sender, Pageable pageable);
+
     Page<MsgEntity> findByReceiver(UserEntity sender, Pageable pageable);
 
     List<MsgReciverEntity> findByReceiver(UserEntity reciver);
 
-    Page<MsgReciverEntity> findByReceiverAndLikeIsTrue(UserEntity userEntity, Pageable pageable);
+    Page<MsgEntity> findByReceiverAndLikeIsNotNull(UserEntity userEntity, Pageable pageable);
 
 
     Page<MsgEntity> findByReceiverAndLikeIsTrue(UserEntity userEntity, Pageable pageable);

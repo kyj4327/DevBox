@@ -10,7 +10,7 @@ const DragDrop = (props) => {
   const [initialFiles, setInitialFiles] = useState([]); // initialFiles를 props로 받습니다
   const [isDragging, setIsDragging] = useState(false);
   const [files, setFiles] = useState([]);
-  const allFiles = [...initialFiles, ...files];
+
   const dragRef = useRef(null);
   const fileId = useRef(0);
 
@@ -22,47 +22,39 @@ const DragDrop = (props) => {
     (e) => {
       let selectFiles = [];
       let tempFiles = files;
-  
+
       if (e.type === "drop") {
         selectFiles = e.dataTransfer.files;
       } else {
         selectFiles = e.target.files;
       }
-  
+
       for (const file of selectFiles) {
-        // 중복 파일 체크
-        const isDuplicate = tempFiles.some(f => f.object.name === file.name && f.object.size === file.size);
-        if (!isDuplicate) {
-          tempFiles = [
-            ...tempFiles,
-            {
-              id: fileId.current++,
-              object: file
-            }
-          ];
-        }
+        tempFiles = [
+          ...tempFiles,
+          {
+            id: fileId.current++,
+            object: file
+          }
+        ];
       }
-  
+
       setFiles(tempFiles);
       props.addFiles(tempFiles);
     },
-    [files, props]
+    [files]
   );
 
   const handleFilterFile = useCallback(
     (id) => {
-      const filteredFiles = files.filter((file) => file.id !== id);
-        setFiles(filteredFiles);
-        props.addFiles(filteredFiles); 
+      setFiles(files.filter((file) => file.id !== id));
     },
-    [files, props]
+    [files]
 
   );
 /////////////////////////////////////////////////////////
   const delhandle = useCallback((id) => {
-    setFiles((prevFiles) => prevFiles.filter((file) => file.id !== id));
-    // props.onDeleteImage를 호출하여 부모 컴포넌트에 알립니다.
-    props.onDeleteImage(id);
+    console.log(id);
   }, []);
 
   const handleDragIn = useCallback((e) => {
@@ -187,10 +179,7 @@ const DragDrop = (props) => {
                 <div>{name}</div>
                 <div
                   className="DragDrop-Files-Filter"
-                  onClick={() => {
-                    delhandle(file.id);   
-                    }
-                  } 
+                  onClick={() => handleFilterFile(id)}
                 >
                   X
                 </div>

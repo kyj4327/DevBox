@@ -46,6 +46,7 @@ const ProjectDetail = () => {
         setProData(data);
         setShowSwiper(true);
         if (data && data.name) {
+            console.log(data.name);
         }
     }
 

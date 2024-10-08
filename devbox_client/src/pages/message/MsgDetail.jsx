@@ -29,6 +29,7 @@ const MsgDetail = () => {
             },
         });
         const data = await res.json();
+        console.log("API Response:", data);
         setMsgData(data);
 
         setTitle(data.title);
