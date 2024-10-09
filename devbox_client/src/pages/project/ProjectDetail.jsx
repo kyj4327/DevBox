@@ -125,12 +125,15 @@ const ProjectDetail = () => {
                     </p>
                 </div>
 
-                <div className="row pt-5">
-                    <div className="worksingle-content col-lg-8 m-auto text-left justify-content-center">
-                        <h1 className="worksingle-heading h3 pb-3 light-300 typo-space-line">{proData.title}</h1>
-
-                    </div>
-                </div>
+                {
+                    !proData.title ? '' : (
+                        <div className="row pt-5">
+                            <div className="worksingle-content col-lg-8 m-auto text-left justify-content-center">
+                                <h1 className="worksingle-heading h3 pb-3 light-300 typo-space-line">{proData.title}</h1>
+                            </div>
+                        </div>
+                    )
+                }
 
                 <section className="py-5">
                     <div className="mySwiper">
@@ -244,17 +247,23 @@ const ProjectDetail = () => {
                                     <span>작성일: {formatDateTime(proData.time)}</span>
                                 </div>
                             </div>
-                            <div
-                                className="worksingle-footer px-3 py-3 text-muted light-300 border border-3"
-                                style={{
-                                    overflowWrap: 'break-word',
-                                    wordWrap: 'break-word',
-                                    whiteSpace: 'pre-wrap',
-                                    maxHeight: '500px', // 원하는 높이로 조정
-                                }}
-                                dangerouslySetInnerHTML={{ __html: proData.coment }}
-                            >
-                            </div>
+                            {
+                                !proData.coment ? (
+                                    <div className="worksingle-footer px-3 text-muted light-300"></div>
+                                ) : (
+                                    <div
+                                        className="worksingle-footer px-3 py-3 text-muted light-300 border border-3"
+                                        style={{
+                                            overflowWrap: 'break-word',
+                                            wordWrap: 'break-word',
+                                            whiteSpace: 'pre-wrap',
+                                            maxHeight: '500px', // 원하는 높이로 조정
+                                        }}
+                                        dangerouslySetInnerHTML={{ __html: proData.coment }}
+                                    >
+                                    </div>
+                                )
+                            }
                             <div className="row">
                                 <div className="col text-start">
                                     {user && proData.name === user.nickname && (
