@@ -1,12 +1,12 @@
 .notice-list {
   width: 100%;
-  border-top: 2px solid #333;
 }
 
 .notice-table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
+  border-top: 2px solid #333;
 }
 
 .notice-table th,
