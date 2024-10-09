@@ -193,7 +193,9 @@ const NoticeDetail = () => {
                 {/* 작성자가 아닐 경우 수정/삭제 버튼을 숨김 */}
                 {user && post.author === user.nickname && (
                   <>
-                    <Button text="수정" icon="edit" onClick={goToEditPage} />
+                    <span className="me-2">
+                      <Button text="수정" icon="edit" onClick={goToEditPage} />
+                    </span>
                     <Button text="삭제" icon="trash" onClick={deletePost} />
                   </>
                 )}

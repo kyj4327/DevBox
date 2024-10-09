@@ -348,20 +348,21 @@ const GatherMateDetail = () => {
 
                   {/* 좋아요 버튼 */}
                   {post.likeCount !== undefined && (
-                    <PostButton
-                      icon={
-                        <ion-icon
-                          name={isLiked ? "heart" : "heart-outline"}
-                          style={{
-                            color: isLiked ? "red" : "black",
-                            fontSize: "25px",
-                          }}
-                        ></ion-icon>
-                      }
-                      text={post.likeCount}
-                      onClick={handleLike}
-                      disabled={!user}
-                    />
+                    <span className="me-2">
+                      <PostButton
+                        icon={
+                          <ion-icon
+                            name={isLiked ? "heart" : "heart-outline"}
+                            style={{
+                              color: isLiked ? "red" : "black",
+                              fontSize: "25px",
+                            }}
+                          ></ion-icon>
+                        }
+                        text={post.likeCount}
+                        onClick={handleLike}
+                        disabled={!user} />
+                    </span>
                   )}
                   <PostButton
                     text={isRecruiting ? "모집중" : "모집완료"}
@@ -383,7 +384,9 @@ const GatherMateDetail = () => {
                 {/* 작성자가 아닐 경우 수정/삭제 버튼을 숨김 */}
                 {user && post.author === user.nickname && (
                   <>
-                    <Button text={"수정"} icon="edit"  onClick={goToEditPage} />
+                    <span className="me-2">
+                      <Button text={"수정"} icon="edit"  onClick={goToEditPage} />
+                    </span>
                     <Button text={"삭제"} icon="trash" onClick={deletePost} />
 
                   </>

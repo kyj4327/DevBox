@@ -116,7 +116,7 @@ function NoticeWrite() {
           <div className="col-md-12 col-10 text-end">
             {/* 권한이 있을 때만 저장 버튼 렌더링 */}
             {user.role === "ROLE_ADMIN" && (
-              <Button text={"저장하기"} onClick={saveData} />
+              <Button icon={'pen'} text={"등록"} onClick={saveData} />
             )}
           </div>
         </div>

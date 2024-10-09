@@ -192,7 +192,7 @@ function NoticeList() {
 
           {user?.role === "ROLE_ADMIN" && (
             <Button
-              text={"작성하기"}
+              text={"글쓰기"}
               onClick={toWrite}
               className="notice-write-button"
               icon="pen"

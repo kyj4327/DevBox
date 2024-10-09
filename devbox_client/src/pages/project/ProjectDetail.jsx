@@ -257,9 +257,6 @@ const ProjectDetail = () => {
                             </div>
                             <div className="row">
                                 <div className="col text-start">
-                                    <Button icon={'list'} text={'목록'} onClick={() => { navigate('/project/list') }} />
-                                </div>
-                                <div className="col text-end">
                                     {user && proData.name === user.nickname && (
                                         <>   
                                         <span className="me-2">
@@ -322,6 +319,9 @@ const ProjectDetail = () => {
                                             />
                                         </>
                                     )}
+                                </div>
+                                <div className="col text-end">
+                                    <Button icon={'list'} text={'목록'} onClick={() => { navigate('/project/list') }} />
                                 </div>
                             </div>
                         </div>

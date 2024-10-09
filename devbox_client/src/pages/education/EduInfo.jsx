@@ -112,7 +112,7 @@ const EduInfo = (props) => {
                                 <div className="col-md-12 col-12 text-end">
                                     {user && (
                                         <>
-                                            <Button icon={'pen'} text={'등록'} onClick={() => { navigate('/edu/write') }} />
+                                            <Button icon={'pen'} text={'글쓰기'} onClick={() => { navigate('/edu/write') }} />
                                         </>
                                     )}
                                 </div>

@@ -64,9 +64,6 @@ const EduDetail = () => {
                         </p>
                         <div className="row">
                             <div className="col text-start">
-                                <Button icon={'list'} text={'목록'} onClick={() => { navigate('/edu/list') }} />
-                            </div>
-                            <div className="col text-end">
                                 {  userRole === "ROLE_ADMIN" &&  (
                                     <>
                                         <button type="submit" className="me-2 button_css border border-2" onClick={(e) => { e.preventDefault(); navigate(`/edu/update?id=${eduData.id}`); }}>
@@ -111,6 +108,9 @@ const EduDetail = () => {
                                         />
                                     </>
                                 )}
+                            </div>
+                            <div className="col text-end">
+                                <Button icon={'list'} text={'목록'} onClick={() => { navigate('/edu/list') }} />
                             </div>
                         </div>
                     </div>
