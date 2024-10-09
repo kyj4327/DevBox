@@ -237,7 +237,7 @@ function GatherMateList() {
                   >
                     {/* 왼쪽 작성자명, 시간 */}
                     <span className="post-info">
-                      <span className="post-author">
+                      <span className="post-author me-1">
                         
                         <UserContact
                           nickname={post.author}
