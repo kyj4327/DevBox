@@ -26,8 +26,8 @@
   }
   
   .DragDrop-File {
-    width: 300px;
-    height: 100px;
+    width: 500px;
+    height: 200px;
     border: 2px solid black;
     border-radius: 10px;
     display: flex;

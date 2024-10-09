@@ -63,7 +63,7 @@ const DragDrop = (props) => {
     setFiles((prevFiles) => prevFiles.filter((file) => file.id !== id));
     // props.onDeleteImage를 호출하여 부모 컴포넌트에 알립니다.
     props.onDeleteImage(id);
-  }, []);
+  }, [props]);
 
   const handleDragIn = useCallback((e) => {
     e.preventDefault();
@@ -158,7 +158,7 @@ const DragDrop = (props) => {
                   className="DragDrop-Files-Filter"
                   onClick={() => {
                     delhandle(v.id);
-                    props.onDeleteImage(v.id);
+                    // props.onDeleteImage(v.id);
                   }}
                 >
                   X
@@ -173,7 +173,7 @@ const DragDrop = (props) => {
         htmlFor="fileUpload"
         ref={dragRef}
       >
-        <div>파일 첨부</div>
+        <div className="h3">파일 첨부</div>
       </label>
 
 
@@ -188,7 +188,7 @@ const DragDrop = (props) => {
                 <div
                   className="DragDrop-Files-Filter"
                   onClick={() => {
-                    delhandle(file.id);   
+                    handleFilterFile(file.id)   
                     }
                   } 
                 >

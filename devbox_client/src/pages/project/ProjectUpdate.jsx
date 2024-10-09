@@ -38,13 +38,6 @@ const ProjectUpdate = () => {
         setSavedImgs(savedImgs.filter((img) => img.id !== id));
     };
 
-    const onchangeImageUpload = (e) => {
-
-        const { files } = e.target;
-
-        setUploadImgs(Array.from(files));
-    }
-
     async function get() {
         const token = localStorage.getItem('accessToken');
 
