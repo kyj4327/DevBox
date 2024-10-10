@@ -255,8 +255,7 @@ const ProjectDetail = () => {
                                         style={{
                                             overflowWrap: 'break-word',
                                             wordWrap: 'break-word',
-                                            whiteSpace: 'pre-wrap',
-                                            maxHeight: '500px', // 원하는 높이로 조정
+                                            whiteSpace: 'pre-wrap'
                                         }}
                                         dangerouslySetInnerHTML={{ __html: proData.coment }}
                                     >
