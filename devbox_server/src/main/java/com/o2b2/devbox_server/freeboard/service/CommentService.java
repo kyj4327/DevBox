@@ -15,7 +15,6 @@ import com.o2b2.devbox_server.freeboard.entity.Post;
 import com.o2b2.devbox_server.freeboard.repository.CommentRepository;
 import com.o2b2.devbox_server.freeboard.repository.PostRepository;
 import com.o2b2.devbox_server.user.entity.UserEntity;
-import com.o2b2.devbox_server.user.repository.UserRepository;
 
 @Service
 public class CommentService {

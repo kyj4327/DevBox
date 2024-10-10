@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.o2b2.devbox_server.message.model.MsgReciverEntity;
 import com.o2b2.devbox_server.user.entity.UserEntity;
 
 import jakarta.persistence.CascadeType;

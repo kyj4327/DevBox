@@ -1,13 +1,9 @@
 package com.o2b2.devbox_server.eduInfo.model;
 
-import com.o2b2.devbox_server.user.entity.UserEntity;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Entity

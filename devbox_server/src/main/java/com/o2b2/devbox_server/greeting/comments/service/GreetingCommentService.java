@@ -8,7 +8,6 @@ import com.o2b2.devbox_server.greeting.comments.request.GreetingCommentEdit;
 import com.o2b2.devbox_server.greeting.comments.response.GreetingCommentResponse;
 import com.o2b2.devbox_server.greeting.entity.Greeting;
 import com.o2b2.devbox_server.greeting.repository.GreetingRepository;
-import com.o2b2.devbox_server.greeting.comments.repository.GreetingCommentRepository;
 import com.o2b2.devbox_server.user.entity.UserEntity;
 import com.o2b2.devbox_server.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
