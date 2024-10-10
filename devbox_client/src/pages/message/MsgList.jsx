@@ -8,21 +8,39 @@ const MsgList = (props) => {
     const domain = "https://www.devback.shop";
     const [likeStatus, setLikeStatus] = useState({});
 
-    const like = async (msgId) => {
+    const like = async (msgId, type) => {
         const token = localStorage.getItem('accessToken');
-        const url = `${domain}/msg/like?id=${msgId}`;
+        let urlType = type;
+
+        // 카테고리에 따라 API에서 처리할 타입 결정
+        if (type === '중요쪽지') {
+            urlType = 'important'; // 중요 쪽지에 대한 타입 추가
+        } else {
+            urlType = type === '받은쪽지' ? 'received' : 'sent';
+        }
+
+        const url = `${domain}/msg/like?id=${msgId}&type=${urlType}`;
+
         const res = await fetch(url, {
             method: 'GET',
             credentials: "include",
             headers: {
                 "Authorization": `Bearer ${token}`,
-            }, 
+            },
         });
+
         const data = await res.json();
-        props.setRefresh(); // 부모 컴포넌트 refresh상태 반전
+        props.setRefresh(); // 부모 컴포넌트 refresh 상태 반전
 
+        if (data.like !== undefined) {
+            setLikeStatus(prevStatus => ({
+                ...prevStatus,
+                [msgId]: data.like
+            }));
+        } else if (data.error) {
+            console.error(data.error);
+        }
     };
-
     // 상태 필터링 함수
     const clickState = (e) => {
         e.preventDefault();
