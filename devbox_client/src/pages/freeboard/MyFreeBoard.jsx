@@ -110,7 +110,13 @@ const MyFreeboard = () => {
                       </td>
                     </tr>
                   ))
-                ) : <p>작성한 글이 없습니다.</p>
+                ) : (
+                  <tr>
+                    <td colSpan="4">
+                      <p>작성한 글이 없습니다.</p>
+                    </td>
+                  </tr>
+                )
               }
             </tbody>
           </table>
