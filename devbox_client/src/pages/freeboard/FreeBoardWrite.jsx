@@ -84,17 +84,20 @@ const FreeBoardWrite = () => {
       if (!user) {
         throw new Error("로그인이 필요합니다.");
       }
-      const postData = { title, content, author: user.nickname }; // 작성자 정보 포함
+      const postData = { title, content, author: user.nickname };
+      let newPostId;  //새로 생성된 게시글이나 수정된 게시글의 ID를 저장하기 위해 추가
       if (id) {
         await updatePost(id, postData);
+        newPostId = id;  //수정할 때 사용,  URL 파라미터에서 가져온 id를 newPostId에 할당
       } else {
-        await createPost(postData);
+        const response = await createPost(postData);
+        newPostId = response.id; // 새 게시글을 작성할 때 사용,  새로 생성된 게시글의 ID를 추출하여 newPostId에 할당
       }
       Swal.fire({
         icon: "success",
         title: id ? "수정되었습니다." : "저장되었습니다."
       }).then(() => {
-        navigate("/freeboard/list");
+        navigate(`/freeboard/detail/${newPostId}`);
       });
     } catch (error) {
       Swal.fire({
@@ -124,7 +127,6 @@ const FreeBoardWrite = () => {
           </p>
           <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
             <div className="contact-form row">
-              {/* 작성자 필드를 숨김 처리 */}
               <input
                 type="hidden"
                 name="author"
