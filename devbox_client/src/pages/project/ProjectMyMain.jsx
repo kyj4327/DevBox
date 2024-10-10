@@ -84,39 +84,47 @@ const ProjectMyMain = (props) => {
              <div className="mypage-content__title-wrapper">
                 <h5 className="mypage-content__title" style={{cursor: 'default'}}>프로젝트 자랑_내가 쓴 글</h5>
             </div>
-            <section className="container py-4">
-                <div className="row projects gx-lg-5">
-                    {props.list && props.list.map((pro) => (
-                        <div className="service-work overflow-hidden card mb-3 mx-2 col-sm-6 col-lg-4 pt-4 project marketing social business" key={pro.id}>
-                            <Link to={`/project/detail?id=${pro.id}`} className="overflow-hidden card mb-2 mx-1 text-decoration-none">
-                                <img
-                                    style={{ height: '300px' }}
-                                    className="card-img-top"
-                                    src={`${domain}/project/download?id=${pro.mainImg}`}
-                                    alt={`Project ${pro.id}`}
-                                />
-                            </Link>
-                            <div className="card-body">
-                                <h5 className="card-title h6 m-0 semi-bold-600 text-dark text-center" style={{cursor: 'default'}}>{pro.title}</h5>
-                                <p className="card-text pt-2 mb-1 light-300 text-dark text-center">
-                                    작성자: <UserContact nickname={pro.name} />
-                                </p>
-                                <div className='d-flex justify-content-end'>
-                                    <i
-                                        className={`bx h3 px-1 ${likeStatus[pro.id]?.liked ? 'bxs-like' : 'bx-like'} ${isHovered ? 'bx-tada' : ''}`}
-                                        onClick={(e) => handleLikeClick(e, pro.id)} // 좋아요 클릭 시 처리
-                                        style={{ color: '#4232C2' }}
-                                        onMouseEnter={() => setIsHovered(true)}
-                                        onMouseLeave={() => setIsHovered(false)}
-                                    ></i>
-                                    <span className='pt-1'style={{ color: '#4232C2' }}>{likeStatus[pro.id]?.count || pro.likeCount}</span>
+            {
+                !props.list || props.list.length === 0 ? (
+                    <div className="row justify-content-center my-5">
+                        <p>작성한 글이 없습니다.</p>
+                    </div>
+                ) : (
+                    <section className="container py-4">
+                        <div className="row projects gx-lg-5">
+                            {props.list && props.list.map((pro) => (
+                                <div className="service-work overflow-hidden card mb-3 mx-2 col-sm-6 col-lg-4 pt-4 project marketing social business" key={pro.id}>
+                                    <Link to={`/project/detail?id=${pro.id}`} className="overflow-hidden card mb-2 mx-1 text-decoration-none">
+                                        <img
+                                            style={{ height: '300px' }}
+                                            className="card-img-top"
+                                            src={`${domain}/project/download?id=${pro.mainImg}`}
+                                            alt={`Project ${pro.id}`}
+                                        />
+                                    </Link>
+                                    <div className="card-body">
+                                        <h5 className="card-title h6 m-0 semi-bold-600 text-dark text-center" style={{ cursor: 'default' }}>{pro.title}</h5>
+                                        <p className="card-text pt-2 mb-1 light-300 text-dark text-center">
+                                            작성자: <UserContact nickname={pro.name} />
+                                        </p>
+                                        <div className='d-flex justify-content-end'>
+                                            <i
+                                                className={`bx h3 px-1 ${likeStatus[pro.id]?.liked ? 'bxs-like' : 'bx-like'} ${isHovered ? 'bx-tada' : ''}`}
+                                                onClick={(e) => handleLikeClick(e, pro.id)} // 좋아요 클릭 시 처리
+                                                style={{ color: '#4232C2' }}
+                                                onMouseEnter={() => setIsHovered(true)}
+                                                onMouseLeave={() => setIsHovered(false)}
+                                            ></i>
+                                            <span className='pt-1' style={{ color: '#4232C2' }}>{likeStatus[pro.id]?.count || pro.likeCount}</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            ))}
+
                         </div>
-                    ))}
-                    
-                </div>
-            </section>
+                    </section>
+                )
+            }
         </>
     );
 };

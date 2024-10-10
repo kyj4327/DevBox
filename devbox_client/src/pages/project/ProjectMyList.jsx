@@ -37,17 +37,21 @@ const ProjectMyList = () => {
     return(
         <div className="mypage-content__wrapper">
             <ProjectMyMain setRefresh={() => setRefresh(prev => !prev)} list={pageData.list} />
-            <Pagination
-             handlePageChange={handlePageChange} 
-             pageData={
-                 {
-                     'startPage': pageData.startPage,
-                     'endPage': pageData.endPage,
-                     'currentPage': pageData.currentPage,
-                     'totalPage': pageData.totalPage
-                 }
-             }
-            />
+            {
+                pageData.list && pageData.list.length > 0 ? (
+                    <Pagination
+                        handlePageChange={handlePageChange}
+                        pageData={
+                            {
+                                'startPage': pageData.startPage,
+                                'endPage': pageData.endPage,
+                                'currentPage': pageData.currentPage,
+                                'totalPage': pageData.totalPage
+                            }
+                        }
+                    />
+                ) : ''
+            }
         </div>
     );
 };

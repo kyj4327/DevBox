@@ -78,7 +78,8 @@ const MyReferenceList = () => {
                 </div>
             </div>
             <div className="row justify-content-center my-5">
-                    {
+                {
+                    data.length > 0 ? (
                         data.map((v) => {
                             return (
                                 <div className="pricing-list shadow-sm rounded-top rounded-3 py-sm-0 py-5" key={v.id}>
@@ -157,9 +158,12 @@ const MyReferenceList = () => {
                                 </div>
                             )
                         })
-                    }
-                    </div>
-            <Pagination handlePageChange={handlePageChange} pageData={pageData} />
+                    ) : <p>작성한 글이 없습니다.</p>
+                }
+            </div>
+            {
+                data.length > 0 ? <Pagination handlePageChange={handlePageChange} pageData={pageData} /> : ''
+            }
         </div>
     );
 };

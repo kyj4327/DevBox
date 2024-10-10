@@ -1,15 +1,9 @@
 package com.o2b2.devbox_server.freeboard.DTO;
 
-import com.o2b2.devbox_server.freeboard.entity.Post;
-import com.o2b2.devbox_server.user.entity.UserEntity;
-
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.annotation.ObjectIdGenerators.StringIdGenerator;
-import com.o2b2.devbox_server.freeboard.entity.Comment;
 
 @Getter
 @Setter

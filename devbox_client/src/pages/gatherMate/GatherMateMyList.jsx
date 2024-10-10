@@ -46,16 +46,14 @@ function GatherMateMyList() {
   }, [category, currentPage]); // searchKeyword와 searchType 추가
 
   const fetchData = async () => {
-    let url = `https://www.devback.shop/gathermate/myposts?page=${
-      currentPage - 1
-    }&size=5&sort=id,desc`;
+    let url = `https://www.devback.shop/gathermate/myposts?page=${currentPage - 1
+      }&size=5&sort=id,desc`;
 
     if (searchKeyword) {
       url = `https://www.devback.shop/gathermate/myposts/search?keyword=${encodeURIComponent(
         searchKeyword
-      )}&searchType=${encodeURIComponent(searchType)}&page=${
-        currentPage - 1
-      }&size=10&sort=id,desc`;
+      )}&searchType=${encodeURIComponent(searchType)}&page=${currentPage - 1
+        }&size=10&sort=id,desc`;
     }
 
     if (category !== "All" && !searchKeyword) {
@@ -136,180 +134,183 @@ function GatherMateMyList() {
   return (
     <div className="mypage-content__wrapper">
       {/* <section className="container py-5"> */}
-        {/* <div className="container py-5"> */}
-          <div className="mypage-content__title-wrapper">
-            <h5 className="mypage-content__title">모여라 메이트_내가 쓴 글</h5>
-          </div>
+      {/* <div className="container py-5"> */}
+      <div className="mypage-content__title-wrapper">
+        <h5 className="mypage-content__title">모여라 메이트_내가 쓴 글</h5>
+      </div>
 
-          <div className="row justify-content-center my-5">
-            <div className="filter-btns shadow-md rounded-pill text-center col-auto">
-              <Category
-                text={"All"}
-                isActive={category}
-                onClick={handleCategoryChange}
-              />
-              <Category
-                text={"스터디"}
-                isActive={category}
-                onClick={handleCategoryChange}
-              />
-              <Category
-                text={"공모전"}
-                isActive={category}
-                onClick={handleCategoryChange}
-              />
-              <Category
-                text={"프로젝트"}
-                isActive={category}
-                onClick={handleCategoryChange}
-              />
-              <Category
-                text={"식사"}
-                isActive={category}
-                onClick={handleCategoryChange}
-              />
-              <Category
-                text={"기타"}
-                isActive={category}
-                onClick={handleCategoryChange}
-              />
-            </div>
-          </div>
-          <form onSubmit={handleSearch} className="mb-3 search-form">
-            <div className="search-select-container">
-              <SearchSelect
-                options={["내용 & 제목", "작성자"]} // 드롭다운 옵션
-                value={searchType} // 현재 선택된 값
-                onChange={handleSelectChange} // 값이 변경되면 호출
-              />
+      <div className="row justify-content-center my-5">
+        <div className="filter-btns shadow-md rounded-pill text-center col-auto">
+          <Category
+            text={"All"}
+            isActive={category}
+            onClick={handleCategoryChange}
+          />
+          <Category
+            text={"스터디"}
+            isActive={category}
+            onClick={handleCategoryChange}
+          />
+          <Category
+            text={"공모전"}
+            isActive={category}
+            onClick={handleCategoryChange}
+          />
+          <Category
+            text={"프로젝트"}
+            isActive={category}
+            onClick={handleCategoryChange}
+          />
+          <Category
+            text={"식사"}
+            isActive={category}
+            onClick={handleCategoryChange}
+          />
+          <Category
+            text={"기타"}
+            isActive={category}
+            onClick={handleCategoryChange}
+          />
+        </div>
+      </div>
+      <form onSubmit={handleSearch} className="mb-3 search-form">
+        <div className="search-select-container">
+          <SearchSelect
+            options={["내용 & 제목", "작성자"]} // 드롭다운 옵션
+            value={searchType} // 현재 선택된 값
+            onChange={handleSelectChange} // 값이 변경되면 호출
+          />
 
-              <input
-                type="text"
-                value={searchKeyword}
-                onChange={(e) => setSearchKeyword(e.target.value)}
-                placeholder="검색어를 입력하세요"
-                className="search-input"
-              />
-            </div>
+          <input
+            type="text"
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            placeholder="검색어를 입력하세요"
+            className="search-input"
+          />
+        </div>
 
-            <button type="submit" className="search-button">
-              검색
-            </button>
-          </form>
-          <div className="row justify-content-center my-5">
-          {data.length > 0 ? (
-            <div className="post-list">
-              {data.map((post) => (
-                <div key={post.id} className="post-item">
-                  <Link
-                    to={`/gathermate/detail/${post.id}`}
-                    className="post-link"
-                  >
-                    <div className="post-header">
-                      <div
-                        className={`post-status ${
-                          post.isRecruiting
-                            ? "post-status-recruiting"
-                            : "post-status-completed"
-                        }`}
-                      >
-                        {post.isRecruiting ? "모집중" : "모집완료"}
-                      </div>
-                      <h3 className="post-title">
-                        {post.title}
-                        {post.commentCount > 0 && (
-                          <span className="comment-count">
-                            {" "}
-                            [{post.commentCount}]
-                          </span>
-                        )}
-                      </h3>
-                    </div>
-
-                    {/* 카테고리명 -> 해시태그 기능? */}
-                    <div className="post-intro">
-                      <span>#{post.intro}</span>
-                    </div>
-
+        <button type="submit" className="search-button">
+          검색
+        </button>
+      </form>
+      <div className="row justify-content-center my-5">
+        {data.length > 0 ? (
+          <div className="post-list">
+            {data.map((post) => (
+              <div key={post.id} className="post-item">
+                <Link
+                  to={`/gathermate/detail/${post.id}`}
+                  className="post-link"
+                >
+                  <div className="post-header">
                     <div
-                      className="post-meta"
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
+                      className={`post-status ${post.isRecruiting
+                          ? "post-status-recruiting"
+                          : "post-status-completed"
+                        }`}
                     >
-                      {/* 왼쪽 작성자명, 시간 */}
-                      <span className="post-info">
-                        <span
-                          className="post-author"
-                          style={{ marginRight: "5px" }}
-                        >
-                          {post.author}
-                        </span>
-                        <span className="post-time">
-                          {formatDateTime(post.createdAt)}
-                        </span>
-                      </span>
-
-                      {/* 오른쪽 조회수, 추천수, 댓글수 */}
-                      <div
-                        className="post-interactions"
-                        style={{ display: "flex", gap: "10px" }}
-                      >
-                        <span className="post-views">
-                          <img
-                            src={modevisibilityIcon}
-                            alt="View Icon"
-                            width="16"
-                            height="16"
-                          />
-                          {post.views}
-                        </span>
-                        <span className="post-likes">
-                          <img
-                            src={modeFavoriteIcon}
-                            alt="Like Icon"
-                            width="16"
-                            height="16"
-                          />
-                          {post.likeCount}
-                        </span>
-                        <span className="post-comment">
-                          <img
-                            src={modeCommentIcon}
-                            alt="Comment Icon"
-                            width="16"
-                            height="16"
-                          />
-                          {post.commentCount}
-                        </span>
-                      </div>
+                      {post.isRecruiting ? "모집중" : "모집완료"}
                     </div>
-                  </Link>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p>작성한 글이 없습니다.</p> // 메시지 수정
-          )}
+                    <h3 className="post-title">
+                      {post.title}
+                      {post.commentCount > 0 && (
+                        <span className="comment-count">
+                          {" "}
+                          [{post.commentCount}]
+                        </span>
+                      )}
+                    </h3>
+                  </div>
+
+                  {/* 카테고리명 -> 해시태그 기능? */}
+                  <div className="post-intro">
+                    <span>#{post.intro}</span>
+                  </div>
+
+                  <div
+                    className="post-meta"
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    {/* 왼쪽 작성자명, 시간 */}
+                    <span className="post-info">
+                      <span
+                        className="post-author"
+                        style={{ marginRight: "5px" }}
+                      >
+                        {post.author}
+                      </span>
+                      <span className="post-time">
+                        {formatDateTime(post.createdAt)}
+                      </span>
+                    </span>
+
+                    {/* 오른쪽 조회수, 추천수, 댓글수 */}
+                    <div
+                      className="post-interactions"
+                      style={{ display: "flex", gap: "10px" }}
+                    >
+                      <span className="post-views">
+                        <img
+                          src={modevisibilityIcon}
+                          alt="View Icon"
+                          width="16"
+                          height="16"
+                        />
+                        {post.views}
+                      </span>
+                      <span className="post-likes">
+                        <img
+                          src={modeFavoriteIcon}
+                          alt="Like Icon"
+                          width="16"
+                          height="16"
+                        />
+                        {post.likeCount}
+                      </span>
+                      <span className="post-comment">
+                        <img
+                          src={modeCommentIcon}
+                          alt="Comment Icon"
+                          width="16"
+                          height="16"
+                        />
+                        {post.commentCount}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            ))}
           </div>
-        {/* </div> */}
-        {/* <div className="form-row pt-2">
+        ) : (
+          <p>작성한 글이 없습니다.</p> // 메시지 수정
+        )}
+      </div>
+      {/* </div> */}
+      {/* <div className="form-row pt-2">
           <div className="col-md-12 col-10 text-end">
             <Button text={"작성하기"} onClick={toWrite} />
           </div>
         </div> */}
       {/* </section> */}
-      <Pagination
-        pageData={{
-          currentPage: currentPage,
-          totalPage: totalPages,
-          startPage: startPage,
-          endPage: endPage,
-        }}
-        handlePageChange={handlePageChange}
-      />
+      {
+        data.length > 0 ? (
+          <Pagination
+            pageData={{
+              currentPage: currentPage,
+              totalPage: totalPages,
+              startPage: startPage,
+              endPage: endPage,
+            }}
+            handlePageChange={handlePageChange}
+          />
+        ) : ''
+      }
     </div>
   );
 }
