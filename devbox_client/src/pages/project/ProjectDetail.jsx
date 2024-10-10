@@ -285,7 +285,7 @@ const ProjectDetail = () => {
                                                     e.preventDefault();
                                                     const result = await Swal.fire({
                                                         icon: "warning",
-                                                        title: "정말 삭제하시겠습니까?",
+                                                        title: "삭제하시겠습니까?",
                                                         text: "삭제 후에는 되돌릴 수 없습니다.",
                                                         showCancelButton: true,
                                                         confirmButtonText: "삭제",

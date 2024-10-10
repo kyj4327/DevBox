@@ -137,7 +137,12 @@ const MesWrite = () => {
 
         const data = await res.json();
         if (data.code == 200) {
-            navigate('/message/list');
+            Swal.fire({
+                icon: "success",
+                title: "전송되었습니다."
+            }).then(() => {
+                navigate('/message/list');
+            });
         } else {
             Swal.fire({
                 icon: "error",
