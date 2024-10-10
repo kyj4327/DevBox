@@ -90,6 +90,7 @@ public class SecurityConfig {
 //                                                                configuration.setAllowedOrigins(Arrays.asList(
 //                                                                        "https://devbox.world",
 //                                                                        "https://devboxworld.netlify.app"
+//                                                                        "https://devboxworld.netlify.app"
 //                                                                ));
                                                                 configuration.setAllowedMethods(
                                                                                 Collections.singletonList("*"));
