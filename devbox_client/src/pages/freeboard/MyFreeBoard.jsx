@@ -113,7 +113,7 @@ const MyFreeboard = () => {
                 ) : (
                   <tr>
                     <td colSpan="4">
-                      <p>작성한 글이 없습니다.</p>
+                      <p className="text-start">작성한 글이 없습니다.</p>
                     </td>
                   </tr>
                 )
