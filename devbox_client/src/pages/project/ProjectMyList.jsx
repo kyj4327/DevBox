@@ -10,6 +10,7 @@ const ProjectMyList = () => {
     const [refresh, setRefresh] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const domain = "https://www.devback.shop";
+    const [data, setData] = useState([]);
    
     async function get(page = 1) {
         const token = localStorage.getItem('accessToken');
@@ -23,6 +24,7 @@ const ProjectMyList = () => {
             const data = await res.json();
             
             setPageData(data);
+            setData(pageData.list);
             setCurrentPage(page);  // 페이지 데이터 불러온 후, 현재 페이지 업데이트
     }
 
@@ -37,17 +39,21 @@ const ProjectMyList = () => {
     return(
         <div className="mypage-content__wrapper">
             <ProjectMyMain setRefresh={() => setRefresh(prev => !prev)} list={pageData.list} />
-            <Pagination
-             handlePageChange={handlePageChange} 
-             pageData={
-                 {
-                     'startPage': pageData.startPage,
-                     'endPage': pageData.endPage,
-                     'currentPage': pageData.currentPage,
-                     'totalPage': pageData.totalPage
-                 }
-             }
-            />
+            {
+                data.length > 0 ? (
+                    <Pagination
+                        handlePageChange={handlePageChange}
+                        pageData={
+                            {
+                                'startPage': pageData.startPage,
+                                'endPage': pageData.endPage,
+                                'currentPage': pageData.currentPage,
+                                'totalPage': pageData.totalPage
+                            }
+                        }
+                    />
+                ) : ''
+            }
         </div>
     );
 };

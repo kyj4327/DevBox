@@ -90,29 +90,35 @@ const MyFreeboard = () => {
               </tr>
             </thead>
             <tbody>
-              {currentPosts.map((post) => (
-                <tr key={post.id} className="notice-item">
-                  <td data-label="글 번호" className="notice-id">
-                    {post.id}
-                  </td>
-                  <td data-label="제목" className="notice-title">
-                    <Link to={`/freeboard/detail/${post.id}`}>
-                      {post.title}
-                    </Link>
-                  </td>
-                  <td data-label="작성일" className="notice-date">
-                    {formatDate(post.createdAt)}
-                  </td>
-                  <td data-label="조회수" className="notice-views">
-                    {post.views}
-                  </td>
-                </tr>
-              ))}
+              {
+                currentPosts.length > 0 ? (
+                  currentPosts.map((post) => (
+                    <tr key={post.id} className="notice-item">
+                      <td data-label="글 번호" className="notice-id">
+                        {post.id}
+                      </td>
+                      <td data-label="제목" className="notice-title">
+                        <Link to={`/freeboard/detail/${post.id}`}>
+                          {post.title}
+                        </Link>
+                      </td>
+                      <td data-label="작성일" className="notice-date">
+                        {formatDate(post.createdAt)}
+                      </td>
+                      <td data-label="조회수" className="notice-views">
+                        {post.views}
+                      </td>
+                    </tr>
+                  ))
+                ) : <p>작성한 글이 없습니다.</p>
+              }
             </tbody>
           </table>
         </div>
       </div>
-      <Pagination pageData={pageData} handlePageChange={handlePageChange} />
+      {
+        currentPosts.length > 0 ? <Pagination pageData={pageData} handlePageChange={handlePageChange} /> : ''
+      }
     </div>
   );
 };

@@ -298,15 +298,19 @@ function GatherMateMyList() {
           </div>
         </div> */}
       {/* </section> */}
-      <Pagination
-        pageData={{
-          currentPage: currentPage,
-          totalPage: totalPages,
-          startPage: startPage,
-          endPage: endPage,
-        }}
-        handlePageChange={handlePageChange}
-      />
+      {
+        data.length > 0 ? (
+          <Pagination
+            pageData={{
+              currentPage: currentPage,
+              totalPage: totalPages,
+              startPage: startPage,
+              endPage: endPage,
+            }}
+            handlePageChange={handlePageChange}
+          />
+        ) : ''
+      }
     </div>
   );
 }
