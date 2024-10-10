@@ -85,7 +85,11 @@ const ProjectMyMain = (props) => {
                 <h5 className="mypage-content__title" style={{cursor: 'default'}}>프로젝트 자랑_내가 쓴 글</h5>
             </div>
             {
-                props.list.length > 0 ? (
+                !props.list ? (
+                    <div className="row justify-content-center my-5">
+                        <p>작성한 글이 없습니다.</p>
+                    </div>
+                ) : (
                     <section className="container py-4">
                         <div className="row projects gx-lg-5">
                             {props.list && props.list.map((pro) => (
@@ -119,10 +123,6 @@ const ProjectMyMain = (props) => {
 
                         </div>
                     </section>
-                ) : (
-                    <div className="row justify-content-center my-5">
-                        <p>작성한 글이 없습니다.</p>
-                    </div>
                 )
             }
         </>
