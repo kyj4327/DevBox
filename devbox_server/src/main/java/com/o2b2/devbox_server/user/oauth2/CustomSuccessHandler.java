@@ -54,10 +54,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String refreshTokenCategory = "refresh";
 
         // AccessToken과 RefreshToken 생성
-        System.out.println("Before Access Token Creation: username = " + username);
         String accessToken = jwtUtil.createJwt("access", username, role, 600000L);
 
-        System.out.println("Before Refresh Token Creation: username = " + username);
         String refreshToken = jwtUtil.createJwt(refreshTokenCategory, username, role, 86400000L); // 1일
 
         // 생성된 RefreshToken을 DB에 저장

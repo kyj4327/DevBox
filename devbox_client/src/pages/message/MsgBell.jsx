@@ -35,7 +35,6 @@ const MsgBell = () => {
                     setNullReadTimeCount(0); // 잘못된 데이터 형식인 경우에도 0으로 설정
                 }
             } catch (error) {
-                console.error("데이터를 가져오는데 실패했습니다:", error);
                 setNullReadTimeCount(0); // 오류 발생 시에도 0으로 설정
             }
         };

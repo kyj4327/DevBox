@@ -75,7 +75,6 @@ function GatherMateEdit() {
       }
 
       const data = await response.text();
-      console.log("업데이트된 데이터:", data);
 
       Swal.fire({
         icon: "success",

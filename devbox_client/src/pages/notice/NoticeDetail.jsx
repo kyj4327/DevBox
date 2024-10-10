@@ -38,10 +38,8 @@ const NoticeDetail = () => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      console.log("data 뽑기 " + data.isLiked)
       setPost(data);
     } catch (error) {
-      console.error("Error fetching post:", error);
     }
   };
 

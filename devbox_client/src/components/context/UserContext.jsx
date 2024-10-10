@@ -34,22 +34,18 @@ export const UserProvider = ({ children }) => {
         const authHeader = response.headers.get("Authorization");
         if (authHeader && authHeader.startsWith("Bearer ")) {
           const newAccessToken = authHeader.split(" ")[1];
-          console.log("새로운 Access Token:", newAccessToken);
           setAccessToken(newAccessToken);
           localStorage.setItem("accessToken", newAccessToken);
           return true;
         } else {
-          console.error("Authorization 헤더가 응답에 없습니다.");
           return false;
         }
       } else {
-        console.error("토큰 재발급 실패:", response.status);
         setUser(null);
         navigate("/auth");
         return false;
       }
     } catch (error) {
-      console.error("토큰 재발급 에러:", error);
       setUser(null);
       navigate("/auth");
       return false;
@@ -90,12 +86,10 @@ export const UserProvider = ({ children }) => {
           const userInfo = await response.json();
           setUser(userInfo);
         } else if (response.status === 401) {
-          console.warn("Access Token 만료됨, 재발급 시도!");
 
           // Access Token 만료 시 Refresh Token을 사용하여 재발급
           const refreshed = await refreshAccessToken();
           if (refreshed) {
-            console.log("토큰 재발급 성공, 사용자 정보 재요청");
 
             const newAccessToken = localStorage.getItem("accessToken");
             if (newAccessToken) {
@@ -123,11 +117,9 @@ export const UserProvider = ({ children }) => {
             }
           }
         } else {
-          console.error("사용자 정보 가져오기 실패:", response.status);
           setUser(null);
         }
       } catch (error) {
-        console.error("사용자 정보 가져오기 에러:", error);
         setUser(null);
         if (location.pathname !== "/auth") {
           navigate("/auth");
@@ -185,7 +177,6 @@ export const UserProvider = ({ children }) => {
         });
       }
     } catch (error) {
-      console.error("로그인 에러:", error);
       setUser(null);
       Swal.fire({
         icon: "error",
@@ -217,7 +208,6 @@ export const UserProvider = ({ children }) => {
         throw new Error("Failed to log out");
       }
     } catch (error) {
-      console.error("로그아웃 에러:", error);
       // 필요한 경우 에러 상태 추가
     }
   };

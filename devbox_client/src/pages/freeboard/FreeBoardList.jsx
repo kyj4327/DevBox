@@ -36,7 +36,6 @@ const FreeBoardList = () => {
           : [];
         setPosts(sortedPosts);
       } catch (error) {
-        console.error("Error fetching posts:", error);
         setError("게시글을 불러오는 데 실패했습니다. 다시 시도해 주세요.");
       } finally {
         setIsLoading(false);

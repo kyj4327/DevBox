@@ -36,7 +36,6 @@ const FreeBoardDetail = () => {
         setIsLiked(postData.isLiked); // 서버에서 좋아요 여부를 받아와 설정
         setLikeCount(postData.likeCount); // 서버에서 좋아요 개수를 받아와 설정
       } catch (error) {
-        console.error("Error fetching post:", error);
         setError("게시글을 불러오는 데 실패했습니다.");
       } finally {
         setIsLoading(false);
@@ -52,7 +51,6 @@ const FreeBoardDetail = () => {
       setIsLiked(!isLiked); // 좋아요 상태 반전
       setLikeCount(isLiked ? likeCount - 1 : likeCount + 1); // 좋아요 개수 업데이트
     } catch (error) {
-      console.error("Error toggling like:", error);
       setError("좋아요 처리에 실패했습니다.");
     }
   };

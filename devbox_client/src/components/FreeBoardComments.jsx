@@ -30,7 +30,6 @@ const FreeBoardComments = ({ postId }) => {
       const commentsData = await getCommentsByPostId(postId);
       setComments(commentsData);
     } catch (err) {
-      console.error("Error fetching comments:", err);
       setError("댓글을 불러오는데 실패했습니다. 다시 시도해 주세요.");
     }
   };
@@ -54,7 +53,6 @@ const FreeBoardComments = ({ postId }) => {
       setComments((prevComments) => [...prevComments, createdComment]);
       setNewComment("");
     } catch (err) {
-      console.error("Error creating comment:", err);
       setError("댓글 작성에 실패했습니다. 다시 시도해 주세요.");
     }
   };
@@ -88,7 +86,6 @@ const FreeBoardComments = ({ postId }) => {
             title: "댓글이 삭제되었습니다."
           });
         } catch (err) {
-          console.error("Error deleting comment:", err);
           Swal.fire({
             icon: "error",
             title: "삭제 중 오류가 발생했습니다.",

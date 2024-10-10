@@ -35,7 +35,6 @@ function GreetingList() {
     setExpandedPostId(expandedPostId === postId ? null : postId);
   };
 
-  console.log(user);
 
   const navigate = useNavigate();
   const toWrite = () => {
@@ -90,7 +89,6 @@ function GreetingList() {
       setStartPage(startPage);
       setEndPage(endPage);
     } catch (error) {
-      console.error("Error fetching data:", error);
       setData([]);
       setTotalPages(0);
     }
@@ -219,7 +217,6 @@ function GreetingList() {
       }
 
       const data = await response.json();
-      console.log("업데이트된 데이터:", data);
 
       Swal.fire({
         icon: "success",

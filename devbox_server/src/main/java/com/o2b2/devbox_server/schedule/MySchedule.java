@@ -40,7 +40,6 @@ public class MySchedule {
             }
         }
 
-        System.out.println("테스트 출력");
     }
 
 }

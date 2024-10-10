@@ -61,7 +61,6 @@ function NoticeList() {
       }
 
       const result = await res.json();
-      console.log("API Response:", result); // 응답 로깅
 
       if (result.posts && Array.isArray(result.posts)) {
         setData(result.posts);
@@ -80,12 +79,10 @@ function NoticeList() {
         setStartPage(startPage);
         setEndPage(endPage);
       } else {
-        console.error("Unexpected data structure:", result);
         setData([]);
         setTotalPages(0);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
       setData([]);
       setTotalPages(0);
     }

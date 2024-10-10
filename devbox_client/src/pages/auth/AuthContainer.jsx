@@ -133,7 +133,6 @@ function AuthContainer() {
         setEmailError("");
       }
     } catch (error) {
-      console.error("이메일 중복 체크 중 오류 발생:", error);
     }
   };
 
@@ -334,7 +333,6 @@ function AuthContainer() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
     } catch (error) {
-      console.error("로그인 중 오류 발생:", error);
       Swal.fire({
         icon: "error",
         title: "로그인 중 오류가 발생했습니다.",

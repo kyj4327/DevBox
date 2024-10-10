@@ -50,7 +50,6 @@ const MesWrite = () => {
             const data = await res.json();
             return data; // 닉네임 배열 반환
         } catch (error) {
-            console.error('Failed to fetch nicknames:', error);
             return []; // 실패 시 빈 배열 반환
         }
     };
@@ -120,9 +119,6 @@ const MesWrite = () => {
         formData.append("title", title);
         formData.append("reciver", reciver);
         formData.append("content", content);
-
-        console.log(reciver);
-        console.log(sender);
 
         const token = localStorage.getItem('accessToken');
         const url = `${domain}/msg/write`;

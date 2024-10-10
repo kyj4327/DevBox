@@ -43,7 +43,6 @@ function PasswordReset() {
       })
       .catch((error) => {
         setIsSendingCode(false); // 로딩 종료
-        console.error("Error:", error);
         Swal.fire({
           icon: "error",
           title: "인증코드 발송에 실패하였습니다.",
@@ -78,7 +77,6 @@ function PasswordReset() {
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
         Swal.fire({
           icon: "error",
           title: "인증에 실패하였습니다.",
@@ -113,7 +111,6 @@ function PasswordReset() {
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
         Swal.fire({
           icon: "error",
           title: "비밀번호 변경에 실패하였습니다.",

@@ -66,7 +66,6 @@ const BoardComments = ({ postId, boardType }) => {
         setComments(data);
       })
       .catch((error) => {
-        console.error(error);
         Swal.fire({
           icon: "error",
           title: "댓글을 불러오는데 실패했습니다.",
@@ -129,7 +128,6 @@ const BoardComments = ({ postId, boardType }) => {
           setNewComment({ message: "" });
         })
         .catch((error) => {
-          console.error(error);
           Swal.fire({
             icon: "error",
             title: "댓글 작성 실패",
@@ -193,7 +191,6 @@ const BoardComments = ({ postId, boardType }) => {
           setReplyData({ parentId: null, replyToId: null, message: "" });
         })
         .catch((error) => {
-          console.error(error);
           Swal.fire({
             icon: "error",
             title: "답글 작성 실패",
@@ -261,7 +258,6 @@ const BoardComments = ({ postId, boardType }) => {
             setComments(data);
           })
           .catch((error) => {
-            console.error(error);
             Swal.fire({
               icon: "error",
               title: "삭제 중 오류가 발생했습니다.",
@@ -333,7 +329,6 @@ const BoardComments = ({ postId, boardType }) => {
         setEditCommentContent("");
       })
       .catch((error) => {
-        console.error("수정 실패:", error);
         Swal.fire({
           icon: "error",
           title: "수정 중 오류가 발생했습니다.",

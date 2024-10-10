@@ -85,7 +85,6 @@ function GatherMateList() {
       setStartPage(startPage);
       setEndPage(endPage);
     } catch (error) {
-      console.error("Error fetching data:", error);
       setData([]);
       setTotalPages(0);
     }

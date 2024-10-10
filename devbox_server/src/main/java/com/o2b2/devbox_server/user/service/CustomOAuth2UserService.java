@@ -30,7 +30,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        System.out.println("oAuth2User : " + oAuth2User);
 
         // google, naver, ... 어디에서 온 아이디인지 확인.
         String registrationId = userRequest.getClientRegistration().getRegistrationId();

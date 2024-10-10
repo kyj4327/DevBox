@@ -59,7 +59,6 @@ function MyPageProfileEdit() {
         throw new Error(errorData.message || "Failed to update user data");
       }
     } catch (error) {
-      console.error("Error updating user data:", error);
       setError(error.message);
     }
   };
@@ -90,7 +89,6 @@ function MyPageProfileEdit() {
         throw new Error(errorData.message || "회원탈퇴에 실패하였습니다.");
       }
     } catch (error) {
-      console.error("회원탈퇴에 실패하였습니다:", error);
       setError(error.message);
       await Swal.fire({
         icon: "error",

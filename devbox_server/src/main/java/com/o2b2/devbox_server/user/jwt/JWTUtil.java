@@ -22,10 +22,8 @@ public class JWTUtil {
     }
 
     public String getUsername(String token) {
-        System.out.println("token:" + token);
         String username =  Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
 
-        System.out.println("Parsed username from token: " + username);  // 로그 추가
 
         return username;
     }
@@ -48,10 +46,6 @@ public class JWTUtil {
     }
 
     public String createJwt(String category, String username, String role, Long expiredMs) {
-
-        System.out.println("Creating JWT with username: " + username);  // 로그 추가
-
-        System.out.println("Creating JWT with category2: " + category + ", username: " + username + ", role: " + role);  // 로그 추가
 
         return Jwts.builder()
                 .claim("category", category)

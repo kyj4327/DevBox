@@ -53,15 +53,12 @@ const GatherMateDetail = () => {
         throw new Error("네트워크 응답이 올바르지 않습니다.");
       }
       const data = await response.json();
-      console.log("Fetched post data:", data); // 전체 데이터 로그
-      console.log("data 뽑기 " + data.isLiked);
       setPost(data);
       // // setLikes(data.likes || 0);
       // setIsLiked(data.isLiked || false);
       setIsRecruiting(data.recruiting);
       setApply(data.apply);
     } catch (error) {
-      console.error("Error fetching post:", error);
     }
   };
 
@@ -156,7 +153,6 @@ const GatherMateDetail = () => {
       }
 
       const data = await response.json();
-      console.log("Like toggled:", data);
       setPost((prevPost) => ({
         ...prevPost,
         likeCount: data.likeCount,
@@ -236,10 +232,8 @@ const GatherMateDetail = () => {
       }
 
       const data = await response.json();
-      console.log("Fetched isLiked data:", data);
       setIsLiked(data.isLiked);
     } catch (error) {
-      console.error("isLiked 조회 오류:", error);
       setIsLiked(false); // 오류 발생 시 기본값 설정
     }
   };

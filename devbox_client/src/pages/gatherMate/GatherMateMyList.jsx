@@ -91,7 +91,6 @@ function GatherMateMyList() {
       setStartPage(startPage);
       setEndPage(endPage);
     } catch (error) {
-      console.error("Error fetching data:", error);
       setData([]);
       setTotalPages(0);
       setTotalPosts(0); // 에러 시 총 게시글 개수도 초기화

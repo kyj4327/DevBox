@@ -38,7 +38,6 @@ const MsgList = (props) => {
                 [msgId]: data.like
             }));
         } else if (data.error) {
-            console.error(data.error);
         }
     };
 

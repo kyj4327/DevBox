@@ -32,7 +32,6 @@ const UserContact = ({
 
         const formData = new FormData();
 
-        console.log("Reciver 값: ", nickname);
         formData.append("title", title);
         formData.append("content", content);
         formData.append("reciver", nickname);
@@ -66,7 +65,6 @@ const UserContact = ({
                 });
             }
         } catch (error) {
-            console.error("Error sending message:", error);
             Swal.fire({
                 icon: "error",
                 title: "전송 중 오류가 발생했습니다.",

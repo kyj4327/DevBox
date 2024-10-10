@@ -86,11 +86,9 @@ const ContactForm = () => {
         formData
       );
 
-      console.log("성공:", response.data);
       setIsSubmitted(true);
       setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
     } catch (error) {
-      console.error("오류:", error.response?.data || error.message);
       setError("문의 전송 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.");
     } finally {
       setIsLoading(false);

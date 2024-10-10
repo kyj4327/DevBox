@@ -284,7 +284,6 @@ public class ProController {
             @ModelAttribute ProEntity pro,
             @RequestParam("file") MultipartFile[] files,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
-        System.out.println(pro);
 
         // 결과를 담을 맵 생성
         Map<String, Object> map = new HashMap<>();

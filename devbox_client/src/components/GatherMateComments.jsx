@@ -46,7 +46,6 @@ const GatherMateComments = ({ postId }) => {
         setComments(data);
       })
       .catch((error) => {
-        console.error(error);
       });
   }, [postId]);
 
@@ -94,7 +93,6 @@ const GatherMateComments = ({ postId }) => {
           setNewComment({ message: "" });
         })
         .catch((error) => {
-          console.error(error);
         });
     }
   };
@@ -143,7 +141,6 @@ const GatherMateComments = ({ postId }) => {
           setReplyData({ parentId: null, replyToId: null, message: "" });
         })
         .catch((error) => {
-          console.error(error);
         });
     }
   };
@@ -185,7 +182,6 @@ const GatherMateComments = ({ postId }) => {
         setComments(data);
       })
       .catch((error) => {
-        console.error(error);
         alert(error.message);
       });
   };
@@ -236,7 +232,6 @@ const GatherMateComments = ({ postId }) => {
       setEditCommentContent("");
     })
     .catch((error) => {
-      console.error("수정 실패:", error);
       alert(error.message || "댓글 수정에 실패했습니다.");
     });
   };
