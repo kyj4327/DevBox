@@ -150,7 +150,7 @@ const Reservation = () => {
     const handleSave = async (e) => {
         e.preventDefault();
         if (validateFields()) {
-            const isAvailable = await checkReservationAvailability(); // 예약 가능 여부 확인
+            const isAvailable = await checkReservationAvailability(); // 첫 번째 예약 가능 여부 확인
             if (!isAvailable) {
                 Swal.fire({
                     icon: "warning",
@@ -161,17 +161,27 @@ const Reservation = () => {
                 return;
             }
             const result = await Swal.fire({
-                icon: "warning",
                 title: "예약하시겠습니까?",
                 text: `${date} ${time}`,
+                icon: "warning",
                 showCancelButton: true,
                 confirmButtonText: "예약",
                 confirmButtonColor: "#3085d6",
                 cancelButtonText: "취소",
-                cancelButtonColor: "#d33"
+                cancelButtonColor: "#d33",
             });
             if (result.isConfirmed) {
-                saveData();
+                const isStillAvailable = await checkReservationAvailability(); // 두 번째 예약 가능 여부 확인
+                if (!isStillAvailable) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "이미 예약된 날짜/시간입니다."
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    saveData(); // 예약 가능 시 데이터 저장
+                }
             }
         }
     };
