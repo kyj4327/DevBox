@@ -30,10 +30,46 @@ const ProjectWrite = () => {
 
 
     const validateUrl = (link) => {
-        const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/\S*)?$/;
-        return urlRegex.test(link);
+        // YouTube 일반 동영상 링크에 대한 정규 표현식
+        const youtubeRegularVideoRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|v\/|.+\?v=)([a-zA-Z0-9_-]{11}))$/;
+        
+        // YouTube 공유 링크에 대한 정규 표현식
+        const youtubeShareVideoRegex = /^(https?:\/\/)?(www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})(\?.*)?$/;
+    
+        const hasProtocol = /^(https?:\/\/)/.test(link);
+        
+        // 유효한 YouTube 링크인지 확인
+        const isYoutubeRegular = youtubeRegularVideoRegex.test(link);
+        const isYoutubeShare = youtubeShareVideoRegex.test(link);
+    
+        // 비디오 ID가 발견되었는지 체크
+        let videoIdMatch;
+        if (isYoutubeRegular) {
+            videoIdMatch = link.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|.+\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+        } else if (isYoutubeShare) {
+            videoIdMatch = link.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+        }
+    
+        // 유효성 검사: 공유 링크와 일반 링크 각각 다르게 처리
+        const isShareLinkValidLength = isYoutubeShare && link.length === 48; // 공유 링크는 48자
+        const isTooLong = isYoutubeShare && link.length > 48; // 공유 링크가 48자 초과일 경우 유효하지 않음
+    
+        const hasExtraChars = (isYoutubeRegular || isYoutubeShare) && 
+                              (videoIdMatch && link.length > (videoIdMatch.index + videoIdMatch[0].length));
+        
+        return {
+            isValid: (isYoutubeRegular || (isYoutubeShare && isShareLinkValidLength)) && !hasExtraChars && !isTooLong,
+            hasProtocol: hasProtocol,
+            isYoutubeRegular: isYoutubeRegular,
+            isYoutubeShare: isYoutubeShare,
+            hasExtraChars: hasExtraChars,
+            isTooLong: isTooLong
+        };
     };
-
+    
+    
+    
+    
     const handleDeleteImage = (id) => {
         setDelImgId([...delImgId, id]);
         setSavedImgs(savedImgs.filter((img) => img.id !== id));
@@ -44,11 +80,21 @@ const ProjectWrite = () => {
         const inputLink = e.target.value;
         setLink(inputLink);
     
-        // 입력된 링크가 비어있거나 유효한 링크인지 확인
-        if (inputLink.trim() === '' || validateUrl(inputLink)) {
-            setLinkError(''); // 링크가 비어있거나 유효한 경우 오류 메시지 제거
+        const { isValid, hasProtocol, isYoutubeRegular, isYoutubeShare, hasExtraChars, isTooLong } = validateUrl(inputLink);
+    
+        // 링크가 비어있을 경우 에러 메시지를 설정하지 않음
+        if (inputLink.trim() === '') {
+            setLinkError(''); // 링크가 비어있어도 오류 메시지 제거
+        } else if (!hasProtocol) {
+            setLinkError('링크에 http:// 또는 https://를 포함해주세요!'); // 프로토콜이 없을 경우 메시지
+        } else if (!isYoutubeRegular && !isYoutubeShare) {
+            setLinkError('유효한 YouTube 링크를 입력해주세요!'); // 유효하지 않은 링크일 경우 메시지
+        } else if (isTooLong) {
+            setLinkError('YouTube 공유 링크는 48자여야 합니다!'); // 링크가 잘못된 길이일 경우
+        } else if (hasExtraChars) {
+            setLinkError('유효한 YouTube 링크를 입력해주세요!'); // 추가 문자가 있을 경우 메시지
         } else {
-            setLinkError('유효한 링크를 입력해주세요!'); // 유효하지 않은 링크일 경우 오류 메시지
+            setLinkError(''); // 유효한 경우 오류 메시지 제거
         }
     };
     
@@ -170,9 +216,9 @@ const ProjectWrite = () => {
                                 <p className="worksingle-footer py-3 text-muted light-300">
                                     <div className="col-12">
                                         <div className="form-floating mb-4">
-                                            <input type="text" className="form-control form-control-lg light-300" id="link" name="link" placeholder="시연 영상 링크"
+                                            <input type="text" className="form-control form-control-lg light-300" id="link" name="link" placeholder="YouTube 영상 링크만 가능합니다."
                                                 value={link} onChange={handleLinkChange} />
-                                            <label htmlFor="floatingsubject light-300">시연 영상 링크</label>
+                                            <label htmlFor="floatingsubject light-300">YouTube 영상 링크만 가능합니다.</label>
                                         </div>
                                     </div>
                                     {linkError && <p style={{ color: 'red' }}>{linkError}</p>}
