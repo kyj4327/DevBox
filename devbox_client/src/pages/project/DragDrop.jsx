@@ -6,6 +6,7 @@ import React, {
   useEffect
 } from "react";
 import "../../assets/css/DragDrop.css";
+import Swal from "sweetalert2";
 
 const DragDrop = (props) => {
   const [initialFiles, setInitialFiles] = useState([]); // initialFiles를 props로 받습니다
