@@ -165,7 +165,7 @@ const FreeBoardComments = ({ postId }) => {
     const day = String(date.getDate()).padStart(2, "0");
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
-    return `작성일: ${year}-${month}-${day}-${hours}:${minutes}`;
+    return `작성일: ${year}-${month}-${day} ${hours}:${minutes}`;
   };
 
   return (
@@ -202,7 +202,7 @@ const FreeBoardComments = ({ postId }) => {
                           </span>
                         </div>
                       </div>
-                      {user && comment.author === user.nickname && (
+                      {user && comment.userId === user.id && (
                         <div className="menu-icon-container">
                           <div
                             className="menu-icon"
@@ -210,25 +210,24 @@ const FreeBoardComments = ({ postId }) => {
                           >
                             ...
                           </div>
-                          <div
-                            className={`dropdown-menu ${dropdownOpen.id === comment.id ? "show" : ""
-                              }`}
-                          >
-                            <button
-                              className="dropdown-item"
-                              onClick={() =>
-                                handleEditClick(comment.id, comment.content)
-                              }
-                            >
-                              수정
-                            </button>
-                            <button
-                              className="dropdown-item"
-                              onClick={() => handleDelete(comment.id)}
-                            >
-                              삭제
-                            </button>
-                          </div>
+                          {dropdownOpen.id === comment.id && (
+                            <div className="dropdown-menu show">
+                              <button
+                                className="dropdown-item"
+                                onClick={() =>
+                                  handleEditClick(comment.id, comment.content)
+                                }
+                              >
+                                수정
+                              </button>
+                              <button
+                                className="dropdown-item"
+                                onClick={() => handleDelete(comment.id)}
+                              >
+                                삭제
+                              </button>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>

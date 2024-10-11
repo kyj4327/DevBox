@@ -225,17 +225,15 @@ const FreeBoardDetail = () => {
               className="col-lg-8 d-flex justify-content-between"
               style={{ padding: "10px 0px 0px" }}
             >
-              <div className="d-flex">
+              <div className="d-flex" style={{ display: "flex", gap: "15px" }}>
                 {/* 작성자가 아닐 경우 수정/삭제 버튼을 숨김 */}
-                {user && post.author === user.nickname && (
+                {user && post.user && user.id === post.user.id && (
                   <>
-                    <span className="me-2">
-                      <Button
-                        text="수정"
-                        icon={"edit"}
-                        onClick={handleEditPost}
-                      />
-                    </span>
+                    <Button
+                      text="수정"
+                      icon={"edit"}
+                      onClick={handleEditPost}
+                    />
                     <Button
                       text="삭제"
                       icon={"trash"}
