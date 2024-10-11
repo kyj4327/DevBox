@@ -105,10 +105,9 @@ public class EduController {
             @RequestParam(value = "search", required = false) String search) {
 
 
-        Sort sort = Sort.by(Sort.Direction.ASC, "id");
-        Pageable pageable = PageRequest.of(page - 1, size, sort); // 페이지 요청 생성
+        Pageable pageable = PageRequest.of(page - 1, size); // 페이지 요청 생성
 
-        Page<EduEntity> p = eduRepository.findByState(state, pageable);
+        Page<EduEntity> p = eduRepository.findByStateOrderByRemainingDays(state, pageable);
         List<EduEntity> list = p.getContent();
         // 페이지네이션 관련 정보 계산
         int totalPage = p.getTotalPages();
