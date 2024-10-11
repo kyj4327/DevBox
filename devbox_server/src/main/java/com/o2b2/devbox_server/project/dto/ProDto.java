@@ -19,7 +19,6 @@ public class ProDto {
 
     private Long id;
     private String title;
-    private String name;
     private String link;
     private String coment;
     private LocalDateTime time;
@@ -34,7 +33,6 @@ public class ProDto {
         return new ProDto(
                 proEntity.getId(),
                 proEntity.getTitle(),
-                proEntity.getName(),
                 proEntity.getLink(),
                 proEntity.getComent(),
                 proEntity.getTime(),

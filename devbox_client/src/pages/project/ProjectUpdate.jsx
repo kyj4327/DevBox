@@ -20,7 +20,7 @@ const ProjectUpdate = () => {
 
     const [title, setTitle] = useState('');
     const [likecount, setLikecount] = useState('');
-    const [name, setName] = useState('');
+    const [nickname, setNickname] = useState('');
     const [img, setImg] = useState('');
     const [link, setLink] = useState('');
     const [coment, setComent] = useState('');
@@ -55,7 +55,7 @@ const ProjectUpdate = () => {
         setLikecount(data.likecount);
         setTitle(data.title);
         setComent(data.coment);
-        setName(data.name);
+        setNickname(data.nickname);
         setLink(data.link);
 
         const imageFiles = data.imgs.map((img) => ({
@@ -87,7 +87,7 @@ const ProjectUpdate = () => {
         })
 
         formData.append("title", title);
-        formData.append("name", name);
+        formData.append("nickname", nickname);
         formData.append("link", modifiedLink);
         formData.append("coment", coment);
         formData.append("likecount", likecount);
@@ -134,7 +134,7 @@ const ProjectUpdate = () => {
         get();
         if (!loading) {
             if (user) {
-                setName(user.nickname || '');
+                setNickname(user.nickname || '');
             } else {
                 Swal.fire({
                     icon: "warning",
@@ -159,8 +159,8 @@ const ProjectUpdate = () => {
                                 <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{ cursor: 'default' }}>작성자</h2>
                                 <p className="worksingle-footer py-3 text-muted light-300">
                                     <div className="form-floating">
-                                        <input type="text" className="form-control form-control-lg light-300" style={{ cursor: 'default' }} id={name} name={name} placeholder="작성자"
-                                            value={name} onChange={(e) => setName(e.target.value)} readOnly />
+                                        <input type="text" className="form-control form-control-lg light-300" style={{ cursor: 'default' }} id={nickname} name={nickname} placeholder="작성자"
+                                            value={nickname} onChange={(e) => setNickname(e.target.value)} readOnly />
                                         <label htmlFor="floatingsubject light-300">작성자</label>
                                     </div>
                                 </p>

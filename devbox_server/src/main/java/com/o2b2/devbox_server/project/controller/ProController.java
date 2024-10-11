@@ -108,7 +108,7 @@ public class ProController {
             map.put("title", pro.getTitle());
             map.put("link", pro.getLink());
             map.put("coment", pro.getComent());
-            map.put("name", pro.getName());
+            map.put("nickname", pro.getUserEntity().getNickname());
             map.put("time", pro.getTime());
             map.put("likeCount", pro.getLikeCount());
             map.put("mainImg", pro.getMultiImgEntitys().get(0).getId());
@@ -156,7 +156,7 @@ public class ProController {
             map.put("title", pro.getTitle());
             map.put("link", pro.getLink());
             map.put("coment", pro.getComent());
-            map.put("name", pro.getName());
+            map.put("nickname", pro.getUserEntity().getNickname());
             map.put("time", pro.getTime());
             map.put("likeCount", pro.getLikeCount());
             map.put("mainImg", pro.getMultiImgEntitys().get(0).getId());
@@ -431,7 +431,7 @@ public class ProController {
         map.put("title", pro.getTitle());
         map.put("link", pro.getLink());
         map.put("coment", pro.getComent());
-        map.put("name", pro.getName());
+        map.put("nickname", pro.getUserEntity().getNickname());
         map.put("imgs", pro.getMultiImgEntitys().stream().map(mie -> MultiImgDto.fromEntity(mie)));
         map.put("user", UserDTO.fromEntity(pro.getUserEntity()));
         map.put("likeCount", pro.getLikeCount());
@@ -461,7 +461,7 @@ public class ProController {
                 map.put("title", pro.getTitle());
                 map.put("link", pro.getLink());
                 map.put("coment", pro.getComent());
-                map.put("name", pro.getName());
+                map.put("nickname", pro.getUserEntity().getNickname());
                 map.put("time", pro.getTime());
                 map.put("imgs", pro.getMultiImgEntitys().stream().map(mie -> MultiImgDto.fromEntity(mie)));
                 map.put("code", 200); // 성공 코드

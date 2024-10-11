@@ -14,7 +14,7 @@ const ProjectWrite = () => {
 
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
-    const [name, setName] = useState('');
+    const [nickname, setNickname] = useState('');
     const [img, setImg] = useState('');
     const [link, setLink] = useState('');
     const [coment, setComent] = useState('');
@@ -80,7 +80,7 @@ const ProjectWrite = () => {
             formData.append("file", v);
         })
         formData.append("title", title);
-        formData.append("name", name);
+        formData.append("nickname", nickname);
         formData.append("link", modifiedLink);
         formData.append("img", img);
         formData.append("coment", coment);
@@ -121,7 +121,7 @@ const ProjectWrite = () => {
     useEffect(() => {
         if (!loading) {
             if (user) {
-                setName(user.nickname || '');
+                setNickname(user.nickname || '');
             } else {
                 Swal.fire({
                     icon: "warning",
@@ -147,8 +147,8 @@ const ProjectWrite = () => {
                                 <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{cursor: 'default'}}>작성자</h2>
                                 <p className="worksingle-footer py-3 text-muted light-300">
                                     <div className="form-floating">
-                                        <input type="text" className="form-control form-control-lg light-300" style={{cursor: 'default'}} id={name} name={name} placeholder="작성자"
-                                            value={name} onChange={(e) => setName(e.target.value)} readOnly />
+                                        <input type="text" className="form-control form-control-lg light-300" style={{cursor: 'default'}} id={nickname} name={nickname} placeholder="작성자"
+                                            value={nickname} onChange={(e) => setNickname(e.target.value)} readOnly />
                                         <label htmlFor="floatingsubject light-300">작성자</label>
                                     </div>
                                 </p>
