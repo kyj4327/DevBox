@@ -26,8 +26,6 @@ public class ProEntity {
 
     String title;
 
-    String name;
-
     String link;
 
     @Column(length = 500, nullable = false)
