@@ -5,6 +5,7 @@ import React, {
   useEffect
 } from "react";
 import "../../assets/css/DragDrop.css";
+import Swal from "sweetalert2";
 
 const DragDrop = (props) => {
   const [initialFiles, setInitialFiles] = useState([]); // initialFiles를 props로 받습니다
@@ -22,14 +23,23 @@ const DragDrop = (props) => {
     (e) => {
       let selectFiles = [];
       let tempFiles = files;
-  
+
       if (e.type === "drop") {
         selectFiles = e.dataTransfer.files;
       } else {
         selectFiles = e.target.files;
       }
-  
+
       for (const file of selectFiles) {
+        // 이미지 파일만 첨부 가능하게 필터링
+        if (!file.type.startsWith("image/")) {
+          Swal.fire({
+            icon: "error",
+            text: "이미지 파일만 업로드할 수 있습니다!",
+          });
+          continue;
+        }
+
         // 중복 파일 체크
         const isDuplicate = tempFiles.some(f => f.object.name === file.name && f.object.size === file.size);
         if (!isDuplicate) {
@@ -42,7 +52,7 @@ const DragDrop = (props) => {
           ];
         }
       }
-  
+
       setFiles(tempFiles);
       props.addFiles(tempFiles);
     },
@@ -52,13 +62,13 @@ const DragDrop = (props) => {
   const handleFilterFile = useCallback(
     (id) => {
       const filteredFiles = files.filter((file) => file.id !== id);
-        setFiles(filteredFiles);
-        props.addFiles(filteredFiles); 
+      setFiles(filteredFiles);
+      props.addFiles(filteredFiles);
     },
     [files, props]
 
   );
-/////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////
   const delhandle = useCallback((id) => {
     setFiles((prevFiles) => prevFiles.filter((file) => file.id !== id));
     // props.onDeleteImage를 호출하여 부모 컴포넌트에 알립니다.
@@ -126,6 +136,7 @@ const DragDrop = (props) => {
     <div className="DragDrop">
       <input
         type="file"
+        accept="image/*"
         id="fileUpload"
         style={{ display: "none" }}
         multiple={true}
@@ -143,16 +154,16 @@ const DragDrop = (props) => {
         {
           initialFiles.map((v) => {
             return (
-              <div  style={{ 'display': 'flow' }}>
-                <img width='120px' height='120px' 
-                 src={`http://localhost:8080/project/download?id=${v.id}`}></img>
-                <div style={{ 
-                  'display': 'flex', 
+              <div style={{ 'display': 'flow' }}>
+                <img width='120px' height='120px'
+                  src={`http://localhost:8080/project/download?id=${v.id}`}></img>
+                <div style={{
+                  'display': 'flex',
                   'alignItems': 'center',
                   'margin-right': '20px',
                   'width': '120px',
                   'height': '30px',
-                  'border': '1px solid black', 
+                  'border': '1px solid black',
                   'justifyContent': 'center'
                 }}
                   className="DragDrop-Files-Filter"
@@ -174,6 +185,7 @@ const DragDrop = (props) => {
         ref={dragRef}
       >
         <div className="h3">파일 첨부</div>
+        이미지 형식 파일만 첨부 가능합니다.
       </label>
 
 
@@ -188,9 +200,9 @@ const DragDrop = (props) => {
                 <div
                   className="DragDrop-Files-Filter"
                   onClick={() => {
-                    handleFilterFile(file.id)   
-                    }
-                  } 
+                    handleFilterFile(file.id)
+                  }
+                  }
                 >
                   X
                 </div>

@@ -45,7 +45,7 @@ const ProjectDetail = () => {
         const data = await res.json();
         setProData(data);
         setShowSwiper(true);
-        
+
     }
 
     const fetchUserLikeStatus = async () => {
@@ -122,14 +122,16 @@ const ProjectDetail = () => {
                         맘껏 자랑해봐!
                     </p>
                 </div>
+                {proData.title ?
+                    <div className="row pt-5">
+                        <div className="worksingle-content col-lg-8 m-auto text-left justify-content-center">
+                            <h1 className="worksingle-heading h3 pb-3 light-300 typo-space-line">{proData.title}</h1>
 
-                <div className="row pt-5">
-                    <div className="worksingle-content col-lg-8 m-auto text-left justify-content-center">
-                        <h1 className="worksingle-heading h3 pb-3 light-300 typo-space-line">{proData.title}</h1>
-
+                        </div>
                     </div>
-                </div>
-
+                    :
+                    null
+                }
                 <section className="py-5">
                     <div className="mySwiper">
                         {showSwiper && (
@@ -162,7 +164,7 @@ const ProjectDetail = () => {
                                             key={img.id}
                                             style={{
                                                 boxShadow: proData.imgs.length >= 4 ? '0px 10px 20px rgba(0, 0, 0, 0.2), 0px 6px 6px rgba(0, 0, 0, 0.15)' : 'none',
-                                                width: proData.imgs.length >= 4 ? '300px' : '500px',  
+                                                width: proData.imgs.length >= 4 ? '300px' : '500px',
                                                 height: '500px',
                                             }}
                                         >
@@ -242,33 +244,38 @@ const ProjectDetail = () => {
                                     <span>작성일: {formatDateTime(proData.time)}</span>
                                 </div>
                             </div>
-                            <div
-                                className="worksingle-footer px-3 py-3 text-muted light-300 border border-3"
-                                style={{
-                                    overflowWrap: 'break-word',
-                                    wordWrap: 'break-word',
-                                    whiteSpace: 'pre-wrap',
-                                    maxHeight: '500px', // 원하는 높이로 조정
-                                }}
-                                dangerouslySetInnerHTML={{ __html: proData.coment }}
-                            >
-                            </div>
+                            {
+                                proData.coment ?
+                                    <div
+                                        className="worksingle-footer px-3 py-3 text-muted light-300 border border-3"
+                                        style={{
+                                            overflowWrap: 'break-word',
+                                            wordWrap: 'break-word',
+                                            whiteSpace: 'pre-wrap',
+                                            maxHeight: '500px', // 원하는 높이로 조정
+                                        }}
+                                        dangerouslySetInnerHTML={{ __html: proData.coment }}
+                                    >
+                                    </div>
+                                    :
+                                    null
+                            }
                             <div className="row">
                                 <div className="col text-start">
                                     <Button icon={'list'} text={'목록'} onClick={() => { navigate('/project/list') }} />
                                 </div>
                                 <div className="col text-end">
-                                    {user && user.nickname && (
-                                        <>   
-                                        <span className="me-2">
-                                        <Button
-                                            icon={'edit'}
-                                            text={'수정'}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                navigate(`/project/update?id=${proData.id}`);
-                                            }}
-                                            />
+                                    {proData.nickname === user.nickname && (
+                                        <>
+                                            <span className="me-2">
+                                                <Button
+                                                    icon={'edit'}
+                                                    text={'수정'}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        navigate(`/project/update?id=${proData.id}`);
+                                                    }}
+                                                />
                                             </span>
                                             <Button
                                                 icon={'trash'}
