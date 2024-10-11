@@ -260,7 +260,7 @@ public class SecurityConfig {
                                                 .requestMatchers("/msg/**").authenticated()
                                                 .requestMatchers("/msg/list**").authenticated()
 
-                                                // FAQ
+                                                // 고객센터
                                                 .requestMatchers("/send/**").permitAll()
                                                 .requestMatchers("/api/contact/**").permitAll()
 

@@ -94,7 +94,7 @@ const Header = () => {
                     <Link to="/reservation/write" onClick={() => setIsMenuOpen(false)}>6층 회의실 대여</Link>
                   </div>
                   <div className="resized-menu-item">
-                    <Link to="/faq" onClick={() => setIsMenuOpen(false)}><h5>FAQ</h5></Link>
+                    <Link to="/faq" onClick={() => setIsMenuOpen(false)}><h5>고객센터</h5></Link>
                   </div>
                 </div>
               ) : (
@@ -137,7 +137,7 @@ const Header = () => {
                     </div>
                   </li>
                   <li className="nav-item">
-                    <Link to="/faq" className="nav-link btn-outline-primary rounded-pill px-3">FAQ</Link>
+                    <Link to="/faq" className="nav-link btn-outline-primary rounded-pill px-3">고객센터</Link>
                   </li>
                 </ul>
               )

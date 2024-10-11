@@ -64,7 +64,7 @@ const Footer = () => {
                             <List link='/introduce' text='BDIA 소개' />
                             <List link='/schedule' text='연간 교육 일정' />
                             <List link='/freeboard/list' text='자유게시판' />
-                            <List link='/faq' text='FAQ' />
+                            <List link='/faq' text='고객센터' />
                         </ul>
                     </div>
                     <div className="col-lg-3 col-md-4 my-sm-0 mt-4">

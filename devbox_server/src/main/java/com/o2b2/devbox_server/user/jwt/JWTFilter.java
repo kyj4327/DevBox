@@ -89,7 +89,7 @@ public class JWTFilter extends OncePerRequestFilter {
                 || requestURI.matches("/.*/download/.*")
                 || requestURI.matches("/.*/download.*")
 
-                // FAQ
+                // 고객센터
                 || requestURI.matches("/api/contact/.*")
                 || requestURI.matches("/send/.*")
 

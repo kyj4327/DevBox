@@ -11,9 +11,12 @@ const Contact = () => {
       <section className="bg-light">
         <div className="container py-4">
           <div className="row align-items-center justify-content-between">
-            <div className="contact-header col-lg-4">
-              <h1 className="h2 pb-3 text-primary">FAQ</h1>
-              <h3 className="h4 regular-400">문의사항</h3>
+            <div className="contact-header col-lg-7">
+              <h1 className="h2 pb-3 text-primary">고객센터</h1>
+              <h3 className="h4 regular-400">오류를 찾았거나 개선이 필요한 점이 있다면 언제든지 문의해 주세요!</h3>
+              <p className="contact-muted col-12 col-xl-8 text-left text-muted pb-5 light-300">
+                여러분의 소중한 의견을 기다리고 있습니다.
+              </p>
             </div>
             <div className="faq-img col-lg-5 align-items-end col-md-4">
               <img src={bannerImage} />
@@ -23,16 +26,6 @@ const Contact = () => {
       </section>
 
       <section className="container py-5">
-        <h1 className="contact-primary col-12 col-xl-8 h2 text-left text-primary pt-3">
-          DevBox 고객센터
-        </h1>
-        <h2 className="col-12 col-xl-8 h4 text-left regular-400">
-          오류를 찾았거나 개선이 필요한 점이 있다면 언제든지 문의해 주세요!
-        </h2>
-        <p className="contact-muted col-12 col-xl-8 text-left text-muted pb-5 light-300">
-          여러분의 소중한 의견을 기다리고 있습니다.
-        </p>
-
         <div className="row pb-4">
           <div className="col-lg-4">
             <div className="contact row mb-4">

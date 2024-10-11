@@ -164,7 +164,7 @@ function AppContent() {
           <Route path="/freeboard/update/:id" element={<FreeBoardWrite />} />
           <Route path="/freeboard/detail/:id" element={<FreeBoardDetail />} />
 
-          {/* FAQ */}
+          {/* 고객센터 */}
           <Route path="/faq" element={<Contact />} />
 
           {/* 404 Not Found Route */}
