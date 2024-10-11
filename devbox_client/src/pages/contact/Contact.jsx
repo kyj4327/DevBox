@@ -14,7 +14,7 @@ const Contact = () => {
             <div className="contact-header col-lg-7">
               <h1 className="h2 pb-3 text-primary">고객센터</h1>
               <h3 className="h4 regular-400">오류를 찾았거나 개선이 필요한 점이 있다면 언제든지 문의해 주세요!</h3>
-              <p className="contact-muted col-12 col-xl-8 text-left text-muted pb-5 light-300">
+              <p className="contact-muted col-12 col-xl-8 text-left text-muted light-300">
                 여러분의 소중한 의견을 기다리고 있습니다.
               </p>
             </div>
