@@ -28,6 +28,13 @@ const ProjectDetail = () => {
 
     const [showSwiper, setShowSwiper] = useState(false);
 
+    console.log("User:", user);
+console.log("ProData:", proData);
+
+// userNickName이 제대로 설정되는지 확인
+const userNickName = user ? user.nickname : null;
+console.log("User Nickname:", userNickName);
+
 
     const formatDateTime = (dateString) => {
         const date = new Date(dateString);
@@ -265,7 +272,7 @@ const ProjectDetail = () => {
                                     <Button icon={'list'} text={'목록'} onClick={() => { navigate('/project/list') }} />
                                 </div>
                                 <div className="col text-end">
-                                    {proData.nickname === user.nickname && (
+                                    {userNickName && proData.nickname === userNickName ? (
                                         <>
                                             <span className="me-2">
                                                 <Button
@@ -322,7 +329,8 @@ const ProjectDetail = () => {
                                                 }}
                                             />
                                         </>
-                                    )}
+                                    ) : null}
+
                                 </div>
                             </div>
                         </div>
