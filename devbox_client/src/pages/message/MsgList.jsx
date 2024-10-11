@@ -6,13 +6,13 @@ import { useUser } from "../../components/context/UserContext";
 import Swal from "sweetalert2";
 
 const MsgList = (props) => {
-    const {user} = useUser();
+    const {user,loading} = useUser();
     const navigate = useNavigate();
     const domain = "https://www.devback.shop";
     const [likeStatus, setLikeStatus] = useState({});
 
     useEffect(() => {
-        if (!user) {
+        if (!loading && !user) {
             Swal.fire({
                 icon: "error",
                 title: "로그인이 필요합니다."
@@ -21,7 +21,7 @@ const MsgList = (props) => {
             });
 
         }
-    }, [user, navigate]);
+    }, [user,loading, navigate]);
 
     const like = async (msgId, type) => {
         const token = localStorage.getItem('accessToken');
