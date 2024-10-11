@@ -27,7 +27,7 @@ const ProjectDetail = () => {
     const domain = "https://www.devback.shop";
 
     const [showSwiper, setShowSwiper] = useState(false);
-
+    const userNickName = user ? user.nickname : null;
 
     const formatDateTime = (dateString) => {
         const date = new Date(dateString);
@@ -271,7 +271,7 @@ const ProjectDetail = () => {
                             }
                             <div className="row">
                                 <div className="col text-start">
-                                    {proData.nickname === user.nickname && (
+                                {userNickName && proData.nickname === userNickName ? (
                                         <>   
                                         <span className="me-2">
                                         <Button
@@ -332,7 +332,7 @@ const ProjectDetail = () => {
                                                 }}
                                             />
                                         </>
-                                    )}
+                                    ) : null}
                                 </div>
                                 <div className="col text-end">
                                     <Button icon={'list'} text={'목록'} onClick={() => { navigate('/project/list') }} />
