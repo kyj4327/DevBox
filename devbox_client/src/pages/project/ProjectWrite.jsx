@@ -37,34 +37,18 @@ const ProjectWrite = () => {
         const youtubeShareVideoRegex = /^(https?:\/\/)?(www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})(\?.*)?$/;
 
         const hasProtocol = /^(https?:\/\/)/.test(link);
-
         // 유효한 YouTube 링크인지 확인
         const isYoutubeRegular = youtubeRegularVideoRegex.test(link);
         const isYoutubeShare = youtubeShareVideoRegex.test(link);
-
-        // 비디오 ID가 발견되었는지 체크
-        let videoIdMatch;
-        if (isYoutubeRegular) {
-            videoIdMatch = link.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|.+\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-        } else if (isYoutubeShare) {
-            videoIdMatch = link.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
-        }
-
         // 유효성 검사: 공유 링크와 일반 링크 각각 다르게 처리
         const isShareLinkValidLength = isYoutubeShare && link.length === 48; // 공유 링크는 48자
         const isTooLong = isYoutubeShare && link.length > 48; // 공유 링크가 48자 초과일 경우 유효하지 않음
-
-        const hasExtraChars = (isYoutubeRegular || isYoutubeShare) &&
-            (videoIdMatch && link.length > (videoIdMatch.index + videoIdMatch[0].length));
-
         const isTooShort = isYoutubeShare && link.length < 48; // 공유 링크가 48자 미만일 경우 유효하지 않음
         return {
-            isValid: (isYoutubeRegular || (isYoutubeShare && isShareLinkValidLength)) && !hasExtraChars && !isTooLong,
             isValid: (isYoutubeRegular || (isYoutubeShare && isShareLinkValidLength)) && !isTooLong,
             hasProtocol: hasProtocol,
             isYoutubeRegular: isYoutubeRegular,
             isYoutubeShare: isYoutubeShare,
-            hasExtraChars: hasExtraChars,
             isTooLong: isTooLong,
             isTooShort: isTooShort
         };
@@ -73,7 +57,6 @@ const ProjectWrite = () => {
     const handleLinkChange = (e) => {
         const inputLink = e.target.value;
         setLink(inputLink);
-
         const { isValid, hasProtocol, isYoutubeRegular, isYoutubeShare, isTooLong, isTooShort } = validateUrl(inputLink);
         // 링크가 비어있을 경우 에러 메시지를 설정하지 않음
         if (inputLink.trim() === '') {
@@ -83,9 +66,6 @@ const ProjectWrite = () => {
         } else if (!isYoutubeRegular && !isYoutubeShare) {
             setLinkError('유효한 YouTube 링크를 입력해주세요!'); // 유효하지 않은 링크일 경우 메시지
         } else if (isTooLong) {
-            setLinkError('YouTube 공유 링크는 48자여야 합니다!'); // 링크가 잘못된 길이일 경우
-        } else if (hasExtraChars) {
-            setLinkError('유효한 YouTube 링크를 입력해주세요!'); // 추가 문자가 있을 경우 메시지
             setLinkError('YouTube 공유 링크는 48자를 넘지 않아야 합니다!'); // 링크가 너무 긴 경우
         } else if (isTooShort) {
             setLinkError('YouTube 공유 링크는 48자 입니다. 입력해주세요!'); // 공유 링크가 48자 미만일 경우 메시지
@@ -232,9 +212,9 @@ const ProjectWrite = () => {
                                 <p className="worksingle-footer py-3 text-muted light-300">
                                     <div className="col-12">
                                         <div className="form-floating mb-4">
-                                            <input type="text" className="form-control form-control-lg light-300" id="link" name="link" placeholder="시연 영상 링크"
+                                            <input type="text" className="form-control form-control-lg light-300" id="link" name="link" placeholder="YouTube 영상 링크만 가능합니다."
                                                 value={link} onChange={handleLinkChange} />
-                                            <label htmlFor="floatingsubject light-300">시연 영상 링크</label>
+                                            <label htmlFor="floatingsubject light-300">YouTube 영상 링크만 가능합니다.</label>
                                         </div>
                                     </div>
                                     {linkError && <p style={{ color: 'red' }}>{linkError}</p>}

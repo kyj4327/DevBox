@@ -37,7 +37,6 @@ const ProjectUpdate = () => {
         // YouTube 공유 링크에 대한 정규 표현식
         const youtubeShareVideoRegex = /^(https?:\/\/)?(www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})(\?.*)?$/;
 
-        const [ProData, setProData] = useState({});
         const hasProtocol = /^(https?:\/\/)/.test(link);
         // 유효한 YouTube 링크인지 확인
         const isYoutubeRegular = youtubeRegularVideoRegex.test(link);
