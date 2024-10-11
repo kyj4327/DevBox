@@ -13,14 +13,13 @@ const MsgList = (props) => {
 
     useEffect(() => {
         if (!user) {
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "로그인이 필요합니다."
-                }).then(() => {
-                    navigate('/auth');
-                });
-            
+            Swal.fire({
+                icon: "error",
+                title: "로그인이 필요합니다."
+            }).then(() => {
+                navigate('/auth');
+            });
+
         }
     }, [user, navigate]);
 
