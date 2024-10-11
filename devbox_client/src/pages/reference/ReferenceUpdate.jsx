@@ -91,7 +91,7 @@ const ReferenceUpdate = () => {
     const updateData = async (e) => {
         e.preventDefault();
 
-        if (title.trim().length > 10) {
+        if (title.trim().length > 20) {
             InputScrollAndFocus("title", "글자수를 확인해 주세요!");
             return;
         } else if (content1.trim().length > 65) {
@@ -185,7 +185,7 @@ const ReferenceUpdate = () => {
                 <p className="text-center pb-5 light-300">다른 사람에게 알려주고 싶은 나만의 꿀팁을 공유해요!</p>
                 <div className="pricing-list rounded-top rounded-3 py-sm-0 py-5">
                     <div className="contact-form row">
-                        <WriteShort type={'text'} titleTag={'제목'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} wordCount={10} />
+                        <WriteShort type={'text'} titleTag={'제목'} name={'title'} value={title} onChange={(e) => { setTitle(e.target.value) }} wordCount={20} />
                         <WriteSelect titleTag="카테고리" name="intro"
                             value={selectJob || "카테고리를 선택해 주세요."} onChange={(e) => setSelectJob(e.target.value)}
                             options={["Web", "DevOps", "Cloud", "Data", "Mobile", "Others"]} />
