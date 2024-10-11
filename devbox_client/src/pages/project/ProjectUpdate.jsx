@@ -24,14 +24,61 @@ const ProjectUpdate = () => {
     const [img, setImg] = useState('');
     const [link, setLink] = useState('');
     const [coment, setComent] = useState('');
-    const [uploadImgs, setUploadImgs] = useState([]);// 이미지 업로드 상태를 관리하는 변수
     const [savedImgs, setSavedImgs] = useState([]);
-
     const [delImgId, setDelImgId] = useState([]);
-
-
-
     const [ProData, setProData] = useState({});
+    const [linkError, setLinkError] = useState('');
+    const [uploadImgs, setUploadImgs] = useState([]);
+
+    const validateUrl = (link) => {
+        // YouTube 일반 동영상 링크에 대한 정규 표현식
+        const youtubeRegularVideoRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/|v\/|.+\?v=)([a-zA-Z0-9_-]{11}))$/;
+
+        // YouTube 공유 링크에 대한 정규 표현식
+        const youtubeShareVideoRegex = /^(https?:\/\/)?(www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})(\?.*)?$/;
+
+        const hasProtocol = /^(https?:\/\/)/.test(link);
+
+        // 유효한 YouTube 링크인지 확인
+        const isYoutubeRegular = youtubeRegularVideoRegex.test(link);
+        const isYoutubeShare = youtubeShareVideoRegex.test(link);
+
+        // 유효성 검사: 공유 링크와 일반 링크 각각 다르게 처리
+        const isShareLinkValidLength = isYoutubeShare && link.length === 48; // 공유 링크는 48자
+        const isTooLong = isYoutubeShare && link.length > 48; // 공유 링크가 48자 초과일 경우 유효하지 않음
+        const isTooShort = isYoutubeShare && link.length < 48; // 공유 링크가 48자 미만일 경우 유효하지 않음
+
+        return {
+            isValid: (isYoutubeRegular || (isYoutubeShare && isShareLinkValidLength)) && !isTooLong,
+            hasProtocol: hasProtocol,
+            isYoutubeRegular: isYoutubeRegular,
+            isYoutubeShare: isYoutubeShare,
+            isTooLong: isTooLong,
+            isTooShort: isTooShort
+        };
+    };
+
+    const handleLinkChange = (e) => {
+        const inputLink = e.target.value;
+        setLink(inputLink);
+
+        const { isValid, hasProtocol, isYoutubeRegular, isYoutubeShare, isTooLong, isTooShort } = validateUrl(inputLink);
+
+        // 링크가 비어있을 경우 에러 메시지를 설정하지 않음
+        if (inputLink.trim() === '') {
+            setLinkError(''); // 링크가 비어있어도 오류 메시지 제거
+        } else if (!hasProtocol) {
+            setLinkError('링크에 http:// 또는 https://를 포함해주세요!'); // 프로토콜이 없을 경우 메시지
+        } else if (!isYoutubeRegular && !isYoutubeShare) {
+            setLinkError('유효한 YouTube 링크를 입력해주세요!'); // 유효하지 않은 링크일 경우 메시지
+        } else if (isTooLong) {
+            setLinkError('YouTube 공유 링크는 48자를 넘지 않아야 합니다!'); // 링크가 너무 긴 경우
+        } else if (isTooShort) {
+            setLinkError('YouTube 공유 링크는 48자 입니다. 입력해주세요!'); // 공유 링크가 48자 미만일 경우 메시지
+        } else {
+            setLinkError(''); // 유효한 경우 오류 메시지 제거
+        }
+    };
 
     const handleDeleteImage = (id) => {
         setDelImgId([...delImgId, id]);
@@ -69,6 +116,15 @@ const ProjectUpdate = () => {
     const handleDetail = async (e) => {
         e.preventDefault();
 
+        if (linkError) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: linkError // 링크 오류 메시지 출력
+            });
+            return;
+        }
+
         // savedImgs와 uploadImgs를 모두 확인하도록 수정
         if (savedImgs.length === 0 && uploadImgs.length === 0) {
             Swal.fire({
@@ -79,7 +135,20 @@ const ProjectUpdate = () => {
             return;
         }
 
-        const modifiedLink = link.includes("watch?v=") ? link.replace("watch?v=", "embed/") : link;
+        let modifiedLink;
+        if (link.includes("watch?v=")) {
+            modifiedLink = link.replace("watch?v=", "embed/");
+        } else if (link.includes("youtu.be/")) {
+            const videoIdMatch = link.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+            if (videoIdMatch) {
+                modifiedLink = `https://www.youtube.com/embed/${videoIdMatch[1]}`; // 공유 링크 변환
+            } else {
+                modifiedLink = link; // 유효하지 않은 링크는 원래 링크를 사용
+            }
+        } else {
+            modifiedLink = link; // 다른 링크는 원래 링크를 사용
+        }
+
         const formData = new FormData();
         formData.append("id", id);
         uploadImgs.forEach((v) => {
@@ -119,9 +188,6 @@ const ProjectUpdate = () => {
         }
 
     };
-
-
-
 
     const addFiles = (files) => {
         const fs = files.map(v => {
@@ -179,11 +245,15 @@ const ProjectUpdate = () => {
                                 <p className="worksingle-footer py-3 text-muted light-300">
                                     <div className="col-12">
                                         <div className="form-floating mb-4">
-                                            <input type="text" className="form-control form-control-lg light-300" id={link} name={link} placeholder="자랑 링크"
-                                                value={link} onChange={(e) => setLink(e.target.value)} />
-                                            <label htmlFor="floatingsubject light-300">예: https://www.youtube.com</label>
+                                            <input type="text" className="form-control form-control-lg light-300" id={link} name={link} placeholder="YouTube 영상 링크만 가능합니다."
+                                                value={link} onChange={(e) => {
+                                                    setLink(e.target.value);
+                                                    handleLinkChange(e); 
+                                                }} />
+                                            <label htmlFor="floatingsubject light-300">YouTube 영상 링크만 가능합니다.</label>
                                         </div>
                                     </div>
+                                    {linkError && <p style={{ color: 'red' }}>{linkError}</p>}
                                 </p>
                             </div>
                             <h2 className="worksingle-heading h3 pb-3 light-300 typo-space-line" style={{ cursor: 'default' }}>프로젝트 소개</h2>
