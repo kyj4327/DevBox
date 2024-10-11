@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useUser } from '../../components/context/UserContext';
 import UserContact from '../../components/UserContact';
 import './ProjectMain.css';
+import Swal from 'sweetalert2';
 
 const ProjectMain = (props) => {
     const { user } = useUser();
@@ -134,7 +135,7 @@ const ProjectMain = (props) => {
                             <div className="card-body">
                                 <h5 className="card-title h6 m-0 semi-bold-600 text-dark text-center" style={{cursor: 'default'}}>{pro.title}</h5>
                                 <p className="card-text pt-2 mb-1 light-300 text-dark text-center">
-                                    작성자: <UserContact nickname={pro.name} />
+                                    작성자: <UserContact nickname={pro.nickname} />
                                 </p>
                                 <div className='d-flex justify-content-end'>
                                     <i

@@ -45,8 +45,7 @@ const ProjectDetail = () => {
         const data = await res.json();
         setProData(data);
         setShowSwiper(true);
-        if (data && data.name) {
-        }
+       
     }
 
     const fetchUserLikeStatus = async () => {
@@ -249,7 +248,7 @@ const ProjectDetail = () => {
                                     }}
                                 />
                                 <div className="d-flex flex-column px-2">
-                                    <span>작성자: <UserContact nickname={proData.name} /> </span>
+                                    <span>작성자: <UserContact nickname={proData.nickname} /> </span>
                                     <span>작성일: {formatDateTime(proData.time)}</span>
                                 </div>
                             </div>
@@ -271,7 +270,7 @@ const ProjectDetail = () => {
                             }
                             <div className="row">
                                 <div className="col text-start">
-                                    {user && proData.name === user.nickname && (
+                                    {user && user.nickname && (
                                         <>   
                                         <span className="me-2">
                                         <Button

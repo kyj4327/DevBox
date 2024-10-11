@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Button from "../../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import Category from "../../components/Category";
+import { useUser } from "../../components/context/UserContext";
+import Swal from "sweetalert2";
 
 const MsgList = (props) => {
     const {user} = useUser();
@@ -20,7 +22,7 @@ const MsgList = (props) => {
                 });
             
         }
-    }, [loading, navigate]);
+    }, [user, navigate]);
 
     const like = async (msgId, type) => {
         const token = localStorage.getItem('accessToken');
