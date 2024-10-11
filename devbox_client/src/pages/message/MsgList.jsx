@@ -4,13 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import Category from "../../components/Category";
 
 const MsgList = (props) => {
-    const { loading } = useUser();
+    const {user} = useUser();
     const navigate = useNavigate();
     const domain = "https://www.devback.shop";
     const [likeStatus, setLikeStatus] = useState({});
 
     useEffect(() => {
-        if (!loading) {
+        if (!user) {
             } else {
                 Swal.fire({
                     icon: "error",

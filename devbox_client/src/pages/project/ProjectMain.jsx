@@ -66,7 +66,7 @@ const ProjectMain = (props) => {
     };
 
     const handleLikeClick = (e, proId) => {
-        if (user) {
+        if (!user) {
             Swal.fire({
               icon: "error",
               title: "로그인이 필요합니다."
