@@ -254,7 +254,7 @@ public class SecurityConfig {
 
                                                 // 쪽지
                                                 .requestMatchers("/msg/bell").authenticated()
-                                                .requestMatchers("/message/**").permitAll()
+                                                .requestMatchers("/message/**").authenticated()
                                                 .requestMatchers("/msg/**").authenticated()
                                                 .requestMatchers("/msg/list**").authenticated()
                                                 .requestMatchers("/msg/**").authenticated()

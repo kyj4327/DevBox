@@ -4,9 +4,23 @@ import { Link, useNavigate } from "react-router-dom";
 import Category from "../../components/Category";
 
 const MsgList = (props) => {
+    const { loading } = useUser();
     const navigate = useNavigate();
     const domain = "https://www.devback.shop";
     const [likeStatus, setLikeStatus] = useState({});
+
+    useEffect(() => {
+        if (!loading) {
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "로그인이 필요합니다."
+                }).then(() => {
+                    navigate('/auth');
+                });
+            
+        }
+    }, [loading, navigate]);
 
     const like = async (msgId, type) => {
         const token = localStorage.getItem('accessToken');

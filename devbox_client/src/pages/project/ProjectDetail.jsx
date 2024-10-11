@@ -100,6 +100,13 @@ const ProjectDetail = () => {
     };
 
     const handleLikeClick = (e, proId) => {
+        if (user) {
+            Swal.fire({
+              icon: "error",
+              title: "로그인이 필요합니다."
+            })
+          }
+
         e.stopPropagation();
         e.preventDefault();
         likeCount(proId); // 좋아요 상태 업데이트
