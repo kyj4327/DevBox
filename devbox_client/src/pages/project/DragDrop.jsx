@@ -31,6 +31,14 @@ const DragDrop = (props) => {
       }
   
       for (const file of selectFiles) {
+        // 이미지 파일만 첨부 가능하게 필터링
+        if (!file.type.startsWith("image/")) {
+          Swal.fire({
+            icon: "error",
+            text: "이미지 파일만 업로드할 수 있습니다!",
+          });
+          continue;
+        }
         // 중복 파일 체크
         const isDuplicate = tempFiles.some(f => f.object.name === file.name && f.object.size === file.size);
         if (!isDuplicate) {
@@ -128,6 +136,7 @@ const DragDrop = (props) => {
       <input
         type="file"
         id="fileUpload"
+        accept="image/*"
         style={{ display: "none" }}
         multiple={true}
         onChange={onChangeFiles}
@@ -174,6 +183,7 @@ const DragDrop = (props) => {
         ref={dragRef}
       >
         <div className="h3">파일 첨부</div>
+        이미지 형식 파일만 첨부 가능합니다.
       </label>
 
 

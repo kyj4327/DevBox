@@ -131,13 +131,14 @@ const ProjectDetail = () => {
                 </div>
 
                 {
-                    !proData.title ? '' : (
+                    proData.title ?
                         <div className="row pt-5">
                             <div className="worksingle-content col-lg-8 m-auto text-left justify-content-center">
                                 <h1 className="worksingle-heading h3 pb-3 light-300 typo-space-line">{proData.title}</h1>
                             </div>
                         </div>
-                    )
+                :
+                null
                 }
 
                 <section className="py-5">
@@ -252,10 +253,9 @@ const ProjectDetail = () => {
                                     <span>작성일: {formatDateTime(proData.time)}</span>
                                 </div>
                             </div>
+                            <div className="worksingle-footer px-3 text-muted light-300"></div>
                             {
-                                !proData.coment ? (
-                                    <div className="worksingle-footer px-3 text-muted light-300"></div>
-                                ) : (
+                                proData.coment && (
                                     <div
                                         className="worksingle-footer px-3 py-3 text-muted light-300 border border-3"
                                         style={{
@@ -267,10 +267,11 @@ const ProjectDetail = () => {
                                     >
                                     </div>
                                 )
+
                             }
                             <div className="row">
                                 <div className="col text-start">
-                                    {user && user.nickname && (
+                                    {proData.nickname === user.nickname && (
                                         <>   
                                         <span className="me-2">
                                         <Button
