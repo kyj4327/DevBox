@@ -167,10 +167,10 @@ const Main = () => {
                   onClick={clickCategory}
                 />
               </div>
-              <div className="row gy-5 g-lg-5 mb-4 justify-content-center" style={{ marginTop: "0" }}>
+              <div className="row gy-5 g-lg-5 mb-4" style={{ marginTop: "0" }}>
                 {hiringData.map((v) => {
                   return (
-                    <div className="col-sm-6 col-lg-4" key={v.id}>
+                    <div className="col-md-4 mb-3" key={v.id}>
                       <Link
                         to={v.wantedUrl}
                         className="service-work card border-0 text-white shadow-sm overflow-hidden mx-5 m-sm-0"
@@ -180,6 +180,7 @@ const Main = () => {
                           className="service card-img"
                           src={v.imgUrl}
                           alt="https://www.wanted.co.kr/"
+                          style={{ height: '265px' }}
                         />
                         <div className="service-work-vertical card-img-overlay d-flex align-items-end">
                           <div className="service-work-content text-left text-light">
