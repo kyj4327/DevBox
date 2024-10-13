@@ -143,7 +143,7 @@ const ContestList = () => {
                         }
                         {
                             userRole === "ROLE_ADMIN"
-                                ? <div className="form-row pt-2" style={{ padding: '8px 56px 0px' }}>
+                                ? <div className="form-row pt-2">
                                     <div className="col-md-12 col-10 text-end">
                                         <Button text={'글쓰기'} icon="pen" onClick={toWrite} />
                                     </div>
