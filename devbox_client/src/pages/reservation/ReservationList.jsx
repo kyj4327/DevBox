@@ -115,14 +115,14 @@ const ReservationList = () => {
                                             />
                                         </span>
                                         <button className="btn px-4 border border-2 me-2" onClick={searchDate}>
-                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                            <i className="fa-solid fa-magnifying-glass"></i>
                                         </button>
                                         <button className="btn px-4 border border-2"
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 setStartDate('');
                                                 setDate('All');
-                                            }}><i class="fa-solid fa-rotate-right"></i></button>
+                                            }}><i className="fa-solid fa-rotate-right"></i></button>
                                     </div>
                                 </div>
                             </div>

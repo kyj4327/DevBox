@@ -57,11 +57,11 @@ const ContestList = () => {
                 <div className="container py-5">
                     <h1 className="h2 semi-bold-600 text-center mt-2">공모전</h1>
                     <p className="text-center pb-5 light-300">대회/공모전의 세부요강은 주최사의 기획에 의해 내용이 변경될 수 있으니, 주최사의 공고를 반드시 확인해 보시기 바랍니다.</p>
-                    <div className="row projects gx-lg-5 justify-content-center">
+                    <div className="row gy-5 g-lg-5 mb-4">
                         {
                             data.map((v) => {
                                 return (
-                                    <div className="col-sm-6 col-lg-4" style={{ marginBottom: '3rem' }} key={v.id}>
+                                    <div className="col-md-4 mb-3" key={v.id}>
                                         <Link to={v.officialUrl} className="text-decoration-none" target='_blank' >
                                             <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
                                                 <img className="card-img-top" src={v.imgUrl} alt="" />

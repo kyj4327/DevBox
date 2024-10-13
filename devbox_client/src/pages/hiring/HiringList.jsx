@@ -62,15 +62,15 @@ const HiringList = () => {
                             <Category text={'Others'} isActive={category} onClick={clickCategory} />
                         </div>
                     </div>
-                    <div className="row projects gx-lg-5 justify-content-center">
+                    <div className="row gy-5 g-lg-5 mb-4">
                         {
                             data.map((v) => {
                                 return (
-                                    <div className="col-sm-6 col-lg-4" style={{ marginBottom: '3rem' }} key={v.id}>
+                                    <div className="col-md-4 mb-3" key={v.id}>
                                         <Link to={v.wantedUrl} className="text-decoration-none" target='_blank' >
                                             <div className="service-work overflow-hidden card mb-5 mx-5 m-sm-0">
-                                                <img className="card-img-top" src={v.imgUrl} alt="https://www.wanted.co.kr/" />
-                                                <div className="card-body">
+                                                <img className="card-img-top" src={v.imgUrl} alt="https://www.wanted.co.kr/" style={{ height: '297px' }} />
+                                                <div className="card-body" style={{ height: '184px' }}>
                                                     <h5 className="card-title light-300 text-dark">{v.job}</h5>
                                                     <h5 className="card-title light-300 text-dark">{v.company}</h5>
                                                     <p className="card-text light-300 text-dark">{v.area} / {v.career}</p>
