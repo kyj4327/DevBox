@@ -18,11 +18,17 @@ const Reservation = () => {
     const token = localStorage.getItem('accessToken');
 
     const [value, onChange] = useState(new Date());
-    const userName = useState(user ? user.name : '');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const condition = "예약완료";
     const [timeData, setTimeData] = useState([]);
+
+    const [userName, setUserName] = useState(''); // useState로 상태 초기화
+    useEffect(() => {
+        if (user) {
+            setUserName(user.name); // user의 이름을 상태로 설정
+        }
+    }, [user]); // user 상태가 변경될 때만 실행
 
     const [isWeekend, setIsWeekend] = useState(false); // 주말 여부를 저장할 상태 변수
     useEffect(() => {
