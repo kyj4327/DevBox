@@ -63,6 +63,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
                 // 6층 회의실 예약 write
                 || requestURI.matches("/reservation/write/.*")
+                || requestURI.matches("/reservation/servertime")
 
                 // 공지사항
                 || requestURI.matches("/notice/posts/.*") // 게시글 상세는 제외

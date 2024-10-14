@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,6 +69,14 @@ public class ReservationController {
             response.put("isAvailable", false); // 예약 불가능
         }
         return response;
+    }
+
+    // 서버 시간 API 추가
+    @GetMapping("/reservation/servertime")
+    public ResponseEntity<String> getCurrentTime() {
+        // 서버 시간을 반환 (포맷을 클라이언트에서 사용하기 쉽게 설정)
+        String serverTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm"));
+        return ResponseEntity.ok(serverTime);
     }
 
     @GetMapping("/reservation/check/{category}/{date}")

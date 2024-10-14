@@ -223,6 +223,7 @@ public class SecurityConfig {
                                                 .requestMatchers("/reservation/write/**").permitAll()
                                                 .requestMatchers("/reservation/write").hasAnyRole("ADMIN", "STUDENT")
                                                 .requestMatchers("/reservation/availability").authenticated()
+                                                .requestMatchers("/reservation/servertime").permitAll()
                                                 .requestMatchers("/reservation/check/**").authenticated()
                                                 .requestMatchers("/reservation/delete**").authenticated()
                                                 .requestMatchers("/reservation/delete**").hasAnyRole("ADMIN", "STUDENT")

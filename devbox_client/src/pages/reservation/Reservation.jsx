@@ -205,11 +205,21 @@ const Reservation = () => {
         }
     }, [date]);
 
+    const [serverTime, setServerTime] = useState('');
+    useEffect(() => {
+        const getServerTime = async () => {
+            const url = `${domain}/reservation/servertime`;
+            const res = await fetch(url);
+            const data = await res.text(); // 서버 시간이 문자열로 반환되므로 text로 받아옵니다.
+            setServerTime(data);
+        };
+        getServerTime();
+    }, [date]);
+
     const isDisabled = (time) => {
-        const now = moment(new Date()).format("YYYY년 MM월 DD일 HH:mm");
         const calTime = `${date} ${time.split(' - ')[0]}`;
         return (
-            now > calTime // 현재 시간이 더 뒤인 경우 true를 반환
+            serverTime > calTime // 현재 시간이 더 뒤인 경우 true를 반환
             || timeData.some((v) => v.time === time)
             // some() : 배열의 요소 중 하나라도 주어진 조건을 만족하면 true를 반환하고, 조건을 만족하는 요소가 하나도 없으면 false를 반환
         );
