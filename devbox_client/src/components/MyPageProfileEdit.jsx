@@ -63,7 +63,7 @@ function MyPageProfileEdit() {
         navigate("/mypage");
       } else {
         const errorData = await response.text();
-        throw new Error(errorData.message || "Failed to update user data");
+        throw new Error(errorData|| "Failed to update user data");
       }
     } catch (error) {
       setError(error.message);
