@@ -15,9 +15,11 @@ function MyPageProfileEdit() {
 
   // 별도의 상태로 역할 관리
   const [selectedRole, setSelectedRole] = useState(
-    user.role === "ROLE_USER" ? "일반회원" :
-    user.role === "ROLE_STUDENT" ? "수강생" :
-    ""
+    user.role === "ROLE_USER"
+      ? "일반회원"
+      : user.role === "ROLE_STUDENT"
+      ? "수강생"
+      : ""
   );
 
   const handleChange = (e) => {
@@ -39,19 +41,24 @@ function MyPageProfileEdit() {
 
     try {
       const response = await fetch("https://www.devback.shop/api/user/update", {
-        method: "POST",
+        method: "PUT",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
-        body: JSON.stringify({ ...user, role: dbRole }),
+        body: JSON.stringify({
+          nickname: user.nickname,
+          name: user.name,
+          role: dbRole,
+          field: user.field,
+        }),
       });
 
       if (response.ok) {
         await Swal.fire({
           icon: "success",
-          title: "회원정보가 수정되었습니다."
+          title: "회원정보가 수정되었습니다.",
         });
         navigate("/mypage");
       } else {
@@ -60,6 +67,19 @@ function MyPageProfileEdit() {
       }
     } catch (error) {
       setError(error.message);
+      if (error.message === "닉네임이 이미 사용 중입니다.") {
+        Swal.fire({
+          icon: "warning",
+          title: "닉네임 중복",
+          text: "입력하신 닉네임은 이미 사용 중입니다. 다른 닉네임을 선택해 주세요.",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "오류",
+          text: error.message || "회원정보 수정에 실패했습니다. 다시 시도해 주세요.",
+        });
+      }
     }
   };
 
@@ -107,7 +127,7 @@ function MyPageProfileEdit() {
       confirmButtonText: "탈퇴",
       confirmButtonColor: "#d33",
       cancelButtonText: "취소",
-      cancelButtonColor: "#3085d6"
+      cancelButtonColor: "#3085d6",
     }).then((result) => {
       if (result.isConfirmed) {
         handleDeleteAccount();

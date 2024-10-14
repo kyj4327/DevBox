@@ -1,7 +1,9 @@
 package com.o2b2.devbox_server.user.controller;
 
+import com.o2b2.devbox_server.user.dto.UpdateUserInfoDTO;
 import com.o2b2.devbox_server.user.repository.UserRepository;
 import com.o2b2.devbox_server.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +37,10 @@ public class UserController {
     }
 
     // 현재 로그인된 사용자의 정보 업데이트
-    @PostMapping("/update")
-    public void updateUser(@RequestBody Map<String, String> updatedUserInfo, Authentication authentication) {
+    @PutMapping("/update")  // 또는 @PatchMapping("/update")
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserInfoDTO updatedUserInfo, Authentication authentication) {
         userService.updateUserInfo(updatedUserInfo, authentication);
+        return ResponseEntity.ok("User information updated successfully.");
     }
 
     // 계정 탈퇴
