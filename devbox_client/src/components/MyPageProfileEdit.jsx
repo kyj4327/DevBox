@@ -38,7 +38,7 @@ function MyPageProfileEdit() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const dbRole = selectedRole === "일반회원" ? "ROLE_USER" : "ROLE_STUDENT";
-
+  
     try {
       const response = await fetch("https://www.devback.shop/api/user/update", {
         method: "PUT",
@@ -54,7 +54,7 @@ function MyPageProfileEdit() {
           field: user.field,
         }),
       });
-
+  
       if (response.ok) {
         await Swal.fire({
           icon: "success",
@@ -62,11 +62,10 @@ function MyPageProfileEdit() {
         });
         navigate("/mypage");
       } else {
-        const errorData = await response.text();
-        throw new Error(errorData|| "Failed to update user data");
+        const errorData = await response.json(); // JSON 형식으로 파싱
+        throw new Error(errorData.message || "Failed to update user data");
       }
     } catch (error) {
-      setError(error.message);
       if (error.message === "닉네임이 이미 사용 중입니다.") {
         Swal.fire({
           icon: "warning",

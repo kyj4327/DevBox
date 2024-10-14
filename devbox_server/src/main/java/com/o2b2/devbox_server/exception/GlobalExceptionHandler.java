@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -24,8 +26,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DuplicateNicknameException.class)
-    public ResponseEntity<String> handleDuplicateNicknameException(DuplicateNicknameException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    public ResponseEntity<Map<String, String>> handleDuplicateNicknameException(DuplicateNicknameException e) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("message", e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 }
 
