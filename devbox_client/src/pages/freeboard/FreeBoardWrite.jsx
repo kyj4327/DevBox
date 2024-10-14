@@ -77,19 +77,14 @@ const FreeBoardWrite = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-
+  
     setIsLoading(true);
     setError(null);
     try {
       if (!user) {
         throw new Error("로그인이 필요합니다.");
       }
-      const postData = { title, content, userId: user.id }; // Changed from author to userId
-      if (id) {
-        await updatePost(id, postData);
-      } else {
-        await createPost(postData);
-      }
+      const postData = { title, content, userId: user.id };
       let newPostId;
       if (id) {
         await updatePost(id, postData);
