@@ -62,7 +62,7 @@ function MyPageProfileEdit() {
         });
         navigate("/mypage");
       } else {
-        const errorData = await response.json();
+        const errorData = await response.text();
         throw new Error(errorData.message || "Failed to update user data");
       }
     } catch (error) {
