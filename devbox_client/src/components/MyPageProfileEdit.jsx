@@ -23,7 +23,12 @@ function MyPageProfileEdit() {
   );
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    let { name, value } = e.target;
+
+    // 이름과 닉네임 입력 시 시작 공백 제거
+    if (name === "name" || name === "nickname") {
+      value = value.replace(/^\s+/, ""); // 시작 공백 제거
+    }
 
     if (name === "role") {
       setSelectedRole(value);
@@ -38,7 +43,20 @@ function MyPageProfileEdit() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const dbRole = selectedRole === "일반회원" ? "ROLE_USER" : "ROLE_STUDENT";
-  
+
+    // 이름과 닉네임의 공백 제거
+    const trimmedNickname = user.nickname.trim();
+    const trimmedName = user.name.trim();
+
+    if (trimmedNickname === "" || trimmedName === "") {
+      Swal.fire({
+        icon: "error",
+        title: "입력 오류",
+        text: "이름과 닉네임은 시작에 공백이 있을 수 없습니다.",
+      });
+      return;
+    }
+
     try {
       const response = await fetch("https://www.devback.shop/api/user/update", {
         method: "PUT",
@@ -54,8 +72,14 @@ function MyPageProfileEdit() {
           field: user.field,
         }),
       });
-  
+
       if (response.ok) {
+        setUser({
+          ...user,
+          nickname: trimmedNickname,
+          name: trimmedName,
+        });
+
         await Swal.fire({
           icon: "success",
           title: "회원정보가 수정되었습니다.",
@@ -76,7 +100,9 @@ function MyPageProfileEdit() {
         Swal.fire({
           icon: "error",
           title: "오류",
-          text: error.message || "회원정보 수정에 실패했습니다. 다시 시도해 주세요.",
+          text:
+            error.message ||
+            "회원정보 수정에 실패했습니다. 다시 시도해 주세요.",
         });
       }
     }
@@ -172,6 +198,8 @@ function MyPageProfileEdit() {
               name="name"
               value={user.name}
               onChange={handleChange}
+              required
+              minLength={1}
             />
           </div>
           <div className="mypage-profile-edit__form-group">
@@ -183,6 +211,8 @@ function MyPageProfileEdit() {
               name="nickname"
               value={user.nickname}
               onChange={handleChange}
+              required
+              minLength={1}
             />
           </div>
           {/* 회원 유형 라디오 버튼 */}
