@@ -54,14 +54,11 @@ public class PostService {
     }
 
     public Post createPost(Post post, Long userId) {
-        logger.info("Creating post for user ID: {}", userId);
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         post.setUser(user);
         post.setCreatedAt(LocalDateTime.now());
-        Post savedPost = postRepository.save(post);
-        logger.info("Post created successfully with ID: {}", savedPost.getId());
-        return savedPost;
+        return postRepository.save(post);
     }
 
     public Post updatePost(Long postId, Post postDetails) {
@@ -91,19 +88,19 @@ public class PostService {
         return postRepository.countByUserId(userId);
     }
 
-    //회원의 게시물만 조회
+    // 회원의 게시물만 조회
 
-     public List<PostDTO> getPostsByUserId(Long userId) {
-        List<Post> posts = postRepository.findByUserId(userId); // 사용자 ID로 게시글 조회
+    public List<PostDTO> getPostsByUserId(Long userId) {
+        List<Post> posts = postRepository.findByUserId(userId);
         return posts.stream()
                 .map(post -> {
                     PostDTO dto = new PostDTO();
                     dto.setId(post.getId());
                     dto.setTitle(post.getTitle());
-                    dto.setAuthor(post.getAuthor());
+                    dto.setAuthorNickname(post.getAuthorNickname());
                     dto.setCreatedAt(post.getCreatedAt());
                     dto.setViews(post.getViews());
-                    dto.setUserId(post.getUser().getId()); // 사용자 ID 설정
+                    dto.setUserId(post.getUser().getId());
                     return dto;
                 })
                 .collect(Collectors.toList());

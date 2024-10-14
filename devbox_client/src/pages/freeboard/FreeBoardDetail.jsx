@@ -156,7 +156,7 @@ const FreeBoardDetail = () => {
                 />
                 <div className="d-flex flex-column">
                   <UserContact
-                    nickname={post.author}
+                    nickname={post.user ? post.user.nickname : "Unknown"}
                     nicknameStyle={{
                       fontSize: "16px",
                       color: "#6C757D",

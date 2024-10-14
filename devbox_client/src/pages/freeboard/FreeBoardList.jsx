@@ -122,7 +122,7 @@ const FreeBoardList = () => {
                       </td>
                       <td data-label="작성자" className="notice-author">
                         <UserContact
-                          nickname={post.author}
+                          nickname={post.user ? post.user.nickname : "Unknown"}
                           nicknameStyle={{
                             fontSize: "14.4px",
                             color: "#666666",

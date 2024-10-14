@@ -31,9 +31,6 @@ public class Post {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(length = 500, nullable = false)
-    private String author;
-
     @Column(nullable = false)
     private int views = 0;
 
@@ -83,14 +80,6 @@ public class Post {
         this.title = title;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public String getContent() {
         return content;
     }
@@ -122,4 +111,9 @@ public class Post {
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
+    public String getAuthorNickname() {
+        return user != null ? user.getNickname() : null;
+    }
+
 }

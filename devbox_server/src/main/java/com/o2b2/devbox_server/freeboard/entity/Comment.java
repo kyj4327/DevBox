@@ -27,29 +27,17 @@ public class Comment {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(length = 500, nullable = false)
-    private String author;
-
     // Post와의 연관관계
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
-    @JsonIgnoreProperties({"comments"})
+    @JsonIgnoreProperties({ "comments" })
     private Post post;
 
     // UserEntity와의 양방향 연관관계 (ManyToOne)
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnoreProperties({"proEntitys", "MsgEntitys", "MsgSenderEntitys", "posts", "comments"})
+    @JsonIgnoreProperties({ "proEntitys", "MsgEntitys", "MsgSenderEntitys", "posts", "comments" })
     private UserEntity user;
-
-    // Getters and Setters
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
 
     public Long getId() {
         return id;

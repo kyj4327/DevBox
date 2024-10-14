@@ -13,5 +13,5 @@ public class CommentsDTO {
     private Long userId; // 작성자의 User ID
     private Long postId; // 댓글이 속한 게시글 ID
     private LocalDateTime createdAt; // 작성 시간
-    private String author;
+    private String userNickname;
 }

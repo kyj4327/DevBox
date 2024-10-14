@@ -39,7 +39,7 @@ const FreeBoardComments = ({ postId }) => {
     if (!user) {
       Swal.fire({
         icon: "error",
-        title: "로그인이 필요합니다."
+        title: "로그인이 필요합니다.",
       });
       return;
     }
@@ -48,7 +48,6 @@ const FreeBoardComments = ({ postId }) => {
     try {
       const createdComment = await createComment(postId, {
         content: newComment,
-        author: user.nickname,
       });
       setComments((prevComments) => [...prevComments, createdComment]);
       setNewComment("");
@@ -190,7 +189,7 @@ const FreeBoardComments = ({ postId }) => {
                         <div>
                           <span className="comment-author d-block">
                             <UserContact
-                              nickname={comment.author}
+                              nickname={comment.userNickname}
                               nicknameStyle={{
                                 fontSize: "16px",
                                 color: "#888888",
