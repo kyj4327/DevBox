@@ -1,8 +1,12 @@
 
 # 📦 DevBox
 
+<div align="center">
+  
 <div style="text-align: center;">
   <img src="https://github.com/user-attachments/assets/d361501e-bf87-45b0-b02b-34a3f3b08e56" alt="devboxLogo" width="150" height="150"alt="logo"/>
+</div>
+
 </div>
 
 <div align="center">
