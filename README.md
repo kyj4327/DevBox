@@ -55,6 +55,8 @@
 
 <br />
 
+<div align="center">
+
 
 |1️⃣ 회원가입 및 로그인|2️⃣ 메인화면|3️⃣ 공지사항|
 |:-:|:-:|:-:|
@@ -75,6 +77,8 @@
 |1️⃣3️⃣ 문의사항 |1️⃣4️⃣ 쪽지 기능 |1️⃣5️⃣ 비밀번호 재설정|
 |:-:|:-:|:-:|
 |<img width="200" height="200" alt="문의사항" src="https://github.com/user-attachments/assets/247b7ea7-7f84-40f9-a963-fc930256b7e6">|<img width="200" height="200" alt="쪽지보내기" src="https://github.com/user-attachments/assets/c2c965f8-ded0-4de7-8750-1f5e9694779d">|<img width="200" height="200" alt="비밀번호재설정" src="https://github.com/user-attachments/assets/6b80d0d1-9247-465a-b00a-bdc8b5e58f68">|
+
+</div>
 
 <br /><br />
 <div align="start">
