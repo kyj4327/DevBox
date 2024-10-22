@@ -2,7 +2,7 @@
 # 📦 DevBox
 
 <div align="center">
-  
+
 <div style="text-align: center;">
   <img src="https://github.com/user-attachments/assets/d361501e-bf87-45b0-b02b-34a3f3b08e56" alt="devboxLogo" width="150" height="150"alt="logo"/>
 </div>
@@ -58,24 +58,23 @@
 
 |1️⃣ 회원가입 및 로그인|2️⃣ 메인화면|3️⃣ 공지사항|
 |:-:|:-:|:-:|
-|<img width="300" alt="로그인/회원가입" src="https://github.com/user-attachments/assets/f1130b16-04b2-4993-b1a8-28f67c2fbb8d">|<img width="300" alt="메인화면" src="https://github.com/user-attachments/assets/963ea250-7841-47fa-a174-f3d360b889c5">|<img width="300" alt="공지사항" src="https://github.com/user-attachments/assets/67895baa-db44-4fd5-83bd-dcd20daf8250">|
+|<img width="300" height="150" alt="로그인/회원가입" src="https://github.com/user-attachments/assets/f1130b16-04b2-4993-b1a8-28f67c2fbb8d">|<img width="300" height="300" alt="메인화면" src="https://github.com/user-attachments/assets/963ea250-7841-47fa-a174-f3d360b889c5">|<img width="300" height="300" alt="공지사항" src="https://github.com/user-attachments/assets/67895baa-db44-4fd5-83bd-dcd20daf8250">|
 
 |4️⃣ 개발직군|5️⃣ 채용 공고|6️⃣ 공모전|
 |:-:|:-:|:-:|
-|<img width="300" alt="개발직군" src="https://github.com/user-attachments/assets/40fdf4fe-bfe4-4f55-bfa5-2d4458dc66f9">|<img width="300" alt="채용공고_2024.10.21" src="https://github.com/user-attachments/assets/cee27015-f118-4b35-b620-8096a8f81c4f">|<img width="300" alt="공모전공고20241021" src="https://github.com/user-attachments/assets/b6f88390-6a45-49a1-82d1-82dfdb6dcda4">|
+|<img width="300" height="300" alt="개발직군" src="https://github.com/user-attachments/assets/40fdf4fe-bfe4-4f55-bfa5-2d4458dc66f9">|<img width="300" height="300" alt="채용공고_2024.10.21" src="https://github.com/user-attachments/assets/cee27015-f118-4b35-b620-8096a8f81c4f">|<img width="300" height="300" alt="공모전공고20241021" src="https://github.com/user-attachments/assets/b6f88390-6a45-49a1-82d1-82dfdb6dcda4">|
 
 |7️⃣ 가입인사|8️⃣ 자유게시판|9️⃣ 프로젝트 자랑|
 |:-:|:-:|:-:|
-|<img width="300" alt="greeting" src="https://github.com/user-attachments/assets/f8b3c98b-a40e-48fb-9a66-c4f0a446687c">|<img width="300" alt="freeboard" src="https://github.com/user-attachments/assets/0b916a08-3a5e-4523-9d64-44d3dc9a305a">|<img width="300" alt="project" src="https://github.com/user-attachments/assets/acc60adf-77a2-4677-a997-78417a5f1092">|
+|<img width="300" height="300" alt="greeting" src="https://github.com/user-attachments/assets/f8b3c98b-a40e-48fb-9a66-c4f0a446687c">|<img width="300" height="300" alt="freeboard" src="https://github.com/user-attachments/assets/0b916a08-3a5e-4523-9d64-44d3dc9a305a">|<img width="300" height="300" alt="project" src="https://github.com/user-attachments/assets/acc60adf-77a2-4677-a997-78417a5f1092">|
 
 |1️⃣0️⃣ 모여라 메이트 |1️⃣1️⃣ 추천해요 |1️⃣2️⃣ 회의실대여|
 |:-:|:-:|:-:|
-|<img width="300" alt="모여라메이트 상세" src="https://github.com/user-attachments/assets/92b1256c-14cd-4ac4-97df-622d9183fde7">|<img width="300" alt="추천해요" src="https://github.com/user-attachments/assets/182b6074-d839-4d1c-8a4a-4a783ad90d50">|<img width="300" alt="회의실예약gif" src="https://github.com/user-attachments/assets/a86c65ba-fc13-44fa-8894-c4e1d2408b1d">|
+|<img width="300" height="300" alt="모여라메이트 상세" src="https://github.com/user-attachments/assets/92b1256c-14cd-4ac4-97df-622d9183fde7">|<img width="300" height="300" alt="추천해요" src="https://github.com/user-attachments/assets/182b6074-d839-4d1c-8a4a-4a783ad90d50">|<img width="300" height="300" alt="회의실예약gif" src="https://github.com/user-attachments/assets/a86c65ba-fc13-44fa-8894-c4e1d2408b1d">|
 
 |1️⃣3️⃣ 문의사항 |1️⃣4️⃣ 쪽지 기능 |1️⃣5️⃣ 비밀번호 재설정|
 |:-:|:-:|:-:|
-|<img width="300" alt="문의사항" src="https://github.com/user-attachments/assets/247b7ea7-7f84-40f9-a963-fc930256b7e6">|<img width="300" alt="쪽지보내기" src="https://github.com/user-attachments/assets/c2c965f8-ded0-4de7-8750-1f5e9694779d">|<img width="300" alt="비밀번호재설정" src="https://github.com/user-attachments/assets/6b80d0d1-9247-465a-b00a-bdc8b5e58f68">|
-
+|<img width="300" height="300" alt="문의사항" src="https://github.com/user-attachments/assets/247b7ea7-7f84-40f9-a963-fc930256b7e6">|<img width="300" height="300" alt="쪽지보내기" src="https://github.com/user-attachments/assets/c2c965f8-ded0-4de7-8750-1f5e9694779d">|<img width="300" height="300" alt="비밀번호재설정" src="https://github.com/user-attachments/assets/6b80d0d1-9247-465a-b00a-bdc8b5e58f68">|
 
 <br /><br />
 <div align="start">
