@@ -48,7 +48,7 @@
 |[@kyj4327](https://github.com/kyj4327)|[@yyerrim](https://github.com/yyerrim)|[@Falin4789](https://github.com/Falin4789)|[@km8026](https://github.com/km8026)|
 
 
-<img width="590" alt="Role" src="https://github.com/user-attachments/assets/a839eebf-73df-455e-b37f-de471b0426f2">
+<img width="700" alt="Role" src="https://github.com/user-attachments/assets/a839eebf-73df-455e-b37f-de471b0426f2">
 
 </div>
 
