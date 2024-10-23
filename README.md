@@ -47,6 +47,9 @@
 |<img src="https://github.com/user-attachments/assets/8a9725aa-2f74-43d8-aced-82475ac190ff" width=150>|<img src="https://github.com/user-attachments/assets/2614c97c-f11f-4cfa-833a-47353f8d0734" width=150>|<img src="https://github.com/user-attachments/assets/4eb612b5-60ec-4c13-9255-055bc6af9711" width=150>|<img src="https://github.com/user-attachments/assets/7c0cfea1-b596-4912-8447-f02b4b8df314" width=150>|
 |[@kyj4327](https://github.com/kyj4327)|[@yyerrim](https://github.com/yyerrim)|[@Falin4789](https://github.com/Falin4789)|[@km8026](https://github.com/km8026)|
 
+
+<img width="1137" alt="Role" src="https://github.com/user-attachments/assets/a839eebf-73df-455e-b37f-de471b0426f2">
+
 </div>
 
 <br />
